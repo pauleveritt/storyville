@@ -20,7 +20,9 @@ from typing import get_type_hints
 from typing import Optional
 from typing import Union
 
+from bs4 import BeautifulSoup
 from hopscotch import Registry
+from viewdom.render import render, VDOM
 
 
 def import_stories(stories_path: Path) -> ModuleType:
@@ -275,6 +277,7 @@ class Story:
     parent: Section = field(init=False)
     registry: Optional[Registry] = None
     title: Optional[str] = None
+    template: Optional[VDOM] = None
 
     def post_update(self, parent: Section) -> Story:
         """The parent calls this after construction.
@@ -294,3 +297,14 @@ class Story:
         if self.title is None and self.parent.title:
             self.title = self.parent.title + " Story"
         return self
+
+    @property
+    def html(self) -> BeautifulSoup:
+        """Render to a DOM-like BeautifulSoup representation."""
+        # if self.registry is None:
+        #     rendered = viewdom_render(self.vdom)
+        # else:
+        #     rendered = viewdom_wired_render(self.vdom, container=self.container)
+        rendered = render(self.template)  # type: ignore
+        this_html = BeautifulSoup(rendered, "html.parser")
+        return this_html
