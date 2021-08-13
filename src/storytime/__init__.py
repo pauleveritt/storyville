@@ -15,6 +15,7 @@ from inspect import getmembers
 from inspect import isfunction
 from pathlib import Path
 from types import ModuleType
+from typing import Any
 from typing import cast
 from typing import get_type_hints
 from typing import Optional
@@ -22,7 +23,9 @@ from typing import Union
 
 from bs4 import BeautifulSoup
 from hopscotch import Registry
-from viewdom.render import render, VDOM
+from viewdom.render import html
+from viewdom.render import render
+from viewdom.render import VDOM
 
 
 def import_stories(stories_path: Path) -> ModuleType:
@@ -274,7 +277,10 @@ class Subject:
 class Story:
     """One way to look at a component."""
 
+    component: Optional[type] = None
+    kind: Optional[type] = None
     parent: Section = field(init=False)
+    props: dict[str, Any] = field(default_factory=dict)
     registry: Optional[Registry] = None
     title: Optional[str] = None
     template: Optional[VDOM] = None
@@ -299,12 +305,31 @@ class Story:
         return self
 
     @property
-    def html(self) -> BeautifulSoup:
+    def instance(self) -> Optional[object]:
+        """Get the component instance related to this story."""
+        if self.component:
+            if self.registry is None:
+                return self.component(**self.props)
+            else:
+                return self.registry.get(self.component, **self.props)
+
+        return None
+
+    @property
+    def vdom(self) -> VDOM:
+        """Generate a VDOM for the usage in this story."""
+        if self.component:
+            # We ignore the template if we are given a component and
+            # instead construct a template.
+            return html("<{self.component} ...{self.props} />")
+        elif self.template:
+            return self.template
+        else:
+            raise ValueError("Could not generate VDOM for story.")
+
+    @property
+    def soup(self) -> BeautifulSoup:
         """Render to a DOM-like BeautifulSoup representation."""
-        # if self.registry is None:
-        #     rendered = viewdom_render(self.vdom)
-        # else:
-        #     rendered = viewdom_wired_render(self.vdom, container=self.container)
-        rendered = render(self.template)  # type: ignore
+        rendered = render(self.vdom, registry=self.registry)
         this_html = BeautifulSoup(rendered, "html.parser")
         return this_html
