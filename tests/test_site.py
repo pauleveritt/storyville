@@ -2,10 +2,11 @@
 from pathlib import Path
 
 import pytest
+from hopscotch import Registry
 
 from storytime import get_certain_callable
-from storytime import import_stories
 from storytime import make_site
+from storytime import make_tree_node_registry
 from storytime import Section
 from storytime import Site
 from storytime import TreeNode
@@ -18,18 +19,39 @@ def minimal_site() -> Site:
     return site
 
 
+def test_tree_node_registry_no_registry() -> None:
+    """Not passed in registry but no extras."""
+    registry = make_tree_node_registry()
+    if registry:
+        assert registry.parent is None
+        assert registry.context is None
+
+
+def test_tree_node_registry_no_registry_plus_extras() -> None:
+    """Not passed in registry but with extras."""
+    context = object()
+    parent = Registry()
+    registry = make_tree_node_registry(
+        context=context,
+        parent=parent,
+    )
+    if registry:
+        assert registry.parent is parent
+        assert registry.context is context
+
+
 def test_tree_node_site() -> None:
     """Given a path to a ``stories.py``, extract needed info."""
     from examples.minimal import stories
 
     stories_path = Path(stories.__file__)
     tree_node = TreeNode(
-        root_path="examples.minimal",
+        package_location="examples.minimal",
         stories_path=stories_path,
     )
     assert isinstance(tree_node.called_instance, Site)
     assert tree_node.name == ""
-    assert tree_node.package_path == "."
+    assert tree_node.this_package_location == "."
     assert tree_node.parent_path is None
 
 
@@ -39,12 +61,12 @@ def test_tree_node_section() -> None:
 
     stories_path = Path(stories.__file__)
     tree_node = TreeNode(
-        root_path="examples.minimal",
+        package_location="examples.minimal",
         stories_path=stories_path,
     )
     assert isinstance(tree_node.called_instance, Section)
     assert tree_node.name == "components"
-    assert tree_node.package_path == ".components"
+    assert tree_node.this_package_location == ".components"
     assert tree_node.parent_path == "."
 
 
@@ -59,6 +81,7 @@ def test_make_site(minimal_site: Site) -> None:
     assert components.name == "components"
     assert components.package_path == ".components"
     assert components.registry is minimal_site.registry
+    assert components.registry.parent is None
     assert components.title == "Components"
     found_components = minimal_site.find_path(".components")
     if found_components:
@@ -79,16 +102,7 @@ def test_stories(minimal_site: Site) -> None:
     heading = minimal_site.items["components"].items["heading"]
     stories = heading.stories
     first_story = stories[0]
-    assert first_story.title == "Default Heading"
-
-
-def test_import_stories_success() -> None:
-    """Able to import a module at a path."""
-    from examples.minimal.components import stories
-
-    stories_path = Path(stories.__file__)
-    module = import_stories(stories_path)
-    assert module.__name__ == "stories.py"
+    assert first_story.title == "Heading Story"
 
 
 def test_get_certain_callable() -> None:

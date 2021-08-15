@@ -8,8 +8,6 @@ def this_subject() -> Subject:
     return Subject(
         title="Heading",
         stories=[
-            Story(
-                title="Default Heading",
-            )
+            Story(),
         ],
     )

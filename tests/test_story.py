@@ -6,8 +6,8 @@ from hopscotch.operators import get
 from viewdom import VDOM
 from viewdom.render import html
 
-from storytime import Section
 from storytime import Story
+from storytime import Subject
 
 
 @dataclass()
@@ -25,7 +25,7 @@ def test_empty() -> None:
 
 def test_generate_title() -> None:
     """Default to a title from the parent."""
-    parent = Section(title="Components")
+    parent = Subject(title="Components")
     story = Story()
     story.post_update(parent=parent)
     assert story.title == "Components Story"
@@ -138,7 +138,7 @@ def test_component() -> None:
 
     story = Story(component=Hello)
     assert story.instance.__class__ is Hello
-    assert story.instance.name == "World"
+    assert getattr(story.instance, "name") == "World"
     assert story.vdom.tag == Hello
     div = story.soup.select_one("div")
     assert div.text == "Hello World"
@@ -159,7 +159,7 @@ def test_component_props() -> None:
 
     story = Story(component=Hello, props=dict(name="Override"))
     assert story.instance.__class__ is Hello
-    assert story.instance.name == "Override"
+    assert getattr(story.instance, "name") == "Override"
     assert story.vdom.tag == Hello
     div = story.soup.select_one("div")
     assert div.text == "Hello Override"
@@ -183,7 +183,7 @@ def test_component_from_registry() -> None:
 
     story = Story(component=Hello, registry=registry)
     assert story.instance.__class__ is Hello
-    assert story.instance.name == "World"
+    assert getattr(story.instance, "name") == "World"
     assert story.vdom.tag == Hello
     div = story.soup.select_one("div")
     assert div.text == "Hello World"
