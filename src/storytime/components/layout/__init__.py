@@ -1,8 +1,12 @@
 from dataclasses import dataclass
 
 from hopscotch import injectable
-from storytime.components.components_listing import ComponentsListing
+# from storytime.components.components_listing import ComponentsListing
 from viewdom.render import VDOM, html
+
+
+def ComponentsListing() -> VDOM:
+    return html("<div>COMPONENTS LISTING 99</div>")
 
 
 @injectable()

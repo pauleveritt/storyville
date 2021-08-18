@@ -1,6 +1,6 @@
 """The subject for this Heading component."""
-from examples.scannables import components
-from examples.scannables.components.heading import Heading
+from ... import components
+from . import Heading
 
 from storytime import Story
 from storytime import Subject

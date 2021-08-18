@@ -1,4 +1,5 @@
 """The ``Site`` for stories used for the Storytime UI itself."""
+from storytime import components
 from storytime import make_site
 from storytime import Site
 
@@ -6,6 +7,7 @@ from storytime import Site
 def this_site() -> Site:
     """The top of the Storytime UI story catalog."""
     return Site(
+        scannables=[components, ],
         title="Storytime UI",
     )
 

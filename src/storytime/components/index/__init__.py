@@ -8,13 +8,20 @@ from ..layout import Layout  # noqa
 
 @injectable()
 @dataclass
-class Index:
+class IndexView:
 
     def __call__(self) -> VDOM:
-        return html('''\n
+        return html("""\n
 <{Layout} title="Components">
 <main>
 <p>Welcome to Storytime. Choose a component on the left.</p>
 </main>
-</>
-''')
+<//>
+""")
+#         return html('''\n
+# <{Layout} title="Components">
+# <main>
+# <p>Welcome to Storytime. Choose a component on the left.</p>
+# </main>
+# </>
+# ''')
