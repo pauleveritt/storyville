@@ -6,7 +6,7 @@ from viewdom.render import VDOM, html
 
 
 def ComponentsListing() -> VDOM:
-    return html("<div>COMPONENTS LISTING 99</div>")
+    return html("<div>COMPONENTS LISTING</div>")
 
 
 @injectable()
