@@ -1,11 +1,18 @@
 """Command-line interface."""
+from pathlib import Path
+
 import click
+
+from storytime.build import build_site
 
 
 @click.command()
 @click.version_option()
 def main() -> None:
     """Storytime."""
+    package_location = "storytime"
+    output_dir = Path("var")
+    build_site(package_location=package_location, output_dir=output_dir)
 
 
 if __name__ == "__main__":
