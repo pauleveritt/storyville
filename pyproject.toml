@@ -29,6 +29,7 @@ build-backend = "hatchling.build"
 [tool.uv]
 dev-dependencies = [
     "beautifulsoup4>=4.12.3",
+    "black>=24.8.0",
     "mypy>=1.11.2",
     "pytest>=8.3.2",
 ]

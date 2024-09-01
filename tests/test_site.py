@@ -1,4 +1,5 @@
 """The ``Site`` is the top of the Storytime catalog."""
+
 from pathlib import Path
 
 import pytest
@@ -14,7 +15,7 @@ from storytime import TreeNode
 
 @pytest.fixture(scope="session")
 def minimal_site() -> Site:
-    """Construct the example.minimal site."""
+    """Construct the example minimal site."""
     site = make_site("examples.minimal")
     return site
 

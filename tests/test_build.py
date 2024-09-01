@@ -1,18 +1,46 @@
-"""Build a Storytime site to a tmpdir and test."""
+"""Build a Storytime site to a tmpdir and test.
+
+These tests will be testing the Storytime UI itself using
+the stories written for that UI.
+"""
+
 from pathlib import Path
 
+import pytest
 from bs4 import BeautifulSoup
 
 from storytime.build import build_site
 
 
-def test_index(tmpdir: Path) -> None:
+# Do this as session scope. We want just one build of all the stories,
+# with small tests for each part.
+@pytest.fixture(scope="session")
+def output_dir(tmpdir_factory) -> Path:
+    output_dir = tmpdir_factory.getbasetemp()
+    build_site(package_location="storytime", output_dir=output_dir)
+    return Path(output_dir)
+
+
+def get_page(page_path: Path) -> BeautifulSoup:
+    with open(page_path) as f:
+        rendered = f.read()
+        return BeautifulSoup(rendered, "html.parser")
+
+
+def test_index(output_dir: Path) -> None:
     """Render the index page."""
 
-    build_site(package_location="storytime", output_dir=tmpdir)
+    page = get_page(output_dir / "index.html")
+    expected = "Welcome to Storytime. Choose a component on the left."
+    assert page.select_one("main p").text == expected
 
-    with open(tmpdir / "index.html") as f:
-        rendered = f.read()
-        soup = BeautifulSoup(rendered, "html.parser")
-        expected = "Welcome to Storytime. Choose a component on the left."
-        assert soup.select_one("main p").text == expected
+
+def test_static_css(output_dir: Path) -> None:
+    """Confirm that the chosen CSS file made it to the build dir."""
+
+    x = output_dir.as_posix()
+    assert (output_dir / "static").exists()
+    bulma_file = output_dir / "static" / "bulma"
+    assert bulma_file.exists()
+    bulma_text = bulma_file.read_text()
+    assert "99" in bulma_text
