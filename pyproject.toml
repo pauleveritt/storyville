@@ -30,8 +30,12 @@ build-backend = "hatchling.build"
 dev-dependencies = [
     "beautifulsoup4>=4.12.3",
     "black>=24.8.0",
+    "furo>=2024.8.6",
     "mypy>=1.11.2",
+    "myst-parser>=4.0.0",
     "pytest>=8.3.2",
+    "sphinx-autobuild>=2024.4.16",
+    "sphinx>=8.0.2",
 ]
 
 [project.scripts]

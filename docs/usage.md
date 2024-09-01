@@ -9,9 +9,3 @@ When you run `Storytime`, several things happen:
 - The static assets are copied to the output directory, if necessary
 - All the HTML for the stories is written
 - The server starts up.
-
-```{eval-rst}
-.. click:: storytime.__main__:main
-   :prog: storytime
-   :nested: full
-```
