@@ -38,9 +38,8 @@ def test_index(output_dir: Path) -> None:
 def test_static_css(output_dir: Path) -> None:
     """Confirm that the chosen CSS file made it to the build dir."""
 
-    x = output_dir.as_posix()
     assert (output_dir / "static").exists()
-    bulma_file = output_dir / "static" / "bulma"
+    bulma_file = output_dir / "static" / "bulma.css"
     assert bulma_file.exists()
     bulma_text = bulma_file.read_text()
-    assert "99" in bulma_text
+    assert "bulma.io" in bulma_text

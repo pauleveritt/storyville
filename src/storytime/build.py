@@ -1,6 +1,7 @@
 """Called by the CLI main to build the site to disk."""
 
 from pathlib import Path
+from shutil import copytree
 
 from viewdom import render
 
@@ -22,4 +23,6 @@ def build_site(package_location: str, output_dir: Path) -> None:
     with open(output_dir / "index.html", "w") as f:
         f.write(index_output)
 
-    # Write the static output
+    # Write the static_dir
+    if site.static_dir:
+        copytree(site.static_dir, output_dir / "static", dirs_exist_ok=True)

@@ -11,6 +11,7 @@
 
 ## Soon
 
+- Get rid of var directory and use a temp directory
 - Move test_minimal etc. out of examples, into a test folder
 - Provide some dev server
 

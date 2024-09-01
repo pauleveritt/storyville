@@ -3,6 +3,7 @@
 ## Notes
 
 - Settings cascade down the tree to stories
+- Site/Section/Subject/Stories structure
 
 ```{toctree}
 ---
