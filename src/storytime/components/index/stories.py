@@ -1,5 +1,5 @@
 """The index page for the Storytime UI."""
-from viewdom.render import html
+from viewdom import html
 
 from storytime import Story
 from storytime import Subject

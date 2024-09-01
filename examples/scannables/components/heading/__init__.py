@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from hopscotch import injectable
 from viewdom import VDOM
-from viewdom.render import html
+from viewdom import html
 
 
 @injectable()

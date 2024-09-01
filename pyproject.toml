@@ -1,8 +1,8 @@
-[tool.poetry]
+[project]
 name = "storytime"
-version = "0.0.1-alpha.3"
-description = "Storytime"
-authors = ["Paul Everitt <pauleveritt@me.com>"]
+version = "0.1.0"
+description = "Story-based component development for Python."
+authors = [{ name = "Paul Everitt", email = "pauleveritt@me.com" }]
 license = "MIT"
 readme = "README.rst"
 homepage = "https://github.com/pauleveritt/storytime"
@@ -10,48 +10,30 @@ repository = "https://github.com/pauleveritt/storytime"
 documentation = "https://storytime.readthedocs.io"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "click>=8.1.7",
+    "hopscotch>=0.3.1",
+    "tagged>=0.0.2",
+    "venusian>=3.0.1",
+    "viewdom>=0.6.4",
 ]
 
-[tool.poetry.urls]
-Changelog = "https://github.com/pauleveritt/storytime/releases"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.dependencies]
-python = "^3.9.5"
-click = "^8.0.1"
-hopscotch = { git = "https://github.com/pauleveritt/hopscotch.git", rev = "main" }
-viewdom = { path = "../hopscotch-viewdom/", develop = false }
-venusian = "^3.0.0"
-tagged = "^0.0.2"
-beautifulsoup4 = "^4.9.3"
+[tool.uv]
+dev-dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "mypy>=1.11.2",
+    "pytest>=8.3.2",
+]
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.4"
-coverage = { extras = ["toml"], version = "^5.4" }
-safety = "^1.10.3"
-mypy = "^0.910"
-xdoctest = { extras = ["colors"], version = "^0.15.5" }
-sphinx = "^4.1.2"
-sphinx-autobuild = "^2021.3.14"
-pre-commit = "^2.14.0"
-flake8 = "^3.9.2"
-black = "^20.8b1"
-flake8-bandit = "^2.1.2"
-flake8-bugbear = "^21.4.3"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.3"
-pep8-naming = "^0.12.0"
-darglint = "^1.8.0"
-reorder-python-imports = "^2.6.0"
-pre-commit-hooks = "^4.0.1"
-sphinx-click = "^3.0.1"
-Pygments = "^2.9.0"
-furo = "^2021.7.31-beta.41"
-nox = "^2021.6.12"
-nox-poetry = "^0.8.6"
-myst-parser = "^0.15.1"
-
-[tool.poetry.scripts]
+[project.scripts]
 storytime = "storytime.__main__:main"
 
 [tool.coverage.paths]
@@ -77,7 +59,3 @@ module = [
     "bs4",
 ]
 ignore_missing_imports = true
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

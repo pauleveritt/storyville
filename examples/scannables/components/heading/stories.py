@@ -7,8 +7,7 @@ from storytime import Subject
 
 
 def this_subject() -> Subject:
-    """Let's make a Storytime subject for this Heading component."""
-    assert Heading
+    """Storytime subject for this Heading component."""
     return Subject(
         title="Heading",
         scannables=[

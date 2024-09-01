@@ -1,12 +1,11 @@
 from dataclasses import dataclass
 
 from hopscotch import injectable
-# from storytime.components.components_listing import ComponentsListing
-from viewdom.render import VDOM, html
+from viewdom import html
+from viewdom import VDOM
 
-
-def ComponentsListing() -> VDOM:
-    return html("<div>COMPONENTS LISTING</div>")
+from storytime import Site
+from storytime.components.sections_listing import SectionsListing
 
 
 @injectable()
@@ -14,9 +13,11 @@ def ComponentsListing() -> VDOM:
 class Layout:
     title: str
     children: VDOM
+    site: Site
 
     def __call__(self) -> VDOM:
-        assert ComponentsListing
+        assert SectionsListing
+        sections = self.site.items.values()
         return html('''\n
 <html>
 <head>
@@ -50,9 +51,9 @@ class Layout:
       <div class="column is-one-quarter">
         <aside class="menu">
           <p class="menu-label">
-            Components
+            Sections
           </p>
-          <{ComponentsListing} />
+          <{SectionsListing} sections={sections} />
         </aside>
         
       </div>

@@ -1,4 +1,4 @@
-# from storytime.components.components_listing.stories import these_stories
+# from storytime.components.sections_listing.stories import these_stories
 #
 #
 # def test_components_listing():

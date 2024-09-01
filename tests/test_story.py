@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from hopscotch import Registry
 from hopscotch.operators import get
 from viewdom import VDOM
-from viewdom.render import html
+from viewdom import html
 
 from storytime import Story
 from storytime import Subject

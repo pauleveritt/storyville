@@ -6,9 +6,6 @@ import click
 from storytime.build import build_site
 
 
-def rebuild_site() -> None:
-    """Called by livereload whenever anything changes."""
-
 
 @click.command()
 @click.version_option()

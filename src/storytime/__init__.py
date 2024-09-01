@@ -26,9 +26,7 @@ from typing import Union
 
 from bs4 import BeautifulSoup
 from hopscotch import Registry
-from viewdom.render import html
-from viewdom.render import render
-from viewdom.render import VDOM
+from viewdom import html, render, VDOM
 
 Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
 Scannables = Union[Iterable[Scannable], Scannable]

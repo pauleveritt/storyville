@@ -1,7 +1,7 @@
 """Called by the CLI main to build the site to disk."""
 from pathlib import Path
 
-from viewdom.render import render
+from viewdom import render
 
 from storytime.components.index import IndexView
 from storytime.stories import make_site
@@ -13,7 +13,9 @@ def build_site(
 ) -> None:
     """Write the static files and story info to the output directory."""
 
+    # Make a site and put it in the registry
     site = make_site(package_location=package_location)
+    site.registry.register(site)
 
     # Handle the index page
     index_view = site.registry.get(IndexView)

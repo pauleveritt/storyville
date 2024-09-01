@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from hopscotch import injectable
-from viewdom.render import html, VDOM
+from viewdom import html, VDOM
 
 from ..layout import Layout  # noqa
 
