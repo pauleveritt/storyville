@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from hopscotch import Registry
 
-from storytime import get_certain_callable
+from storytime import get_certain_callable, PACKAGE_DIR
 from storytime import make_site
 from storytime import make_tree_node_registry
 from storytime import Section
@@ -71,6 +71,12 @@ def test_tree_node_section() -> None:
     assert tree_node.parent_path == "."
 
 
+def test_package_dir() -> None:
+    """Ensure the top of the package is found as a path."""
+    assert PACKAGE_DIR.name == "storytime"
+    assert PACKAGE_DIR.is_dir()
+
+
 def test_make_site(minimal_site: Site) -> None:
     """Construct a story catalog."""
     assert minimal_site.name == ""
@@ -96,6 +102,7 @@ def test_make_site(minimal_site: Site) -> None:
     found_heading = minimal_site.find_path(".components.heading")
     if found_heading:
         assert found_heading.title == "Heading"
+    assert minimal_site.static_dir.is_dir()
 
 
 def test_stories(minimal_site: Site) -> None:

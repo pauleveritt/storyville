@@ -9,4 +9,5 @@
 maxdepth: 1
 ---
 usage
+static
 ```

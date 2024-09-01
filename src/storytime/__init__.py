@@ -4,6 +4,7 @@ Storytime is a system for component-driven-development (CDD.)
 You write stories as you develop components, expressing all the variations.
 You can then browse them in a web page, as well as use these stories in testing.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -16,13 +17,13 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 from typing import Callable
-from typing import cast
 from typing import Generic
-from typing import get_type_hints
 from typing import Iterable
 from typing import Optional
 from typing import TypeVar
 from typing import Union
+from typing import cast
+from typing import get_type_hints
 
 from bs4 import BeautifulSoup
 from hopscotch import Registry
@@ -32,6 +33,8 @@ Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
 Scannables = Union[Iterable[Scannable], Scannable]
 Singleton = Union[tuple[object, object], object]
 Singletons = list[Singleton, ...]
+
+PACKAGE_DIR = Path(__file__).resolve().parent
 
 
 def get_certain_callable(module: ModuleType) -> Optional[Union[Site, Section, Subject]]:
@@ -182,11 +185,11 @@ def make_site(package_location: str) -> Site:
 
 
 def make_tree_node_registry(
-        context: Optional[object] = None,
-        registry: Optional[Registry] = None,
-        parent: Optional[Registry] = None,
-        scannables: Optional[Scannables] = None,
-        singletons: Optional[Singletons] = None,
+    context: Optional[object] = None,
+    registry: Optional[Registry] = None,
+    parent: Optional[Registry] = None,
+    scannables: Optional[Scannables] = None,
+    singletons: Optional[Singletons] = None,
 ) -> Optional[Registry]:
     """Used by tree nodes to encode the policy of registry-making."""
     if registry is not None:
@@ -237,9 +240,9 @@ class BaseNode(Generic[T]):
     package_path: str = field(init=False)
 
     def post_update(
-            self,
-            parent: Optional[BaseNode],
-            tree_node: TreeNode,
+        self,
+        parent: Optional[BaseNode],
+        tree_node: TreeNode,
     ) -> T:
         """The parent calls this after construction.
 
@@ -277,6 +280,13 @@ class Site(BaseNode):
     """
 
     items: dict[str, Section] = field(default_factory=dict)
+    static_dir: Path | None = None
+
+    def __post_init__(self):
+        """Look for a static dir and assign it if present."""
+        sd = PACKAGE_DIR / "static"
+        if sd.exists():
+            self.static_dir = sd
 
     def find_path(self, path: str) -> Optional[Union[Site, Section, Subject, Story]]:
         """Given a dotted path, traverse to the object."""
