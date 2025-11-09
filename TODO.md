@@ -2,7 +2,7 @@
 
 ## Now
 
-- tmpfile-based tests for build
+- Get the project up to new layout style
 
 ## Next
 
@@ -14,6 +14,7 @@
 - Get rid of var directory and use a temp directory
 - Move test_minimal etc. out of examples, into a test folder
 - Provide some dev server
+- tmpfile-based tests for build
 
 ## Eventually
 

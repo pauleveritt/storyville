@@ -1,9 +1,0 @@
-{
-  "name": "storytime",
-  "description": "This file is only used as a uv command runner",
-  "version": "0.0.0",
-  "scripts": {
-    "sphinx-autobuild": "uv run sphinx-autobuild docs docs/_build/html",
-    "storytime": "uv run storytime"
-  }
-}

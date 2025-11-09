@@ -7,27 +7,23 @@ You can then browse them in a web page, as well as use these stories in testing.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from importlib import import_module
 from importlib.resources import files
-from inspect import getmembers
-from inspect import isfunction
+from inspect import getmembers, isfunction
 from pathlib import Path
 from types import ModuleType
-from typing import Any
-from typing import Callable
-from typing import Generic
-from typing import Iterable
-from typing import Optional
-from typing import TypeVar
-from typing import Union
-from typing import cast
-from typing import get_type_hints
-
-from bs4 import BeautifulSoup
-from hopscotch import Registry
-from viewdom import html, render, VDOM
+from typing import (
+    Any,
+    Callable,
+    Generic,
+    Iterable,
+    Optional,
+    TypeVar,
+    Union,
+    cast,
+    get_type_hints,
+)
 
 Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
 Scannables = Union[Iterable[Scannable], Scannable]
@@ -234,7 +230,7 @@ class BaseNode(Generic[T]):
     parent: None = None
     title: Optional[str] = None
     context: Optional[object] = None
-    registry: Optional[Registry] = None
+    registry: Optional[object] = None
     scannables: Optional[Scannables] = None
     singletons: Optional[Singletons] = None
     package_path: str = field(init=False)
@@ -375,9 +371,9 @@ class Story:
         else:
             raise ValueError("Could not generate VDOM for story.")
 
-    @property
-    def soup(self) -> BeautifulSoup:
-        """Render to a DOM-like BeautifulSoup representation."""
-        rendered = render(self.vdom, registry=self.registry)
-        this_html = BeautifulSoup(rendered, "html.parser")
-        return this_html
+    # @property
+    # def soup(self) -> BeautifulSoup:
+    #     """Render to a DOM-like BeautifulSoup representation."""
+    #     rendered = render(self.vdom, registry=self.registry)
+    #     this_html = BeautifulSoup(rendered, "html.parser")
+    #     return this_html

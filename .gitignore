@@ -9,3 +9,9 @@
 /src/*.egg-info/
 __pycache__/
 var
+
+
+.junie
+.aiassistant
+.claude
+profile.stats

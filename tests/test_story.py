@@ -1,13 +1,21 @@
 """Ensure all variations of a ``Story`` obey policies."""
+
 from dataclasses import dataclass
 
-from hopscotch import Registry
-from hopscotch.operators import get
-from viewdom import VDOM
-from viewdom import html
+from tdom import html
 
 from storytime import Story
 from storytime import Subject
+
+
+# from hopscotch.operators import get
+# from viewdom import VDOM
+# from viewdom import html
+
+
+@dataclass
+class Registry:
+    pass
 
 
 @dataclass()
@@ -33,7 +41,7 @@ def test_generate_title() -> None:
 
 def test_static_template_no_registry() -> None:
     """The simplest possible *useful* story."""
-    template = html("<div>Hello</div>")
+    template = html(t"<div>Hello</div>")
     story = Story(template=template)
     assert story.template == template
     assert story.instance is None
