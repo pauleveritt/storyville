@@ -14,16 +14,19 @@ from inspect import getmembers, isfunction
 from pathlib import Path
 from types import ModuleType
 from typing import (
-    Any,
-    Callable,
-    Generic,
     Iterable,
     Optional,
-    TypeVar,
     Union,
     cast,
     get_type_hints,
 )
+
+# Import all node classes from story module
+from storytime.story import BaseNode as BaseNode
+from storytime.story import Section as Section
+from storytime.story import Site as Site
+from storytime.story import Story as Story
+from storytime.story import Subject as Subject
 
 Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
 Scannables = Union[Iterable[Scannable], Scannable]
@@ -182,11 +185,11 @@ def make_site(package_location: str) -> Site:
 
 def make_tree_node_registry(
     context: Optional[object] = None,
-    registry: Optional[Registry] = None,
-    parent: Optional[Registry] = None,
+    registry: Optional[object] = None,
+    parent: Optional[object] = None,
     scannables: Optional[Scannables] = None,
     singletons: Optional[Singletons] = None,
-) -> Optional[Registry]:
+) -> Optional[object]:
     """Used by tree nodes to encode the policy of registry-making."""
     if registry is not None:
         # This node is being instantiated with a custom registry,
@@ -198,11 +201,15 @@ def make_tree_node_registry(
         # so just use the parent, unless it's the site and we need
         # to make one.
         if parent is None:
+            from hopscotch import Registry
+
             return Registry()
         return parent
 
     # Time to make a registry for this node, we were given some
     # stuff for a local registry.
+    from hopscotch import Registry
+
     this_registry = Registry(context=context, parent=parent)
     if scannables:
         for scannable in scannables:
@@ -217,163 +224,3 @@ def make_tree_node_registry(
             else:
                 this_registry.register(singleton)
     return this_registry
-
-
-T = TypeVar("T")
-
-
-@dataclass()
-class BaseNode(Generic[T]):
-    """Shared logic for Site/Section/Subject."""
-
-    name: str = ""
-    parent: None = None
-    title: Optional[str] = None
-    context: Optional[object] = None
-    registry: Optional[object] = None
-    scannables: Optional[Scannables] = None
-    singletons: Optional[Singletons] = None
-    package_path: str = field(init=False)
-
-    def post_update(
-        self,
-        parent: Optional[BaseNode],
-        tree_node: TreeNode,
-    ) -> T:
-        """The parent calls this after construction.
-
-        We do this as a convenience, so authors don't have to put a bunch
-        of attributes in their stories.
-
-        Args:
-            parent: The Site that is the parent in the tree.
-            tree_node: The raw data from the scanning process.
-
-        Returns:
-            The updated Section.
-        """
-        self.parent = parent
-        self.name = tree_node.name
-        self.package_path = tree_node.this_package_location
-        self.registry = make_tree_node_registry(
-            context=self.context,
-            parent=parent.registry if parent else None,
-            registry=self.registry,
-            scannables=self.scannables,
-            singletons=self.singletons,
-        )
-        if self.title is None:
-            self.title = self.package_path
-        return self
-
-
-@dataclass()
-class Site(BaseNode):
-    """The top of a Storytime catalog.
-
-    The site contains the organized collections of stories, with
-    logic to render to disk.
-    """
-
-    items: dict[str, Section] = field(default_factory=dict)
-    static_dir: Path | None = None
-
-    def __post_init__(self):
-        """Look for a static dir and assign it if present."""
-        sd = PACKAGE_DIR / "static"
-        if sd.exists():
-            self.static_dir = sd
-
-    def find_path(self, path: str) -> Optional[Union[Site, Section, Subject, Story]]:
-        """Given a dotted path, traverse to the object."""
-        current = self
-        segments = path.split(".")[1:]
-        for segment in segments:
-            if current is not None:
-                current = current.items.get(segment)  # type: ignore
-        return current
-
-
-@dataclass()
-class Section(BaseNode):
-    """A grouping of stories, such as ``Views``."""
-
-    parent: Optional[Site] = None
-    items: dict[str, Subject] = field(default_factory=dict)
-
-
-@dataclass()
-class Subject(BaseNode):
-    """The component that a group of stories or variants is about."""
-
-    parent: Optional[Section] = None
-    component: Optional[Union[type, Callable]] = None
-    stories: list[Story] = field(default_factory=list)
-
-
-@dataclass()
-class Story:
-    """One way to look at a component."""
-
-    component: Optional[Union[type, Callable]] = None
-    kind: Optional[type] = None
-    parent: Subject = field(init=False)
-    props: dict[str, Any] = field(default_factory=dict)
-    registry: Optional[Registry] = None
-    singletons: Optional[Singletons] = None
-    title: Optional[str] = None
-    template: Optional[VDOM] = None
-
-    def post_update(self, parent: Subject) -> Story:
-        """The parent calls this after construction.
-
-        We do this as a convenience, so authors don't have to put a bunch
-        of attributes in their stories.
-
-        Args:
-            parent: The Section that is the parent in the tree.
-
-        Returns:
-            The updated Story.
-        """
-        self.parent = parent
-        if self.registry is None:
-            self.registry = parent.registry
-        if self.component is None and self.parent.component:
-            self.component = self.parent.component
-        if self.title is None:
-            if self.parent.title:
-                self.title = self.parent.title + " Story"
-            else:
-                self.title = self.parent.package_path
-        return self
-
-    @property
-    def instance(self) -> Optional[object]:
-        """Get the component instance related to this story."""
-        if self.component:
-            if self.registry is None:
-                return self.component(**self.props)
-            else:
-                return self.registry.get(self.component, **self.props)
-
-        return None
-
-    @property
-    def vdom(self) -> VDOM:
-        """Generate a VDOM for the usage in this story."""
-        if self.component:
-            # We ignore the template if we are given a component and
-            # instead construct a template.
-            return html("<{self.component} ...{self.props} />")
-        elif self.template:
-            return self.template
-        else:
-            raise ValueError("Could not generate VDOM for story.")
-
-    # @property
-    # def soup(self) -> BeautifulSoup:
-    #     """Render to a DOM-like BeautifulSoup representation."""
-    #     rendered = render(self.vdom, registry=self.registry)
-    #     this_html = BeautifulSoup(rendered, "html.parser")
-    #     return this_html

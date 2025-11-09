@@ -1,11 +1,13 @@
 """Ensure all variations of a ``Story`` obey policies."""
 
 from dataclasses import dataclass
+from typing import Any
 
 from tdom import html
 
-from storytime import Story
-from storytime import Subject
+from storytime.story import Story, Subject
+
+VDOM = Any  # Type alias for VDOM elements
 
 
 # from hopscotch.operators import get
