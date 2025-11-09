@@ -7,8 +7,6 @@ You can then browse them in a web page, as well as use these stories in testing.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from importlib import import_module
 from importlib.resources import files
 from inspect import getmembers, isfunction
 from pathlib import Path
@@ -27,6 +25,7 @@ from storytime.story import Section as Section
 from storytime.story import Site as Site
 from storytime.story import Story as Story
 from storytime.story import Subject as Subject
+from storytime.story import TreeNode as TreeNode
 
 Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
 Scannables = Union[Iterable[Scannable], Scannable]
@@ -67,65 +66,6 @@ def get_certain_callable(module: ModuleType) -> Optional[Union[Site, Section, Su
 
     # We didn't find an appropriate callable
     return None
-
-
-@dataclass()
-class TreeNode:
-    """Adapt a story path into all info needed to seat in tree.
-
-    Extracting a ``stories.py`` into a tree node is somewhat complicated.
-    You have to import the module, convert path to dotted-package-name form,
-    find the parent, etc.
-    """
-
-    package_location: str  # E.g. examples.minimal
-    stories_path: Path
-    name: str = field(init=False)
-    called_instance: object = field(init=False)
-    this_package_location: str = field(init=False)
-    parent_path: Optional[str] = field(init=False)
-
-    def __repr__(self) -> str:
-        """Provide a friendly representation."""
-        return self.this_package_location
-
-    def __post_init__(self) -> None:
-        """Assign calculated fields."""
-        # We want:
-        # - The full-dotted path (to import the module)
-        # - The relative-dotted path, e.g. .components.heading (for display)
-        # - The Location-style name e.g. heading (to store in parent)
-        # - Location-style name for  parent e.g. .components (to look up in tree)
-        # - The callable instance
-
-        # Get the PosixPath to the root so we can use pathlib for some
-        # relative operations.
-        root_package = import_module(self.package_location)
-        root_package_path = Path(root_package.__file__).parent
-
-        # Whichever subpackage we are pointed at, get its path so we
-        # can calculate some relative operations, particular, to get a
-        # relative "Location" string such as ".components.heading".
-        this_package_path = self.stories_path.parent
-        relative_stories_path = this_package_path.relative_to(root_package_path)
-        relative_stories_package_path = relative_stories_path.name
-        if relative_stories_package_path == "":
-            # We are at the root
-            self.name = ""
-            self.parent_path = None
-            self.this_package_location = "."
-            story_module = import_module(self.package_location + ".stories")
-        else:
-            self.name = relative_stories_path.name
-            self.this_package_location = f".{relative_stories_path}".replace("/", ".")
-            parent_path = relative_stories_path.parent
-            if parent_path.name == "":
-                self.parent_path = f"{parent_path}".replace("/", ".")
-            else:
-                self.parent_path = f".{parent_path}".replace("/", ".")
-            sm = self.package_location + self.this_package_location + ".stories"
-            story_module = import_module(sm)
-        self.called_instance = get_certain_callable(story_module)
 
 
 def make_site(package_location: str) -> Site:

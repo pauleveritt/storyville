@@ -1,18 +1,16 @@
 """A simple heading component."""
+
 from dataclasses import dataclass
 
-from hopscotch import injectable
-from viewdom import VDOM
-from viewdom import html
+from tdom import html, Node
 
 
-@injectable()
 @dataclass()
 class Heading:
     """An example component."""
 
     title: str = "Some Heading"
 
-    def __call__(self) -> VDOM:
+    def __call__(self) -> Node:
         """Return a VDOM for this component."""
-        return html("<div>Hello {self.title}</div>")
+        return html(t"<div>Hello {self.title}</div>")

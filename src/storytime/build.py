@@ -3,8 +3,6 @@
 from pathlib import Path
 from shutil import copytree
 
-from viewdom import render
-
 from storytime.components.index import IndexView
 from storytime.stories import make_site
 

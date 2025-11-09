@@ -1,24 +1,19 @@
 from dataclasses import dataclass
 
-from hopscotch import injectable
-from viewdom import html
-from viewdom import VDOM
-
+from tdom import html, Node
 from storytime import Site
 from storytime.components.sections_listing import SectionsListing
 
 
-@injectable()
 @dataclass
 class Layout:
     title: str
-    children: VDOM
+    children: list[Node]
     site: Site
 
-    def __call__(self) -> VDOM:
-        assert SectionsListing
+    def __call__(self) -> Node:
         sections = self.site.items.values()
-        return html('''\n
+        return html(t'''\
 <html>
 <head>
     <meta charset="utf-8" />
