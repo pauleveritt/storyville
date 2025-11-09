@@ -1,12 +1,8 @@
 """Command-line interface."""
 
-import asyncio
 
 import click
 import uvicorn
-from starlette.applications import Starlette
-from starlette.routing import Mount
-from starlette.staticfiles import StaticFiles
 
 from storytime import make_site
 from storytime.app import create_app

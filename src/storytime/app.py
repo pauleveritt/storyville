@@ -15,7 +15,7 @@ from starlette.routing import Mount, WebSocketRoute, Route
 from starlette.staticfiles import StaticFiles
 from starlette.websockets import WebSocket
 
-from storytime import Site, PACKAGE_DIR
+from storytime import Site
 
 if TYPE_CHECKING:
     from starlette.types import Receive, Scope, Send

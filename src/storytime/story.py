@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
-    pass
+    from storytime.site import Site
 
 
 @dataclass()
@@ -107,39 +107,10 @@ class BaseNode[T]:
 
 
 @dataclass()
-class Site(BaseNode["Site"]):
-    """The top of a Storytime catalog.
-
-    The site contains the organized collections of stories, with
-    logic to render to disk.
-    """
-
-    items: dict[str, "Section"] = field(default_factory=dict)
-    static_dir: Path | None = None
-
-    def __post_init__(self) -> None:
-        """Look for a static dir and assign it if present."""
-        from storytime import PACKAGE_DIR
-
-        sd = PACKAGE_DIR / "static"
-        if sd.exists():
-            self.static_dir = sd
-
-    def find_path(self, path: str) -> Site | Section | Subject | Story | None:
-        """Given a dotted path, traverse to the object."""
-        current: Site | Section | Subject | Story | None = self
-        segments = path.split(".")[1:]
-        for segment in segments:
-            if current is not None:
-                current = current.items.get(segment)  # type: ignore[attr-defined, assignment]
-        return current
-
-
-@dataclass()
 class Section(BaseNode["Section"]):
     """A grouping of stories, such as ``Views``."""
 
-    parent: Site | None = None
+    parent: "Site | None" = None
     items: dict[str, "Subject"] = field(default_factory=dict)
 
 

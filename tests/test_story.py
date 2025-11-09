@@ -1,9 +1,11 @@
-"""Test the story module classes: BaseNode, Site, Section, Subject, Story."""
+"""Test the story module classes: BaseNode, Section, Subject, Story."""
 
 from dataclasses import dataclass
+from pathlib import Path
 from unittest.mock import Mock
 
-from storytime.story import BaseNode, Section, Site, Story, Subject
+from storytime.site import Site
+from storytime.story import BaseNode, Section, Story, Subject, TreeNode
 
 
 # Test BaseNode
@@ -53,67 +55,6 @@ def test_basenode_post_update_preserves_title() -> None:
     assert node.title == "Custom Title"
 
 
-# Test Site
-def test_site_initialization() -> None:
-    """Test Site can be instantiated."""
-    site = Site(title="My Site")
-    assert site.title == "My Site"
-    assert site.items == {}
-    # static_dir is set if the directory exists, which it does in this project
-    assert site.static_dir is not None or site.static_dir is None
-
-
-def test_site_with_items() -> None:
-    """Test Site with sections."""
-    section1 = Section(title="Components")
-    site = Site(title="My Site")
-    site.items["components"] = section1
-
-    assert len(site.items) == 1
-    assert site.items["components"] is section1
-
-
-def test_site_find_path_root() -> None:
-    """Test Site find_path with empty segments returns self."""
-    site = Site(title="My Site")
-    # Empty path after splitting (e.g., ".") returns None since no segments to traverse
-    # The find_path implementation splits on "." and skips first element
-    result = site.find_path(".")
-    # After split(".")[1:] we get [] which means current stays as site but loop doesn't run
-    # So we actually get site back
-    assert result == site or result is None  # Implementation detail
-
-
-def test_site_find_path_section() -> None:
-    """Test Site find_path finds section."""
-    section = Section(title="Components")
-    site = Site(title="My Site")
-    site.items["components"] = section
-
-    result = site.find_path(".components")
-    assert result is section
-
-
-def test_site_find_path_subject() -> None:
-    """Test Site find_path finds subject in section."""
-    subject = Subject(title="Heading")
-    section = Section(title="Components")
-    section.items["heading"] = subject
-    site = Site(title="My Site")
-    site.items["components"] = section
-
-    result = site.find_path(".components.heading")
-    assert result is subject
-
-
-def test_site_find_path_not_found() -> None:
-    """Test Site find_path returns None for nonexistent path."""
-    site = Site(title="My Site")
-    result = site.find_path(".nonexistent")
-    assert result is None
-
-
-# Test Section
 def test_section_initialization() -> None:
     """Test Section can be instantiated."""
     section = Section(title="Components")
@@ -392,13 +333,41 @@ def test_treenode_repr() -> None:
         mock_get_callable.return_value = Mock()
 
         # Create tree node (will fail but we can test what we can)
-        try:
-            node = TreeNode(package_location="test.package", stories_path=stories_path)
-            # If __post_init__ succeeds, test __repr__
-            repr_str = repr(node)
-            assert isinstance(repr_str, str)
-            # __repr__ returns self.this_package_location
-            assert repr_str == node.this_package_location
-        except Exception:
-            # Expected - complex initialization
-            pass
+        node = TreeNode(package_location="test.package", stories_path=stories_path)
+        # If __post_init__ succeeds, test __repr__
+        repr_str = repr(node)
+        assert isinstance(repr_str, str)
+        # __repr__ returns self.this_package_location
+        assert repr_str == node.this_package_location
+
+
+def test_tree_node_site() -> None:
+    """Given a path to a ``stories.py``, extract the needed info."""
+    from examples.minimal import stories
+
+    assert stories.__file__
+    stories_path = Path(stories.__file__)
+    tree_node = TreeNode(
+        package_location="examples.minimal",
+        stories_path=stories_path,
+    )
+    assert isinstance(tree_node.called_instance, Site)
+    assert tree_node.name == ""
+    assert tree_node.this_package_location == "."
+    assert tree_node.parent_path is None
+
+
+def test_tree_node_section() -> None:
+    """Given a path to a ``stories.py``, extract needed info."""
+    from examples.minimal.components import stories
+
+    assert stories.__file__
+    stories_path = Path(stories.__file__)
+    tree_node = TreeNode(
+        package_location="examples.minimal",
+        stories_path=stories_path,
+    )
+    assert isinstance(tree_node.called_instance, Section)
+    assert tree_node.name == "components"
+    assert tree_node.this_package_location == ".components"
+    assert tree_node.parent_path == "."
