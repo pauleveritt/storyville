@@ -1,8 +1,8 @@
 """The index page for the Storytime UI."""
-from viewdom import html
 
 from storytime import Story
 from storytime import Subject
+from tdom import html
 
 
 def this_subject() -> Subject:
@@ -10,8 +10,6 @@ def this_subject() -> Subject:
     return Subject(
         title="Index Page",
         stories=[
-            Story(
-                template=html("<div>Index Page, bazinga</div>")
-            ),
+            Story(template=html(t"<div>Index Page, bazinga</div>")),
         ],
     )

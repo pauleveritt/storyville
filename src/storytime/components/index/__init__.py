@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from storytime.components.layout import Layout
 from tdom import html, Node
 
 
@@ -8,11 +7,11 @@ from tdom import html, Node
 class IndexView:
     def __call__(self) -> Node:
         return html(t"""\
-<{Layout} title="Components">
+<html title="Components">
 <main>
 <p>Welcome to Storytime. Choose a component on the left.</p>
 </main>
-<//>
+</html>
 """)
 
 

@@ -21,9 +21,6 @@ class Site:
     parent: None = None
     title: str | None = None
     context: object | None = None
-    registry: object | None = None
-    scannables: object | None = None
-    singletons: object | None = None
     package_path: str = field(init=False, default="")
     items: dict[str, "Section"] = field(default_factory=dict)
     static_dir: Path | None = None
@@ -53,18 +50,10 @@ class Site:
         Returns:
             The updated Site.
         """
-        from storytime import make_tree_node_registry
 
         self.parent = parent  # type: ignore[assignment]
         self.name = tree_node.name  # type: ignore[attr-defined]
         self.package_path = tree_node.this_package_location  # type: ignore[attr-defined]
-        self.registry = make_tree_node_registry(
-            context=self.context,
-            parent=parent.registry if parent else None,  # type: ignore[attr-defined]
-            registry=self.registry,
-            scannables=self.scannables,  # type: ignore[arg-type]
-            singletons=self.singletons,  # type: ignore[arg-type]
-        )
         if self.title is None:
             self.title = self.package_path
         return self
