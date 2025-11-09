@@ -18,8 +18,10 @@ dependencies = [
     "click>=8.1.7",
     "hopscotch>=0.3.1",
     "tagged>=0.0.2",
+    "uvicorn>=0.30.6",
     "venusian>=3.0.1",
     "viewdom>=0.6.4",
+    "watchfiles>=0.24.0",
 ]
 
 [build-system]
@@ -31,6 +33,7 @@ dev-dependencies = [
     "beautifulsoup4>=4.12.3",
     "black>=24.8.0",
     "furo>=2024.8.6",
+    "httpx>=0.27.2",
     "mypy>=1.11.2",
     "myst-parser>=4.0.0",
     "pytest>=8.3.2",
