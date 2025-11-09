@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
-    from storytime import Singletons
+    pass
 
 
 @dataclass()
@@ -78,9 +78,6 @@ class BaseNode[T]:
     parent: None = None
     title: str | None = None
     context: object | None = None
-    registry: object | None = None
-    scannables: object | None = None
-    singletons: object | None = None
     package_path: str = field(init=False, default="")
 
     def post_update(
@@ -100,18 +97,10 @@ class BaseNode[T]:
         Returns:
             The updated Section.
         """
-        from storytime import make_tree_node_registry
 
         self.parent = parent  # type: ignore[assignment]
         self.name = tree_node.name  # type: ignore[attr-defined]
         self.package_path = tree_node.this_package_location  # type: ignore[attr-defined]
-        self.registry = make_tree_node_registry(
-            context=self.context,
-            parent=parent.registry if parent else None,  # type: ignore[attr-defined]
-            registry=self.registry,
-            scannables=self.scannables,  # type: ignore[arg-type]
-            singletons=self.singletons,  # type: ignore[arg-type]
-        )
         if self.title is None:
             self.title = self.package_path
         return self  # type: ignore[return-value]
@@ -136,7 +125,7 @@ class Site(BaseNode["Site"]):
         if sd.exists():
             self.static_dir = sd
 
-    def find_path(self, path: str) -> "Site | Section | Subject | Story | None":
+    def find_path(self, path: str) -> Site | Section | Subject | Story | None:
         """Given a dotted path, traverse to the object."""
         current: Site | Section | Subject | Story | None = self
         segments = path.split(".")[1:]
@@ -171,12 +160,10 @@ class Story:
     kind: type | None = None
     parent: Subject = field(init=False)
     props: dict[str, Any] = field(default_factory=dict)
-    registry: object | None = None
-    singletons: "Singletons | None" = None
     title: str | None = None
     template: object | None = None
 
-    def post_update(self, parent: Subject) -> "Story":
+    def post_update(self, parent: Subject):
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch

@@ -14,9 +14,6 @@ def test_basenode_initialization() -> None:
     assert node.parent is None
     assert node.title is None
     assert node.context is None
-    assert node.registry is None
-    assert node.scannables is None
-    assert node.singletons is None
 
 
 def test_basenode_with_values() -> None:
@@ -29,7 +26,6 @@ def test_basenode_with_values() -> None:
 def test_basenode_post_update() -> None:
     """Test BaseNode post_update method."""
     parent = Mock()
-    parent.registry = Mock()  # Provide a mock registry to avoid hopscotch import
     tree_node = Mock()
     tree_node.name = "child"
     tree_node.this_package_location = ".components.child"
@@ -47,7 +43,6 @@ def test_basenode_post_update() -> None:
 def test_basenode_post_update_preserves_title() -> None:
     """Test BaseNode post_update preserves custom title."""
     parent = Mock()
-    parent.registry = Mock()  # Provide a mock registry to avoid hopscotch import
     tree_node = Mock()
     tree_node.name = "child"
     tree_node.this_package_location = ".components.child"
@@ -193,7 +188,6 @@ def test_story_initialization() -> None:
     assert story.title == "Default"
     assert story.component is None
     assert story.props == {}
-    assert story.registry is None
     assert story.template is None
 
 
@@ -222,19 +216,6 @@ def test_story_post_update_basic() -> None:
     story.post_update(parent=parent)
 
     assert story.parent is parent
-
-
-def test_story_post_update_keeps_own_registry() -> None:
-    """Test Story post_update keeps its own registry."""
-    parent = Subject(title="Components")
-    parent.registry = Mock()
-    parent.package_path = ".components"
-
-    own_registry = Mock()
-    story = Story(registry=own_registry)
-    story.post_update(parent=parent)
-
-    assert story.registry is own_registry
 
 
 def test_story_post_update_inherits_component() -> None:
@@ -310,21 +291,6 @@ def test_story_instance_without_component() -> None:
     """Test Story.instance returns None when no component."""
     story = Story()
     assert story.instance is None
-
-
-def test_story_instance_without_registry() -> None:
-    """Test Story.instance creates component without registry."""
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
-    story = Story(component=MyComponent)
-    instance = story.instance
-
-    assert instance is not None
-    assert isinstance(instance, MyComponent)
-    assert instance.name == "test"  # type: ignore
 
 
 def test_story_instance_with_props() -> None:
