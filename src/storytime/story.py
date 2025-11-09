@@ -189,8 +189,6 @@ class Story:
             The updated Story.
         """
         self.parent = parent
-        if self.registry is None:
-            self.registry = parent.registry
         if self.component is None and self.parent.component:
             self.component = self.parent.component
         if self.title is None:
@@ -202,32 +200,20 @@ class Story:
 
     @property
     def instance(self) -> object | None:
-        """Get the component instance related to this story."""
+        """Construct the component instance related to this story."""
         if self.component:
-            if self.registry is None:
-                return self.component(**self.props)
-            else:
-                return self.registry.get(self.component, **self.props)  # type: ignore[attr-defined]
+            return self.component(**self.props)
 
         return None
 
     @property
     def vdom(self) -> object:
         """Generate a VDOM for the usage in this story."""
-        from tdom import html
-
         if self.component:
             # We ignore the template if we are given a component and
             # instead construct a template.
-            return html("<{self.component} ...{self.props} />")
+            return self.instance
         elif self.template:
             return self.template
         else:
             raise ValueError("Could not generate VDOM for story.")
-
-    # @property
-    # def soup(self) -> BeautifulSoup:
-    #     """Render to a DOM-like BeautifulSoup representation."""
-    #     rendered = render(self.vdom, registry=self.registry)
-    #     this_html = BeautifulSoup(rendered, "html.parser")
-    #     return this_html

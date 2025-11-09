@@ -224,18 +224,6 @@ def test_story_post_update_basic() -> None:
     assert story.parent is parent
 
 
-def test_story_post_update_inherits_registry() -> None:
-    """Test Story post_update inherits registry from parent."""
-    parent = Subject(title="Components")
-    parent.registry = Mock()
-    parent.package_path = ".components"
-
-    story = Story()
-    story.post_update(parent=parent)
-
-    assert story.registry is parent.registry
-
-
 def test_story_post_update_keeps_own_registry() -> None:
     """Test Story post_update keeps its own registry."""
     parent = Subject(title="Components")
@@ -352,25 +340,6 @@ def test_story_instance_with_props() -> None:
     assert instance is not None
     assert isinstance(instance, MyComponent)
     assert instance.name == "custom"  # type: ignore
-
-
-def test_story_instance_with_registry() -> None:
-    """Test Story.instance uses registry to get component."""
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
-    registry = Mock()
-    registry.get.return_value = MyComponent(name="from_registry")
-
-    story = Story(component=MyComponent, registry=registry)
-    instance = story.instance
-
-    registry.get.assert_called_once_with(MyComponent)
-    assert instance is not None
-    assert isinstance(instance, MyComponent)
-    assert instance.name == "from_registry"  # type: ignore
 
 
 def test_story_vdom_without_component_or_template() -> None:

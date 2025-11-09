@@ -6,6 +6,7 @@ You can then browse them in a web page, as well as use these stories in testing.
 """
 
 from collections.abc import Iterable
+from dataclasses import dataclass
 from importlib.resources import files
 from inspect import getmembers, isfunction
 from pathlib import Path
@@ -116,6 +117,13 @@ def make_site(package_location: str) -> Site:
     return site
 
 
+@dataclass
+class Registry:
+    context: object | None = None
+    parent: object | None = None
+
+
+# noqa: F821
 def make_tree_node_registry(
     context: object | None = None,
     registry: object | None = None,
@@ -134,14 +142,11 @@ def make_tree_node_registry(
         # so just use the parent, unless it's the site and we need
         # to make one.
         if parent is None:
-            from hopscotch import Registry
-
             return Registry()
         return parent
 
     # Time to make a registry for this node, we were given some
     # stuff for a local registry.
-    from hopscotch import Registry
 
     this_registry = Registry(context=context, parent=parent)
     if scannables:
