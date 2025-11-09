@@ -5,19 +5,12 @@ You write stories as you develop components, expressing all the variations.
 You can then browse them in a web page, as well as use these stories in testing.
 """
 
-from __future__ import annotations
-
+from collections.abc import Iterable
 from importlib.resources import files
 from inspect import getmembers, isfunction
 from pathlib import Path
 from types import ModuleType
-from typing import (
-    Iterable,
-    Optional,
-    Union,
-    cast,
-    get_type_hints,
-)
+from typing import cast, get_type_hints
 
 # Import all node classes from story module
 from storytime.story import BaseNode as BaseNode
@@ -27,15 +20,15 @@ from storytime.story import Story as Story
 from storytime.story import Subject as Subject
 from storytime.story import TreeNode as TreeNode
 
-Scannable = ModuleType  # Wanted to use Union[str, ModuleType] but PyCharm
-Scannables = Union[Iterable[Scannable], Scannable]
-Singleton = Union[tuple[object, object], object]
-Singletons = list[Singleton, ...]
+type Scannable = ModuleType  # Wanted to use str | ModuleType but PyCharm
+type Scannables = Iterable[Scannable] | Scannable
+type Singleton = tuple[object, object] | object
+type Singletons = list[Singleton, ...]
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 
 
-def get_certain_callable(module: ModuleType) -> Optional[Union[Site, Section, Subject]]:
+def get_certain_callable(module: ModuleType) -> Site | Section | Subject | None:
     """Return the first Site/Section/Subject in given module that returns correct type.
 
     A ``stories.py`` file should have a function that, when called,
@@ -61,7 +54,7 @@ def get_certain_callable(module: ModuleType) -> Optional[Union[Site, Section, Su
             if return_type and return_type in valid_returns:
                 # Call the obj to let it construct and return the
                 # Site/Section/Subject
-                target: Union[Site, Section, Subject] = obj()
+                target: Site | Section | Subject = obj()
                 return target
 
     # We didn't find an appropriate callable
@@ -92,7 +85,7 @@ def make_site(package_location: str) -> Site:
         for stories_path in stories_package_name.glob("**/stories.py")
     ]
     # First get the Site
-    site: Optional[Site] = None
+    site: Site | None = None
     for tree_node in tree_nodes:
         if isinstance(tree_node.called_instance, Site):
             site = tree_node.called_instance
@@ -124,12 +117,12 @@ def make_site(package_location: str) -> Site:
 
 
 def make_tree_node_registry(
-    context: Optional[object] = None,
-    registry: Optional[object] = None,
-    parent: Optional[object] = None,
-    scannables: Optional[Scannables] = None,
-    singletons: Optional[Singletons] = None,
-) -> Optional[object]:
+    context: object | None = None,
+    registry: object | None = None,
+    parent: object | None = None,
+    scannables: Scannables | None = None,
+    singletons: Singletons | None = None,
+) -> object | None:
     """Used by tree nodes to encode the policy of registry-making."""
     if registry is not None:
         # This node is being instantiated with a custom registry,

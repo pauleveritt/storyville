@@ -1,16 +1,12 @@
 """Story and Subject classes for component-driven development."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Generic, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
     from storytime import Singletons
-
-T = TypeVar("T")
 
 
 @dataclass()
@@ -27,7 +23,7 @@ class TreeNode:
     name: str = field(init=False)
     called_instance: object = field(init=False)
     this_package_location: str = field(init=False)
-    parent_path: Optional[str] = field(init=False)
+    parent_path: str | None = field(init=False)
 
     def __repr__(self) -> str:
         """Provide a friendly representation."""
@@ -47,7 +43,7 @@ class TreeNode:
         # Get the PosixPath to the root so we can use pathlib for some
         # relative operations.
         root_package = import_module(self.package_location)
-        root_package_path = Path(root_package.__file__).parent  # type: ignore
+        root_package_path = Path(root_package.__file__).parent  # type: ignore[union-attr]
 
         # Whichever subpackage we are pointed at, get its path so we
         # can calculate some relative operations, particular, to get a
@@ -75,21 +71,21 @@ class TreeNode:
 
 
 @dataclass()
-class BaseNode(Generic[T]):
+class BaseNode[T]:
     """Shared logic for Site/Section/Subject."""
 
     name: str = ""
     parent: None = None
-    title: Optional[str] = None
-    context: Optional[object] = None
-    registry: Optional[object] = None
-    scannables: Optional[object] = None
-    singletons: Optional[object] = None
+    title: str | None = None
+    context: object | None = None
+    registry: object | None = None
+    scannables: object | None = None
+    singletons: object | None = None
     package_path: str = field(init=False, default="")
 
     def post_update(
         self,
-        parent: Optional[BaseNode],
+        parent: "BaseNode[T] | None",
         tree_node: object,
     ) -> T:
         """The parent calls this after construction.
@@ -106,33 +102,33 @@ class BaseNode(Generic[T]):
         """
         from storytime import make_tree_node_registry
 
-        self.parent = parent  # type: ignore
-        self.name = tree_node.name  # type: ignore
-        self.package_path = tree_node.this_package_location  # type: ignore
+        self.parent = parent  # type: ignore[assignment]
+        self.name = tree_node.name  # type: ignore[attr-defined]
+        self.package_path = tree_node.this_package_location  # type: ignore[attr-defined]
         self.registry = make_tree_node_registry(
             context=self.context,
-            parent=parent.registry if parent else None,  # type: ignore
+            parent=parent.registry if parent else None,  # type: ignore[attr-defined]
             registry=self.registry,
-            scannables=self.scannables,  # type: ignore
-            singletons=self.singletons,  # type: ignore
+            scannables=self.scannables,  # type: ignore[arg-type]
+            singletons=self.singletons,  # type: ignore[arg-type]
         )
         if self.title is None:
             self.title = self.package_path
-        return self  # type: ignore
+        return self  # type: ignore[return-value]
 
 
 @dataclass()
-class Site(BaseNode):
+class Site(BaseNode["Site"]):
     """The top of a Storytime catalog.
 
     The site contains the organized collections of stories, with
     logic to render to disk.
     """
 
-    items: dict[str, Section] = field(default_factory=dict)
+    items: dict[str, "Section"] = field(default_factory=dict)
     static_dir: Path | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Look for a static dir and assign it if present."""
         from storytime import PACKAGE_DIR
 
@@ -140,47 +136,47 @@ class Site(BaseNode):
         if sd.exists():
             self.static_dir = sd
 
-    def find_path(self, path: str) -> Optional[Union[Site, Section, Subject, Story]]:
+    def find_path(self, path: str) -> "Site | Section | Subject | Story | None":
         """Given a dotted path, traverse to the object."""
-        current = self
+        current: Site | Section | Subject | Story | None = self
         segments = path.split(".")[1:]
         for segment in segments:
             if current is not None:
-                current = current.items.get(segment)  # type: ignore
+                current = current.items.get(segment)  # type: ignore[attr-defined, assignment]
         return current
 
 
 @dataclass()
-class Section(BaseNode):
+class Section(BaseNode["Section"]):
     """A grouping of stories, such as ``Views``."""
 
-    parent: Optional[Site] = None
-    items: dict[str, Subject] = field(default_factory=dict)
+    parent: Site | None = None
+    items: dict[str, "Subject"] = field(default_factory=dict)
 
 
 @dataclass()
-class Subject(BaseNode):
+class Subject(BaseNode["Subject"]):
     """The component that a group of stories or variants is about."""
 
-    parent: Optional[Section] = None
-    component: Optional[Union[type, Callable]] = None
-    stories: list[Story] = field(default_factory=list)
+    parent: Section | None = None
+    component: type | Callable | None = None
+    stories: list["Story"] = field(default_factory=list)
 
 
 @dataclass()
 class Story:
     """One way to look at a component."""
 
-    component: Optional[Union[type, Callable]] = None
-    kind: Optional[type] = None
+    component: type | Callable | None = None
+    kind: type | None = None
     parent: Subject = field(init=False)
     props: dict[str, Any] = field(default_factory=dict)
-    registry: Optional[object] = None
-    singletons: Optional[Singletons] = None
-    title: Optional[str] = None
-    template: Optional[object] = None
+    registry: object | None = None
+    singletons: "Singletons | None" = None
+    title: str | None = None
+    template: object | None = None
 
-    def post_update(self, parent: Subject) -> Story:
+    def post_update(self, parent: Subject) -> "Story":
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch
@@ -205,13 +201,13 @@ class Story:
         return self
 
     @property
-    def instance(self) -> Optional[object]:
+    def instance(self) -> object | None:
         """Get the component instance related to this story."""
         if self.component:
             if self.registry is None:
                 return self.component(**self.props)
             else:
-                return self.registry.get(self.component, **self.props)  # type: ignore
+                return self.registry.get(self.component, **self.props)  # type: ignore[attr-defined]
 
         return None
 

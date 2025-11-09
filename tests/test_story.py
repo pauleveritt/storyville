@@ -9,7 +9,7 @@ from storytime.story import BaseNode, Section, Site, Story, Subject
 # Test BaseNode
 def test_basenode_initialization() -> None:
     """Test BaseNode can be instantiated with default values."""
-    node: BaseNode[BaseNode] = BaseNode()
+    node: BaseNode[object] = BaseNode()
     assert node.name == ""
     assert node.parent is None
     assert node.title is None
@@ -21,7 +21,7 @@ def test_basenode_initialization() -> None:
 
 def test_basenode_with_values() -> None:
     """Test BaseNode with custom values."""
-    node: BaseNode[BaseNode] = BaseNode(name="test", title="Test Node")
+    node: BaseNode[object] = BaseNode(name="test", title="Test Node")
     assert node.name == "test"
     assert node.title == "Test Node"
 
@@ -34,7 +34,7 @@ def test_basenode_post_update() -> None:
     tree_node.name = "child"
     tree_node.this_package_location = ".components.child"
 
-    node: BaseNode[BaseNode] = BaseNode()
+    node: BaseNode[object] = BaseNode()
     result = node.post_update(parent=parent, tree_node=tree_node)
 
     assert result is node
@@ -52,7 +52,7 @@ def test_basenode_post_update_preserves_title() -> None:
     tree_node.name = "child"
     tree_node.this_package_location = ".components.child"
 
-    node: BaseNode[BaseNode] = BaseNode(title="Custom Title")
+    node: BaseNode[object] = BaseNode(title="Custom Title")
     node.post_update(parent=parent, tree_node=tree_node)
 
     assert node.title == "Custom Title"
