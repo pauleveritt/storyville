@@ -31,7 +31,7 @@ class TreeNode:
 
     def __post_init__(self) -> None:
         """Assign calculated fields."""
-        from storytime import get_certain_callable
+        from storytime.utils import get_certain_callable
 
         # We want:
         # - The full-dotted path (to import the module)
