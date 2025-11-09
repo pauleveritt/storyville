@@ -5,8 +5,6 @@ You write stories as you develop components, expressing all the variations.
 You can then browse them in a web page, as well as use these stories in testing.
 """
 
-from collections.abc import Iterable
-from dataclasses import dataclass
 from importlib.resources import files
 from inspect import getmembers, isfunction
 from pathlib import Path
@@ -20,11 +18,6 @@ from storytime.story import Site as Site
 from storytime.story import Story as Story
 from storytime.story import Subject as Subject
 from storytime.story import TreeNode as TreeNode
-
-type Scannable = ModuleType  # Wanted to use str | ModuleType but PyCharm
-type Scannables = Iterable[Scannable] | Scannable
-type Singleton = tuple[object, object] | object
-type Singletons = list[Singleton, ...]
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 
@@ -115,50 +108,3 @@ def make_site(package_location: str) -> Site:
                 story.post_update(subject)
 
     return site
-
-
-@dataclass
-class Registry:
-    context: object | None = None
-    parent: object | None = None
-
-
-# noqa: F821
-def make_tree_node_registry(
-    context: object | None = None,
-    registry: object | None = None,
-    parent: object | None = None,
-    scannables: Scannables | None = None,
-    singletons: Singletons | None = None,
-) -> object | None:
-    """Used by tree nodes to encode the policy of registry-making."""
-    if registry is not None:
-        # This node is being instantiated with a custom registry,
-        # so we ignore context/scannables/plugins/parent
-        return registry
-
-    if context is None and scannables is None and singletons is None:
-        # This node does not have any custom stuff for a registry,
-        # so just use the parent, unless it's the site and we need
-        # to make one.
-        if parent is None:
-            return Registry()
-        return parent
-
-    # Time to make a registry for this node, we were given some
-    # stuff for a local registry.
-
-    this_registry = Registry(context=context, parent=parent)
-    if scannables:
-        for scannable in scannables:
-            this_registry.scan(scannable)
-    if singletons:
-        for singleton in singletons:
-            # Allow a story to use a singleton just by itself
-            # or registered as a kind.
-            if isinstance(singleton, tuple):
-                obj, kind = singleton
-                this_registry.register(obj, kind=kind)
-            else:
-                this_registry.register(singleton)
-    return this_registry

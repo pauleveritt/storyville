@@ -3,14 +3,11 @@
 from pathlib import Path
 
 import pytest
-from hopscotch import Registry
-
-from storytime import get_certain_callable, PACKAGE_DIR
-from storytime import make_site
-from storytime import make_tree_node_registry
 from storytime import Section
 from storytime import Site
 from storytime import TreeNode
+from storytime import get_certain_callable, PACKAGE_DIR
+from storytime import make_site
 
 
 @pytest.fixture(scope="session")
@@ -20,31 +17,11 @@ def minimal_site() -> Site:
     return site
 
 
-def test_tree_node_registry_no_registry() -> None:
-    """Not passed in registry but no extras."""
-    registry = make_tree_node_registry()
-    if registry:
-        assert registry.parent is None
-        assert registry.context is None
-
-
-def test_tree_node_registry_no_registry_plus_extras() -> None:
-    """Not passed in registry but with extras."""
-    context = object()
-    parent = Registry()
-    registry = make_tree_node_registry(
-        context=context,
-        parent=parent,
-    )
-    if registry:
-        assert registry.parent is parent
-        assert registry.context is context
-
-
 def test_tree_node_site() -> None:
-    """Given a path to a ``stories.py``, extract needed info."""
+    """Given a path to a ``stories.py``, extract the needed info."""
     from examples.minimal import stories
 
+    assert stories.__file__
     stories_path = Path(stories.__file__)
     tree_node = TreeNode(
         package_location="examples.minimal",
@@ -60,6 +37,7 @@ def test_tree_node_section() -> None:
     """Given a path to a ``stories.py``, extract needed info."""
     from examples.minimal.components import stories
 
+    assert stories.__file__
     stories_path = Path(stories.__file__)
     tree_node = TreeNode(
         package_location="examples.minimal",
@@ -87,8 +65,6 @@ def test_make_site(minimal_site: Site) -> None:
     assert components.parent is minimal_site
     assert components.name == "components"
     assert components.package_path == ".components"
-    assert components.registry is minimal_site.registry
-    assert components.registry.parent is None
     assert components.title == "Components"
     found_components = minimal_site.find_path(".components")
     if found_components:
@@ -102,6 +78,8 @@ def test_make_site(minimal_site: Site) -> None:
     found_heading = minimal_site.find_path(".components.heading")
     if found_heading:
         assert found_heading.title == "Heading"
+
+    assert minimal_site.static_dir is not None
     assert minimal_site.static_dir.is_dir()
 
 
@@ -114,7 +92,7 @@ def test_stories(minimal_site: Site) -> None:
 
 
 def test_get_certain_callable() -> None:
-    """Given a module, find the function that returns certain type."""
+    """Given a module, find the function that returns a certain type."""
     from examples.minimal.components import stories
 
     section = get_certain_callable(stories)
