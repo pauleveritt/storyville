@@ -7,6 +7,7 @@ the stories written for that UI.
 from pathlib import Path
 
 import pytest
+from aria_testing import get_by_tag_name, get_text_content
 from storytime.build import build_site
 from tdom import Node
 from tdom.parser import parse_html
@@ -32,7 +33,8 @@ def test_index(output_dir: Path) -> None:
 
     page = get_page(output_dir / "index.html")
     expected = "Welcome to Storytime. Choose a component on the left."
-    # assert get_by_text(page, expected)
+    p = get_by_tag_name(page, "p")
+    assert get_text_content(p) == expected
 
 
 def test_static_css(output_dir: Path) -> None:
@@ -40,6 +42,6 @@ def test_static_css(output_dir: Path) -> None:
 
     assert (output_dir / "static").exists()
     bulma_file = output_dir / "static" / "bulma.css"
-    # assert bulma_file.exists()
+    assert bulma_file.exists()
     bulma_text = bulma_file.read_text()
-    # assert "bulma.io" in bulma_text
+    assert "bulma.io" in bulma_text
