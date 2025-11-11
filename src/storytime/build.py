@@ -3,7 +3,7 @@
 from pathlib import Path
 from shutil import copytree
 
-from storytime.components.index import IndexView
+from storytime.views.index_view import IndexView
 from storytime.stories import make_site
 
 

@@ -1,24 +1,7 @@
-from dataclasses import dataclass
+"""Backwards-compatible import stub for IndexView.
 
-from tdom import html, Node
+IndexView has moved to `storytime.views.index_view`. This module re-exports it
+to avoid breaking existing imports.
+"""
 
-
-@dataclass
-class IndexView:
-    def __call__(self) -> Node:
-        return html(t"""\
-<html title="Components">
-<main>
-<p>Welcome to Storytime. Choose a component on the left.</p>
-</main>
-</html>
-""")
-
-
-#         return html('''\n
-# <{Layout} title="Components">
-# <main>
-# <p>Welcome to Storytime. Choose a component on the left.</p>
-# </main>
-# </>
-# ''')
+from storytime.views.index_view import IndexView  # noqa: F401
