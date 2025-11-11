@@ -1,21 +1,10 @@
-"""Story and Subject classes for component-driven development."""
+"""Story class for component-driven development."""
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Callable
 
-from storytime.nodes import BaseNode
-
 if TYPE_CHECKING:
-    from storytime.section import Section
-
-
-@dataclass()
-class Subject(BaseNode["Subject"]):
-    """The component that a group of stories or variants is about."""
-
-    parent: "Section | None" = None
-    component: type | Callable | None = None
-    stories: list["Story"] = field(default_factory=list)
+    from storytime.subject import Subject
 
 
 @dataclass()
@@ -24,12 +13,12 @@ class Story:
 
     component: type | Callable | None = None
     kind: type | None = None
-    parent: Subject = field(init=False)
+    parent: "Subject" = field(init=False)
     props: dict[str, Any] = field(default_factory=dict)
     title: str | None = None
     template: object | None = None
 
-    def post_update(self, parent: Subject):
+    def post_update(self, parent: "Subject"):
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch

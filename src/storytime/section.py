@@ -7,7 +7,7 @@ from storytime.nodes import BaseNode
 
 if TYPE_CHECKING:
     from storytime.site import Site
-    from storytime.story import Subject
+    from storytime.subject import Subject
 
 
 @dataclass()

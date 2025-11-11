@@ -2,7 +2,7 @@
 
 from storytime.section import Section
 from storytime.site import Site
-from storytime.story import Subject
+from storytime.subject import Subject
 
 
 def test_section_initialization() -> None:

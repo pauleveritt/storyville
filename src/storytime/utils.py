@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, get_type_hints
 if TYPE_CHECKING:
     from storytime.section import Section
     from storytime.site import Site
-    from storytime.story import Subject
+    from storytime.subject import Subject
 
 
 def get_certain_callable(module: ModuleType) -> "Site | Section | Subject | None":
@@ -30,7 +30,7 @@ def get_certain_callable(module: ModuleType) -> "Site | Section | Subject | None
     """
     from storytime.section import Section
     from storytime.site import Site
-    from storytime.story import Subject
+    from storytime.subject import Subject
 
     valid_returns = (Site, Section, Subject)
     for _name, obj in getmembers(module):

@@ -2,7 +2,7 @@
 
 from storytime.section import Section
 from storytime.site import Site, make_site
-from storytime.story import Subject
+from storytime.subject import Subject
 
 
 # Test Site

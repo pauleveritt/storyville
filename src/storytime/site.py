@@ -8,7 +8,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from storytime.nodes import BaseNode, TreeNode
     from storytime.section import Section
-    from storytime.story import Subject, Story
+    from storytime.story import Story
+    from storytime.subject import Subject
 
 
 @dataclass()
@@ -85,7 +86,7 @@ def make_site(package_location: str) -> Site:
     """
     from storytime.nodes import TreeNode
     from storytime.section import Section
-    from storytime.story import Subject
+    from storytime.subject import Subject
 
     # Resolve the filesystem path to the package directory without casting
     root_package = import_module(package_location)

@@ -13,7 +13,7 @@ from storytime.section import Section
 from storytime.site import Site
 from storytime.site import make_site
 from storytime.story import Story
-from storytime.story import Subject
+from storytime.subject import Subject
 from storytime.utils import get_certain_callable
 
 __all__ = [

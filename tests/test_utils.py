@@ -4,7 +4,7 @@ from types import ModuleType
 
 from storytime.section import Section
 from storytime.site import Site
-from storytime.story import Subject
+from storytime.subject import Subject
 from storytime.utils import get_certain_callable
 
 
