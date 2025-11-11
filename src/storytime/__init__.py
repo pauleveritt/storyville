@@ -7,13 +7,13 @@ You can then browse them in a web page, as well as use these stories in testing.
 
 from pathlib import Path
 
+from storytime.nodes import BaseNode
+from storytime.nodes import TreeNode
 from storytime.site import Site
 from storytime.site import make_site
-from storytime.story import BaseNode
 from storytime.story import Section
 from storytime.story import Story
 from storytime.story import Subject
-from storytime.story import TreeNode
 from storytime.utils import get_certain_callable
 
 __all__ = [
