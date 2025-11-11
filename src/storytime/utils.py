@@ -5,8 +5,9 @@ from types import ModuleType
 from typing import TYPE_CHECKING, get_type_hints
 
 if TYPE_CHECKING:
+    from storytime.section import Section
     from storytime.site import Site
-    from storytime.story import Section, Subject
+    from storytime.story import Subject
 
 
 def get_certain_callable(module: ModuleType) -> "Site | Section | Subject | None":
@@ -27,8 +28,9 @@ def get_certain_callable(module: ModuleType) -> "Site | Section | Subject | None
         The Site/Section/Story instance or ``None`` if there wasn't an
         appropriate function.
     """
+    from storytime.section import Section
     from storytime.site import Site
-    from storytime.story import Section, Subject
+    from storytime.story import Subject
 
     valid_returns = (Site, Section, Subject)
     for _name, obj in getmembers(module):

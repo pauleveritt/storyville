@@ -1,7 +1,8 @@
 """Test the Site class and make_site function."""
 
+from storytime.section import Section
 from storytime.site import Site, make_site
-from storytime.story import Section, Subject
+from storytime.story import Subject
 
 
 # Test Site

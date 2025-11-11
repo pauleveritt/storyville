@@ -4,8 +4,8 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from storytime.nodes import BaseNode, TreeNode
+from storytime.section import Section
 from storytime.site import Site
-from storytime.story import Section
 
 
 # Test BaseNode

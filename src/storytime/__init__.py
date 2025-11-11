@@ -9,9 +9,9 @@ from pathlib import Path
 
 from storytime.nodes import BaseNode
 from storytime.nodes import TreeNode
+from storytime.section import Section
 from storytime.site import Site
 from storytime.site import make_site
-from storytime.story import Section
 from storytime.story import Story
 from storytime.story import Subject
 from storytime.utils import get_certain_callable

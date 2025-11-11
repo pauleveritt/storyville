@@ -6,22 +6,14 @@ from typing import TYPE_CHECKING, Any, Callable
 from storytime.nodes import BaseNode
 
 if TYPE_CHECKING:
-    from storytime.site import Site
-
-
-@dataclass()
-class Section(BaseNode["Section"]):
-    """A grouping of stories, such as ``Views``."""
-
-    parent: "Site | None" = None
-    items: dict[str, "Subject"] = field(default_factory=dict)
+    from storytime.section import Section
 
 
 @dataclass()
 class Subject(BaseNode["Subject"]):
     """The component that a group of stories or variants is about."""
 
-    parent: Section | None = None
+    parent: "Section | None" = None
     component: type | Callable | None = None
     stories: list["Story"] = field(default_factory=list)
 
