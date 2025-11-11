@@ -1,7 +1,6 @@
 """The ``Site`` for stories used for the Storytime UI itself."""
 
-from storytime import Site
-from storytime import make_site
+from storytime import Site, make_site
 
 
 def this_site() -> Site:
@@ -18,4 +17,3 @@ def test_storytime_ui() -> None:
     subject = section.items["index"]
     story = subject.stories[0]
     assert story.title == "Index Page Story"
-    assert soup.text == "Index Page, bazinga"

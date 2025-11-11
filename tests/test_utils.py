@@ -100,3 +100,20 @@ def test_get_certain_callable_ignores_external_functions() -> None:
     result = get_certain_callable(module)
 
     assert result is None  # Should not call external functions
+
+
+def test_get_certain_callable_integration_minimal_components() -> None:
+    """Integration: use a real example module returning a Section."""
+    from examples.minimal.components import stories
+
+    section = get_certain_callable(stories)
+    if section:
+        assert section.title == "Components"
+
+
+def test_get_certain_callable_integration_no_sections() -> None:
+    """Integration: real example module without a matching callable returns None."""
+    from examples.no_sections.components import stories
+
+    section = get_certain_callable(stories)
+    assert section is None

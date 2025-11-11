@@ -11,11 +11,11 @@ if TYPE_CHECKING:
 
 @dataclass()
 class TreeNode:
-    """Adapt a story path into all info needed to seat in tree.
+    """Adapt a story path into all info needed to seat in a tree.
 
     Extracting a ``stories.py`` into a tree node is somewhat complicated.
-    You have to import the module, convert path to dotted-package-name form,
-    find the parent, etc.
+    You have to import the module, convert the path to a dotted-package-name
+    form, find the parent, etc.
     """
 
     package_location: str  # E.g. examples.minimal
@@ -35,9 +35,9 @@ class TreeNode:
 
         # We want:
         # - The full-dotted path (to import the module)
-        # - The relative-dotted path, e.g. .components.heading (for display)
-        # - The Location-style name e.g. heading (to store in parent)
-        # - Location-style name for  parent e.g. .components (to look up in tree)
+        # - The relative-dotted path, e.g. ``.components.heading`` (for display)
+        # - The Location-style name such as heading (to store in parent)
+        # - Location-style name for a parent e.g. ``.components`` (to look up in a tree)
         # - The callable instance
 
         # Get the PosixPath to the root so we can use pathlib for some

@@ -2,7 +2,7 @@
 
 ## Now
 
-- Get the project up to new layout style
+- Get rendering working again
 
 ## Next
 
@@ -22,3 +22,5 @@
 - Add `hopscotch_plugin` support to Hopscotch then allow Storytime to point at plugins
 
 ## Done
+
+- Get the project up to the new layout style
