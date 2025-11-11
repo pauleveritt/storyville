@@ -33,41 +33,57 @@ class TreeNode:
         """Assign calculated fields."""
         from storytime.utils import get_certain_callable
 
-        # We want:
-        # - The full-dotted path (to import the module)
-        # - The relative-dotted path, e.g. ``.components.heading`` (for display)
-        # - The Location-style name such as heading (to store in parent)
-        # - Location-style name for a parent e.g. ``.components`` (to look up in a tree)
-        # - The callable instance
+        root_package_path = self._get_root_package_path()
+        relative_stories_path = self._get_relative_stories_path(root_package_path)
 
-        # Get the PosixPath to the root so we can use pathlib for some
-        # relative operations.
-        root_package = import_module(self.package_location)
-        root_package_path = Path(root_package.__file__).parent  # type: ignore[union-attr]
-
-        # Whichever subpackage we are pointed at, get its path so we
-        # can calculate some relative operations, particular, to get a
-        # relative "Location" string such as ".components.heading".
-        this_package_path = self.stories_path.parent
-        relative_stories_path = this_package_path.relative_to(root_package_path)
-        relative_stories_package_path = relative_stories_path.name
-        if relative_stories_package_path == "":
-            # We are at the root
-            self.name = ""
-            self.parent_path = None
-            self.this_package_location = "."
-            story_module = import_module(self.package_location + ".stories")
+        if self._is_root_location(relative_stories_path):
+            self._configure_as_root()
         else:
-            self.name = relative_stories_path.name
-            self.this_package_location = f".{relative_stories_path}".replace("/", ".")
-            parent_path = relative_stories_path.parent
-            if parent_path.name == "":
-                self.parent_path = f"{parent_path}".replace("/", ".")
-            else:
-                self.parent_path = f".{parent_path}".replace("/", ".")
-            sm = self.package_location + self.this_package_location + ".stories"
-            story_module = import_module(sm)
+            self._configure_as_nested(relative_stories_path)
+
+        story_module = self._import_story_module()
         self.called_instance = get_certain_callable(story_module)
+
+    def _get_root_package_path(self) -> Path:
+        """Get the root package path for relative calculations."""
+        root_package = import_module(self.package_location)
+        return Path(root_package.__file__).parent  # type: ignore[union-attr]
+
+    def _get_relative_stories_path(self, root_package_path: Path) -> Path:
+        """Get the relative path from root to the stories directory."""
+        this_package_path = self.stories_path.parent
+        return this_package_path.relative_to(root_package_path)
+
+    def _is_root_location(self, relative_stories_path: Path) -> bool:
+        """Check if this is the root location."""
+        return relative_stories_path.name == ""
+
+    def _configure_as_root(self) -> None:
+        """Configure fields for root location."""
+        self.name = ""
+        self.parent_path = None
+        self.this_package_location = "."
+
+    def _configure_as_nested(self, relative_stories_path: Path) -> None:
+        """Configure fields for nested location."""
+        self.name = relative_stories_path.name
+        self.this_package_location = f".{relative_stories_path}".replace("/", ".")
+        self.parent_path = self._calculate_parent_path(relative_stories_path)
+
+    def _calculate_parent_path(self, relative_stories_path: Path) -> str:
+        """Calculate the parent path location string."""
+        parent_path = relative_stories_path.parent
+        if parent_path.name == "":
+            return f"{parent_path}".replace("/", ".")
+        return f".{parent_path}".replace("/", ".")
+
+    def _import_story_module(self) -> Any:
+        """Import the story module based on package location."""
+        if self.this_package_location == ".":
+            module_path = f"{self.package_location}.stories"
+        else:
+            module_path = f"{self.package_location}{self.this_package_location}.stories"
+        return import_module(module_path)
 
 
 @dataclass()

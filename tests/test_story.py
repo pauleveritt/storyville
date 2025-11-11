@@ -371,3 +371,143 @@ def test_tree_node_section() -> None:
     assert tree_node.name == "components"
     assert tree_node.this_package_location == ".components"
     assert tree_node.parent_path == "."
+
+
+# Test TreeNode helper methods
+def test_treenode_get_root_package_path() -> None:
+    """Test _get_root_package_path returns correct path."""
+    from examples.minimal import stories
+
+    assert stories.__file__
+    stories_path = Path(stories.__file__)
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node.package_location = "examples.minimal"
+    tree_node.stories_path = stories_path
+
+    root_path = tree_node._get_root_package_path()
+    assert root_path.name == "minimal"
+    assert root_path.exists()
+
+
+def test_treenode_get_relative_stories_path_for_root() -> None:
+    """Test _get_relative_stories_path for root location."""
+    from examples.minimal import stories
+
+    assert stories.__file__
+    stories_path = Path(stories.__file__)
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node.package_location = "examples.minimal"
+    tree_node.stories_path = stories_path
+
+    root_path = tree_node._get_root_package_path()
+    relative_path = tree_node._get_relative_stories_path(root_path)
+
+    assert relative_path.name == ""
+
+
+def test_treenode_get_relative_stories_path_for_nested() -> None:
+    """Test _get_relative_stories_path for nested location."""
+    from examples.minimal.components import stories
+
+    assert stories.__file__
+    stories_path = Path(stories.__file__)
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node.package_location = "examples.minimal"
+    tree_node.stories_path = stories_path
+
+    root_path = tree_node._get_root_package_path()
+    relative_path = tree_node._get_relative_stories_path(root_path)
+
+    assert relative_path.name == "components"
+
+
+def test_treenode_is_root_location_true() -> None:
+    """Test _is_root_location returns True for root."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("")
+
+    assert tree_node._is_root_location(relative_path) is True
+
+
+def test_treenode_is_root_location_false() -> None:
+    """Test _is_root_location returns False for nested."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("components")
+
+    assert tree_node._is_root_location(relative_path) is False
+
+
+def test_treenode_configure_as_root() -> None:
+    """Test _configure_as_root sets correct values."""
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node._configure_as_root()
+
+    assert tree_node.name == ""
+    assert tree_node.parent_path is None
+    assert tree_node.this_package_location == "."
+
+
+def test_treenode_configure_as_nested() -> None:
+    """Test _configure_as_nested sets correct values."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("components")
+
+    tree_node._configure_as_nested(relative_path)
+
+    assert tree_node.name == "components"
+    assert tree_node.this_package_location == ".components"
+    assert tree_node.parent_path == "."
+
+
+def test_treenode_configure_as_nested_deeper() -> None:
+    """Test _configure_as_nested for deeply nested path."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("views/layouts")
+
+    tree_node._configure_as_nested(relative_path)
+
+    assert tree_node.name == "layouts"
+    assert tree_node.this_package_location == ".views.layouts"
+    assert tree_node.parent_path == ".views"
+
+
+def test_treenode_calculate_parent_path_root_parent() -> None:
+    """Test _calculate_parent_path when parent is root."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("components")
+
+    parent_path = tree_node._calculate_parent_path(relative_path)
+
+    assert parent_path == "."
+
+
+def test_treenode_calculate_parent_path_nested_parent() -> None:
+    """Test _calculate_parent_path when parent is nested."""
+    tree_node = TreeNode.__new__(TreeNode)
+    relative_path = Path("views/layouts")
+
+    parent_path = tree_node._calculate_parent_path(relative_path)
+
+    assert parent_path == ".views"
+
+
+def test_treenode_import_story_module_root() -> None:
+    """Test _import_story_module for root location."""
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node.package_location = "examples.minimal"
+    tree_node.this_package_location = "."
+
+    module = tree_node._import_story_module()
+
+    assert module.__name__ == "examples.minimal.stories"
+
+
+def test_treenode_import_story_module_nested() -> None:
+    """Test _import_story_module for nested location."""
+    tree_node = TreeNode.__new__(TreeNode)
+    tree_node.package_location = "examples.minimal"
+    tree_node.this_package_location = ".components"
+
+    module = tree_node._import_story_module()
+
+    assert module.__name__ == "examples.minimal.components.stories"

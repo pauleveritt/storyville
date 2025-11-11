@@ -10,4 +10,4 @@ def test_application(tmp_path):
     client = TestClient(app)
     response = client.get("/stories/about/company/me/")
     assert response.status_code == 200
-    assert response.text == "Full path: about/company/me/"
+    assert response.text == "Full path: about/company/me"

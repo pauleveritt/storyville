@@ -1,9 +1,9 @@
 """Site class and site construction functionality."""
 
 from dataclasses import dataclass, field
-from importlib.resources import files
+from importlib import import_module
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from storytime.story import BaseNode, Section, Subject, Story, TreeNode
@@ -83,8 +83,9 @@ def make_site(package_location: str) -> Site:
     """
     from storytime.story import Section, Subject, TreeNode
 
-    # Turn the package dotted name of self.target into ``Path``
-    stories_package_name = cast(Path, files(package_location))
+    # Resolve the filesystem path to the package directory without casting
+    root_package = import_module(package_location)
+    root_dir = Path(root_package.__file__).parent  # type: ignore[union-attr]
 
     # Get all the stories.py under here
     tree_nodes: list[TreeNode] = [
@@ -92,7 +93,7 @@ def make_site(package_location: str) -> Site:
             package_location=package_location,
             stories_path=stories_path,
         )
-        for stories_path in stories_package_name.glob("**/stories.py")
+        for stories_path in root_dir.rglob("stories.py")
     ]
     # First get the Site
     site: Site | None = None
@@ -103,7 +104,11 @@ def make_site(package_location: str) -> Site:
                 parent=None,
                 tree_node=tree_node,
             )
-    site = cast(Site, site)
+    if site is None:
+        raise ValueError(
+            f"No Site instance was found under package '{package_location}'. "
+            "Ensure a callable returning Site is defined in a stories.py at the package root."
+        )
 
     # Now the sections
     for tree_node in tree_nodes:
