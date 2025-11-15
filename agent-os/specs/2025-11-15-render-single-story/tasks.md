@@ -173,42 +173,42 @@ modes
 
 **Dependencies:** Task Groups 1-4
 
-- [ ] 5.0 Review tests and run quality checks
-    - [ ] 5.1 Review tests from Task Groups 1-4
+- [x] 5.0 Review tests and run quality checks
+    - [x] 5.1 Review tests from Task Groups 1-4
         - Review the 2-4 tests written in Task 1.1 (View Protocol)
         - Review the 2-4 tests written in Task 3.1 (Story.instance)
         - Review the 4-8 tests written in Task 4.1 (StoryView)
         - Total existing tests: approximately 8-16 tests
-    - [ ] 5.2 Analyze test coverage gaps for this feature only
+    - [x] 5.2 Analyze test coverage gaps for this feature only
         - Identify critical rendering workflows lacking coverage
         - Focus ONLY on gaps related to story rendering
         - Do NOT assess entire application test coverage
         - Prioritize integration between Story and StoryView
-    - [ ] 5.3 Write up to 6 additional strategic tests maximum
+    - [x] 5.3 Write up to 6 additional strategic tests maximum
         - Add maximum of 6 new tests to fill critical gaps
         - Focus on Story + StoryView integration workflows
         - Test aria-testing usage with get_by_tag_name, get_text_content
         - Test edge cases only if business-critical (e.g., None handling)
         - Skip performance tests, exhaustive prop variations, accessibility tests
-    - [ ] 5.4 Create test infrastructure if needed
+    - [x] 5.4 Create test infrastructure if needed
         - `tests/story/` directory already exists with Story-related tests
         - Create `tests/story/test_story_view.py` for StoryView tests
         - Consider fixtures for common test data (sample stories, components)
-    - [ ] 5.5 Run feature-specific tests only
+    - [x] 5.5 Run feature-specific tests only
         - Run ONLY tests related to this spec's feature
         - Expected total: approximately 14-22 tests maximum
         - Command: `pytest tests/story/`
         - Do NOT run the entire application test suite
-    - [ ] 5.6 Run type checking
+    - [x] 5.6 Run type checking
         - Command: `just typecheck`
         - Verify all type hints pass
         - Verify View Protocol satisfaction
         - Verify Element return types correct
-    - [ ] 5.7 Run code formatting
+    - [x] 5.7 Run code formatting
         - Command: `just fmt`
         - Apply consistent code style
         - Verify formatting passes
-    - [ ] 5.8 Final verification - run all quality checks
+    - [x] 5.8 Final verification - run all quality checks
         - Command: `just test` (full test suite)
         - Ensure no regressions in existing tests
         - All checks must pass
@@ -268,7 +268,7 @@ Recommended implementation sequence:
 After each task group completion:
 
 - Run focused tests for that group only
-- Avoid running full test suite until final verification
+- Avoid running a full test suite until final verification
 - Use `just test`, `just typecheck`, `just fmt` for final quality checks
 
 ### Code Reuse
