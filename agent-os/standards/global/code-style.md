@@ -1,0 +1,13 @@
+# Code Style
+
+## Python idioms
+
+- Prefer structural pattern matching `match`/`case` statements for complex conditionals
+- Use `except*` for handling exception groups when appropriate
+- 
+## Type hints
+
+- Aggressively use modern Python features for type hinting
+- Use `type` statement for type aliases (e.g., `type Vector = list[float]`)
+- Use PEP 604 union syntax (`X | Y` instead of `Union[X, Y]`), built-in generics (`list[str]` instead of `List[str]`)
+- Use PEP 695 syntax `def func[T](x: T) -> T:` for generic functions
