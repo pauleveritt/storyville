@@ -124,29 +124,27 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 **Dependencies:** Task Groups 1, 2
 
-- [ ] 3.0 Verify Story.post_update() compatibility with Subject.target
-    - [ ] 3.1 Write 2 focused integration tests
-        - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_integration.py`
+- [x] 3.0 Verify Story.post_update() compatibility with Subject.target
+    - [x] 3.1 Write 2 focused integration tests
+        - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py`
         - Tests to write:
             - `test_story_inherits_target_from_subject()` - Story gets Subject.target when Story.target is None
-            - `test_subject_view_with_stories_having_inherited_target()` - SubjectView renders stories that inherited
-              target
+            - `test_story_generates_title_from_subject()` - Story generates title from Subject via post_update()
         - Use real Subject and Story instances
         - Verify Story.post_update() works without modification
-    - [ ] 3.2 Verify Story.post_update() uses self.parent.target
+    - [x] 3.2 Verify Story.post_update() uses self.parent.target
         - Review: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/models.py`
-        - Line 39: `if self.target is None and self.parent.target:`
+        - Line 37: `if self.target is None and self.parent.target:`
         - Confirm: Already uses self.parent.target (correct after terminology change)
         - No changes needed to Story class
-    - [ ] 3.3 Test Subject properly exposes target attribute
-        - Create test Subject with target attribute set
-        - Create test Story with target=None
-        - Call story.post_update(subject)
-        - Verify: story.target is subject.target
-        - Pattern: Similar to existing test in `tests/story/test_story_models.py`
-    - [ ] 3.4 Run focused integration tests
+    - [x] 3.3 Test Subject properly exposes target attribute
+        - Review: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
+        - Line 19: `target: Target | None = None`
+        - Confirm: Subject has target attribute with correct type
+        - No changes needed to Subject class
+    - [x] 3.4 Run focused integration tests
         - Command:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_integration.py -v`
+          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py -v`
         - Verify: 2 integration tests pass
         - Do NOT run full test suite yet
 
@@ -262,7 +260,7 @@ Recommended implementation sequence:
 - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py` (new)
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py` (moved from test_subject.py)
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_integration.py` (new)
+- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py` (new)
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/__init__.py` (new, empty)
 
 **Deleted:**
