@@ -1,8 +1,11 @@
 """Protocols for type-safe structural typing in Storytime."""
 
-from typing import Protocol
+from typing import Callable, Protocol
 
 from tdom import Node
+
+type Target = type | Callable
+type Template = Callable[[], Node]
 
 
 class View(Protocol):

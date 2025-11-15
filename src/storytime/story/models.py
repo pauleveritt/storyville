@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING, Any, Callable
 
 from tdom import Node
 
+from storytime.models import Target, Template
+
 if TYPE_CHECKING:
     from storytime.subject import Subject
 
@@ -15,11 +17,11 @@ if TYPE_CHECKING:
 class Story:
     """One way to look at a component."""
 
-    component: type | Callable | None = None
-    parent: Subject = field(init=False)
+    target: Target | None = None
+    parent: Subject | None = None
     props: dict[str, Any] = field(default_factory=dict)
     title: str | None = None
-    template: Callable[[], Node] | None = None
+    template: Template | None = None
 
     def post_update(self, parent: Subject):
         """The parent calls this after construction.
@@ -28,14 +30,14 @@ class Story:
         of attributes in their stories.
 
         Args:
-            parent: The Section that is the parent in the tree.
+            parent: The Subject that is the parent in the tree.
 
         Returns:
             The updated Story.
         """
         self.parent = parent
-        if self.component is None and self.parent.component:
-            self.component = self.parent.component
+        if self.target is None and self.parent.target:
+            self.target = self.parent.target
         if self.title is None:
             if self.parent.title:
                 self.title = self.parent.title + " Story"
@@ -48,9 +50,9 @@ class Story:
         """Construct the component instance related to this story.
 
         Returns:
-            Node instance from component, or None if no component exists.
+            Node instance from target, or None if no target exists.
         """
-        if self.component:
-            return self.component(**self.props)
+        if self.target:
+            return self.target(**self.props)
 
         return None

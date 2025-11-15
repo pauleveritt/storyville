@@ -37,7 +37,7 @@ def test_story_view_with_default_layout_mode() -> None:
     parent = Subject(title="Components")
     parent.package_path = ".components"
 
-    story = Story(component=simple_component, props={"name": "World"})
+    story = Story(target=simple_component, props={"name": "World"})
     story.post_update(parent=parent)
 
     view = StoryView(story=story)
@@ -74,7 +74,7 @@ def test_story_view_default_layout_shows_props() -> None:
     parent = Subject(title="Test Component")
     parent.package_path = ".components.test"
 
-    story = Story(component=test_component, props={"title": "Example", "count": 42})
+    story = Story(target=test_component, props={"title": "Example", "count": 42})
     story.post_update(parent=parent)
 
     view = StoryView(story=story)
@@ -99,7 +99,7 @@ def test_story_view_default_layout_with_empty_props() -> None:
     parent = Subject(title="Simple")
     parent.package_path = ".simple"
 
-    story = Story(component=no_props_component, props={})
+    story = Story(target=no_props_component, props={})
     story.post_update(parent=parent)
 
     view = StoryView(story=story)
@@ -125,7 +125,7 @@ def test_story_view_returns_element_type() -> None:
         """Basic component."""
         return html(t"<div>Test</div>")
 
-    story = Story(component=basic_component)
+    story = Story(target=basic_component)
     parent = Subject()
     parent.package_path = ".test"
     story.post_update(parent=parent)
@@ -169,7 +169,7 @@ def test_story_view_default_layout_complete_structure() -> None:
     parent.package_path = ".components.full"
 
     story = Story(
-        component=full_component, title="Full Story", props={"message": "Complete"}
+        target=full_component, title="Full Story", props={"message": "Complete"}
     )
     story.post_update(parent=parent)
 

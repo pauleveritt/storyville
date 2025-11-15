@@ -8,7 +8,7 @@ def these_stories() -> Subject:
         title="Component View",
         stories=[
             Story(
-                component=ComponentView,
+                target=ComponentView,
             )
         ]
     )

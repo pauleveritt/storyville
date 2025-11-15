@@ -12,7 +12,7 @@ def test_subject_initialization() -> None:
     subject = Subject(title="Heading")
     assert subject.title == "Heading"
     assert subject.parent is None
-    assert subject.component is None
+    assert subject.target is None
     assert subject.stories == []
 
 
@@ -24,14 +24,14 @@ def test_subject_with_parent() -> None:
 
 
 def test_subject_with_component() -> None:
-    """Test Subject with a component."""
+    """Test Subject with a target."""
 
     @dataclass
     class MyComponent:
         name: str = "test"
 
-    subject = Subject(title="Heading", component=MyComponent)
-    assert subject.component is MyComponent
+    subject = Subject(title="Heading", target=MyComponent)
+    assert subject.target is MyComponent
 
 
 def test_subject_with_stories() -> None:

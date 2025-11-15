@@ -13,21 +13,21 @@ def test_story_initialization() -> None:
     """Test Story can be instantiated."""
     story = Story(title="Default")
     assert story.title == "Default"
-    assert story.component is None
+    assert story.target is None
     assert story.props == {}
     assert story.template is None
 
 
 # Story Configuration Tests
 def test_story_with_component() -> None:
-    """Test Story with component."""
+    """Test Story with target."""
 
     @dataclass
     class MyComponent:
         name: str = "test"
 
-    story = Story(title="Default", component=MyComponent)
-    assert story.component is MyComponent
+    story = Story(title="Default", target=MyComponent)
+    assert story.target is MyComponent
 
 
 def test_story_with_props() -> None:
@@ -48,23 +48,23 @@ def test_story_post_update_basic() -> None:
 
 
 def test_story_post_update_inherits_component() -> None:
-    """Test Story post_update inherits component from parent."""
+    """Test Story post_update inherits target from parent."""
 
     @dataclass
     class MyComponent:
         name: str = "test"
 
-    parent = Subject(title="Components", component=MyComponent)
+    parent = Subject(title="Components", target=MyComponent)
     parent.package_path = ".components"
 
     story = Story()
     story.post_update(parent=parent)
 
-    assert story.component is MyComponent
+    assert story.target is MyComponent
 
 
 def test_story_post_update_keeps_own_component() -> None:
-    """Test Story post_update keeps its own component."""
+    """Test Story post_update keeps its own target."""
 
     @dataclass
     class ParentComponent:
@@ -74,13 +74,13 @@ def test_story_post_update_keeps_own_component() -> None:
     class OwnComponent:
         name: str = "own"
 
-    parent = Subject(title="Components", component=ParentComponent)
+    parent = Subject(title="Components", target=ParentComponent)
     parent.package_path = ".components"
 
-    story = Story(component=OwnComponent)
+    story = Story(target=OwnComponent)
     story.post_update(parent=parent)
 
-    assert story.component is OwnComponent
+    assert story.target is OwnComponent
 
 
 def test_story_post_update_generates_title_from_parent_title() -> None:
@@ -118,19 +118,19 @@ def test_story_post_update_preserves_custom_title() -> None:
 
 # Story.instance Tests
 def test_story_instance_without_component() -> None:
-    """Test Story.instance returns None when no component."""
+    """Test Story.instance returns None when no target."""
     story = Story()
     assert story.instance is None
 
 
 def test_story_instance_with_props() -> None:
-    """Test Story.instance passes props to component."""
+    """Test Story.instance passes props to target."""
 
     def my_component(name: str = "default"):
         """Component that returns a Node."""
         return html(t"<div>{name}</div>")
 
-    story = Story(component=my_component, props={"name": "custom"})
+    story = Story(target=my_component, props={"name": "custom"})
     instance = story.instance
 
     assert instance is not None
@@ -138,13 +138,13 @@ def test_story_instance_with_props() -> None:
 
 
 def test_story_instance_returns_element_when_component_provided() -> None:
-    """Test Story.instance returns Element when component provided."""
+    """Test Story.instance returns Element when target provided."""
 
     def element_component(title: str = "Test"):
         """A component that returns a Node."""
         return html(t"<div>{title}</div>")
 
-    story = Story(component=element_component, props={"title": "Hello"})
+    story = Story(target=element_component, props={"title": "Hello"})
     instance = story.instance
 
     assert instance is not None
@@ -152,13 +152,13 @@ def test_story_instance_returns_element_when_component_provided() -> None:
 
 
 def test_story_instance_type_guard_with_element_returning_component() -> None:
-    """Test type guard assertion with Element-returning component."""
+    """Test type guard assertion with Element-returning target."""
 
     def valid_component(content: str = "default"):
         """A component that returns a Node."""
         return html(t"<p>{content}</p>")
 
-    story = Story(component=valid_component, props={"content": "World"})
+    story = Story(target=valid_component, props={"content": "World"})
     instance = story.instance
 
     # The type guard in the test ensures this is an Element
@@ -179,7 +179,7 @@ def test_story_instance_with_complex_props() -> None:
         )
 
     story = Story(
-        component=complex_component,
+        target=complex_component,
         props={"title": "Test", "count": 42, "items": ["a", "b", "c"]},
     )
     instance = story.instance
