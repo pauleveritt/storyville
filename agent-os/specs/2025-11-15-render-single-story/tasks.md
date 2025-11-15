@@ -42,25 +42,25 @@ modes
 
 **Dependencies:** None (can run parallel to Task Group 1)
 
-- [ ] 2.0 Complete story package restructure
-    - [ ] 2.1 Create story package directory
+- [x] 2.0 Complete story package restructure
+    - [x] 2.1 Create story package directory
         - Create directory: `src/storytime/story/`
         - Create file: `src/storytime/story/__init__.py`
         - Export Story class: `from storytime.story.models import Story`
-    - [ ] 2.2 Move Story class to story package
+    - [x] 2.2 Move Story class to story package
         - Create file: `src/storytime/story/models.py`
         - Move Story class from `src/storytime/story.py` to new file
         - Keep all existing functionality intact
         - Preserve imports and type checking block
-    - [ ] 2.3 Update imports throughout codebase
+    - [x] 2.3 Update imports throughout codebase
         - Update `from storytime.story import Story` references
         - Should continue to work: `from storytime.story import Story`
         - Check files: tests/, src/storytime/
-    - [ ] 2.4 Remove old story.py file
+    - [x] 2.4 Remove old story.py file
         - Delete `src/storytime/story.py`
         - Verify no broken imports remain
-    - [ ] 2.5 Ensure existing Story tests pass
-        - Run tests in `tests/test_story.py`
+    - [x] 2.5 Ensure existing Story tests pass
+        - Run tests in `tests/story/test_story.py`
         - Verify all Story functionality unchanged
         - Do NOT run the entire test suite at this stage
 
@@ -68,7 +68,7 @@ modes
 
 - Story package created with proper `__init__.py`
 - Story class accessible via `from storytime.story import Story`
-- All existing tests in `tests/test_story.py` pass
+- All existing tests in `tests/story/test_story.py` pass
 - Old `story.py` file removed
 
 ### Story Model Updates
@@ -77,23 +77,24 @@ modes
 
 **Dependencies:** Task Group 2
 
-- [ ] 3.0 Complete Story class modifications
-    - [ ] 3.1 Write 2-4 focused tests for updated Story.instance property
+- [x] 3.0 Complete Story class modifications
+    - [x] 3.1 Write 2-4 focused tests for updated Story.instance property
+        - Create tests in `tests/story/test_story_instance.py`
         - Limit to 2-4 highly focused tests maximum
         - Test instance returns Element when component provided
         - Test type guard assertion with Element-returning component
         - Skip testing non-Element components (will fail assertion)
-    - [ ] 3.2 Remove vdom method from Story class (if exists)
+    - [x] 3.2 Remove vdom method from Story class (if exists)
         - Open `src/storytime/story/models.py`
         - Remove `vdom` method entirely (check if it exists first)
         - All rendering should flow through StoryView instead
-    - [ ] 3.3 Update Story.instance property return type
+    - [x] 3.3 Update Story.instance property return type
         - Change return type from `object | None` to `Element | None`
         - Import: `from tdom import Element`
         - Add type guard: `assert isinstance(result, Element)` before returning
         - Keep existing logic: `self.component(**self.props)`
         - Handle None case when no component exists
-    - [ ] 3.4 Ensure Story.instance tests pass
+    - [x] 3.4 Ensure Story.instance tests pass
         - Run ONLY the 2-4 tests written in 3.1
         - Verify Element return type enforced
         - Verify type guard assertion works
@@ -114,6 +115,7 @@ modes
 
 - [ ] 4.0 Complete StoryView implementation
     - [ ] 4.1 Write 4-8 focused tests for StoryView rendering
+        - Create tests in `tests/story/test_story_view.py`
         - Limit to 4-8 highly focused tests maximum
         - Test custom template mode: story with template uses it
         - Test default layout mode: story without template shows title, props, instance, parent link
@@ -187,13 +189,13 @@ modes
         - Test edge cases only if business-critical (e.g., None handling)
         - Skip performance tests, exhaustive prop variations, accessibility tests
     - [ ] 5.4 Create test infrastructure if needed
-        - Create `tests/story/` directory
-        - Move/create `tests/story/test_story_view.py`
+        - `tests/story/` directory already exists with Story-related tests
+        - Create `tests/story/test_story_view.py` for StoryView tests
         - Consider fixtures for common test data (sample stories, components)
     - [ ] 5.5 Run feature-specific tests only
         - Run ONLY tests related to this spec's feature
         - Expected total: approximately 14-22 tests maximum
-        - Command: `pytest tests/test_story.py tests/story/`
+        - Command: `pytest tests/story/`
         - Do NOT run the entire application test suite
     - [ ] 5.6 Run type checking
         - Command: `just typecheck`
@@ -269,6 +271,13 @@ After each task group completion:
 ### Code Reuse
 
 - Follow pattern from `src/storytime/views/index_view.py` for StoryView structure
-- Reference `tests/test_story.py` for test patterns with Story class
+- Reference `tests/story/test_story.py` for test patterns with Story class
 - Use dataclass decorator consistently
 - Use tdom templates consistently across all views
+
+### Test Organization
+
+- All Story-related tests are organized under `tests/story/` directory
+- `tests/story/test_story.py` - Core Story class functionality tests
+- `tests/story/test_story_instance.py` - Story.instance property tests
+- `tests/story/test_story_view.py` - StoryView rendering tests (to be created)

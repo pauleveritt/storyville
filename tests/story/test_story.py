@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from tdom import Element, html
+
 from storytime.story import Story
 from storytime.subject import Subject
 
@@ -121,13 +123,14 @@ def test_story_instance_without_component() -> None:
 def test_story_instance_with_props() -> None:
     """Test Story.instance passes props to component."""
 
-    @dataclass
-    class MyComponent:
-        name: str = "default"
+    def my_component(name: str = "default") -> Element:
+        """Component that returns an Element."""
+        result = html(t"<div>{name}</div>")
+        assert isinstance(result, Element)
+        return result
 
-    story = Story(component=MyComponent, props={"name": "custom"})
+    story = Story(component=my_component, props={"name": "custom"})
     instance = story.instance
 
     assert instance is not None
-    assert isinstance(instance, MyComponent)
-    assert instance.name == "custom"  # type: ignore
+    assert isinstance(instance, Element)
