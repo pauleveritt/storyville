@@ -159,21 +159,21 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 **Dependencies:** Task Groups 1, 2, 3
 
-- [ ] 4.0 Run comprehensive quality checks
-    - [ ] 4.1 Run all Subject-related tests
+- [x] 4.0 Run comprehensive quality checks
+    - [x] 4.1 Run all Subject-related tests
         - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/ -v`
         - Expected: All tests pass (approximately 8-10 tests total from groups 1-3)
         - Tests should cover: models, views, integration
-    - [ ] 4.2 Run full test suite
+    - [x] 4.2 Run full test suite
         - Command: `just test`
         - Verify: All tests pass across entire codebase
         - Ensure: No regressions from refactoring
-    - [ ] 4.3 Run type checking
+    - [x] 4.3 Run type checking
         - Command: `just typecheck`
         - Verify: No type errors in Subject package
         - Check: Subject, SubjectView, imports all type-safe
         - Ensure: Python 3.14+ type hints used (X | Y syntax, modern generics)
-    - [ ] 4.4 Run code formatting
+    - [x] 4.4 Run code formatting
         - Command: `just fmt`
         - Verify: All code properly formatted
         - Check: Subject package follows project style
