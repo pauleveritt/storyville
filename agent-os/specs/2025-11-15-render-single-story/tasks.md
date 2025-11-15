@@ -18,13 +18,14 @@ modes
     - [x] 1.1 Write 2-4 focused tests for View Protocol
         - Limit to 2-4 highly focused tests maximum
         - Test protocol satisfaction with a simple test view class
-        - Test return type is Element (not Node)
+        - Test return type is Node, tests verify Element with type guards
         - Skip exhaustive protocol compliance testing
     - [x] 1.2 Create `src/storytime/models.py` with View Protocol
         - Import: `from typing import Protocol`
-        - Import: `from tdom import Element`
-        - Define `View` Protocol with `__call__(self) -> Element` signature
+        - Import: `from tdom import Node`
+        - Define `View` Protocol with `__call__(self) -> Node` signature
         - Add docstring explaining Protocol purpose (type-safe structural typing)
+        - Note: Tests use type guards to verify Element, not implementation code
     - [x] 1.3 Ensure View Protocol tests pass
         - Run ONLY the 2-4 tests written in 1.1
         - Verify Protocol can be satisfied by dataclass with `__call__`
@@ -33,8 +34,9 @@ modes
 **Acceptance Criteria:**
 
 - The 2-4 tests written in 1.1 pass
-- View Protocol properly defines `__call__(self) -> Element`
+- View Protocol properly defines `__call__(self) -> Node`
 - Protocol enables structural typing without inheritance
+- Tests use type guards (assert isinstance(result, Element)) not implementation code
 
 ### Story Package Structure
 
@@ -81,31 +83,31 @@ modes
     - [x] 3.1 Write 2-4 focused tests for updated Story.instance property
         - Create tests in `tests/story/test_story_instance.py`
         - Limit to 2-4 highly focused tests maximum
-        - Test instance returns Element when component provided
-        - Test type guard assertion with Element-returning component
+        - Test instance returns Node when component provided
+        - Tests use type guard assertions to verify Element
         - Skip testing non-Element components (will fail assertion)
     - [x] 3.2 Remove vdom method from Story class (if exists)
         - Open `src/storytime/story/models.py`
         - Remove `vdom` method entirely (check if it exists first)
         - All rendering should flow through StoryView instead
     - [x] 3.3 Update Story.instance property return type
-        - Change return type from `object | None` to `Element | None`
-        - Import: `from tdom import Element`
-        - Add type guard: `assert isinstance(result, Element)` before returning
+        - Change return type from `object | None` to `Node | None`
+        - Import: `from tdom import Node`
+        - NO type guard in implementation - tests do type guards instead
         - Keep existing logic: `self.component(**self.props)`
         - Handle None case when no component exists
     - [x] 3.4 Ensure Story.instance tests pass
         - Run ONLY the 2-4 tests written in 3.1
-        - Verify Element return type enforced
-        - Verify type guard assertion works
+        - Verify Node return type
+        - Verify type guard assertions in tests work
         - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
 
 - The 2-4 tests written in 3.1 pass
 - `vdom` method removed from Story class
-- `Story.instance` returns `Element | None`
-- Type guard successfully narrows Node to Element
+- `Story.instance` returns `Node | None`
+- Tests use type guards (assert isinstance(result, Element)) not implementation code
 
 ### StoryView Implementation
 
@@ -119,50 +121,50 @@ modes
         - Limit to 4-8 highly focused tests maximum
         - Test custom template mode: story with template uses it
         - Test default layout mode: story without template shows title, props, instance, parent link
-        - Test type safety: `__call__` returns Element
+        - Test type safety: tests use type guards to verify Element
         - Test one edge case: empty props dict displays correctly
         - Skip exhaustive edge case testing (various prop types, nested structures)
     - [ ] 4.2 Create `src/storytime/story/views.py` file
         - Import necessary types: `from dataclasses import dataclass`
-        - Import: `from tdom import html, Element`
+        - Import: `from tdom import html, Node`
         - Import: `from storytime.story.models import Story`
     - [ ] 4.3 Implement StoryView dataclass structure
         - Decorator: `@dataclass`
         - Field: `story: Story`
-        - Method signature: `def __call__(self) -> Element:`
+        - Method signature: `def __call__(self) -> Node:`
     - [ ] 4.4 Implement custom template rendering mode (Mode A)
         - Check: `if self.story.template is not None:`
-        - Call template directly: `result = self.story.template()`
+        - Call template directly: `return self.story.template()`
         - No wrapping elements or additional layout
         - Template has full control over output
     - [ ] 4.5 Implement default layout rendering mode (Mode B)
-        - Check: `if self.story.template is None:`
+        - Check: `else:` (when template is None)
         - Create tdom template with `html(t"""...""")` syntax
         - Include story title as heading (h1 or h2)
         - Show props: `Props: <code>{str(self.story.props)}</code>`
         - Render component: embed `{self.story.instance}`
         - Add parent link: `<a href="..">Parent</a>`
         - Follow pattern from `src/storytime/views/index_view.py`
-    - [ ] 4.6 Add type guard before return
-        - Add: `assert isinstance(result, Element)` before return statement
-        - Ensures Node is narrowed to Element
-        - Satisfies View Protocol contract
+    - [ ] 4.6 NO type guard in implementation
+        - Do NOT add type guards in StoryView.__call__
+        - Tests will handle type guard assertions
+        - Implementation simply returns Node
     - [ ] 4.7 Update `src/storytime/story/__init__.py` exports
         - Add export: `from storytime.story.views import StoryView`
         - Enable: `from storytime.story import Story, StoryView`
     - [ ] 4.8 Ensure StoryView tests pass
         - Run ONLY the 4-8 tests written in 4.1
         - Verify both rendering modes work correctly
-        - Verify type safety enforced
+        - Verify tests use type guards to verify Element
         - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
 
 - The 4-8 tests written in 4.1 pass
-- StoryView implements View Protocol
+- StoryView implements View Protocol (returns Node)
 - Custom template mode (Mode A) works: uses story.template for all rendering
 - Default layout mode (Mode B) works: shows title, props, instance, parent link
-- Type guard successfully ensures Element return type
+- Tests use type guards (assert isinstance(result, Element)) not implementation code
 - No error handling - exceptions propagate naturally
 
 ### Testing & Quality
@@ -236,14 +238,15 @@ Recommended implementation sequence:
 
 - Use Python 3.14+ features: modern type hints, PEP 604 union syntax (`X | Y`)
 - Use Protocol for structural typing (no inheritance required)
-- Use type guards: `assert isinstance(result, Element)` to narrow types
+- Type guards in tests only: `assert isinstance(result, Element)` in test code, not implementation
 - Use tdom t-string templates: `html(t"""...""")` syntax
 
 ### Type Safety
 
-- View Protocol enables compile-time checking of view implementations
-- Type guard in Story.instance ensures Node -> Element conversion
-- Type guard in StoryView.__call__ ensures Protocol contract satisfaction
+- View Protocol enables compile-time checking of view implementations (returns Node)
+- Type guards are ONLY in tests, NOT in implementation code
+- Tests use `assert isinstance(result, Element)` to verify and narrow types
+- Implementation code returns Node, tests verify Element
 - All return types must be explicit and verifiable by type checker
 
 ### Error Handling

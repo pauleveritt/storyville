@@ -123,11 +123,9 @@ def test_story_instance_without_component() -> None:
 def test_story_instance_with_props() -> None:
     """Test Story.instance passes props to component."""
 
-    def my_component(name: str = "default") -> Element:
-        """Component that returns an Element."""
-        result = html(t"<div>{name}</div>")
-        assert isinstance(result, Element)
-        return result
+    def my_component(name: str = "default"):
+        """Component that returns a Node."""
+        return html(t"<div>{name}</div>")
 
     story = Story(component=my_component, props={"name": "custom"})
     instance = story.instance

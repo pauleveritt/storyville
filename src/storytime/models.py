@@ -2,39 +2,40 @@
 
 from typing import Protocol
 
-from tdom import Element
+from tdom import Node
 
 
 class View(Protocol):
-    """Protocol for view classes that render to tdom Elements.
+    """Protocol for view classes that render to tdom Nodes.
 
     This Protocol enables type-safe structural typing for all view
     implementations without requiring inheritance. Any class that
-    implements a `__call__(self) -> Element` method satisfies this
+    implements a `__call__(self) -> Node` method satisfies this
     Protocol and can be used as a View.
 
-    Use a type guard to ensure the result is an Element when the
-    rendering process might return a Node that needs to be narrowed.
+    Type guards should be used in tests to verify the result is an
+    Element when needed for type checking.
 
     Example:
         @dataclass
         class MyView:
             title: str
 
-            def __call__(self) -> Element:
-                result = html(t"<h1>{self.title}</h1>")
-                assert isinstance(result, Element)
-                return result
+            def __call__(self) -> Node:
+                return html(t"<h1>{self.title}</h1>")
 
         # MyView satisfies the View Protocol
         view: View = MyView(title="Hello")
-        element = view()
+        node = view()
+
+        # In tests, use type guards:
+        assert isinstance(node, Element)
     """
 
-    def __call__(self) -> Element:
-        """Render the view to a tdom Element.
+    def __call__(self) -> Node:
+        """Render the view to a tdom Node.
 
         Returns:
-            A tdom Element representing the rendered view.
+            A tdom Node representing the rendered view.
         """
         ...

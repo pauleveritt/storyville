@@ -1,4 +1,4 @@
-"""Test the updated Story.instance property for Element return type."""
+"""Test the updated Story.instance property for Node return type."""
 
 from tdom import Element, html
 
@@ -8,11 +8,9 @@ from storytime.story import Story
 def test_story_instance_returns_element_when_component_provided() -> None:
     """Test Story.instance returns Element when component provided."""
 
-    def element_component(title: str = "Test") -> Element:
-        """A component that returns an Element."""
-        result = html(t"<div>{title}</div>")
-        assert isinstance(result, Element)
-        return result
+    def element_component(title: str = "Test"):
+        """A component that returns a Node."""
+        return html(t"<div>{title}</div>")
 
     story = Story(component=element_component, props={"title": "Hello"})
     instance = story.instance
@@ -24,16 +22,14 @@ def test_story_instance_returns_element_when_component_provided() -> None:
 def test_story_instance_type_guard_with_element_returning_component() -> None:
     """Test type guard assertion with Element-returning component."""
 
-    def valid_component(content: str = "default") -> Element:
-        """A component that returns a valid Element."""
-        result = html(t"<p>{content}</p>")
-        assert isinstance(result, Element)
-        return result
+    def valid_component(content: str = "default"):
+        """A component that returns a Node."""
+        return html(t"<p>{content}</p>")
 
     story = Story(component=valid_component, props={"content": "World"})
     instance = story.instance
 
-    # The type guard should ensure this is an Element
+    # The type guard in the test ensures this is an Element
     assert isinstance(instance, Element)
     assert type(instance).__name__ == "Element"
 
@@ -49,14 +45,12 @@ def test_story_instance_with_complex_props() -> None:
 
     def complex_component(
         title: str = "default", count: int = 0, items: list[str] | None = None
-    ) -> Element:
+    ):
         """A component with multiple props."""
         items_html = "".join(f"<li>{item}</li>" for item in (items or []))
-        result = html(
+        return html(
             t"<div><h1>{title}</h1><p>Count: {count}</p><ul>{items_html}</ul></div>"
         )
-        assert isinstance(result, Element)
-        return result
 
     story = Story(
         component=complex_component,

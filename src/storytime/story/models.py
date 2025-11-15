@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Callable
 
-from tdom import Element
+from tdom import Node
 
 if TYPE_CHECKING:
     from storytime.subject import Subject
@@ -44,15 +44,13 @@ class Story:
         return self
 
     @property
-    def instance(self) -> Element | None:
+    def instance(self) -> Node | None:
         """Construct the component instance related to this story.
 
         Returns:
-            Element instance from component, or None if no component exists.
+            Node instance from component, or None if no component exists.
         """
         if self.component:
-            result = self.component(**self.props)
-            assert isinstance(result, Element)
-            return result
+            return self.component(**self.props)
 
         return None

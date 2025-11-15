@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from tdom import Element, html
+from tdom import Element, Node, html
 
 from storytime.models import View
 
@@ -12,10 +12,8 @@ def test_view_protocol_with_simple_dataclass() -> None:
 
     @dataclass
     class SimpleView:
-        def __call__(self) -> Element:
-            this_result = html(t"<div>Hello</div>")
-            assert isinstance(this_result, Element)
-            return this_result
+        def __call__(self) -> Node:
+            return html(t"<div>Hello</div>")
 
     # Test that SimpleView can be used as a View
     view: View = SimpleView()
@@ -24,19 +22,17 @@ def test_view_protocol_with_simple_dataclass() -> None:
 
 
 def test_view_protocol_return_type_is_element() -> None:
-    """Test that View Protocol enforces the Element return type."""
+    """Test that View Protocol returns Node and tests verify Element."""
 
     @dataclass
     class ElementView:
-        def __call__(self) -> Element:
-            this_result = html(t"<p>Content</p>")
-            assert isinstance(this_result, Element)
-            return this_result
+        def __call__(self) -> Node:
+            return html(t"<p>Content</p>")
 
     view: View = ElementView()
     result = view()
 
-    # Verify the return type is Element, not just Node
+    # Tests verify the return type is Element, not just Node
     assert isinstance(result, Element)
     assert type(result).__name__ == "Element"
 
@@ -48,10 +44,8 @@ def test_view_protocol_with_dataclass_field() -> None:
     class FieldView:
         title: str = "Test"
 
-        def __call__(self) -> Element:
-            this_result = html(t"<h1>{self.title}</h1>")
-            assert isinstance(this_result, Element)
-            return this_result
+        def __call__(self) -> Node:
+            return html(t"<h1>{self.title}</h1>")
 
     view: View = FieldView(title="Complex Test")
     result = view()
