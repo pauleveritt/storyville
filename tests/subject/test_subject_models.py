@@ -1,4 +1,4 @@
-"""Test the Subject class."""
+"""Test the Subject model."""
 
 from dataclasses import dataclass
 
@@ -23,7 +23,7 @@ def test_subject_with_parent() -> None:
     assert subject.parent is section
 
 
-def test_subject_with_component() -> None:
+def test_subject_with_target() -> None:
     """Test Subject with a target."""
 
     @dataclass
