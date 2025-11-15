@@ -19,7 +19,7 @@ class Story:
     parent: Subject = field(init=False)
     props: dict[str, Any] = field(default_factory=dict)
     title: str | None = None
-    template: object | None = None
+    template: Callable[[], Node] | None = None
 
     def post_update(self, parent: Subject):
         """The parent calls this after construction.

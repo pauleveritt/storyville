@@ -115,8 +115,8 @@ modes
 
 **Dependencies:** Task Groups 1, 2, 3
 
-- [ ] 4.0 Complete StoryView implementation
-    - [ ] 4.1 Write 4-8 focused tests for StoryView rendering
+- [x] 4.0 Complete StoryView implementation
+    - [x] 4.1 Write 4-8 focused tests for StoryView rendering
         - Create tests in `tests/story/test_story_view.py`
         - Limit to 4-8 highly focused tests maximum
         - Test custom template mode: story with template uses it
@@ -124,20 +124,20 @@ modes
         - Test type safety: tests use type guards to verify Element
         - Test one edge case: empty props dict displays correctly
         - Skip exhaustive edge case testing (various prop types, nested structures)
-    - [ ] 4.2 Create `src/storytime/story/views.py` file
+    - [x] 4.2 Create `src/storytime/story/views.py` file
         - Import necessary types: `from dataclasses import dataclass`
         - Import: `from tdom import html, Node`
         - Import: `from storytime.story.models import Story`
-    - [ ] 4.3 Implement StoryView dataclass structure
+    - [x] 4.3 Implement StoryView dataclass structure
         - Decorator: `@dataclass`
         - Field: `story: Story`
         - Method signature: `def __call__(self) -> Node:`
-    - [ ] 4.4 Implement custom template rendering mode (Mode A)
+    - [x] 4.4 Implement custom template rendering mode (Mode A)
         - Check: `if self.story.template is not None:`
         - Call template directly: `return self.story.template()`
         - No wrapping elements or additional layout
         - Template has full control over output
-    - [ ] 4.5 Implement default layout rendering mode (Mode B)
+    - [x] 4.5 Implement default layout rendering mode (Mode B)
         - Check: `else:` (when template is None)
         - Create tdom template with `html(t"""...""")` syntax
         - Include story title as heading (h1 or h2)
@@ -145,14 +145,14 @@ modes
         - Render component: embed `{self.story.instance}`
         - Add parent link: `<a href="..">Parent</a>`
         - Follow pattern from `src/storytime/views/index_view.py`
-    - [ ] 4.6 NO type guard in implementation
+    - [x] 4.6 NO type guard in implementation
         - Do NOT add type guards in StoryView.__call__
         - Tests will handle type guard assertions
         - Implementation simply returns Node
-    - [ ] 4.7 Update `src/storytime/story/__init__.py` exports
+    - [x] 4.7 Update `src/storytime/story/__init__.py` exports
         - Add export: `from storytime.story.views import StoryView`
         - Enable: `from storytime.story import Story, StoryView`
-    - [ ] 4.8 Ensure StoryView tests pass
+    - [x] 4.8 Ensure StoryView tests pass
         - Run ONLY the 4-8 tests written in 4.1
         - Verify both rendering modes work correctly
         - Verify tests use type guards to verify Element
