@@ -63,8 +63,8 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Create SubjectView for rendering subjects
-    - [ ] 2.1 Write 2-4 focused tests for SubjectView functionality
+- [x] 2.0 Create SubjectView for rendering subjects
+    - [x] 2.1 Write 2-4 focused tests for SubjectView functionality
         - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py`
         - Tests to write:
             - `test_subject_view_renders_title_in_h1()` - Title rendering
@@ -74,7 +74,7 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
         - Use aria_testing helpers: `get_by_tag_name`, `get_text_content`, `query_all_by_tag_name`
         - Pattern: Follow `/Users/pauleveritt/projects/pauleveritt/storytime/tests/story/test_story_views.py`
         - Type guards: `assert isinstance(result, Element)` in tests only
-    - [ ] 2.2 Create SubjectView class
+    - [x] 2.2 Create SubjectView class
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
         - Class structure:
           ```python
@@ -87,13 +87,13 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
           ```
         - Pattern: Follow `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
         - Satisfies View Protocol from `storytime.models`
-    - [ ] 2.3 Implement subject metadata rendering
+    - [x] 2.3 Implement subject metadata rendering
         - Render title in h1 element: `<h1>{self.subject.title}</h1>`
         - Display target info if present:
           `<p>Target: {self.subject.target.__name__ if self.subject.target else "None"}</p>`
         - Include parent navigation: `<a href="..">Parent</a>`
         - Use tdom html() with t-string template
-    - [ ] 2.4 Implement story cards rendering
+    - [x] 2.4 Implement story cards rendering
         - Check if stories list is empty: `if not self.subject.stories:`
         - Empty state: `<p>No stories defined for this component</p>`
         - Non-empty: Render as ul/li structure
@@ -101,11 +101,11 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
         - Do NOT use StoryView for individual stories
         - Do NOT render story.instance or call story components
         - Keep cards minimal: title and link only
-    - [ ] 2.5 Update __init__.py to export SubjectView
+    - [x] 2.5 Update __init__.py to export SubjectView
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py`
         - Add: `from storytime.subject.views import SubjectView`
         - Update __all__: `__all__ = ["Subject", "SubjectView"]`
-    - [ ] 2.6 Run focused tests for views only
+    - [x] 2.6 Run focused tests for views only
         - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py -v`
         - Verify: 2-4 tests written in 2.1 pass
         - Do NOT run full test suite yet
