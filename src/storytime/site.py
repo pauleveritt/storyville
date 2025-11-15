@@ -1,5 +1,7 @@
 """Site class and site construction functionality."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path
@@ -25,7 +27,7 @@ class Site:
     title: str | None = None
     context: object | None = None
     package_path: str = field(init=False, default="")
-    items: dict[str, "Section"] = field(default_factory=dict)
+    items: dict[str, Section] = field(default_factory=dict)
     static_dir: Path | None = None
 
     def __post_init__(self) -> None:
@@ -38,9 +40,9 @@ class Site:
 
     def post_update(
         self,
-        parent: "BaseNode[Site] | None",
+        parent: BaseNode[Site] | None,
         tree_node: object,
-    ) -> "Site":
+    ) -> Site:
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch
@@ -61,7 +63,7 @@ class Site:
             self.title = self.package_path
         return self
 
-    def find_path(self, path: str) -> "Site | Section | Subject | Story | None":
+    def find_path(self, path: str) -> Site | Section | Subject | Story | None:
         """Given a dotted path, traverse to the object."""
 
         current: Site | Section | Subject | Story | None = self

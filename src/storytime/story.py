@@ -1,5 +1,7 @@
 """Story class for component-driven development."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -12,13 +14,12 @@ class Story:
     """One way to look at a component."""
 
     component: type | Callable | None = None
-    kind: type | None = None
-    parent: "Subject" = field(init=False)
+    parent: Subject = field(init=False)
     props: dict[str, Any] = field(default_factory=dict)
     title: str | None = None
     template: object | None = None
 
-    def post_update(self, parent: "Subject"):
+    def post_update(self, parent: Subject):
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch
@@ -47,15 +48,3 @@ class Story:
             return self.component(**self.props)
 
         return None
-
-    @property
-    def vdom(self) -> object:
-        """Generate a VDOM for the usage in this story."""
-        if self.component:
-            # We ignore the template if we are given a component and
-            # instead construct a template.
-            return self.instance
-        elif self.template:
-            return self.template
-        else:
-            raise ValueError("Could not generate VDOM for story.")

@@ -1,7 +1,6 @@
 """Test the Story class."""
 
 from dataclasses import dataclass
-from unittest.mock import Mock
 
 from storytime.story import Story
 from storytime.subject import Subject
@@ -132,43 +131,3 @@ def test_story_instance_with_props() -> None:
     assert instance is not None
     assert isinstance(instance, MyComponent)
     assert instance.name == "custom"  # type: ignore
-
-
-def test_story_vdom_without_component_or_template() -> None:
-    """Test Story.vdom raises error when no component or template."""
-    story = Story()
-    try:
-        _ = story.vdom
-        assert False, "Should have raised ValueError"
-    except ValueError as e:
-        assert "Could not generate VDOM for story" in str(e)
-
-
-def test_story_vdom_with_template() -> None:
-    """Test Story.vdom returns template when set."""
-    template = Mock()
-    story = Story(template=template)
-    assert story.vdom is template
-
-
-def test_story_vdom_prefers_component_over_template() -> None:
-    """Test Story.vdom uses component even when template is set."""
-    template = Mock()
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
-    story = Story(component=MyComponent, template=template)
-
-    # The vdom property should prefer component over template
-    # However, the html() call requires a template string, which currently fails
-    # This is a limitation of the current implementation
-    # For now, just verify that template is not directly returned
-    try:
-        vdom = story.vdom
-        # If it works, verify it's not the template
-        assert vdom is not template
-    except AttributeError:
-        # Expected - the html() function needs a proper template string
-        pass

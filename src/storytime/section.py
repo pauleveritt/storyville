@@ -1,5 +1,7 @@
 """Section class for grouping stories."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -14,5 +16,5 @@ if TYPE_CHECKING:
 class Section(BaseNode["Section"]):
     """A grouping of stories, such as ``Views``."""
 
-    parent: "Site | None" = None
-    items: dict[str, "Subject"] = field(default_factory=dict)
+    parent: Site | None = None
+    items: dict[str, Subject] = field(default_factory=dict)

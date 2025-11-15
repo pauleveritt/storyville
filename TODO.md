@@ -9,6 +9,11 @@
 - Re-organize concept of examples
 - Re-organize concept of theme
 
+## Agent OS standards
+
+- Define views: protocols, return value, type hint, how to test
+- Get Markdown formatting run after specs are generated
+
 ## Soon
 
 - Get rid of var directory and use a temp directory

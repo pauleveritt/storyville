@@ -1,5 +1,7 @@
 """Subject class for representing components with stories."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Callable
 
@@ -14,6 +16,6 @@ if TYPE_CHECKING:
 class Subject(BaseNode["Subject"]):
     """The component that a group of stories or variants is about."""
 
-    parent: "Section | None" = None
+    parent: Section | None = None
     component: type | Callable | None = None
-    stories: list["Story"] = field(default_factory=list)
+    stories: list[Story] = field(default_factory=list)
