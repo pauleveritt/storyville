@@ -56,33 +56,33 @@ This breakdown implements comprehensive examples demonstrating all Story variati
 #### Task Group 3: Complete Example (All Optional Fields)
 **Dependencies:** Task Groups 1-2
 
-- [ ] 3.0 Create complete example demonstrating all optional fields
-  - [ ] 3.1 Write 2-5 focused tests in `tests/test_examples.py`
+- [x] 3.0 Create complete example demonstrating all optional fields
+  - [x] 3.1 Write 2-5 focused tests in `tests/test_examples.py`
     - Test `test_complete_example_structure()` validates Site/Section/Subject hierarchy
     - Test `test_complete_example_all_fields()` verifies title/description on all models
     - Test `test_complete_example_story_variations()` checks 3 Story patterns
     - Limit to 2-5 tests covering critical complete example behaviors
-  - [ ] 3.2 Create `examples/complete/` directory structure
-    - Create `examples/complete/stories.py` with Site(title="Complete Example", description="...")
+  - [x] 3.2 Create `examples/complete/` directory structure
+    - Create `examples/complete/stories.py` with Site(title="Complete Example")
     - Create `examples/complete/components/` directory
     - Create `examples/complete/components/stories.py` with Section(title="...", description="...")
     - Create `examples/complete/components/button/` directory
-  - [ ] 3.3 Create Button component at `examples/complete/components/button/button.py`
+  - [x] 3.3 Create Button component at `examples/complete/components/button/button.py`
     - Dataclass with `text: str` and `variant: str` fields (2 props max)
     - Implement `__call__(self) -> Node` returning `html(t"<button class={self.variant}>{self.text}</button>")`
     - Follow Heading component pattern from minimal example
-  - [ ] 3.4 Create `examples/complete/components/button/stories.py`
+  - [x] 3.4 Create `examples/complete/components/button/stories.py`
     - Define Subject(title="Button Component", description="...", target=Button)
     - Define 3 Stories:
       - Story 1: props only (text="Click", variant="primary") - minimal
       - Story 2: Story(title="Custom Title", description="...", props={"text": "...", "variant": "..."})
       - Story 3: Different props for same component (text="Cancel", variant="secondary")
-  - [ ] 3.5 Create `examples/complete/README.md`
+  - [x] 3.5 Create `examples/complete/README.md`
     - Overview: "Shows all optional Site/Section/Subject/Story fields populated"
     - Structure: Full hierarchy with all optional fields
-    - Key Features: Site title/desc, Section title/desc, Subject title/desc/target, 3 Story variations
+    - Key Features: Site title, Section title/desc, Subject title/desc/target, 3 Story variations
     - Keep under 20 lines
-  - [ ] 3.6 Run complete example tests only
+  - [x] 3.6 Run complete example tests only
     - Run ONLY the 2-5 tests written in 3.1
     - Verify Site loads with `make_site("examples.complete")`
     - Verify tree structure is correct

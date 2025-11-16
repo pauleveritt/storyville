@@ -8,6 +8,13 @@
 - **Package Manager:** uv (modern Python package management)
 - **Task Runner:** just (command runner for development tasks)
 
+## Running Python
+
+- **Ad-hoc scripts**: If you generate a script, run it with `uv run` from the `pyproject.toml` directory
+- **Formatting**: Always use `just` for this
+- **Testing**: Always use `just` for this
+- **Type checking**: Always use `just` for this
+
 ## Core Dependencies
 
 - **Web Server:** Uvicorn (ASGI server for Starlette)
