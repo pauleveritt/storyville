@@ -11,16 +11,16 @@ Estimated Time: 2-3 hours
 #### Task Group 1: Remove IndexView and Related Files
 **Dependencies:** None
 
-- [ ] 1.0 Remove IndexView component and tests
-  - [ ] 1.1 Delete IndexView component file
+- [x] 1.0 Remove IndexView component and tests
+  - [x] 1.1 Delete IndexView component file
     - Remove: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/index_view.py`
-  - [ ] 1.2 Delete index component directory
+  - [x] 1.2 Delete index component directory
     - Remove directory: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/`
     - Remove all files: `__init__.py`, `stories.py`, and any other files
-  - [ ] 1.3 Search for and remove test files referencing IndexView
+  - [x] 1.3 Search for and remove test files referencing IndexView
     - Search for test files containing "IndexView" or "index_view"
     - Remove identified test files
-  - [ ] 1.4 Search for imports and references to IndexView
+  - [x] 1.4 Search for imports and references to IndexView
     - Check `__init__.py` files for IndexView exports
     - Check other modules for IndexView imports
     - Remove any references found
@@ -37,11 +37,11 @@ Estimated Time: 2-3 hours
 #### Task Group 2: Create SiteView Component
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Implement SiteView component
-  - [ ] 2.1 Create views directory if needed
+- [x] 2.0 Implement SiteView component
+  - [x] 2.1 Create views directory if needed
     - Check if `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/` exists
     - Create directory if needed with `__init__.py`
-  - [ ] 2.2 Write 2-8 focused tests for SiteView component
+  - [x] 2.2 Write 2-8 focused tests for SiteView component
     - Limit to 2-8 highly focused tests maximum
     - Test file: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_site_view.py`
     - Test SiteView returns a Node when called
@@ -53,7 +53,7 @@ Estimated Time: 2-3 hours
     - Test URL generation follows `/section/{section_name}` pattern
     - Use aria_testing helpers for DOM assertions (get_by_tag_name, query_all_by_tag_name, get_text_content)
     - Follow pattern from existing test: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py`
-  - [ ] 2.3 Implement SiteView dataclass
+  - [x] 2.3 Implement SiteView dataclass
     - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/site_view.py`
     - Import: `from dataclasses import dataclass`
     - Import: `from tdom import html, Node`
@@ -61,11 +61,11 @@ Estimated Time: 2-3 hours
     - Use `@dataclass` decorator
     - Add `site: Site` parameter
     - Follow pattern from SectionsListing and ComponentView
-  - [ ] 2.4 Implement `__call__` method
+  - [x] 2.4 Implement `__call__` method
     - Return type: `Node` from tdom
     - Use tdom html templating with t-strings
     - Render sections in insertion order from `site.items.items()`
-  - [ ] 2.5 Build section listing with required information
+  - [x] 2.5 Build section listing with required information
     - Use `<ul>` structure with `<li>` elements
     - For each section display:
       - Title (wrapped in `<a>` tag)
@@ -73,11 +73,11 @@ Estimated Time: 2-3 hours
       - Description (only if `section.description` is not None)
       - Subject count: `len(section.items)` formatted as "(X subjects)"
     - Handle empty site case (no sections)
-  - [ ] 2.6 Apply modern Python type hints
+  - [x] 2.6 Apply modern Python type hints
     - Use PEP 604 syntax: `str | None` instead of `Optional[str]`
     - Use built-in generics: `dict[str, Section]`
     - Ensure Python 3.14+ compatibility
-  - [ ] 2.7 Run component tests only
+  - [x] 2.7 Run component tests only
     - Run ONLY the 2-8 tests written in 2.2
     - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_site_view.py -v`
     - Verify all component tests pass
@@ -99,26 +99,26 @@ Estimated Time: 2-3 hours
 #### Task Group 3: Testing and Quality Checks
 **Dependencies:** Task Group 2
 
-- [ ] 3.0 Run comprehensive quality checks
-  - [ ] 3.1 Run full test suite
+- [x] 3.0 Run comprehensive quality checks
+  - [x] 3.1 Run full test suite
     - Command: `just test`
     - Verify all tests pass including new SiteView tests
     - Verify no broken tests from IndexView removal
-  - [ ] 3.2 Run type checking
+  - [x] 3.2 Run type checking
     - Command: `just typecheck`
     - Verify no type errors in SiteView implementation
     - Verify modern type hints are recognized correctly
-  - [ ] 3.3 Run code formatting
+  - [x] 3.3 Run code formatting
     - Command: `just fmt`
     - Verify code follows project style guidelines
     - Auto-format if needed
-  - [ ] 3.4 Manual verification checklist
-    - [ ] Verify SiteView works with empty Site
-    - [ ] Verify sections appear in insertion order
-    - [ ] Verify subject counts are accurate
-    - [ ] Verify descriptions appear/disappear based on presence
-    - [ ] Verify URLs follow `/section/{section_name}` pattern
-    - [ ] Verify no IndexView references remain in codebase
+  - [x] 3.4 Manual verification checklist
+    - [x] Verify SiteView works with empty Site
+    - [x] Verify sections appear in insertion order
+    - [x] Verify subject counts are accurate
+    - [x] Verify descriptions appear/disappear based on presence
+    - [x] Verify URLs follow `/section/{section_name}` pattern
+    - [x] Verify no IndexView references remain in codebase
 
 **Acceptance Criteria:**
 - `just test` passes with all tests

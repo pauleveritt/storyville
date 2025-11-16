@@ -14,7 +14,11 @@ class SiteView:
 
     The view renders:
     - Site title in h1
-    - List of section cards (title + link) or empty state message
+    - List of section cards with:
+      - Section title as a link
+      - Section description (if present)
+      - Subject count
+    - Empty state message when no sections
 
     The view does NOT render a parent link since Site is the root node.
     The view satisfies the View Protocol by implementing __call__() -> Node.
@@ -37,9 +41,29 @@ class SiteView:
             # Build section cards as a list - create individual li elements
             section_items = []
             for key, section in self.site.items.items():
-                # Use section title for link text and key-based URL
-                section_url = key
-                section_items.append(html(t"<li><a href=\"{section_url}\">{section.title}</a></li>"))
+                # Use section title for link text and /section/{key} URL pattern
+                section_url = f"/section/{key}"
+
+                # Calculate subject count
+                subject_count = len(section.items)
+                subject_text = "subject" if subject_count == 1 else "subjects"
+                count_display = f"({subject_count} {subject_text})"
+
+                # Build the section item with optional description
+                if section.description is not None:
+                    section_items.append(html(t"""
+<li>
+  <a href=\"{section_url}\">{section.title}</a>
+  <p>{section.description}</p>
+  <span>{count_display}</span>
+</li>"""))
+                else:
+                    section_items.append(html(t"""
+<li>
+  <a href=\"{section_url}\">{section.title}</a>
+  <span>{count_display}</span>
+</li>"""))
+
             content = html(t"<ul>{section_items}</ul>")
 
         return html(t"""<div>

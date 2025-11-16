@@ -4,7 +4,7 @@
 from pathlib import Path
 from shutil import copytree
 
-from storytime.views.index_view import IndexView
+from storytime.site.views import SiteView
 from storytime.stories import make_site
 
 
@@ -15,8 +15,8 @@ def build_site(package_location: str, output_dir: Path) -> None:
     site = make_site(package_location=package_location)
 
     # Handle the index page
-    index_view = IndexView()
-    index_html = index_view()
+    site_view = SiteView(site=site)
+    index_html = site_view()
     with open(output_dir / "index.html", "w") as f:
         index_output = str(index_html)
         f.write(index_output)

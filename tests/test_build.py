@@ -29,12 +29,12 @@ def get_page(page_path: Path) -> Node:
 
 
 def test_index(output_dir: Path) -> None:
-    """Render the index page."""
+    """Render the index page with site title."""
 
     page = get_page(output_dir / "index.html")
-    expected = "Welcome to Storytime. Choose a component on the left."
-    p = get_by_tag_name(page, "p")
-    assert get_text_content(p) == expected
+    # SiteView renders the site title in h1
+    h1 = get_by_tag_name(page, "h1")
+    assert get_text_content(h1) == "Storytime UI"
 
 
 def test_static_css(output_dir: Path) -> None:
