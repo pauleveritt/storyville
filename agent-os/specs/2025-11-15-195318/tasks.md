@@ -97,8 +97,8 @@ This refactoring extracts Site into its own package following the existing patte
 #### Task Group 3: Extract Helper Functions
 **Dependencies:** Task Group 1, Task Group 2
 
-- [ ] 3.0 Extract and test helper functions
-  - [ ] 3.1 Write 2-8 focused tests for helpers
+- [x] 3.0 Extract and test helper functions
+  - [x] 3.1 Write 2-8 focused tests for helpers
     - Test make_site() creates populated Site with sections and subjects
     - Test make_site() handles parent/child relationships correctly
     - Test find_path() finds Site (root ".")
@@ -107,22 +107,22 @@ This refactoring extracts Site into its own package following the existing patte
     - Test find_path() returns None for nonexistent paths
     - Limit to 2-8 highly focused tests maximum
     - Reuse assertions from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py`
-  - [ ] 3.2 Extract make_site() to helpers.py
+  - [x] 3.2 Extract make_site() to helpers.py
     - Move make_site() function from `site.py` (lines 75-136) to `site/helpers.py`
     - Signature: `def make_site(package_location: str) -> Site`
     - Preserve exact logic and behavior
     - Update imports within helpers.py (TreeNode, Section, Subject)
     - Use relative imports: `from storytime.site.models import Site`
-  - [ ] 3.3 Extract find_path() to helpers.py
+  - [x] 3.3 Extract find_path() to helpers.py
     - Convert Site.find_path() method to standalone function
     - Signature: `def find_path(site: Site, path: str) -> Site | Section | Subject | Story | None`
     - Move logic from `site.py` lines 64-72
     - Preserve exact traversal logic
     - Add TYPE_CHECKING imports for return types
-  - [ ] 3.4 Export helpers from __init__.py
+  - [x] 3.4 Export helpers from __init__.py
     - Add: `from storytime.site.helpers import make_site, find_path`
     - Update `__all__` to: `["Site", "SiteView", "make_site", "find_path"]`
-  - [ ] 3.5 Ensure helper tests pass
+  - [x] 3.5 Ensure helper tests pass
     - Run ONLY the 2-8 tests written in 3.1
     - Verify make_site() builds complete tree
     - Verify find_path() traverses correctly

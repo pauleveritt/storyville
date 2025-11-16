@@ -8,8 +8,6 @@ from storytime.nodes import BaseNode
 
 if TYPE_CHECKING:
     from storytime.section import Section
-    from storytime.story import Story
-    from storytime.subject import Subject
 
 
 @dataclass()
@@ -36,7 +34,7 @@ class Site(BaseNode["Site"]):
         self,
         parent: BaseNode["Site"] | None,
         tree_node: object,
-    ) -> Site:
+    ) -> "Site":
         """The parent calls this after construction.
 
         We do this as a convenience, so authors don't have to put a bunch
@@ -56,19 +54,3 @@ class Site(BaseNode["Site"]):
         if self.title is None:
             self.title = self.package_path
         return self
-
-    def find_path(self, path: str) -> "Site | Section | Subject | Story | None":
-        """Given a dotted path, traverse to the object.
-
-        Temporary method - will be converted to standalone function in Task Group 3.
-        """
-        from storytime.section import Section  # noqa: F401
-        from storytime.story import Story  # noqa: F401
-        from storytime.subject import Subject  # noqa: F401
-
-        current: Site | Section | Subject | Story | None = self
-        segments = path.split(".")[1:]
-        for segment in segments:
-            if current is not None:
-                current = current.items.get(segment)  # type: ignore[attr-defined, assignment]
-        return current

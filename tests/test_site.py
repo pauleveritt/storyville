@@ -1,7 +1,7 @@
 """Test the Site class and make_site function."""
 
 from storytime.section import Section
-from storytime.site import Site, make_site
+from storytime.site import Site, find_path, make_site
 from storytime.subject import Subject
 
 
@@ -30,7 +30,7 @@ def test_site_find_path_root() -> None:
     site = Site(title="My Site")
     # Empty path after splitting (e.g., ".") returns None since no segments to traverse
     # The find_path implementation splits on "." and skips first element
-    result = site.find_path(".")
+    result = find_path(site, ".")
     # After split(".")[1:] we get [] which means current stays as site but loop doesn't run
     # So we actually get site back
     assert result == site or result is None  # Implementation detail
@@ -42,7 +42,7 @@ def test_site_find_path_section() -> None:
     site = Site(title="My Site")
     site.items["components"] = section
 
-    result = site.find_path(".components")
+    result = find_path(site, ".components")
     assert result is section
 
 
@@ -54,14 +54,14 @@ def test_site_find_path_subject() -> None:
     site = Site(title="My Site")
     site.items["components"] = section
 
-    result = site.find_path(".components.heading")
+    result = find_path(site, ".components.heading")
     assert result is subject
 
 
 def test_site_find_path_not_found() -> None:
     """Test Site find_path returns None for nonexistent path."""
     site = Site(title="My Site")
-    result = site.find_path(".nonexistent")
+    result = find_path(site, ".nonexistent")
     assert result is None
 
 
@@ -78,7 +78,7 @@ def test_make_site() -> None:
     assert components.name == "components"
     assert components.package_path == ".components"
     assert components.title == "Components"
-    found_components = site.find_path(".components")
+    found_components = find_path(site, ".components")
     if found_components:
         assert found_components.title == "Components"
 
@@ -87,7 +87,7 @@ def test_make_site() -> None:
     assert heading.name == "heading"
     assert heading.package_path == ".components.heading"
     assert heading.title == "Heading"
-    found_heading = site.find_path(".components.heading")
+    found_heading = find_path(site, ".components.heading")
     if found_heading:
         assert found_heading.title == "Heading"
 
