@@ -18,7 +18,8 @@ dependencies = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["src", "tests"]
+python_files = ["*_test.py", "test_*.py"]
 addopts = "-p no:doctest"
 
 [tool.uv.sources]
