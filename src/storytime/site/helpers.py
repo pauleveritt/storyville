@@ -70,7 +70,7 @@ def make_site(package_location: str) -> Site:
             if isinstance(parent, Section):
                 subject.post_update(parent=parent, tree_node=tree_node)
                 parent.items[subject.name] = subject
-            for story in subject.stories:
+            for story in subject.items:
                 story.post_update(subject)
 
     return site

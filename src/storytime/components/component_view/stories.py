@@ -6,7 +6,7 @@ from ... import Story
 def these_stories() -> Subject:
     return Subject(
         title="Component View",
-        stories=[
+        items=[
             Story(
                 target=ComponentView,
             )

@@ -38,7 +38,7 @@ def test_subject_view_renders_story_cards() -> None:
     story2 = Story(title="Secondary Button", props={"variant": "secondary"})
     story2.post_update(parent=subject)
 
-    subject.stories = [story1, story2]
+    subject.items = [story1, story2]
 
     view = SubjectView(subject=subject)
     result = view()

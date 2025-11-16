@@ -35,7 +35,7 @@ class SubjectView:
             target_name = getattr(self.subject.target, "__name__", str(type(self.subject.target).__name__))
 
         # Render stories or empty state
-        if not self.subject.stories:
+        if not self.subject.items:
             # Empty state
             return html(t"""<div>
 <h1>{self.subject.title}</h1>
@@ -46,7 +46,7 @@ class SubjectView:
         else:
             # Build story cards as a list - create individual li elements
             story_items = []
-            for idx, story in enumerate(self.subject.stories):
+            for idx, story in enumerate(self.subject.items):
                 # Use story title for link text and simple URL
                 story_url = f"story-{idx}"
                 story_items.append(html(t"<li><a href=\"{story_url}\">{story.title}</a></li>"))

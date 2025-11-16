@@ -13,7 +13,7 @@ def test_subject_initialization() -> None:
     assert subject.title == "Heading"
     assert subject.parent is None
     assert subject.target is None
-    assert subject.stories == []
+    assert subject.items == []
 
 
 def test_subject_with_parent() -> None:
@@ -38,11 +38,11 @@ def test_subject_with_stories() -> None:
     """Test Subject with stories."""
     story1 = Story(title="Default")
     story2 = Story(title="With Props")
-    subject = Subject(title="Heading", stories=[story1, story2])
+    subject = Subject(title="Heading", items=[story1, story2])
 
-    assert len(subject.stories) == 2
-    assert subject.stories[0] is story1
-    assert subject.stories[1] is story2
+    assert len(subject.items) == 2
+    assert subject.items[0] is story1
+    assert subject.items[1] is story2
 
 
 def test_story_inherits_target_from_subject() -> None:

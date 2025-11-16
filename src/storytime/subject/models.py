@@ -17,4 +17,4 @@ class Subject(BaseNode["Subject"]):
 
     parent: Section | None = None
     target: Target | None = None
-    stories: list[Story] = field(default_factory=list)
+    items: list[Story] = field(default_factory=list)

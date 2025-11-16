@@ -21,12 +21,24 @@ def test_make_site_parent_child_relationships() -> None:
     """Test make_site() handles parent/child relationships correctly."""
     site = make_site("examples.minimal")
 
+    # Check site attributes
+    assert site.name == ""
+    assert site.parent is None
+    assert site.package_path == "."
+    assert site.title == "Minimal Site"
+
     # Check section parent relationship
     components = site.items["components"]
     assert isinstance(components, Section)
     assert components.parent is site
     assert components.name == "components"
     assert components.package_path == ".components"
+    assert components.title == "Components"
+
+    # Verify find_path works for section
+    found_components = find_path(site, ".components")
+    if found_components:
+        assert found_components.title == "Components"
 
     # Check subject parent relationship
     heading = components.items["heading"]
@@ -34,6 +46,16 @@ def test_make_site_parent_child_relationships() -> None:
     assert heading.parent is components
     assert heading.name == "heading"
     assert heading.package_path == ".components.heading"
+    assert heading.title == "Heading"
+
+    # Verify find_path works for subject
+    found_heading = find_path(site, ".components.heading")
+    if found_heading:
+        assert found_heading.title == "Heading"
+
+    # Verify static_dir is detected
+    assert site.static_dir is not None
+    assert site.static_dir.is_dir()
 
 
 def test_find_path_finds_site() -> None:
@@ -77,3 +99,12 @@ def test_find_path_returns_none_for_nonexistent() -> None:
 
     result = find_path(site, ".components.nonexistent")
     assert result is None
+
+
+def test_make_site_stories() -> None:
+    """Test accessing stories through make_site() constructed tree."""
+    site = make_site("examples.minimal")
+    heading = site.items["components"].items["heading"]
+    stories = heading.items
+    first_story = stories[0]
+    assert first_story.title == "Heading Story"

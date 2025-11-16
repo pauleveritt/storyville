@@ -15,5 +15,5 @@ def test_minimal() -> None:
     site = make_site("examples.minimal")
     section = site.items["components"]
     subject = section.items["heading"]
-    story = subject.stories[0]
+    story = subject.items[0]
     assert story.title == "Heading Story"

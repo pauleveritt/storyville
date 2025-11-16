@@ -15,7 +15,7 @@
 5. [ ] Story-to-Test Integration — Create pytest helpers and fixtures that allow stories to be used directly in tests,
    enabling render verification, snapshot testing, and behavioral assertions. `M`
 
-6. [ ] Component Organization System — Finalize the hierarchical structure (Site → Section → Subject → Story) with
+6. [x] Component Organization System — Finalize the hierarchical structure (Site → Section → Subject → Story) with
    automatic discovery, navigation, and clear separation of concerns. `S`
 
 7. [ ] CLI and Development Workflow — Build the command-line interface for starting the development server, running

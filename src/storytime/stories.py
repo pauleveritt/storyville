@@ -15,5 +15,5 @@ def test_storytime_ui() -> None:
     site = make_site("storytime")
     section = site.items["components"]
     subject = section.items["index"]
-    story = subject.stories[0]
+    story = subject.items[0]
     assert story.title == "Index Page Story"

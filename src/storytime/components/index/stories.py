@@ -9,7 +9,7 @@ def this_subject() -> Subject:
     """Let's make a Storytime subject for this Index component."""
     return Subject(
         title="Index Page",
-        stories=[
+        items=[
             Story(template=lambda: html(t"<div>Index Page, bazinga</div>")),
         ],
     )

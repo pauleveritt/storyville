@@ -140,30 +140,30 @@ This refactoring extracts Site into its own package following the existing patte
 #### Task Group 4: Refactor Subject.stories → Subject.items
 **Dependencies:** Task Group 3 (so helpers.py uses .items)
 
-- [ ] 4.0 Standardize to .items naming convention
-  - [ ] 4.1 Write 2-8 focused tests for Subject.items
+- [x] 4.0 Standardize to .items naming convention
+  - [x] 4.1 Write 2-8 focused tests for Subject.items
     - Test Subject.items field is list[Story]
     - Test Subject.items defaults to empty list
     - Test Subject.items can be populated with Story instances
     - Test SubjectView renders Subject.items correctly
     - Limit to 2-8 highly focused tests maximum
     - Update assertions from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
-  - [ ] 4.2 Update Subject model
+  - [x] 4.2 Update Subject model
     - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
     - Change field from `stories: list[Story]` to `items: list[Story]`
     - Line 20: `stories: list[Story]` → `items: list[Story]`
-  - [ ] 4.3 Update SubjectView references
+  - [x] 4.3 Update SubjectView references
     - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
     - Line 38: Change `if not self.subject.stories:` → `if not self.subject.items:`
     - Line 49: Change `for idx, story in enumerate(self.subject.stories):` → `for idx, story in enumerate(self.subject.items):`
-  - [ ] 4.4 Update site/helpers.py reference
+  - [x] 4.4 Update site/helpers.py reference
     - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/helpers.py`
-    - Find line with `for story in subject.stories:` (around line 133 in original)
+    - Find line with `for story in subject.stories:` (around line 73)
     - Change to: `for story in subject.items:`
-  - [ ] 4.5 Update stories.py reference
+  - [x] 4.5 Update stories.py reference
     - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/stories.py`
     - Line 18: Change `story = subject.stories[0]` → `story = subject.items[0]`
-  - [ ] 4.6 Update all test files
+  - [x] 4.6 Update all test files
     - Update `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
       - Change all `subject.stories` references to `subject.items`
       - Lines to update: assertions checking `.stories` field
@@ -172,7 +172,17 @@ This refactoring extracts Site into its own package following the existing patte
     - Update `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py`
       - Line 102: Change `stories = heading.stories` → `stories = heading.items`
       - Line 103: Keep reference to `stories` variable (no change)
-  - [ ] 4.7 Ensure Subject.items tests pass
+    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/examples/minimal/components/heading/stories.py`
+      - Change `stories=[Story()]` → `items=[Story()]`
+    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/stories.py`
+      - Change `stories=[...]` → `items=[...]`
+    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/component_view/stories.py`
+      - Change `stories=[...]` → `items=[...]`
+    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/examples/minimal/stories.py`
+      - Change `subject.stories[0]` → `subject.items[0]`
+    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py` (old file, to be deleted in Task 5)
+      - Change `subject.stories` → `subject.items` for consistency during transition
+  - [x] 4.7 Ensure Subject.items tests pass
     - Run ONLY the tests written in 4.1 and updated Subject-related tests
     - Verify Subject.items field works correctly
     - Verify SubjectView renders items correctly
@@ -190,8 +200,8 @@ This refactoring extracts Site into its own package following the existing patte
 #### Task Group 5: Clean Up and Integration Testing
 **Dependencies:** Task Groups 1-4
 
-- [ ] 5.0 Complete migration and verify all tests pass
-  - [ ] 5.1 Update import statements throughout codebase
+- [x] 5.0 Complete migration and verify all tests pass
+  - [x] 5.1 Update import statements throughout codebase
     - Find all files importing from `storytime.site import Site, make_site`
     - Verify imports still work (import path unchanged, now from package)
     - Update any `site.find_path(path)` calls to `find_path(site, path)`
@@ -199,21 +209,21 @@ This refactoring extracts Site into its own package following the existing patte
       - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/stories.py` (line 3)
       - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py` (line 4)
       - Any other files importing Site or make_site
-  - [ ] 5.2 Delete old site.py file
+  - [x] 5.2 Delete old site.py file
     - Remove `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py`
     - Verify all code has been migrated to site/ package
-  - [ ] 5.3 Run complete test suite
+  - [x] 5.3 Run complete test suite
     - Run: `just test`
     - All tests must pass
     - Expected test count: approximately 20-40 feature tests plus integration tests
-  - [ ] 5.4 Run type checking
+  - [x] 5.4 Run type checking
     - Run: `just typecheck`
     - No type errors allowed
     - Verify all type hints use modern syntax (PEP 604: `X | Y`)
-  - [ ] 5.5 Run formatting
+  - [x] 5.5 Run formatting
     - Run: `just fmt`
     - Ensure code follows project formatting standards
-  - [ ] 5.6 Final verification
+  - [x] 5.6 Final verification
     - Verify Site package follows same pattern as section/, subject/, story/
     - Verify all node types use .items for child collections
     - Verify make_site() and find_path() work as standalone helpers
