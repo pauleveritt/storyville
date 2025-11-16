@@ -35,12 +35,12 @@ This breakdown implements comprehensive examples demonstrating all Story variati
 #### Task Group 2: Update No Sections Example
 **Dependencies:** None
 
-- [ ] 2.0 Update no_sections example with documentation
-  - [ ] 2.1 Verify no_sections structure
+- [x] 2.0 Update no_sections example with documentation
+  - [x] 2.1 Verify no_sections structure
     - Confirm Subject is directly under Site (no Section in tree)
     - Verify `examples/no_sections/components/stories.py` exists
     - Check that hierarchy is Site → Subject (no Section layer)
-  - [ ] 2.2 Create `examples/no_sections/README.md`
+  - [x] 2.2 Create `examples/no_sections/README.md`
     - Overview: "Demonstrates that Sections are optional in the hierarchy"
     - Structure: Site directly contains Subject without Section layer
     - Key Features: Flat structure, direct Site-to-Subject relationship
