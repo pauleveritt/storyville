@@ -11,8 +11,8 @@ This refactoring extracts Site into its own package following the existing patte
 #### Task Group 1: Create Site Package Structure
 **Dependencies:** None
 
-- [ ] 1.0 Create site package structure
-  - [ ] 1.1 Write 2-8 focused tests for Site model functionality
+- [x] 1.0 Create site package structure
+  - [x] 1.1 Write 2-8 focused tests for Site model functionality
     - Test Site instantiation with BaseNode["Site"] inheritance
     - Test Site.items dict field (dict[str, Section])
     - Test Site.post_update() method (parent assignment, name, package_path, title logic)
@@ -20,13 +20,13 @@ This refactoring extracts Site into its own package following the existing patte
     - Test Site has no parent (parent is None)
     - Limit to 2-8 highly focused tests maximum
     - Reuse pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_models.py`
-  - [ ] 1.2 Create directory structure
+  - [x] 1.2 Create directory structure
     - Create `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/` directory
     - Create empty `__init__.py`
     - Create empty `models.py`
     - Create empty `views.py`
     - Create empty `helpers.py`
-  - [ ] 1.3 Implement Site model in models.py
+  - [x] 1.3 Implement Site model in models.py
     - Move Site class from `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py` to `site/models.py`
     - Change from standalone dataclass to inherit from `BaseNode["Site"]`
     - Keep fields: `name`, `parent: None`, `title`, `context`, `package_path`, `items: dict[str, Section]`, `static_dir: Path | None`
@@ -35,11 +35,11 @@ This refactoring extracts Site into its own package following the existing patte
     - Remove `find_path()` method (will become standalone helper)
     - Add TYPE_CHECKING imports for Section
     - Follow exact pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`
-  - [ ] 1.4 Export Site from __init__.py
+  - [x] 1.4 Export Site from __init__.py
     - Add: `from storytime.site.models import Site`
     - Create `__all__ = ["Site"]` list (will add more exports later)
     - Follow pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/__init__.py`
-  - [ ] 1.5 Ensure Site model tests pass
+  - [x] 1.5 Ensure Site model tests pass
     - Run ONLY the 2-8 tests written in 1.1
     - Verify Site inherits from BaseNode correctly
     - Verify static_dir detection works
