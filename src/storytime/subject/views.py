@@ -40,13 +40,16 @@ class SubjectView:
 
         # Render stories or empty state
         if not self.subject.items:
-            # Empty state
-            view_content = html(t"""<div>
+            # Empty state - wrapped with Layout (depth=2 for subject pages)
+            view_content = html(t"""\
+<{Layout} view_title={self.subject.title} site={self.site} depth={2}>
+<div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>
 <p>No stories defined for this component</p>
 <a href="..">Parent</a>
-</div>""")
+</div>
+</{Layout}>""")
         else:
             # Build story cards as a list - create individual li elements
             story_items = []
@@ -55,16 +58,17 @@ class SubjectView:
                 story_url = f"story-{idx}"
                 story_items.append(html(t"<li><a href=\"{story_url}\">{story.title}</a></li>"))
 
-            # Create the main div and interpolate the ul with story items
-            view_content = html(t"""<div>
+            # Create the main content wrapped with Layout (depth=2 for subject pages)
+            view_content = html(t"""\
+<{Layout} view_title={self.subject.title} site={self.site} depth={2}>
+<div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>
 <ul>
 {story_items}
 </ul>
 <a href="..">Parent</a>
-</div>""")
+</div>
+</{Layout}>""")
 
-        # Wrap with Layout (depth=2 for subject pages)
-        layout = Layout(view_title=self.subject.title, site=self.site, children=view_content, depth=2)
-        return layout()
+        return view_content

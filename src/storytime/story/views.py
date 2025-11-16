@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 from tdom import Node, html
 
+from storytime.components.layout import Layout
+from storytime.site.models import Site
 from storytime.story.models import Story
 
 
@@ -20,6 +22,7 @@ class StoryView:
     """
 
     story: Story
+    site: Site
 
     def __call__(self) -> Node:
         """Render the story to a tdom Node.
@@ -31,12 +34,15 @@ class StoryView:
         if self.story.template is not None:
             return self.story.template()
 
-        # Mode B: Default layout rendering
-        return html(t"""<div>
+        # Mode B: Default layout rendering wrapped with Layout (depth=3 for story pages)
+        return html(t"""\
+<{Layout} view_title={self.story.title} site={self.site} depth={3}>
+<div>
 <h1>{self.story.title}</h1>
 <p>Props: <code>{str(self.story.props)}</code></p>
 <div>
 {self.story.instance}
 </div>
 <a href="..">Parent</a>
-</div>""")
+</div>
+</{Layout}>""")

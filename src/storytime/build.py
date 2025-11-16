@@ -83,7 +83,7 @@ def build_site(package_location: str, output_dir: Path) -> None:
                 story_dir.mkdir(parents=True, exist_ok=True)
 
                 # Render story index page
-                story_view = StoryView(story=story)
+                story_view = StoryView(story=story, site=site)
                 story_html = story_view()
                 with open(story_dir / "index.html", "w") as f:
                     story_output = str(story_html)

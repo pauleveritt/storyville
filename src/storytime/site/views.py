@@ -1,12 +1,11 @@
 """SiteView for rendering Site instances."""
 
-
 from dataclasses import dataclass
 
 from tdom import Node, html
 
-from storytime.site.models import Site
 from storytime.components.layout import Layout
+from storytime.site.models import Site
 
 
 @dataclass
@@ -52,27 +51,32 @@ class SiteView:
 
                 # Build the section item with optional description
                 if section.description is not None:
-                    section_items.append(html(t"""
+                    section_items.append(
+                        html(t"""
 <li>
   <a href=\"{section_url}\">{section.title}</a>
   <p>{section.description}</p>
   <span>{count_display}</span>
-</li>"""))
+</li>""")
+                    )
                 else:
-                    section_items.append(html(t"""
+                    section_items.append(
+                        html(t"""
 <li>
   <a href=\"{section_url}\">{section.title}</a>
   <span>{count_display}</span>
-</li>"""))
+</li>""")
+                    )
 
             content = html(t"<ul>{section_items}</ul>")
 
         # Create the main content for this view
-        view_content = html(t"""<div>
+        view_content = html(t"""\
+<{Layout} view_title="Home" site={self.site} depth={0}>
+<div>
 <h1>{self.site.title}</h1>
 {content}
-</div>""")
+</div>
+</{Layout}>""")
 
-        # Wrap with Layout (depth=0 for site root)
-        layout = Layout(view_title="Home", site=self.site, children=view_content, depth=0)
-        return layout()
+        return view_content
