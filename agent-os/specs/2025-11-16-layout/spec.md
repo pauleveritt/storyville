@@ -88,6 +88,12 @@ configurable page titles and content insertion via a main element.
 - Sidebar menu shows sections using existing SectionsListing component
 - Views maintain their existing internal links (parent links, section links, etc.)
 
+**Testing Requirements**
+
+- Test that static asset paths (e.g., in `<link>` or `<img>` tags) in rendered pages point to valid destinations in `static` directory
+- Verify that stylesheet links resolve correctly from pages at different path depths
+- Ensure asset path resolution works for both site root pages and nested section/subject pages
+
 ## Visual Design
 
 No visual mockups provided.
