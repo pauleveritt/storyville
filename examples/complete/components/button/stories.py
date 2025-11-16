@@ -1,6 +1,5 @@
 """The subject for the Button component."""
 
-from __future__ import annotations
 
 from examples.complete.components.button.button import Button
 from storytime import Story, Subject

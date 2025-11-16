@@ -1,6 +1,5 @@
 """Stories for the Card component demonstrating field inheritance."""
 
-from __future__ import annotations
 
 from examples.inheritance.components.card.badge import Badge
 from examples.inheritance.components.card.card import Card

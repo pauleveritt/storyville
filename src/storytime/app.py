@@ -1,6 +1,5 @@
 """Starlette app."""
 
-from __future__ import annotations
 
 import asyncio
 from concurrent.futures import ProcessPoolExecutor

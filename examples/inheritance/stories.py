@@ -1,6 +1,5 @@
 """Site for the inheritance example."""
 
-from __future__ import annotations
 
 from storytime import Site
 

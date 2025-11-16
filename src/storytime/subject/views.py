@@ -1,6 +1,5 @@
 """SubjectView for rendering Subject instances."""
 
-from __future__ import annotations
 
 from dataclasses import dataclass
 

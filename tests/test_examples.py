@@ -1,6 +1,5 @@
 """Integrate example testing into the main suite."""
 
-from __future__ import annotations
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import Element

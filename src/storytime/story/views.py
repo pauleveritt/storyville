@@ -1,7 +1,5 @@
 """StoryView for rendering Story instances with dual modes."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from tdom import Node, html

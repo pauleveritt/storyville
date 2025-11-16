@@ -1,6 +1,5 @@
 """The subject for this Alert component."""
 
-from __future__ import annotations
 
 from tdom import Node, html
 

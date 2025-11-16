@@ -1,6 +1,5 @@
 """The Site for the complete example package."""
 
-from __future__ import annotations
 
 from storytime import Site
 

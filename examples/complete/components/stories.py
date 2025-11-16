@@ -1,6 +1,5 @@
 """The Components section for the complete example."""
 
-from __future__ import annotations
 
 from storytime import Section
 

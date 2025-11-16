@@ -1,6 +1,5 @@
 """The subject for this Heading component."""
 
-from __future__ import annotations
 
 from examples.minimal.components.heading.heading import Heading
 from storytime import Story, Subject
