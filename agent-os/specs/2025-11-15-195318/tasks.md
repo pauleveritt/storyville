@@ -57,8 +57,8 @@ This refactoring extracts Site into its own package following the existing patte
 #### Task Group 2: Implement SiteView
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Implement SiteView class
-  - [ ] 2.1 Write 2-8 focused tests for SiteView
+- [x] 2.0 Implement SiteView class
+  - [x] 2.1 Write 2-8 focused tests for SiteView
     - Test SiteView renders site title in h1
     - Test SiteView lists sections as links when sections exist
     - Test SiteView shows empty state when no sections
@@ -66,7 +66,7 @@ This refactoring extracts Site into its own package following the existing patte
     - Test SiteView satisfies View Protocol (__call__() -> Node)
     - Limit to 2-8 highly focused tests maximum
     - Reuse pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py`
-  - [ ] 2.2 Create SiteView class in views.py
+  - [x] 2.2 Create SiteView class in views.py
     - Create dataclass with `site: Site` field
     - Implement `__call__(self) -> Node` method
     - Render site title in h1
@@ -75,10 +75,10 @@ This refactoring extracts Site into its own package following the existing patte
     - Do NOT include parent link (Site has no parent)
     - Use tdom html() with t-strings for template interpolation
     - Follow exact pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
-  - [ ] 2.3 Export SiteView from __init__.py
+  - [x] 2.3 Export SiteView from __init__.py
     - Add: `from storytime.site.views import SiteView`
     - Update `__all__` to include "SiteView"
-  - [ ] 2.4 Ensure SiteView tests pass
+  - [x] 2.4 Ensure SiteView tests pass
     - Run ONLY the 2-8 tests written in 2.1
     - Verify rendering with sections works
     - Verify empty state works

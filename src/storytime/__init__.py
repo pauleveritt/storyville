@@ -9,7 +9,7 @@ from pathlib import Path
 
 from storytime.nodes import BaseNode, TreeNode
 from storytime.section import Section
-from storytime.site import Site, make_site
+from storytime.site import Site
 from storytime.story import Story
 from storytime.subject import Subject
 from storytime.utils import get_certain_callable
@@ -25,5 +25,4 @@ __all__ = [
     "Subject",
     "TreeNode",
     "get_certain_callable",
-    "make_site",
 ]
