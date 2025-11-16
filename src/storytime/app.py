@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
-from contextlib import AbstractAsyncContextManager, asynccontextmanager
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable
 
@@ -39,12 +40,11 @@ class RebuildServer:
         self.should_exit = asyncio.Event()
 
     @asynccontextmanager
-    async def lifespan(self, _app) -> AbstractAsyncContextManager[None]:
+    async def lifespan(self, _app) -> AsyncIterator[None]:
         task = asyncio.create_task(self.main())
         yield
         self.should_exit.set()
         await task
-        return
 
     async def main(self) -> None:
         tasks = (

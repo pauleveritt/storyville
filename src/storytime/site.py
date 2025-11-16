@@ -1,7 +1,5 @@
 """Site class and site construction functionality."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path

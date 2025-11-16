@@ -10,6 +10,6 @@ def this_subject() -> Subject:
     return Subject(
         title="Index Page",
         stories=[
-            Story(template=html(t"<div>Index Page, bazinga</div>")),
+            Story(template=lambda: html(t"<div>Index Page, bazinga</div>")),
         ],
     )
