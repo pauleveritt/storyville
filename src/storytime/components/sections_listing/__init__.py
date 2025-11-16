@@ -44,7 +44,7 @@ class SectionListing:
 #         ''')
 
 
-@dataclass()
+@dataclass
 class SectionsListing:
     """Left sidebar when on the components page."""
 

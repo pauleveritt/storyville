@@ -1,7 +1,5 @@
 """Test the Story model."""
 
-from dataclasses import dataclass
-
 from tdom import Element, html
 
 from storytime.story import Story
@@ -19,15 +17,10 @@ def test_story_initialization() -> None:
 
 
 # Story Configuration Tests
-def test_story_with_component() -> None:
+def test_story_with_component(my_component) -> None:
     """Test Story with target."""
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
-    story = Story(title="Default", target=MyComponent)
-    assert story.target is MyComponent
+    story = Story(title="Default", target=my_component)
+    assert story.target is my_component
 
 
 def test_story_with_props() -> None:
@@ -47,40 +40,26 @@ def test_story_post_update_basic() -> None:
     assert story.parent is parent
 
 
-def test_story_post_update_inherits_component() -> None:
+def test_story_post_update_inherits_component(my_component) -> None:
     """Test Story post_update inherits target from parent."""
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
-    parent = Subject(title="Components", target=MyComponent)
+    parent = Subject(title="Components", target=my_component)
     parent.package_path = ".components"
 
     story = Story()
     story.post_update(parent=parent)
 
-    assert story.target is MyComponent
+    assert story.target is my_component
 
 
-def test_story_post_update_keeps_own_component() -> None:
+def test_story_post_update_keeps_own_component(parent_component, own_component) -> None:
     """Test Story post_update keeps its own target."""
-
-    @dataclass
-    class ParentComponent:
-        name: str = "parent"
-
-    @dataclass
-    class OwnComponent:
-        name: str = "own"
-
-    parent = Subject(title="Components", target=ParentComponent)
+    parent = Subject(title="Components", target=parent_component)
     parent.package_path = ".components"
 
-    story = Story(target=OwnComponent)
+    story = Story(target=own_component)
     story.post_update(parent=parent)
 
-    assert story.target is OwnComponent
+    assert story.target is own_component
 
 
 def test_story_post_update_generates_title_from_parent_title() -> None:

@@ -1,5 +1,7 @@
 """The ``Site`` for stories used for the Storytime UI itself."""
 
+from __future__ import annotations
+
 from storytime import Site, make_site
 
 

@@ -1,5 +1,7 @@
 """Site class for top-level catalog organization."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
     from storytime.section import Section
 
 
-@dataclass()
+@dataclass
 class Site(BaseNode["Site"]):
     """The top of a Storytime catalog.
 
@@ -29,28 +31,3 @@ class Site(BaseNode["Site"]):
         sd = PACKAGE_DIR / "static"
         if sd.exists():
             self.static_dir = sd
-
-    def post_update(
-        self,
-        parent: BaseNode["Site"] | None,
-        tree_node: object,
-    ) -> "Site":
-        """The parent calls this after construction.
-
-        We do this as a convenience, so authors don't have to put a bunch
-        of attributes in their stories.
-
-        Args:
-            parent: The Site that is the parent in the tree.
-            tree_node: The raw data from the scanning process.
-
-        Returns:
-            The updated Site.
-        """
-
-        self.parent = parent  # type: ignore[assignment]
-        self.name = tree_node.name  # type: ignore[attr-defined]
-        self.package_path = tree_node.this_package_location  # type: ignore[attr-defined]
-        if self.title is None:
-            self.title = self.package_path
-        return self

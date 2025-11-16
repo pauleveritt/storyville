@@ -1,7 +1,5 @@
 """Test the Subject.items field."""
 
-from dataclasses import dataclass
-
 from storytime.section import Section
 from storytime.story import Story
 from storytime.subject import Subject
@@ -51,15 +49,10 @@ def test_subject_items_with_parent() -> None:
     assert subject.items[0] is story
 
 
-def test_subject_items_with_target() -> None:
+def test_subject_items_with_target(my_component) -> None:
     """Test Subject.items works with target."""
-
-    @dataclass
-    class MyComponent:
-        name: str = "test"
-
     story = Story(title="Component Story")
-    subject = Subject(title="My Subject", target=MyComponent, items=[story])
+    subject = Subject(title="My Subject", target=my_component, items=[story])
 
-    assert subject.target is MyComponent
+    assert subject.target is my_component
     assert len(subject.items) == 1

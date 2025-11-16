@@ -5,6 +5,8 @@ You write stories as you develop components, expressing all the variations.
 You can then browse them in a web page, as well as use these stories in testing.
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 
 from storytime.nodes import BaseNode, TreeNode, get_certain_callable

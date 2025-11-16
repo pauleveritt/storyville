@@ -1,5 +1,7 @@
 """Called by the CLI main to build the site to disk."""
 
+from __future__ import annotations
+
 from pathlib import Path
 from shutil import copytree
 

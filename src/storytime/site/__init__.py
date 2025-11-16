@@ -1,5 +1,7 @@
 """Site package for top-level catalog organization."""
 
+from __future__ import annotations
+
 from storytime.site.helpers import find_path, make_site
 from storytime.site.models import Site
 from storytime.site.views import SiteView

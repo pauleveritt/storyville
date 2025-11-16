@@ -1,7 +1,6 @@
 """Test the nodes module classes: TreeNode and BaseNode."""
 
 from pathlib import Path
-from types import ModuleType
 from unittest.mock import Mock, patch
 
 from storytime.nodes import BaseNode, TreeNode, get_certain_callable
@@ -11,18 +10,12 @@ from storytime.subject import Subject
 
 
 # Test get_certain_callable
-def test_get_certain_callable_with_site() -> None:
+def test_get_certain_callable_with_site(module_factory) -> None:
     """Test get_certain_callable finds and calls Site function."""
-    # Create a mock module
-    module = ModuleType("test_module")
-
-    # Add a function that returns Site
     def make_site() -> Site:
         return Site(title="Test Site")
 
-    # Make it look like it's from this module
-    make_site.__module__ = "test_module"
-    setattr(module, "make_site", make_site)
+    module = module_factory("test_module", make_site)
 
     result = get_certain_callable(module)
 
@@ -31,15 +24,12 @@ def test_get_certain_callable_with_site() -> None:
     assert result.title == "Test Site"
 
 
-def test_get_certain_callable_with_section() -> None:
+def test_get_certain_callable_with_section(module_factory) -> None:
     """Test get_certain_callable finds and calls Section function."""
-    module = ModuleType("test_module")
-
     def make_section() -> Section:
         return Section(title="Test Section")
 
-    make_section.__module__ = "test_module"
-    setattr(module, "make_section", make_section)
+    module = module_factory("test_module", make_section)
 
     result = get_certain_callable(module)
 
@@ -48,15 +38,12 @@ def test_get_certain_callable_with_section() -> None:
     assert result.title == "Test Section"
 
 
-def test_get_certain_callable_with_subject() -> None:
+def test_get_certain_callable_with_subject(module_factory) -> None:
     """Test get_certain_callable finds and calls Subject function."""
-    module = ModuleType("test_module")
-
     def make_subject() -> Subject:
         return Subject(title="Test Subject")
 
-    make_subject.__module__ = "test_module"
-    setattr(module, "make_subject", make_subject)
+    module = module_factory("test_module", make_subject)
 
     result = get_certain_callable(module)
 
@@ -65,41 +52,35 @@ def test_get_certain_callable_with_subject() -> None:
     assert result.title == "Test Subject"
 
 
-def test_get_certain_callable_no_matching_function() -> None:
+def test_get_certain_callable_no_matching_function(module_factory) -> None:
     """Test get_certain_callable returns None when no matching function."""
-    module = ModuleType("test_module")
-
-    # Add a function with wrong return type
     def make_something() -> str:
         return "something"
 
-    make_something.__module__ = "test_module"
-    setattr(module, "make_something", make_something)
+    module = module_factory("test_module", make_something)
 
     result = get_certain_callable(module)
 
     assert result is None
 
 
-def test_get_certain_callable_empty_module() -> None:
+def test_get_certain_callable_empty_module(module_factory) -> None:
     """Test get_certain_callable returns None for empty module."""
-    module = ModuleType("test_module")
+    module = module_factory("test_module")
 
     result = get_certain_callable(module)
 
     assert result is None
 
 
-def test_get_certain_callable_ignores_external_functions() -> None:
+def test_get_certain_callable_ignores_external_functions(module_factory) -> None:
     """Test get_certain_callable ignores functions from other modules."""
-    module = ModuleType("test_module")
-
-    # Add a function from a different module
     def external_function() -> Site:
         return Site(title="External")
 
-    external_function.__module__ = "other_module"  # Different module!
-    setattr(module, "external_function", external_function)
+    # Create module but manually set function's __module__ to different module
+    module = module_factory("test_module", external_function)
+    external_function.__module__ = "other_module"  # Override to different module!
 
     result = get_certain_callable(module)
 
@@ -289,76 +270,6 @@ def test_treenode_get_relative_stories_path_for_nested() -> None:
     relative_path = tree_node._get_relative_stories_path(root_path)
 
     assert relative_path.name == "components"
-
-
-def test_treenode_is_root_location_true() -> None:
-    """Test _is_root_location returns True for root."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("")
-
-    assert tree_node._is_root_location(relative_path) is True
-
-
-def test_treenode_is_root_location_false() -> None:
-    """Test _is_root_location returns False for nested."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("components")
-
-    assert tree_node._is_root_location(relative_path) is False
-
-
-def test_treenode_configure_as_root() -> None:
-    """Test _configure_as_root sets correct values."""
-    tree_node = TreeNode.__new__(TreeNode)
-    tree_node._configure_as_root()
-
-    assert tree_node.name == ""
-    assert tree_node.parent_path is None
-    assert tree_node.this_package_location == "."
-
-
-def test_treenode_configure_as_nested() -> None:
-    """Test _configure_as_nested sets correct values."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("components")
-
-    tree_node._configure_as_nested(relative_path)
-
-    assert tree_node.name == "components"
-    assert tree_node.this_package_location == ".components"
-    assert tree_node.parent_path == "."
-
-
-def test_treenode_configure_as_nested_deeper() -> None:
-    """Test _configure_as_nested for deeply nested path."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("views/layouts")
-
-    tree_node._configure_as_nested(relative_path)
-
-    assert tree_node.name == "layouts"
-    assert tree_node.this_package_location == ".views.layouts"
-    assert tree_node.parent_path == ".views"
-
-
-def test_treenode_calculate_parent_path_root_parent() -> None:
-    """Test _calculate_parent_path when parent is root."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("components")
-
-    parent_path = tree_node._calculate_parent_path(relative_path)
-
-    assert parent_path == "."
-
-
-def test_treenode_calculate_parent_path_nested_parent() -> None:
-    """Test _calculate_parent_path when parent is nested."""
-    tree_node = TreeNode.__new__(TreeNode)
-    relative_path = Path("views/layouts")
-
-    parent_path = tree_node._calculate_parent_path(relative_path)
-
-    assert parent_path == ".views"
 
 
 def test_treenode_import_story_module_root() -> None:

@@ -1,5 +1,7 @@
 """Protocols for type-safe structural typing in Storytime."""
 
+from __future__ import annotations
+
 from typing import Callable, Protocol
 
 from tdom import Node

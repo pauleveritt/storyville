@@ -1,5 +1,7 @@
 """Site helper functions."""
 
+from __future__ import annotations
+
 from importlib import import_module
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -43,12 +45,13 @@ def make_site(package_location: str) -> Site:
     # First get the Site
     site: Site | None = None
     for tree_node in tree_nodes:
-        if isinstance(tree_node.called_instance, Site):
-            site = tree_node.called_instance
-            site.post_update(
-                parent=None,
-                tree_node=tree_node,
-            )
+        match tree_node.called_instance:
+            case Site() as found_site:
+                site = found_site
+                site.post_update(
+                    parent=None,
+                    tree_node=tree_node,
+                )
     if site is None:
         raise ValueError(
             f"No Site instance was found under package '{package_location}'. "
@@ -57,26 +60,27 @@ def make_site(package_location: str) -> Site:
 
     # Now the sections
     for tree_node in tree_nodes:
-        section = tree_node.called_instance
-        if isinstance(section, Section):
-            section.post_update(parent=site, tree_node=tree_node)
-            site.items[section.name] = section
+        match tree_node.called_instance:
+            case Section() as section:
+                section.post_update(parent=site, tree_node=tree_node)
+                site.items[section.name] = section
 
     # Now the subjects
     for tree_node in tree_nodes:
-        subject = tree_node.called_instance
-        if isinstance(subject, Subject):
-            parent = find_path(site, tree_node.parent_path)
-            if isinstance(parent, Section):
-                subject.post_update(parent=parent, tree_node=tree_node)
-                parent.items[subject.name] = subject
-            for story in subject.items:
-                story.post_update(subject)
+        match tree_node.called_instance:
+            case Subject() as subject:
+                parent = find_path(site, tree_node.parent_path)
+                match parent:
+                    case Section():
+                        subject.post_update(parent=parent, tree_node=tree_node)
+                        parent.items[subject.name] = subject
+                        for story in subject.items:
+                            story.post_update(subject)
 
     return site
 
 
-def find_path(site: Site, path: str) -> "Site | Section | Subject | Story | None":
+def find_path(site: Site, path: str) -> Site | Section | Subject | Story | None:
     """Given a dotted path, traverse to the object.
 
     Args:
@@ -86,9 +90,6 @@ def find_path(site: Site, path: str) -> "Site | Section | Subject | Story | None
     Returns:
         The found node, or None if not found.
     """
-    from storytime.section import Section  # noqa: F401
-    from storytime.story import Story  # noqa: F401
-    from storytime.subject import Subject  # noqa: F401
 
     current: Site | Section | Subject | Story | None = site
     segments = path.split(".")[1:]

@@ -1,5 +1,7 @@
 """SectionView for rendering Section instances."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from tdom import Node, html

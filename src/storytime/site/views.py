@@ -1,5 +1,7 @@
 """SiteView for rendering Site instances."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from tdom import Node, html

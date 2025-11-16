@@ -1,5 +1,7 @@
 """Section class for organizational grouping of subjects."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
     from storytime.subject import Subject
 
 
-@dataclass()
+@dataclass
 class Section(BaseNode["Section"]):
     """A grouping of subjects within a site.
 
