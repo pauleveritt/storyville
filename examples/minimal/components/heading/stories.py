@@ -10,8 +10,9 @@ def this_subject() -> Subject:
     """Let's make a Storytime subject for this Heading component."""
     return Subject(
         title="Heading",
+        description="A Heading component that says hello to a name",
         target=Heading,
         items=[
-            Story(),
+            Story(props=dict(name="World")),
         ],
     )
