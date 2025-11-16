@@ -1,6 +1,8 @@
 """The subject for this Heading component."""
-from storytime import Story
-from storytime import Subject
+
+from __future__ import annotations
+
+from storytime import Story, Subject
 
 
 def this_subject() -> Subject:

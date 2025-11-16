@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from importlib import import_module
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,13 +24,12 @@ def make_site(package_location: str) -> Site:
     Returns:
         A populated site.
     """
-    from storytime.nodes import TreeNode
+    from storytime.nodes import TreeNode, get_package_path
     from storytime.section import Section
     from storytime.subject import Subject
 
-    # Resolve the filesystem path to the package directory without casting
-    root_package = import_module(package_location)
-    root_dir = Path(root_package.__file__).parent  # type: ignore[union-attr]
+    # Resolve the filesystem path to the package directory
+    root_dir = get_package_path(package_location)
 
     # Get all the stories.py under here
     tree_nodes: list[TreeNode] = [

@@ -15,6 +15,29 @@ if TYPE_CHECKING:
     from storytime.subject import Subject
 
 
+def get_package_path(package_name: str) -> Path:
+    """Get the filesystem path for a package.
+
+    Handles both regular packages (with __init__.py) and namespace packages (without).
+
+    Args:
+        package_name: The dotted package name (e.g., "examples.minimal").
+
+    Returns:
+        The Path to the package directory.
+
+    Raises:
+        ValueError: If the package has neither __file__ nor __path__.
+    """
+    package = import_module(package_name)
+    if package.__file__ is None:
+        # Namespace package without __init__.py - use __path__
+        if not hasattr(package, "__path__"):
+            raise ValueError(f"Package '{package_name}' has no __file__ or __path__")
+        return Path(package.__path__[0])
+    return Path(package.__file__).parent
+
+
 def get_certain_callable(module: ModuleType) -> Site | Section | Subject | None:
     """Return the first Site/Section/Subject in given module that returns correct type.
 
@@ -100,8 +123,7 @@ class TreeNode:
 
     def _get_root_package_path(self) -> Path:
         """Get the root package path for relative calculations."""
-        root_package = import_module(self.package_location)
-        return Path(root_package.__file__).parent  # type: ignore[union-attr]
+        return get_package_path(self.package_location)
 
     def _get_relative_stories_path(self, root_package_path: Path) -> Path:
         """Get the relative path from root to the stories directory."""

@@ -1,4 +1,7 @@
 """A stories module which does not correctly export stories."""
+
+from __future__ import annotations
+
 from storytime import Section
 
 
