@@ -13,16 +13,16 @@ This breakdown implements comprehensive examples demonstrating all Story variati
 #### Task Group 1: Update Minimal Example
 **Dependencies:** None
 
-- [ ] 1.0 Update minimal example with documentation
-  - [ ] 1.1 Fix function name in `examples/minimal/stories.py`
+- [x] 1.0 Update minimal example with documentation
+  - [x] 1.1 Fix function name in `examples/minimal/stories.py`
     - Change function to use `this_site()` (currently correct)
     - Verify it returns `Site(title="Minimal Site")`
-  - [ ] 1.2 Create `examples/minimal/README.md`
+  - [x] 1.2 Create `examples/minimal/README.md`
     - Overview: "Demonstrates the most basic Storytime usage"
     - Structure: Describe one Section, one Subject, one Story with props only
     - Key Features: Single component (Heading), props inheritance from Subject target
     - Keep under 20 lines
-  - [ ] 1.3 Verify existing structure is correct
+  - [x] 1.3 Verify existing structure is correct
     - Verify `components/heading/stories.py` defines Subject with target=Heading
     - Verify `components/heading/heading.py` has simple Heading component
     - No changes needed to component or Subject
