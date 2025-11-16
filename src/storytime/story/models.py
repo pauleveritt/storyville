@@ -21,6 +21,7 @@ class Story:
     parent: Subject | None = None
     props: dict[str, Any] = field(default_factory=dict)
     title: str | None = None
+    description: str | None = None
     template: Template | None = None
 
     def post_update(self, parent: Subject):

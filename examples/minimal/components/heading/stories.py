@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from examples.minimal.components.heading.heading import Heading
 from storytime import Story, Subject
 
 
@@ -9,6 +10,7 @@ def this_subject() -> Subject:
     """Let's make a Storytime subject for this Heading component."""
     return Subject(
         title="Heading",
+        target=Heading,
         items=[
             Story(),
         ],

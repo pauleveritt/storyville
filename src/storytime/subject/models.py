@@ -18,5 +18,6 @@ class Subject(BaseNode["Subject"]):
     """The component that a group of stories or variants is about."""
 
     parent: Section | None = None
+    description: str | None = None
     target: Target | None = None
     items: list[Story] = field(default_factory=list)
