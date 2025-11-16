@@ -4,7 +4,8 @@
 
 - Prefer structural pattern matching `match`/`case` statements for complex conditionals
 - Use `except*` for handling exception groups when appropriate
-- 
+- Don't use `from __future__ import annotations` unless you have a string with a generic such as `BaseNode["Subject"]`
+
 ## Type hints
 
 - Aggressively use modern Python features for type hinting
