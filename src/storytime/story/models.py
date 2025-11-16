@@ -52,6 +52,18 @@ class Story:
             Node instance from target, or None if no target exists.
         """
         if self.target:
-            return self.target(**self.props)
+            import inspect
+
+            # Check if the target accepts a 'story' parameter
+            sig = inspect.signature(self.target)
+            if 'story' in sig.parameters:
+                instance = self.target(story=self, **self.props)
+            else:
+                instance = self.target(**self.props)
+
+            # If the instance is callable (has __call__), invoke it to get the Node
+            if callable(instance):
+                return instance()
+            return instance
 
         return None

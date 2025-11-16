@@ -1,12 +1,11 @@
 """Command-line interface."""
 
-
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import typer
 import uvicorn
 
-from storytime import make_site
 from storytime.app import create_app
 from storytime.build import build_site
 
@@ -21,12 +20,19 @@ def serve(
     ),
 ) -> None:
     """Start a development server for the Storytime site."""
-    site = make_site(package_location=input_path)
-    starlette_app = create_app(site)
-    try:
-        uvicorn.run(starlette_app, port=8080, log_level="info")
-    except KeyboardInterrupt:
-        print("Server ceasing operations. Cheerio!")
+    # Build the site to a temporary directory
+    with TemporaryDirectory() as tmpdir:
+        output_dir = Path(tmpdir)
+        typer.echo(f"Building site from '{input_path}' to '{output_dir}'...")
+        build_site(package_location=input_path, output_dir=output_dir)
+        typer.echo("Build complete! Starting server...")
+
+        # Create and run the app
+        starlette_app = create_app(output_dir)
+        try:
+            uvicorn.run(starlette_app, port=8080, log_level="info")
+        except KeyboardInterrupt:
+            print("Server ceasing operations. Cheerio!")
 
 
 @app.command()

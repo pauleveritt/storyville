@@ -109,10 +109,9 @@ def test_complete_example_story_variations() -> None:
     story1 = subject.items[0]
     assert story1.props is not None
     assert story1.target is not None
-    # Render the component - instance is the component, need to call it
-    component_instance1 = story1.instance
-    assert component_instance1 is not None
-    rendered1 = component_instance1()  # type: ignore[call-non-callable]
+    # Render the component - instance is already the rendered Node
+    rendered1 = story1.instance
+    assert rendered1 is not None
     assert isinstance(rendered1, Element)
     button1 = get_by_tag_name(rendered1, "button")
     assert get_text_content(button1) == "Click Me"
@@ -122,9 +121,8 @@ def test_complete_example_story_variations() -> None:
     story2 = subject.items[1]
     assert story2.title == "Secondary Action Button"
     assert story2.description is not None
-    component_instance2 = story2.instance
-    assert component_instance2 is not None
-    rendered2 = component_instance2()  # type: ignore[call-non-callable]
+    rendered2 = story2.instance
+    assert rendered2 is not None
     assert isinstance(rendered2, Element)
     button2 = get_by_tag_name(rendered2, "button")
     assert get_text_content(button2) == "Learn More"
@@ -132,9 +130,8 @@ def test_complete_example_story_variations() -> None:
 
     # Pattern 3: Different props for same component
     story3 = subject.items[2]
-    component_instance3 = story3.instance
-    assert component_instance3 is not None
-    rendered3 = component_instance3()  # type: ignore[call-non-callable]
+    rendered3 = story3.instance
+    assert rendered3 is not None
     assert isinstance(rendered3, Element)
     button3 = get_by_tag_name(rendered3, "button")
     assert get_text_content(button3) == "Cancel"
@@ -221,9 +218,8 @@ def test_inheritance_example_target_inheritance() -> None:
                     assert story3.target is subject.target  # Inherited Card
 
                     # Render one to verify it's Card
-                    component_instance = story0.instance
-                    assert component_instance is not None
-                    rendered = component_instance()  # type: ignore[call-non-callable]
+                    rendered = story0.instance
+                    assert rendered is not None
                     assert isinstance(rendered, Element)
                     # Card renders a div with h2 and p
                     h2 = get_by_tag_name(rendered, "h2")
@@ -279,9 +275,8 @@ def test_inheritance_example_target_override() -> None:
     assert story2.target != subject.target  # Different from Subject's target
 
     # Render the Badge component
-    component_instance = story2.instance
-    assert component_instance is not None
-    rendered = component_instance()  # type: ignore[call-non-callable]
+    rendered = story2.instance
+    assert rendered is not None
     assert isinstance(rendered, Element)
     # Badge renders a span with count
     span = get_by_tag_name(rendered, "span")
@@ -421,9 +416,8 @@ def test_minimal_example() -> None:
                     assert story.target is not None  # Inherited from Subject
 
                     # Test component rendering
-                    component_instance = story.instance
-                    assert component_instance is not None
-                    rendered = component_instance()  # type: ignore[call-non-callable]
+                    rendered = story.instance
+                    assert rendered is not None
                     assert isinstance(rendered, Element)
                     h1 = get_by_tag_name(rendered, "h1")
                     assert get_text_content(h1) == "World"

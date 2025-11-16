@@ -7,6 +7,7 @@ from shutil import copytree, rmtree
 from storytime.section.views import SectionView
 from storytime.site.views import SiteView
 from storytime.stories import make_site
+from storytime.story.views import StoryView
 from storytime.subject.views import SubjectView
 
 
@@ -20,7 +21,7 @@ def build_site(package_location: str, output_dir: Path) -> None:
     The builder:
     1. Clears the output directory if it exists and is not empty
     2. Creates a site from the package location
-    3. Walks the tree and renders each view to disk as index.html
+    3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
     4. Copies static assets from layout to output/static
     """
 
@@ -28,7 +29,10 @@ def build_site(package_location: str, output_dir: Path) -> None:
     if output_dir.exists():
         # Remove all contents
         for item in output_dir.iterdir():
-            if item.is_dir():
+            if item.is_symlink():
+                # Skip symlinks (e.g., pytest's "current" links)
+                continue
+            elif item.is_dir():
                 rmtree(item)
             else:
                 item.unlink()
@@ -71,6 +75,19 @@ def build_site(package_location: str, output_dir: Path) -> None:
             with open(subject_dir / "index.html", "w") as f:
                 subject_output = str(subject_html)
                 f.write(subject_output)
+
+            # Walk stories in this subject
+            for story_idx, story in enumerate(subject.items):
+                # Create story directory
+                story_dir = subject_dir / f"story-{story_idx}"
+                story_dir.mkdir(parents=True, exist_ok=True)
+
+                # Render story index page
+                story_view = StoryView(story=story)
+                story_html = story_view()
+                with open(story_dir / "index.html", "w") as f:
+                    story_output = str(story_html)
+                    f.write(story_output)
 
     # Copy static assets from layout to output/static
     if site.static_dir:
