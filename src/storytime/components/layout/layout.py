@@ -38,7 +38,7 @@ class Layout:
         # depth=1: section (section/index.html) -> ../../static/
         # depth=2: subject (section/subject/index.html) -> ../../../static/
         static_prefix = "../" * (self.depth + 1)
-        stylesheet_path = f"{static_prefix}static/bulma.css"
+        stylesheet_path = f"{static_prefix}static/pico-main.css"
 
         # Get sections for sidebar
         sections = self.site.items.values()
@@ -52,43 +52,30 @@ class Layout:
     <link rel="stylesheet" href="{stylesheet_path}" />
 </head>
 <body>
-<nav class="navbar is-info" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-        Storytime
-    </a>
+<header>
+  <nav>
+    <ul>
+      <li><strong>Storytime</strong></li>
+    </ul>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/">Components</a></li>
+    </ul>
+  </nav>
+</header>
+<main class="container">
+  <div class="grid">
+    <aside>
+      <nav>
+        <strong>Sections</strong>
+        <{SectionsListing} sections={sections} />
+      </nav>
+    </aside>
+    <article>
+      {self.children}
+    </article>
   </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" href="/">
-        Home
-      </a>
-
-      <a class="navbar-item" href="/">
-        Components
-      </a>
-    </div>
-  </div>
-</nav>
-<section class="section">
-  <div class="columns">
-      <div class="column is-one-quarter">
-        <aside class="menu">
-          <p class="menu-label">
-            Sections
-          </p>
-          <{SectionsListing} sections={sections} />
-        </aside>
-
-      </div>
-      <div class="column">
-        <main>
-          {self.children}
-        </main>
-      </div>
-  </div>
-</section>
+</main>
 </body>
 </html>
 ''')

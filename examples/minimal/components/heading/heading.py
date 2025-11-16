@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from tdom import Node, html
 
 
-@dataclass
+@dataclass(frozen=True)
 class Heading:
     """A heading component that displays a title."""
 

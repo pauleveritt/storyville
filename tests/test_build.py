@@ -41,10 +41,10 @@ def test_static_css(output_dir: Path) -> None:
     """Confirm that the chosen CSS file made it to the build dir."""
 
     assert (output_dir / "static").exists()
-    bulma_file = output_dir / "static" / "bulma.css"
-    assert bulma_file.exists()
-    bulma_text = bulma_file.read_text()
-    assert "bulma.io" in bulma_text
+    pico_file = output_dir / "static" / "pico-main.css"
+    assert pico_file.exists()
+    pico_text = pico_file.read_text()
+    assert "pico" in pico_text
 
 
 def test_section_page(output_dir: Path) -> None:
@@ -80,9 +80,9 @@ def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=0 (../static/bulma.css)
+    # Verify href is correct for depth=0 (../static/pico-main.css)
     href = link.attrs.get("href")
-    assert href == "../static/bulma.css"
+    assert href == "../static/pico-main.css"
 
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
@@ -94,9 +94,9 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=1 (../../static/bulma.css)
+    # Verify href is correct for depth=1 (../../static/pico-main.css)
     href = link.attrs.get("href")
-    assert href == "../../static/bulma.css"
+    assert href == "../../static/pico-main.css"
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
@@ -108,9 +108,9 @@ def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=2 (../../../static/bulma.css)
+    # Verify href is correct for depth=2 (../../../static/pico-main.css)
     href = link.attrs.get("href")
-    assert href == "../../../static/bulma.css"
+    assert href == "../../../static/pico-main.css"
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:

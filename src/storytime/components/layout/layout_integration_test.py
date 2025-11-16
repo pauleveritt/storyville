@@ -1,6 +1,6 @@
 """Integration tests for Layout component with views."""
 
-from aria_testing import get_by_tag_name
+from aria_testing import get_by_tag_name, get_text_content
 from tdom import Element, Fragment, Node
 from typing import cast
 
@@ -41,9 +41,9 @@ def test_site_view_renders_full_html_document() -> None:
     get_by_tag_name(head, "meta", attrs={"charset": "utf-8"})
     get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify body contains nav and main
+    # Verify body contains header, nav, and main
     body = get_by_tag_name(element, "body")
-    get_by_tag_name(body, "nav")
+    get_by_tag_name(body, "header")
     get_by_tag_name(body, "main")
 
 
@@ -83,15 +83,13 @@ def test_subject_view_includes_navigation_and_sidebar() -> None:
     # Extract Element from Fragment
     element = _get_element(result)
 
-    # Verify navigation bar exists
-    nav = get_by_tag_name(element, "nav")
-    assert nav.attrs.get("role") == "navigation"
-
-    # Verify sidebar exists
+    # Verify header and sidebar exist
+    get_by_tag_name(element, "header")
     aside = get_by_tag_name(element, "aside")
-    class_attr = aside.attrs.get("class", "")
-    assert class_attr is not None
-    assert "menu" in class_attr
+
+    # Verify sidebar contains "Sections" text
+    aside_text = get_text_content(aside)
+    assert "Sections" in aside_text
 
 
 def test_layout_handles_none_children() -> None:
@@ -128,17 +126,17 @@ def test_layout_css_link_points_to_valid_static_path() -> None:
     head = get_by_tag_name(element, "head")
     link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href points to bulma.css
+    # Verify href points to pico-main.css
     href = link.attrs.get("href")
-    assert href == "../static/bulma.css"
+    assert href == "../static/pico-main.css"
 
     # Verify the actual file exists at the expected location
     # The static dir should be at PACKAGE_DIR / "components" / "layout" / "static"
     static_dir = PACKAGE_DIR / "components" / "layout" / "static"
-    bulma_css = static_dir / "bulma.css"
+    pico_css = static_dir / "pico-main.css"
 
     assert static_dir.exists(), f"Static directory should exist at {static_dir}"
-    assert bulma_css.exists(), f"bulma.css should exist at {bulma_css}"
+    assert pico_css.exists(), f"pico-main.css should exist at {pico_css}"
 
 
 def test_static_asset_paths_resolve_from_different_depths() -> None:
@@ -147,7 +145,7 @@ def test_static_asset_paths_resolve_from_different_depths() -> None:
 
     site = Site(title="My Site")
 
-    # All views currently use "../static/bulma.css" regardless of depth
+    # All views currently use "../static/pico-main.css" regardless of depth
     # This is the relative path from output pages to the static directory
 
     # Test at root level (site view)
@@ -156,7 +154,7 @@ def test_static_asset_paths_resolve_from_different_depths() -> None:
     site_element = _get_element(site_result)
 
     site_link = get_by_tag_name(site_element, "link", attrs={"rel": "stylesheet"})
-    assert site_link.attrs.get("href") == "../static/bulma.css"
+    assert site_link.attrs.get("href") == "../static/pico-main.css"
 
     # Test at section level (one level deep)
     section_layout = Layout(view_title="Section", site=site, children=None)
@@ -164,8 +162,8 @@ def test_static_asset_paths_resolve_from_different_depths() -> None:
     section_element = _get_element(section_result)
 
     section_link = get_by_tag_name(section_element, "link", attrs={"rel": "stylesheet"})
-    assert section_link.attrs.get("href") == "../static/bulma.css"
+    assert section_link.attrs.get("href") == "../static/pico-main.css"
 
-    # Note: All pages use the same relative path "../static/bulma.css"
+    # Note: All pages use the same relative path "../static/pico-main.css"
     # This works because build.py copies static to output root, and all
     # pages are generated one level deep (e.g., /section/index.html)

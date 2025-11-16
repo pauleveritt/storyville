@@ -53,7 +53,7 @@ class SectionsListing:
     def __call__(self) -> Node:
         """Render the wrapper for the listing of each section."""
         return html(t"""
-<ul class="menu-list">
+<ul>
   {[html(t"<{SectionListing} section={section} />") for section in self.sections]}
 </ul>
         """)

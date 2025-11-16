@@ -54,11 +54,10 @@ def test_site_view_renders_section_links() -> None:
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
 
-    # Verify ul element exists in main
-    get_by_tag_name(main, "ul")
-
     # Verify section cards are rendered as links
-    all_links = query_all_by_tag_name(main, "a")
+    # Get the article element which contains the actual content (not sidebar)
+    article = get_by_tag_name(main, "article")
+    all_links = query_all_by_tag_name(article, "a")
 
     assert len(all_links) == 2
     # Links can be in any order since dict iteration order may vary

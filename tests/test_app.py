@@ -70,14 +70,14 @@ def test_serve_section_page(tmp_path: Path) -> None:
 
 
 def test_serve_static_asset(tmp_path: Path) -> None:
-    """Test serving static asset at /static/bulma.css."""
+    """Test serving static asset at /static/pico-main.css."""
     build_site(package_location="storytime", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/static/bulma.css")
+    response = client.get("/static/pico-main.css")
     assert response.status_code == 200
-    assert "bulma.io" in response.text
+    assert "pico" in response.text
 
 
 def test_404_for_nonexistent_path(tmp_path: Path) -> None:

@@ -130,15 +130,12 @@ def test_layout_includes_navigation_bar() -> None:
     # Extract Element from Fragment if needed
     element = _get_element(result)
 
-    # Get nav element
-    nav = get_by_tag_name(element, "nav")
+    # Get header element
+    header = get_by_tag_name(element, "header")
 
-    # Verify nav has correct role and aria-label
-    assert nav.attrs.get("role") == "navigation"
-
-    # Verify "Storytime" branding is present
-    nav_text = get_text_content(nav)
-    assert "Storytime" in nav_text
+    # Verify "Storytime" branding is present in header
+    header_text = get_text_content(header)
+    assert "Storytime" in header_text
 
 
 def test_layout_includes_sidebar_with_sections() -> None:
@@ -159,10 +156,9 @@ def test_layout_includes_sidebar_with_sections() -> None:
     # Get aside element (sidebar)
     aside = get_by_tag_name(element, "aside")
 
-    # Verify aside has menu class
-    class_attr = aside.attrs.get("class", "")
-    assert class_attr is not None
-    assert "menu" in class_attr
+    # Verify aside contains "Sections" text
+    aside_text = get_text_content(aside)
+    assert "Sections" in aside_text
 
 
 def test_layout_satisfies_view_protocol() -> None:
