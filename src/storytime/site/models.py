@@ -1,7 +1,5 @@
 """Site class for top-level catalog organization."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -28,6 +26,6 @@ class Site(BaseNode["Site"]):
         """Look for a static dir and assign it if present."""
         from storytime import PACKAGE_DIR
 
-        sd = PACKAGE_DIR / "static"
+        sd = PACKAGE_DIR / "components" / "layout" / "static"
         if sd.exists():
             self.static_dir = sd

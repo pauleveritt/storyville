@@ -2,7 +2,8 @@
 
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element
+from tdom import Element, Fragment, Node
+from typing import cast
 
 from storytime import make_site
 from storytime.section import Section
@@ -11,6 +12,19 @@ from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
 from storytime.subject.views import SubjectView
+
+
+
+
+def _get_element(result: Node) -> Element:
+    """Extract Element from result (handles Fragment wrapper)."""
+    if isinstance(result, Fragment):
+        # Fragment contains the html element as first child
+        for child in result.children:
+            if isinstance(child, Element):
+                return child
+        raise ValueError("No Element found in Fragment")
+    return cast(Element, result)
 
 
 def test_complete_example_structure() -> None:
@@ -134,17 +148,17 @@ def test_complete_example_views() -> None:
     subject = section.items["button"]
 
     # Test SectionView
-    section_view = SectionView(section=section)
+    section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    assert isinstance(section_result, Element)
-    section_h1 = get_by_tag_name(section_result, "h1")
+    section_element = _get_element(section_result)
+    section_h1 = get_by_tag_name(section_element, "h1")
     assert get_text_content(section_h1) == "Components Collection"
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject)
+    subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    assert isinstance(subject_result, Element)
-    subject_h1 = get_by_tag_name(subject_result, "h1")
+    subject_element = _get_element(subject_result)
+    subject_h1 = get_by_tag_name(subject_element, "h1")
     assert get_text_content(subject_h1) == "Button Component"
 
     # Test StoryView for one story (default layout)
@@ -434,19 +448,19 @@ def test_minimal_example_views() -> None:
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section)
+    section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    assert isinstance(section_result, Element)
+    section_element = _get_element(section_result)
     # Section should have navigation to subjects
-    paragraphs = query_all_by_tag_name(section_result, "p")
+    paragraphs = query_all_by_tag_name(section_element, "p")
     assert len(paragraphs) >= 0
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject)
+    subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    assert isinstance(subject_result, Element)
+    subject_element = _get_element(subject_result)
     # Subject should have title
-    h1 = get_by_tag_name(subject_result, "h1")
+    h1 = get_by_tag_name(subject_element, "h1")
     assert subject.title is not None
     assert get_text_content(h1) == subject.title
 
@@ -495,14 +509,14 @@ def test_inheritance_example_views() -> None:
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section)
+    section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    assert isinstance(section_result, Element)
+    _section_element = _get_element(section_result)
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject)
+    subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    assert isinstance(subject_result, Element)
+    _subject_element = _get_element(subject_result)
 
     # Test StoryView for multiple stories
     for story in subject.items:
@@ -540,14 +554,14 @@ def test_templates_example_views() -> None:
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section)
+    section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    assert isinstance(section_result, Element)
+    _section_element = _get_element(section_result)
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject)
+    subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    assert isinstance(subject_result, Element)
+    _subject_element = _get_element(subject_result)
 
     # Test StoryView for both stories (one with template, one without)
     for story in subject.items:

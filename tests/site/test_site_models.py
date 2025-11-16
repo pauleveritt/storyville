@@ -61,9 +61,9 @@ def test_site_static_dir_detection(tmp_path: Path) -> None:
     # Save original PACKAGE_DIR
     original_package_dir = storytime.PACKAGE_DIR
 
-    # Create a temporary static directory
-    static_dir = tmp_path / "static"
-    static_dir.mkdir()
+    # Create a temporary static directory at new location
+    static_dir = tmp_path / "components" / "layout" / "static"
+    static_dir.mkdir(parents=True)
 
     # Temporarily set PACKAGE_DIR to tmp_path
     storytime.PACKAGE_DIR = tmp_path

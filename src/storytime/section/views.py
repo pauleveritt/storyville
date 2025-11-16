@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from tdom import Node, html
 
 from storytime.section.models import Section
+from storytime.site.models import Site
+from storytime.components.layout import Layout
 
 
 @dataclass
@@ -23,6 +25,7 @@ class SectionView:
     """
 
     section: Section
+    site: Site
 
     def __call__(self) -> Node:
         """Render the section to a tdom Node.
@@ -50,9 +53,14 @@ class SectionView:
                 subject_items.append(html(t"<li><a href=\"{subject_url}\">{subject.title}</a></li>"))
             content = html(t"<ul>{subject_items}</ul>")
 
-        return html(t"""<div>
+        # Create the main content for this view
+        view_content = html(t"""<div>
 <h1>{self.section.title}</h1>
 {description_p}
 {content}
 <a href="..">Parent</a>
 </div>""")
+
+        # Wrap with Layout
+        layout = Layout(view_title=self.section.title, site=self.site, children=view_content)
+        return layout()

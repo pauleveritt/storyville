@@ -15,8 +15,8 @@ with configurable page titles and content insertion via a main element.
 
 **Dependencies:** None
 
-- [ ] 1.0 Complete Layout component
-    - [ ] 1.1 Write 2-8 focused tests for Layout component
+- [x] 1.0 Complete Layout component
+    - [x] 1.1 Write 2-8 focused tests for Layout component
         - Test: Layout renders complete HTML structure with html, head, body tags
         - Test: Layout includes meta charset and viewport tags in head
         - Test: Layout title concatenates view_title and site.title correctly (e.g., "Home - My Site")
@@ -31,37 +31,37 @@ with configurable page titles and content insertion via a main element.
           `/Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py`
         - Import: `from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name`
         - Use type guard pattern: `assert isinstance(result, Element)`
-    - [ ] 1.2 Move Layout from `__init__.py` to `layout.py`
+    - [x] 1.2 Move Layout from `__init__.py` to `layout.py`
         - Move existing Layout class from
           `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
         - Create new file: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
         - Keep existing HTML structure (navbar, sidebar, main content area) from current implementation
-    - [ ] 1.3 Update Layout component signature
+    - [x] 1.3 Update Layout component signature
         - Change from: `Layout(title: str, children: list[Node], site: Site)`
         - Change to: `Layout(view_title: str | None, site: Site, children: Element | Fragment | None)`
         - Add imports: `from tdom import Element, Fragment, Node, html`
         - Use PEP 604 union syntax for type hints
         - Maintain `__call__(self) -> Node` method to satisfy View Protocol
-    - [ ] 1.4 Implement title concatenation logic
+    - [x] 1.4 Implement title concatenation logic
         - Update title tag from hardcoded "Hello Bulma!" to: `<title>{title_text}</title>`
         - When view_title is not None: `title_text = f"{view_title} - {self.site.title}"`
         - When view_title is None: `title_text = self.site.title`
         - Reference line 21 in current
           `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
-    - [ ] 1.5 Update CSS link path for new static directory location
+    - [x] 1.5 Update CSS link path for new static directory location
         - Change href from: `../static/bulma.css`
         - Change to: `../static/bulma.css` (path remains same, but static dir will move)
         - Reference line 22 in current
           `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
-    - [ ] 1.6 Ensure children content placement in main element
+    - [x] 1.6 Ensure children content placement in main element
         - Verify children interpolation at line 56: `{self.children}`
         - Ensure main element is inside Bulma columns layout (existing pattern is correct)
         - Children go in main column, not sidebar column (already correct in existing code)
-    - [ ] 1.7 Update `__init__.py` to export Layout from new location
+    - [x] 1.7 Update `__init__.py` to export Layout from new location
         - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
         - Change to: `from storytime.components.layout.layout import Layout`
         - Add: `__all__ = ["Layout"]`
-    - [ ] 1.8 Ensure Layout component tests pass
+    - [x] 1.8 Ensure Layout component tests pass
         - Run ONLY the 2-8 tests written in 1.1
         - Command:
           `pytest /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py -v`
@@ -82,23 +82,23 @@ with configurable page titles and content insertion via a main element.
 
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete static assets reorganization
-    - [ ] 2.1 Create new static directory structure
+- [x] 2.0 Complete static assets reorganization
+    - [x] 2.1 Create new static directory structure
         - Create directory: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/`
         - Use `mkdir -p` to create directory structure
-    - [ ] 2.2 Move bulma.css to new location
+    - [x] 2.2 Move bulma.css to new location
         - Move from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/static/bulma.css`
         - Move to: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/bulma.css`
         - Use `mv` command or `shutil.move` in Python
-    - [ ] 2.3 Remove old static directory
+    - [x] 2.3 Remove old static directory
         - Remove: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/static/`
         - Only after confirming bulma.css was successfully moved
-    - [ ] 2.4 Update Site model's __post_init__ method
+    - [x] 2.4 Update Site model's __post_init__ method
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/models.py`
         - Update line 31: Change `sd = PACKAGE_DIR / "static"`
         - Change to: `sd = PACKAGE_DIR / "components" / "layout" / "static"`
         - Keep rest of logic unchanged (lines 32-33)
-    - [ ] 2.5 Verify static assets are discovered correctly
+    - [x] 2.5 Verify static assets are discovered correctly
         - Run existing tests to ensure Site.static_dir is set correctly
         - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/site/ -v -k static`
         - Verify build.py can still copy static directory (line 25-26 in build.py)
@@ -117,8 +117,8 @@ with configurable page titles and content insertion via a main element.
 
 **Dependencies:** Task Groups 1, 2
 
-- [ ] 3.0 Complete view integration with Layout
-    - [ ] 3.1 Update SiteView to use Layout component
+- [x] 3.0 Complete view integration with Layout
+    - [x] 3.1 Update SiteView to use Layout component
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/views.py`
         - Import Layout: `from storytime.components.layout import Layout`
         - Wrap existing content (lines 69-72) as children parameter
@@ -130,13 +130,13 @@ with configurable page titles and content insertion via a main element.
           <h1>{self.site.title}</h1>
           {content}
           </div>""")
-    
+
               # Wrap with Layout
               layout = Layout(view_title="Home", site=self.site, children=content)
               return layout()
           ```
         - Use view_title="Home" for site index page
-    - [ ] 3.2 Update SectionView to use Layout component
+    - [x] 3.2 Update SectionView to use Layout component
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
         - Import Layout: `from storytime.components.layout import Layout`
         - Import Site type: `from storytime.site import Site`
@@ -152,13 +152,13 @@ with configurable page titles and content insertion via a main element.
           {content}
           <a href="..">Parent</a>
           </div>""")
-    
+
               # Wrap with Layout
               layout = Layout(view_title=self.section.title, site=self.site, children=content)
               return layout()
           ```
         - Use section.title as view_title
-    - [ ] 3.3 Update SubjectView to use Layout component
+    - [x] 3.3 Update SubjectView to use Layout component
         - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
         - Import Layout: `from storytime.components.layout import Layout`
         - Import Site type: `from storytime.site import Site`
@@ -184,18 +184,18 @@ with configurable page titles and content insertion via a main element.
           </ul>
           <a href="..">Parent</a>
           </div>""")
-    
+
               # Wrap with Layout
               layout = Layout(view_title=self.subject.title, site=self.site, children=content)
               return layout()
           ```
         - Use subject.title as view_title
-    - [ ] 3.4 Update view instantiations to pass site parameter
+    - [x] 3.4 Update view instantiations to pass site parameter
         - Search codebase for SectionView and SubjectView instantiations
         - Add site parameter to each instantiation
         - Check files: `build.py`, `app.py`, any other files that create view instances
         - Note: Section and Subject models may need parent chain access to get site
-    - [ ] 3.5 Verify all view tests still pass
+    - [x] 3.5 Verify all view tests still pass
         - Run view tests: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py -v`
         - Run view tests:
           `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py -v`
@@ -219,12 +219,12 @@ with configurable page titles and content insertion via a main element.
 
 **Dependencies:** Task Groups 1-3
 
-- [ ] 4.0 Review existing tests and verify integration
-    - [ ] 4.1 Review tests from Task Groups 1-3
+- [x] 4.0 Review existing tests and verify integration
+    - [x] 4.1 Review tests from Task Groups 1-3
         - Review the 2-8 tests written for Layout component (Task 1.1)
         - Review any test updates made for view integration (Task 3.5)
         - Total existing tests: approximately 8-12 tests
-    - [ ] 4.2 Analyze test coverage gaps for Layout feature only
+    - [x] 4.2 Analyze test coverage gaps for Layout feature only
         - Identify critical Layout integration workflows that lack test coverage
         - Focus on:
             - Full page rendering with Layout wrapper in all three views
@@ -233,7 +233,7 @@ with configurable page titles and content insertion via a main element.
             - Layout CSS link resolves correctly
         - Do NOT assess entire application test coverage
         - Prioritize end-to-end rendering workflows
-    - [ ] 4.3 Write up to 6 additional strategic tests maximum
+    - [x] 4.3 Write up to 6 additional strategic tests maximum
         - Add maximum of 6 new tests to fill identified critical gaps
         - Suggested tests:
             - Test: SiteView renders full HTML document with proper head/body structure
@@ -246,7 +246,7 @@ with configurable page titles and content insertion via a main element.
         - Add tests to appropriate test files (view test files or layout test file)
         - Do NOT write comprehensive coverage for all scenarios
         - IMPORTANT: Include test verifying static asset paths point to valid destinations
-    - [ ] 4.4 Run feature-specific tests only
+    - [x] 4.4 Run feature-specific tests only
         - Run Layout component tests:
           `pytest /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py -v`
         - Run SiteView tests:
@@ -258,11 +258,11 @@ with configurable page titles and content insertion via a main element.
         - Expected total: approximately 14-18 tests maximum
         - Do NOT run the entire application test suite
         - Verify critical workflows pass
-    - [ ] 4.5 Run quality checks
+    - [x] 4.5 Run quality checks
         - Type checking: `just typecheck` (verify all type hints are correct)
         - Formatting: `just fmt` (ensure code formatting is consistent)
         - All quality checks must pass
-    - [ ] 4.6 Manual verification
+    - [x] 4.6 Manual verification
         - Build the site: `python -m storytime build . output`
         - Open `output/index.html` in browser
         - Verify:

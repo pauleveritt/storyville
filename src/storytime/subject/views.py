@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from tdom import Node, html
 
 from storytime.subject.models import Subject
+from storytime.site.models import Site
+from storytime.components.layout import Layout
 
 
 @dataclass
@@ -23,6 +25,7 @@ class SubjectView:
     """
 
     subject: Subject
+    site: Site
 
     def __call__(self) -> Node:
         """Render the subject to a tdom Node.
@@ -38,7 +41,7 @@ class SubjectView:
         # Render stories or empty state
         if not self.subject.items:
             # Empty state
-            return html(t"""<div>
+            view_content = html(t"""<div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>
 <p>No stories defined for this component</p>
@@ -53,7 +56,7 @@ class SubjectView:
                 story_items.append(html(t"<li><a href=\"{story_url}\">{story.title}</a></li>"))
 
             # Create the main div and interpolate the ul with story items
-            return html(t"""<div>
+            view_content = html(t"""<div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>
 <ul>
@@ -61,3 +64,7 @@ class SubjectView:
 </ul>
 <a href="..">Parent</a>
 </div>""")
+
+        # Wrap with Layout
+        layout = Layout(view_title=self.subject.title, site=self.site, children=view_content)
+        return layout()

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from storytime import Section
+from storytime.section.models import Section
 from tdom import html, Node
 
 

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from tdom import Node, html
 
 from storytime.site.models import Site
+from storytime.components.layout import Layout
 
 
 @dataclass
@@ -66,7 +67,12 @@ class SiteView:
 
             content = html(t"<ul>{section_items}</ul>")
 
-        return html(t"""<div>
+        # Create the main content for this view
+        view_content = html(t"""<div>
 <h1>{self.site.title}</h1>
 {content}
 </div>""")
+
+        # Wrap with Layout
+        layout = Layout(view_title="Home", site=self.site, children=view_content)
+        return layout()
