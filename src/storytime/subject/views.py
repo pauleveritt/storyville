@@ -65,6 +65,6 @@ class SubjectView:
 <a href="..">Parent</a>
 </div>""")
 
-        # Wrap with Layout
-        layout = Layout(view_title=self.subject.title, site=self.site, children=view_content)
+        # Wrap with Layout (depth=2 for subject pages)
+        layout = Layout(view_title=self.subject.title, site=self.site, children=view_content, depth=2)
         return layout()

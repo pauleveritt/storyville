@@ -73,6 +73,6 @@ class SiteView:
 {content}
 </div>""")
 
-        # Wrap with Layout
-        layout = Layout(view_title="Home", site=self.site, children=view_content)
+        # Wrap with Layout (depth=0 for site root)
+        layout = Layout(view_title="Home", site=self.site, children=view_content, depth=0)
         return layout()

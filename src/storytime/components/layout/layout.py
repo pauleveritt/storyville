@@ -19,6 +19,7 @@ class Layout:
     view_title: str | None
     site: Site
     children: Element | Fragment | Node | None
+    depth: int = 0
 
     def __call__(self) -> Node:
         """Render the layout to a tdom Node.
@@ -32,6 +33,13 @@ class Layout:
         else:
             title_text = self.site.title
 
+        # Calculate relative path to static assets based on depth
+        # depth=0: site root (index.html) -> ../static/
+        # depth=1: section (section/index.html) -> ../../static/
+        # depth=2: subject (section/subject/index.html) -> ../../../static/
+        static_prefix = "../" * (self.depth + 1)
+        stylesheet_path = f"{static_prefix}static/bulma.css"
+
         # Get sections for sidebar
         sections = self.site.items.values()
 
@@ -41,7 +49,7 @@ class Layout:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title_text}</title>
-    <link rel="stylesheet" href="../static/bulma.css" />
+    <link rel="stylesheet" href="{stylesheet_path}" />
 </head>
 <body>
 <nav class="navbar is-info" role="navigation" aria-label="main navigation">

@@ -61,6 +61,6 @@ class SectionView:
 <a href="..">Parent</a>
 </div>""")
 
-        # Wrap with Layout
-        layout = Layout(view_title=self.section.title, site=self.site, children=view_content)
+        # Wrap with Layout (depth=1 for section pages)
+        layout = Layout(view_title=self.section.title, site=self.site, children=view_content, depth=1)
         return layout()
