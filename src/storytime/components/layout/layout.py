@@ -39,6 +39,7 @@ class Layout:
         # depth=2: subject (section/subject/index.html) -> ../../../static/
         static_prefix = "../" * (self.depth + 1)
         stylesheet_path = f"{static_prefix}static/pico-main.css"
+        storytime_css_path = f"{static_prefix}static/storytime.css"
 
         # Get sections for sidebar
         sections = self.site.items.values()
@@ -50,6 +51,7 @@ class Layout:
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title_text}</title>
     <link rel="stylesheet" href="{stylesheet_path}" />
+    <link rel="stylesheet" href="{storytime_css_path}" />
 </head>
 <body>
 <header>

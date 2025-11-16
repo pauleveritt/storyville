@@ -7,7 +7,7 @@ the stories written for that UI.
 from pathlib import Path
 
 import pytest
-from aria_testing import get_by_tag_name, get_text_content
+from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from storytime.build import build_site
 from tdom import Node
 from tdom.parser import parse_html
@@ -76,13 +76,14 @@ def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
     """Test stylesheet path is correct at site root (depth=0)."""
     page = get_page(output_dir / "index.html")
 
-    # Get link element
+    # Get link elements
     head = get_by_tag_name(page, "head")
-    link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=0 (../static/pico-main.css)
-    href = link.attrs.get("href")
-    assert href == "../static/pico-main.css"
+    # Verify hrefs are correct for depth=0
+    hrefs = [link.attrs.get("href") for link in links]
+    assert "../static/pico-main.css" in hrefs
+    assert "../static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
@@ -90,13 +91,14 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
     section_page = output_dir / "section" / "components" / "index.html"
     page = get_page(section_page)
 
-    # Get link element
+    # Get link elements
     head = get_by_tag_name(page, "head")
-    link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=1 (../../static/pico-main.css)
-    href = link.attrs.get("href")
-    assert href == "../../static/pico-main.css"
+    # Verify hrefs are correct for depth=1
+    hrefs = [link.attrs.get("href") for link in links]
+    assert "../../static/pico-main.css" in hrefs
+    assert "../../static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
@@ -104,13 +106,14 @@ def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
     subject_page = output_dir / "section" / "components" / "component_view" / "index.html"
     page = get_page(subject_page)
 
-    # Get link element
+    # Get link elements
     head = get_by_tag_name(page, "head")
-    link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify href is correct for depth=2 (../../../static/pico-main.css)
-    href = link.attrs.get("href")
-    assert href == "../../../static/pico-main.css"
+    # Verify hrefs are correct for depth=2
+    hrefs = [link.attrs.get("href") for link in links]
+    assert "../../../static/pico-main.css" in hrefs
+    assert "../../../static/storytime.css" in hrefs
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:

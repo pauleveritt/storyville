@@ -1,6 +1,6 @@
 """Integration tests for Layout component with views."""
 
-from aria_testing import get_by_tag_name, get_text_content
+from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import Element, Fragment, Node
 from typing import cast
 
@@ -39,7 +39,8 @@ def test_site_view_renders_full_html_document() -> None:
     head = get_by_tag_name(element, "head")
     get_by_tag_name(head, "title")
     get_by_tag_name(head, "meta", attrs={"charset": "utf-8"})
-    get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    assert len(links) == 2  # pico-main.css and storytime.css
 
     # Verify body contains header, nav, and main
     body = get_by_tag_name(element, "body")
@@ -122,21 +123,25 @@ def test_layout_css_link_points_to_valid_static_path() -> None:
     # Extract Element from Fragment
     element = _get_element(result)
 
-    # Get link element
+    # Get link elements
     head = get_by_tag_name(element, "head")
-    link = get_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
+    assert len(links) == 2
 
-    # Verify href points to pico-main.css
-    href = link.attrs.get("href")
-    assert href == "../static/pico-main.css"
+    # Verify hrefs point to pico-main.css and storytime.css
+    hrefs = [link.attrs.get("href") for link in links]
+    assert "../static/pico-main.css" in hrefs
+    assert "../static/storytime.css" in hrefs
 
-    # Verify the actual file exists at the expected location
+    # Verify the actual files exist at the expected location
     # The static dir should be at PACKAGE_DIR / "components" / "layout" / "static"
     static_dir = PACKAGE_DIR / "components" / "layout" / "static"
     pico_css = static_dir / "pico-main.css"
+    storytime_css = static_dir / "storytime.css"
 
     assert static_dir.exists(), f"Static directory should exist at {static_dir}"
     assert pico_css.exists(), f"pico-main.css should exist at {pico_css}"
+    assert storytime_css.exists(), f"storytime.css should exist at {storytime_css}"
 
 
 def test_static_asset_paths_resolve_from_different_depths() -> None:
@@ -145,25 +150,22 @@ def test_static_asset_paths_resolve_from_different_depths() -> None:
 
     site = Site(title="My Site")
 
-    # All views currently use "../static/pico-main.css" regardless of depth
-    # This is the relative path from output pages to the static directory
-
-    # Test at root level (site view)
-    site_layout = Layout(view_title="Home", site=site, children=None)
+    # Test at root level (site view, depth=0)
+    site_layout = Layout(view_title="Home", site=site, children=None, depth=0)
     site_result = site_layout()
     site_element = _get_element(site_result)
 
-    site_link = get_by_tag_name(site_element, "link", attrs={"rel": "stylesheet"})
-    assert site_link.attrs.get("href") == "../static/pico-main.css"
+    site_links = query_all_by_tag_name(site_element, "link", attrs={"rel": "stylesheet"})
+    site_hrefs = [link.attrs.get("href") for link in site_links]
+    assert "../static/pico-main.css" in site_hrefs
+    assert "../static/storytime.css" in site_hrefs
 
-    # Test at section level (one level deep)
-    section_layout = Layout(view_title="Section", site=site, children=None)
+    # Test at section level (depth=1)
+    section_layout = Layout(view_title="Section", site=site, children=None, depth=1)
     section_result = section_layout()
     section_element = _get_element(section_result)
 
-    section_link = get_by_tag_name(section_element, "link", attrs={"rel": "stylesheet"})
-    assert section_link.attrs.get("href") == "../static/pico-main.css"
-
-    # Note: All pages use the same relative path "../static/pico-main.css"
-    # This works because build.py copies static to output root, and all
-    # pages are generated one level deep (e.g., /section/index.html)
+    section_links = query_all_by_tag_name(section_element, "link", attrs={"rel": "stylesheet"})
+    section_hrefs = [link.attrs.get("href") for link in section_links]
+    assert "../../static/pico-main.css" in section_hrefs
+    assert "../../static/storytime.css" in section_hrefs
