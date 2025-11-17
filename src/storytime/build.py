@@ -9,6 +9,8 @@ from storytime.site.views import SiteView
 from storytime.stories import make_site
 from storytime.story.views import StoryView
 from storytime.subject.views import SubjectView
+from storytime.views.about_view import AboutView
+from storytime.views.debug_view import DebugView
 
 
 def build_site(package_location: str, output_dir: Path) -> None:
@@ -22,7 +24,8 @@ def build_site(package_location: str, output_dir: Path) -> None:
     1. Clears the output directory if it exists and is not empty
     2. Creates a site from the package location
     3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
-    4. Copies static assets from layout to output/static
+    4. Renders About and Debug pages
+    5. Copies static assets from layout to output/static
     """
 
     # Clear output directory if it exists and is not empty
@@ -49,6 +52,20 @@ def build_site(package_location: str, output_dir: Path) -> None:
     with open(output_dir / "index.html", "w") as f:
         index_output = str(index_html)
         f.write(index_output)
+
+    # Render the About page
+    about_view = AboutView(site=site)
+    about_html = about_view()
+    with open(output_dir / "about.html", "w") as f:
+        about_output = str(about_html)
+        f.write(about_output)
+
+    # Render the Debug page
+    debug_view = DebugView(site=site)
+    debug_html = debug_view()
+    with open(output_dir / "debug.html", "w") as f:
+        debug_output = str(debug_html)
+        f.write(debug_output)
 
     # Walk the tree and render each section and subject
     for section_key, section in site.items.items():

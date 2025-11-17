@@ -163,38 +163,38 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 4: About and Debug Views
 **Dependencies:** Task Group 1
 
-- [ ] 4.0 Complete new views
-  - [ ] 4.1 Write 2-8 focused tests for new views
+- [x] 4.0 Complete new views
+  - [x] 4.1 Write 2-8 focused tests for new views
     - Limit to 2-8 highly focused tests maximum
     - Test AboutView renders and wraps in Layout
     - Test DebugView renders and wraps in Layout
     - Test both views use depth=0
     - Skip exhaustive content testing (static placeholder content)
-  - [ ] 4.2 Create AboutView component
+  - [x] 4.2 Create AboutView component
     - New file: src/storytime/views/about_view.py
     - Use dataclass with site parameter
     - Implement __call__() -> Node pattern
     - Wrap content in Layout with view_title="About"
     - Set depth=0 for root-level view
     - Include static HTML placeholder content (project description)
-  - [ ] 4.3 Create DebugView component
+  - [x] 4.3 Create DebugView component
     - New file: src/storytime/views/debug_view.py
     - Use dataclass with site parameter
     - Implement __call__() -> Node pattern
     - Wrap content in Layout with view_title="Debug"
     - Set depth=0 for root-level view
     - Include static HTML placeholder content (debug info)
-  - [ ] 4.4 Register /about route
-    - Update route registration in application/ASGI app
-    - Map /about URL to AboutView
+  - [x] 4.4 Register /about route
+    - Update route registration in build system
+    - Render about.html to output directory
     - Follow existing route pattern from site/section/subject views
     - Pass site instance to view
-  - [ ] 4.5 Register /debug route
-    - Update route registration in application/ASGI app
-    - Map /debug URL to DebugView
+  - [x] 4.5 Register /debug route
+    - Update route registration in build system
+    - Render debug.html to output directory
     - Follow existing route pattern
     - Pass site instance to view
-  - [ ] 4.6 Ensure new view tests pass
+  - [x] 4.6 Ensure new view tests pass
     - Run ONLY the 2-8 tests written in 4.1
     - Verify views render correctly
     - Verify Layout integration works

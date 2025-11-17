@@ -72,6 +72,32 @@ def test_subject_page(output_dir: Path) -> None:
     assert get_text_content(h1) == "Heading"
 
 
+def test_about_page_created(output_dir: Path) -> None:
+    """Test that about.html is created in the output directory."""
+    about_page = output_dir / "about.html"
+    assert about_page.exists()
+
+
+def test_about_page_content(output_dir: Path) -> None:
+    """Test that about page has correct content."""
+    page = get_page(output_dir / "about.html")
+    h1 = get_by_tag_name(page, "h1")
+    assert get_text_content(h1) == "About Storytime"
+
+
+def test_debug_page_created(output_dir: Path) -> None:
+    """Test that debug.html is created in the output directory."""
+    debug_page = output_dir / "debug.html"
+    assert debug_page.exists()
+
+
+def test_debug_page_content(output_dir: Path) -> None:
+    """Test that debug page has correct content."""
+    page = get_page(output_dir / "debug.html")
+    h1 = get_by_tag_name(page, "h1")
+    assert get_text_content(h1) == "Debug Information"
+
+
 def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
     """Test stylesheet path is correct at site root (depth=0)."""
     page = get_page(output_dir / "index.html")
