@@ -1,7 +1,6 @@
 """Pytest configuration and fixtures."""
 
 import sys
-from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
@@ -33,38 +32,8 @@ def cleanup_websocket_loop():
     websocket._active_connections.clear()
 
 
-## Run a tiny async cleanup only for anyio-marked tests to avoid runner teardown races
-@pytest.fixture
-async def _anyio_teardown_safety() -> AsyncGenerator[None, None]:
-    import asyncio
-
-    try:
-        yield
-    finally:
-        # Give pending callbacks a chance to complete
-        await asyncio.sleep(0)
-        # Ensure async generators are shut down before pytest-anyio closes the loop
-        loop = None
-        try:
-            loop = asyncio.get_running_loop()
-        except RuntimeError:
-            loop = None
-        if loop is not None:
-            await loop.shutdown_asyncgens()
-
-
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
-    """Attach the async teardown safety fixture to anyio-marked tests only.
-
-    This avoids warnings in sync tests while ensuring anyio tests leave the
-    runner/loop in a clean state before AnyIO closes it.
-    """
-    for item in items:
-        if item.get_closest_marker("anyio"):
-            # Apply the fixture only to tests that use the anyio runner
-            item.add_marker(pytest.mark.usefixtures("_anyio_teardown_safety"))
-
-    # Run watchers tests first to avoid interference from other async plugins/tests
+    """Run watchers tests first to avoid interference from other async plugins/tests."""
     def sort_key(it: pytest.Item) -> tuple[int, str]:
         nodeid = it.nodeid
         priority = 0 if "tests/test_watchers.py::" in nodeid or nodeid.startswith("tests/test_watchers.py") else 1
@@ -183,3 +152,49 @@ def module_factory():
             setattr(module, callable_func.__name__, callable_func)
         return module
     return _create
+
+
+# Async watcher test fixtures
+@pytest.fixture
+def watcher_runner():
+    """Factory for running watchers with automatic lifecycle management.
+
+    Returns an async context manager that handles watcher task creation,
+    startup delay, and cleanup on exit.
+
+    Example:
+        async def test_something(watcher_runner):
+            async with watcher_runner(watch_and_rebuild, ...) as task:
+                # Watcher is running
+                # Do test operations
+                pass
+            # Watcher is stopped and cleaned up
+    """
+    from contextlib import asynccontextmanager
+    import asyncio
+
+    @asynccontextmanager
+    async def run(watcher_func, **kwargs):
+        """Run a watcher function with automatic lifecycle management.
+
+        Args:
+            watcher_func: The watcher function to run (e.g., watch_and_rebuild)
+            **kwargs: Arguments to pass to the watcher function
+
+        Yields:
+            asyncio.Task: The running watcher task
+        """
+        task = asyncio.create_task(watcher_func(**kwargs))
+        # Give watcher time to start
+        await asyncio.sleep(0.5)
+        try:
+            yield task
+        finally:
+            # Clean up watcher
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
+
+    return run

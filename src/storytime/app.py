@@ -13,7 +13,7 @@ from starlette.staticfiles import StaticFiles
 from storytime.build import build_site
 from storytime.nodes import get_package_path
 from storytime.watchers import watch_and_rebuild
-from storytime.websocket import broadcast_reload, websocket_endpoint
+from storytime.websocket import broadcast_reload_async, websocket_endpoint
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ async def lifespan(
                 content_path=content_path,
                 storytime_path=storytime_path,
                 rebuild_callback=build_site,
-                broadcast_callback=broadcast_reload,
+                broadcast_callback=broadcast_reload_async,
                 package_location=package_location,
                 output_dir=output_dir,
             ),

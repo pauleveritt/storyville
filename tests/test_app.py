@@ -180,7 +180,7 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
 
     with patch("storytime.app.watch_and_rebuild") as mock_watcher, \
          patch("storytime.app.build_site") as mock_build, \
-         patch("storytime.app.broadcast_reload") as mock_broadcast:
+         patch("storytime.app.broadcast_reload_async") as mock_broadcast:
 
         # Make the mock watcher run forever until cancelled
         async def mock_watcher_fn(*args, **kwargs):

@@ -5,20 +5,20 @@ from pathlib import Path
 
 import pytest
 
-from storytime.watchers import watch_and_rebuild, watch_input_directory, watch_output_directory
+from storytime.watchers import watch_and_rebuild
 
 
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_input_watcher_detects_content_changes(tmp_path: Path) -> None:
-    """Test INPUT watcher detects changes in content directory."""
+    """Test unified watcher detects changes in content directory."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Create a mock rebuild callback
+    # Create mock callbacks
     rebuild_called = asyncio.Event()
     rebuild_args: list[tuple[str, Path]] = []
 
@@ -26,12 +26,16 @@ async def test_input_watcher_detects_content_changes(tmp_path: Path) -> None:
         rebuild_args.append((package_location, output_dir_arg))
         rebuild_called.set()
 
+    async def broadcast_callback() -> None:
+        pass  # No-op for this test
+
     # Start watcher in background
     watcher_task = asyncio.create_task(
-        watch_input_directory(
+        watch_and_rebuild(
             content_path=content_dir,
             storytime_path=None,
             rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
             package_location="test_package",
             output_dir=output_dir,
         )
@@ -67,7 +71,7 @@ async def test_input_watcher_detects_content_changes(tmp_path: Path) -> None:
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> None:
-    """Test INPUT watcher detects static asset changes in src/storytime/."""
+    """Test unified watcher detects static asset changes in src/storytime/."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
@@ -76,18 +80,22 @@ async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> Non
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Create a mock rebuild callback
+    # Create mock callbacks
     rebuild_called = asyncio.Event()
 
     def rebuild_callback(package_location: str, output_dir_arg: Path) -> None:
         rebuild_called.set()
 
+    async def broadcast_callback() -> None:
+        pass  # No-op for this test
+
     # Start watcher in background
     watcher_task = asyncio.create_task(
-        watch_input_directory(
+        watch_and_rebuild(
             content_path=content_dir,
             storytime_path=storytime_dir,
             rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
             package_location="test_package",
             output_dir=output_dir,
         )
@@ -121,7 +129,7 @@ async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> Non
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -> None:
-    """Test INPUT watcher ignores Python files in src/storytime/."""
+    """Test unified watcher ignores Python files in src/storytime/."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
@@ -136,18 +144,22 @@ async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Create a mock rebuild callback
+    # Create mock callbacks
     rebuild_called = asyncio.Event()
 
     def rebuild_callback(package_location: str, output_dir_arg: Path) -> None:
         rebuild_called.set()
 
+    async def broadcast_callback() -> None:
+        pass  # No-op for this test
+
     # Start watcher in background
     watcher_task = asyncio.create_task(
-        watch_input_directory(
+        watch_and_rebuild(
             content_path=content_dir,
             storytime_path=storytime_dir,
             rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
             package_location="test_package",
             output_dir=output_dir,
         )
@@ -181,53 +193,8 @@ async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_output_watcher_detects_build_changes(tmp_path: Path) -> None:
-    """Test OUTPUT watcher detects changes in build output directory."""
-    # Setup
-    output_dir = tmp_path / "output"
-    output_dir.mkdir()
-
-    # Create a mock broadcast callback
-    broadcast_called = asyncio.Event()
-
-    def broadcast_callback() -> None:
-        broadcast_called.set()
-
-    # Start watcher in background
-    watcher_task = asyncio.create_task(
-        watch_output_directory(
-            output_dir=output_dir,
-            broadcast_callback=broadcast_callback,
-        )
-    )
-
-    try:
-        # Give watcher time to start
-        await asyncio.sleep(0.5)
-
-        # Create a file in output directory
-        test_file = output_dir / "index.html"
-        test_file.write_text("<html><body>Hello</body></html>")
-
-        # Wait for broadcast to be called (with timeout)
-        try:
-            await asyncio.wait_for(broadcast_called.wait(), timeout=3.0)
-        except asyncio.TimeoutError:
-            pytest.fail("Broadcast callback was not called within timeout")
-
-    finally:
-        # Clean up watcher
-        watcher_task.cancel()
-        try:
-            await watcher_task
-        except asyncio.CancelledError:
-            pass
-
-
-@pytest.mark.slow
-@pytest.mark.anyio
 async def test_watcher_can_be_started_and_stopped(tmp_path: Path) -> None:
-    """Test watchers can be started and stopped cleanly."""
+    """Test unified watcher can be started and stopped cleanly."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
@@ -238,61 +205,48 @@ async def test_watcher_can_be_started_and_stopped(tmp_path: Path) -> None:
     def rebuild_callback(package_location: str, output_dir_arg: Path) -> None:
         pass
 
-    def broadcast_callback() -> None:
+    async def broadcast_callback() -> None:
         pass
 
-    # Start INPUT watcher
-    input_task = asyncio.create_task(
-        watch_input_directory(
+    # Start unified watcher
+    watcher_task = asyncio.create_task(
+        watch_and_rebuild(
             content_path=content_dir,
             storytime_path=None,
             rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
             package_location="test",
             output_dir=output_dir,
         )
     )
 
-    # Start OUTPUT watcher
-    output_task = asyncio.create_task(
-        watch_output_directory(
-            output_dir=output_dir,
-            broadcast_callback=broadcast_callback,
-        )
-    )
-
-    # Give watchers time to start
+    # Give watcher time to start
     await asyncio.sleep(0.5)
 
-    # Stop watchers
-    input_task.cancel()
-    output_task.cancel()
+    # Stop watcher
+    watcher_task.cancel()
 
-    # Verify tasks complete without errors
+    # Verify task completes without errors
     try:
-        await input_task
+        await watcher_task
     except asyncio.CancelledError:
         pass  # Expected
 
-    try:
-        await output_task
-    except asyncio.CancelledError:
-        pass  # Expected
-
-    # If we get here without exception, watchers stopped cleanly
+    # If we get here without exception, watcher stopped cleanly
     assert True
 
 
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_input_watcher_handles_rebuild_errors(tmp_path: Path) -> None:
-    """Test INPUT watcher continues watching after rebuild errors."""
+    """Test unified watcher continues watching after rebuild errors."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Create a mock rebuild callback that fails first time
+    # Create mock callbacks - rebuild fails first time
     call_count = 0
     rebuild_events: list[asyncio.Event] = [asyncio.Event(), asyncio.Event()]
 
@@ -306,12 +260,16 @@ async def test_input_watcher_handles_rebuild_errors(tmp_path: Path) -> None:
             call_count += 1
             rebuild_events[1].set()
 
+    async def broadcast_callback() -> None:
+        pass  # No-op for this test
+
     # Start watcher in background
     watcher_task = asyncio.create_task(
-        watch_input_directory(
+        watch_and_rebuild(
             content_path=content_dir,
             storytime_path=None,
             rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
             package_location="test_package",
             output_dir=output_dir,
         )
@@ -358,75 +316,6 @@ async def test_input_watcher_handles_rebuild_errors(tmp_path: Path) -> None:
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_output_watcher_handles_broadcast_errors(tmp_path: Path) -> None:
-    """Test OUTPUT watcher continues watching after broadcast errors."""
-    # Setup
-    output_dir = tmp_path / "output"
-    output_dir.mkdir()
-
-    # Create a mock broadcast callback that fails first time
-    call_count = 0
-    broadcast_events: list[asyncio.Event] = [asyncio.Event(), asyncio.Event()]
-
-    def broadcast_callback() -> None:
-        nonlocal call_count
-        if call_count == 0:
-            call_count += 1
-            broadcast_events[0].set()
-            raise RuntimeError("Simulated broadcast failure")
-        else:
-            call_count += 1
-            broadcast_events[1].set()
-
-    # Start watcher in background
-    watcher_task = asyncio.create_task(
-        watch_output_directory(
-            output_dir=output_dir,
-            broadcast_callback=broadcast_callback,
-        )
-    )
-
-    try:
-        # Give watcher time to start
-        await asyncio.sleep(0.5)
-
-        # Create first file (will trigger error)
-        test_file1 = output_dir / "file1.html"
-        test_file1.write_text("<html>1</html>")
-
-        # Wait for first broadcast attempt
-        try:
-            await asyncio.wait_for(broadcast_events[0].wait(), timeout=3.0)
-        except asyncio.TimeoutError:
-            pytest.fail("First broadcast callback was not called")
-
-        # Give debounce time to pass
-        await asyncio.sleep(0.5)
-
-        # Create second file (should succeed)
-        test_file2 = output_dir / "file2.html"
-        test_file2.write_text("<html>2</html>")
-
-        # Wait for second broadcast attempt
-        try:
-            await asyncio.wait_for(broadcast_events[1].wait(), timeout=3.0)
-        except asyncio.TimeoutError:
-            pytest.fail("Second broadcast callback was not called")
-
-        # Verify both callbacks were called
-        assert call_count == 2
-
-    finally:
-        # Clean up watcher
-        watcher_task.cancel()
-        try:
-            await watcher_task
-        except asyncio.CancelledError:
-            pass
-
-
-@pytest.mark.slow
-@pytest.mark.anyio
 async def test_unified_watcher_triggers_rebuild_and_broadcast(tmp_path: Path) -> None:
     """Test unified watcher detects changes, triggers rebuild, and broadcasts reload."""
     # Setup
@@ -444,7 +333,7 @@ async def test_unified_watcher_triggers_rebuild_and_broadcast(tmp_path: Path) ->
         rebuild_args.append((package_location, output_dir_arg))
         rebuild_called.set()
 
-    def broadcast_callback() -> None:
+    async def broadcast_callback() -> None:
         broadcast_called.set()
 
     # Start unified watcher in background
@@ -510,7 +399,7 @@ async def test_unified_watcher_does_not_broadcast_on_build_failure(tmp_path: Pat
         rebuild_called.set()
         raise RuntimeError("Simulated build failure")
 
-    def broadcast_callback() -> None:
+    async def broadcast_callback() -> None:
         broadcast_called.set()
 
     # Start unified watcher in background
