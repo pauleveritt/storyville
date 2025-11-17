@@ -20,6 +20,7 @@ class Layout:
     site: Site
     children: Element | Fragment | Node | None
     depth: int = 0
+    current_path: str | None = None
 
     def __call__(self) -> Node:
         """Render the layout to a tdom Node.
@@ -65,7 +66,8 @@ class Layout:
     </ul>
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="/">Components</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/debug">Debug</a></li>
     </ul>
   </nav>
 </header>
@@ -82,6 +84,9 @@ class Layout:
     </article>
   </div>
 </main>
+<footer>
+  <p style="text-align: center;">2025 Storytime</p>
+</footer>
 </body>
 </html>
 ''')

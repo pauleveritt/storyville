@@ -10,35 +10,35 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 1: Layout Component Redesign
 **Dependencies:** None
 
-- [ ] 1.0 Complete core layout structure
-  - [ ] 1.1 Write 2-8 focused tests for layout structure
+- [x] 1.0 Complete core layout structure
+  - [x] 1.1 Write 2-8 focused tests for layout structure
     - Limit to 2-8 highly focused tests maximum
     - Test header navigation rendering with Home/About/Debug links
     - Test footer rendering with copyright text
     - Test main grid structure (header/aside/main/footer)
     - Test current_path parameter acceptance
     - Skip exhaustive testing of all layout variations
-  - [ ] 1.2 Update Layout component signature
+  - [x] 1.2 Update Layout component signature
     - Add current_path parameter (str | None = None)
     - Keep existing parameters: view_title, site, children, depth
     - Preserve type hints: children as Element | Fragment | Node | None
-  - [ ] 1.3 Implement header navigation
+  - [x] 1.3 Implement header navigation
     - Replace existing header nav structure
     - Add Home link (href="/")
     - Add About link (href="/about")
     - Add Debug link (href="/debug")
     - Use PicoCSS nav structure with `<ul>` lists
     - Keep "Storytime" branding in first `<ul>`
-  - [ ] 1.4 Implement footer element
+  - [x] 1.4 Implement footer element
     - Add `<footer>` element at bottom of layout
     - Include centered copyright text: "2025 Storytime"
     - Use default PicoCSS footer styling (no custom CSS)
-  - [ ] 1.5 Update main grid structure
+  - [x] 1.5 Update main grid structure
     - Use PicoCSS grid system for layout
     - Structure: header > main.container > div.grid > (aside + article) > footer
     - Maintain existing `<article>` for children content
     - Preserve depth-based static asset path calculation
-  - [ ] 1.6 Ensure layout structure tests pass
+  - [x] 1.6 Ensure layout structure tests pass
     - Run ONLY the 2-8 tests written in 1.1
     - Verify header/footer render correctly
     - Verify grid structure matches PicoCSS patterns
