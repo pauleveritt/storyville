@@ -54,36 +54,37 @@ output and triggers browser reloads.
 
 **Dependencies:** Task Group 1 (needs client JavaScript code)
 
-- [ ] 2.0 Complete layout modification
-    - [ ] 2.1 Write 2-8 focused tests for script injection
+- [x] 2.0 Complete layout modification
+    - [x] 2.1 Write 2-8 focused tests for script injection
         - Test that `<script>` tag is present in rendered HTML
         - Test script appears before closing `</body>` tag
-        - Test script contains WebSocket client code
-        - Test script only in development mode (or always for now)
+        - Test script references WebSocket client JavaScript file
+        - Test script works at different depths (depth=0, 1, 2)
         - Use existing test patterns from `layout_test.py`
         - Limit to critical injection behaviors only
-    - [ ] 2.2 Modify Layout component in `src/storytime/components/layout/layout.py`
-        - Inject inline `<script>` tag before closing `</body>`
-        - Include complete WebSocket client code from Task Group 1
+    - [x] 2.2 Modify Layout component in `src/storytime/components/layout/layout.py`
+        - Inject `<script src="{ws_script_path}"></script>` tag before closing `</body>`
+        - Reference WebSocket client JavaScript from static/ws.js
         - Use tdom t-string syntax for clean HTML interpolation
         - Follow existing Layout structure and patterns
-    - [ ] 2.3 Test script injection with different depths
-        - Verify script works at depth=0 (site root)
-        - Verify script works at depth=1 (section pages)
-        - Verify script works at depth=2 (subject pages)
+    - [x] 2.3 Test script injection with different depths
+        - Verify script works at depth=0 (site root) with path ../static/ws.js
+        - Verify script works at depth=1 (section pages) with path ../../static/ws.js
+        - Verify script works at depth=2 (subject pages) with path ../../../static/ws.js
         - Ensure WebSocket URL construction is relative and works at all depths
-    - [ ] 2.4 Ensure layout tests pass
-        - Run ONLY the 2-8 tests written in 2.1
+    - [x] 2.4 Ensure layout tests pass
+        - Run ONLY the 6 tests written in 2.1
         - Verify script injection works correctly
-        - Do NOT run entire test suite at this stage
+        - All quality checks pass (test, typecheck, fmt)
 
 **Acceptance Criteria:**
 
-- The 2-8 layout tests pass
+- The 6 layout tests pass
 - Script tag is injected before `</body>`
-- Script contains complete WebSocket client code
-- Script works at all page depths
+- Script references /static/ws.js with correct relative path based on depth
+- Script works at all page depths (0, 1, 2)
 - Follows existing Layout patterns
+- All quality checks pass (test, typecheck, fmt)
 
 ### Task Group 3: WebSocket Server Endpoint
 

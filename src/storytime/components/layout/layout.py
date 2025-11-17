@@ -40,6 +40,7 @@ class Layout:
         static_prefix = "../" * (self.depth + 1)
         stylesheet_path = f"{static_prefix}static/pico-main.css"
         storytime_css_path = f"{static_prefix}static/storytime.css"
+        ws_script_path = f"{static_prefix}static/ws.js"
 
         # Get sections for sidebar
         sections = self.site.items.values()
@@ -52,6 +53,7 @@ class Layout:
     <title>{title_text}</title>
     <link rel="stylesheet" href="{stylesheet_path}" />
     <link rel="stylesheet" href="{storytime_css_path}" />
+    <script src="{ws_script_path}"></script>
 </head>
 <body>
 <header>
