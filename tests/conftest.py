@@ -1,6 +1,7 @@
 """Pytest configuration and fixtures."""
 
 import sys
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
@@ -13,6 +14,63 @@ from tdom import Node, html
 examples_path = Path(__file__).parent.parent / "examples"
 if str(examples_path) not in sys.path:
     sys.path.insert(0, str(examples_path.parent))
+
+
+@pytest.fixture(autouse=True)
+def cleanup_websocket_loop():
+    """Clean up websocket globals after each test.
+
+    We avoid touching the event loop or its policy here because pytest-anyio
+    manages an `asyncio.Runner` per test. Closing or resetting the loop/policy
+    during teardown can race with the plugin's own cleanup and produce
+    "Runner is closed" or nested-loop errors.
+    """
+    yield
+
+    # After test completes, clear any stale websocket globals only
+    from storytime import websocket
+    websocket._websocket_loop = None
+    websocket._active_connections.clear()
+
+
+## Run a tiny async cleanup only for anyio-marked tests to avoid runner teardown races
+@pytest.fixture
+async def _anyio_teardown_safety() -> AsyncGenerator[None, None]:
+    import asyncio
+
+    try:
+        yield
+    finally:
+        # Give pending callbacks a chance to complete
+        await asyncio.sleep(0)
+        # Ensure async generators are shut down before pytest-anyio closes the loop
+        loop = None
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        if loop is not None:
+            await loop.shutdown_asyncgens()
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """Attach the async teardown safety fixture to anyio-marked tests only.
+
+    This avoids warnings in sync tests while ensuring anyio tests leave the
+    runner/loop in a clean state before AnyIO closes it.
+    """
+    for item in items:
+        if item.get_closest_marker("anyio"):
+            # Apply the fixture only to tests that use the anyio runner
+            item.add_marker(pytest.mark.usefixtures("_anyio_teardown_safety"))
+
+    # Run watchers tests first to avoid interference from other async plugins/tests
+    def sort_key(it: pytest.Item) -> tuple[int, str]:
+        nodeid = it.nodeid
+        priority = 0 if "tests/test_watchers.py::" in nodeid or nodeid.startswith("tests/test_watchers.py") else 1
+        return (priority, nodeid)
+
+    items.sort(key=sort_key)
 
 
 # Common test component fixtures

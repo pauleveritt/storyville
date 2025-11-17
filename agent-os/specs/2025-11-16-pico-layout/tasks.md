@@ -255,20 +255,20 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 6: End-to-End Testing and Gap Analysis
 **Dependencies:** Task Groups 1-5
 
-- [ ] 6.0 Review existing tests and fill critical gaps only
-  - [ ] 6.1 Review tests from Task Groups 1-4
+- [x] 6.0 Review existing tests and fill critical gaps only
+  - [x] 6.1 Review tests from Task Groups 1-4
     - Review the 2-8 tests written for layout structure (Task 1.1)
     - Review the 2-8 tests written for sidebar navigation (Task 2.1)
     - Review the 2-8 tests written for breadcrumbs (Task 3.1)
     - Review the 2-8 tests written for new views (Task 4.1)
     - Total existing tests: approximately 8-32 tests
-  - [ ] 6.2 Analyze test coverage gaps for THIS feature only
+  - [x] 6.2 Analyze test coverage gaps for THIS feature only
     - Identify critical user workflows lacking test coverage
     - Focus on integration between components (e.g., Layout + NavigationTree + Breadcrumbs)
     - Identify DOM interaction scenarios requiring pytest-playwright
     - Do NOT assess entire application test coverage
     - Prioritize end-to-end workflows over unit test gaps
-  - [ ] 6.3 Write up to 10 additional strategic tests maximum
+  - [x] 6.3 Write up to 10 additional strategic tests maximum
     - Add maximum of 10 new tests to fill identified critical gaps
     - Focus on playwright tests for DOM interactions:
       - Clicking collapsed section expands it
@@ -280,7 +280,7 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
     - Use pytest-playwright fixtures from conftest.py
     - Do NOT write comprehensive coverage for all scenarios
     - Skip edge cases unless business-critical
-  - [ ] 6.4 Run feature-specific tests only
+  - [x] 6.4 Run feature-specific tests only
     - Run ONLY tests related to this spec's feature
     - Expected total: approximately 18-42 tests maximum
     - Do NOT run the entire application test suite
@@ -289,7 +289,7 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
       - Navigation hierarchy expands/collapses correctly
       - Breadcrumbs navigate properly
       - New routes are accessible
-  - [ ] 6.5 Verify all quality checks pass
+  - [x] 6.5 Verify all quality checks pass
     - Run: just test (for feature-specific tests)
     - Run: just typecheck (verify type hints are correct)
     - Run: just fmt (ensure code formatting is consistent)
@@ -355,7 +355,7 @@ Test files to create/modify:
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/components/test_breadcrumbs.py` (new)
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_about_view.py` (new)
 - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_debug_view.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_pico_layout_integration.py` (new, for playwright tests)
+- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_playwright_integration.py` (new, for playwright tests)
 
 ## Technical Notes
 

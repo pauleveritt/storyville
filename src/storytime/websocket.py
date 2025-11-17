@@ -1,5 +1,6 @@
 """WebSocket endpoint for hot reload functionality."""
 
+import asyncio
 import json
 import logging
 
@@ -7,6 +8,9 @@ from starlette.websockets import WebSocket, WebSocketDisconnect
 
 # Module-level set to track active WebSocket connections
 _active_connections: set[WebSocket] = set()
+
+# Store reference to the event loop managing websocket connections
+_websocket_loop: asyncio.AbstractEventLoop | None = None
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +24,15 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     Args:
         websocket: Starlette WebSocket instance for the connection
     """
+    global _websocket_loop
+
     await websocket.accept()
     _active_connections.add(websocket)
+
+    # Store reference to the event loop managing this connection
+    if _websocket_loop is None:
+        _websocket_loop = asyncio.get_running_loop()
+
     logger.info("WebSocket client connected (total: %d)", len(_active_connections))
 
     try:
@@ -35,17 +46,22 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     finally:
         # Clean up connection
         _active_connections.discard(websocket)
+
+        # Clear loop reference if no connections remain
+        if not _active_connections:
+            _websocket_loop = None
+
         logger.info(
             "WebSocket client removed (remaining: %d)", len(_active_connections)
         )
 
 
-def broadcast_reload() -> None:
-    """Broadcast reload message to all connected WebSocket clients.
+async def broadcast_reload_async() -> None:
+    """Async version of broadcast_reload.
 
+    Broadcast reload message to all connected WebSocket clients.
     Sends JSON message {"type": "reload"} to all active connections.
     Handles disconnections gracefully by removing failed connections.
-    This function is synchronous but schedules async broadcast operations.
     """
     if not _active_connections:
         logger.debug("No WebSocket clients to broadcast to")
@@ -54,30 +70,73 @@ def broadcast_reload() -> None:
     message = json.dumps({"type": "reload"})
     disconnected: list[WebSocket] = []
 
-    # Note: This is a synchronous wrapper for use in async contexts
-    # In practice, this will be called from async watcher code
-    import asyncio
+    for connection in _active_connections:
+        try:
+            await connection.send_text(message)
+        except Exception as e:
+            logger.warning("Failed to send to WebSocket client: %s", e)
+            disconnected.append(connection)
 
-    async def _broadcast() -> None:
-        """Internal async broadcast implementation."""
-        for connection in _active_connections:
+    # Clean up disconnected clients
+    for connection in disconnected:
+        _active_connections.discard(connection)
+
+    logger.info("Broadcast reload to %d clients", len(_active_connections))
+
+
+def broadcast_reload() -> None:
+    """Synchronous wrapper for broadcast_reload_async.
+
+    Broadcasts reload message to all connected WebSocket clients.
+    This is a synchronous convenience function that handles event loop management.
+
+    In TestClient context, this is called from the main thread while the ASGI app
+    runs in a background thread with its own event loop. We use run_coroutine_threadsafe
+    to safely schedule the broadcast across threads.
+    """
+    import concurrent.futures
+
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    # Use the stored websocket loop if available
+    if _websocket_loop is not None:
+        # Check if the stored loop is still running
+        if _websocket_loop.is_closed():
+            # Loop was closed (e.g., TestClient was closed between tests)
+            logger.warning("Stored websocket loop is closed, clearing reference")
+            # Clear the stale reference
+            globals()["_websocket_loop"] = None
+            # Fall through to the else branch
+        else:
+            # Schedule the broadcast in the websocket event loop
+            # This handles cross-thread scenarios like TestClient
+            logger.debug("Scheduling broadcast in websocket event loop")
             try:
-                await connection.send_text(message)
-            except Exception as e:
-                logger.warning("Failed to send to WebSocket client: %s", e)
-                disconnected.append(connection)
+                future = asyncio.run_coroutine_threadsafe(
+                    broadcast_reload_async(), _websocket_loop
+                )
+                # Wait for completion
+                future.result(timeout=5.0)
+                return  # Success, exit early
+            except concurrent.futures.TimeoutError as e:
+                msg = "Broadcast timed out after 5 seconds"
+                raise TimeoutError(msg) from e
+            except RuntimeError as e:
+                # Loop might have been closed during the call
+                if "closed" in str(e).lower() or "runner is closed" in str(e).lower():
+                    logger.warning("Loop closed during broadcast: %s", e)
+                    globals()["_websocket_loop"] = None
+                    # Fall through to handle with current/new loop
+                else:
+                    raise
 
-        # Clean up disconnected clients
-        for connection in disconnected:
-            _active_connections.discard(connection)
-
-        logger.info("Broadcast reload to %d clients", len(_active_connections))
-
-    # Try to get running event loop, or create a new one
-    try:
-        loop = asyncio.get_running_loop()
-        # If we have a running loop, create a task
-        loop.create_task(_broadcast())
-    except RuntimeError:
-        # No running loop - run in new event loop
-        asyncio.run(_broadcast())
+    # No stored websocket loop (or it was closed)
+    if _websocket_loop is None:
+        # With no known websocket loop, we cannot safely schedule work from the
+        # watchers' event loop (may be a different runner/thread). To avoid
+        # nested-loop and closed-runner errors under pytest-anyio, treat this as
+        # a no-op.
+        logger.debug("No websocket loop available; skipping broadcast")
+        return

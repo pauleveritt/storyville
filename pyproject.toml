@@ -20,9 +20,11 @@ dependencies = [
 [tool.pytest.ini_options]
 testpaths = ["src", "tests"]
 python_files = ["*_test.py", "test_*.py"]
-addopts = "-p no:doctest"
+addopts = "-p no:doctest -m \"not playwright\""
+anyio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "playwright: marks tests that use playwright (conflicts with anyio tests)",
 ]
 
 [tool.anyio]

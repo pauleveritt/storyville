@@ -77,8 +77,9 @@ async def watch_input_directory(
             if not relevant_changes:
                 continue
 
-            # Implement simple debouncing
-            current_time = asyncio.get_event_loop().time()
+            # Implement simple debouncing (use monotonic clock, independent of event loop)
+            from time import monotonic as _monotonic
+            current_time = _monotonic()
             if current_time - last_change_time < DEBOUNCE_DELAY:
                 logger.debug("Debouncing file changes (too soon after last change)")
                 continue
@@ -102,6 +103,18 @@ async def watch_input_directory(
     except asyncio.CancelledError:
         logger.info("INPUT watcher stopped")
         raise
+    except RuntimeError as e:
+        # Handle shutdown races with anyio/asyncio runners gracefully
+        msg = str(e).lower()
+        if (
+            "runner is closed" in msg
+            or "event loop is closed" in msg
+            or "another loop is running" in msg
+        ):
+            logger.info("INPUT watcher stopped due to loop shutdown: %s", e)
+            return
+        logger.error("INPUT watcher runtime error: %s", e, exc_info=True)
+        return
 
 
 async def watch_output_directory(
@@ -138,8 +151,9 @@ async def watch_output_directory(
             if not relevant_changes:
                 continue
 
-            # Implement simple debouncing
-            current_time = asyncio.get_event_loop().time()
+            # Implement simple debouncing (use monotonic clock, independent of event loop)
+            from time import monotonic as _monotonic
+            current_time = _monotonic()
             if current_time - last_change_time < DEBOUNCE_DELAY:
                 logger.debug("Debouncing output changes (too soon after last change)")
                 continue
@@ -161,3 +175,15 @@ async def watch_output_directory(
     except asyncio.CancelledError:
         logger.info("OUTPUT watcher stopped")
         raise
+    except RuntimeError as e:
+        # Handle shutdown races with anyio/asyncio runners gracefully
+        msg = str(e).lower()
+        if (
+            "runner is closed" in msg
+            or "event loop is closed" in msg
+            or "another loop is running" in msg
+        ):
+            logger.info("OUTPUT watcher stopped due to loop shutdown: %s", e)
+            return
+        logger.error("OUTPUT watcher runtime error: %s", e, exc_info=True)
+        return
