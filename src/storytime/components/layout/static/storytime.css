@@ -1,1 +1,98 @@
 /* Storytime custom styles */
+
+/* Grid layout for main content area */
+main.container > .grid {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Sidebar navigation styling */
+main.container aside {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+}
+
+/* Navigation tree hierarchy */
+aside nav details {
+    margin-bottom: 0.5rem;
+}
+
+aside nav details summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.25rem 0;
+}
+
+aside nav details ul {
+    margin: 0;
+    padding-left: 1rem;
+    list-style: none;
+}
+
+aside nav details ul li {
+    margin: 0.25rem 0;
+}
+
+aside nav details ul li a {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+aside nav details ul li a:hover {
+    background-color: var(--pico-aside-link-current-background-color, rgba(0, 0, 0, 0.05));
+}
+
+/* Nested subject details */
+aside nav details details {
+    margin-top: 0.25rem;
+}
+
+aside nav details details summary {
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+/* Breadcrumb navigation */
+nav[aria-label="Breadcrumb"] {
+    margin-bottom: 1.5rem;
+    font-size: 0.9em;
+}
+
+nav[aria-label="Breadcrumb"] a {
+    text-decoration: none;
+}
+
+nav[aria-label="Breadcrumb"] a:hover {
+    text-decoration: underline;
+}
+
+nav[aria-label="Breadcrumb"] span {
+    color: var(--pico-muted-color);
+}
+
+/* Footer styling */
+footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+/* Responsive layout for mobile */
+@media (max-width: 768px) {
+    main.container > .grid {
+        grid-template-columns: 1fr;
+    }
+
+    main.container aside {
+        position: static;
+        max-height: none;
+        margin-bottom: 2rem;
+    }
+}

@@ -212,29 +212,29 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 5: CSS Styling
 **Dependencies:** Task Groups 1-4
 
-- [ ] 5.0 Complete CSS styling
-  - [ ] 5.1 Add custom layout styles to storytime.css
+- [x] 5.0 Complete CSS styling
+  - [x] 5.1 Add custom layout styles to storytime.css
     - File: src/storytime/components/layout/static/storytime.css
     - Add grid layout spacing rules if needed
     - Add aside navigation spacing/indentation for hierarchy
     - Add breadcrumb inline layout styles if needed
     - Keep minimal - rely on PicoCSS defaults
     - Do NOT add responsive overrides (trust PicoCSS)
-  - [ ] 5.2 Test visual rendering in browser
+  - [x] 5.2 Test visual rendering in browser
     - No automated tests for this sub-task
     - Manual verification only
     - Check header navigation alignment
     - Verify sidebar hierarchy indentation is clear
     - Verify breadcrumbs display inline with separators
     - Check footer placement and centering
-  - [ ] 5.3 Verify responsive behavior
+  - [x] 5.3 Verify responsive behavior
     - No automated tests for this sub-task
     - Manual verification only
     - Test on mobile viewport (320px-768px)
     - Test on tablet viewport (768px-1024px)
     - Test on desktop viewport (1024px+)
     - Trust PicoCSS defaults to handle layout changes
-  - [ ] 5.4 Verify accessibility
+  - [x] 5.4 Verify accessibility
     - No automated tests for this sub-task
     - Manual verification only
     - Check semantic HTML usage (header, nav, aside, main, article, footer)
