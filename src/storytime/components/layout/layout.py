@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from tdom import Element, Fragment, Node, html
 
-from storytime.components.sections_listing import SectionsListing
+from storytime.components.navigation_tree import NavigationTree
 from storytime.site.models import Site
 
 
@@ -44,9 +44,6 @@ class Layout:
         storytime_css_path = f"{static_prefix}static/storytime.css"
         ws_script_path = f"{static_prefix}static/ws.js"
 
-        # Get sections for sidebar
-        sections = self.site.items.values()
-
         return html(t'''\
 <html lang="EN">
 <head>
@@ -74,10 +71,8 @@ class Layout:
 <main class="container">
   <div class="grid">
     <aside>
-      <nav>
-        <strong>Sections</strong>
-        <{SectionsListing} sections={sections} />
-      </nav>
+      <strong>Sections</strong>
+      <{NavigationTree} sections={self.site.items} current_path={self.current_path} />
     </aside>
     <article>
       {self.children}

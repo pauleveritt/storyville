@@ -56,49 +56,49 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 2: Hierarchical Sidebar Navigation
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete sidebar navigation
-  - [ ] 2.1 Write 2-8 focused tests for sidebar navigation
+- [x] 2.0 Complete sidebar navigation
+  - [x] 2.1 Write 2-8 focused tests for sidebar navigation
     - Limit to 2-8 highly focused tests maximum
     - Test three-level hierarchy rendering (Section > Subject > Story)
     - Test `<details>` elements render with correct structure
     - Test current_path controls which details have `open` attribute
     - Test stories render as simple `<li><a>` elements (not collapsible)
     - Skip exhaustive testing of all navigation scenarios
-  - [ ] 2.2 Create NavigationTree component
+  - [x] 2.2 Create NavigationTree component
     - New component: src/storytime/components/navigation_tree/__init__.py
     - Accept parameters: sections (dict[str, Section]), current_path (str | None)
     - Return type: Node
     - Use dataclass pattern matching existing components
     - Follow tdom html t-string syntax pattern
-  - [ ] 2.3 Implement section-level details rendering
+  - [x] 2.3 Implement section-level details rendering
     - Iterate over sections from site.items.values()
     - Render each section as `<details>` element
     - Use `<summary>` for section title
     - Parse current_path to determine if section should have `open` attribute
     - Section gets `open` if current_path starts with section name
-  - [ ] 2.4 Implement subject-level details rendering (nested)
+  - [x] 2.4 Implement subject-level details rendering (nested)
     - For each section, iterate over section.items.values() (subjects)
     - Render each subject as nested `<details>` inside section
     - Use `<summary>` for subject title
     - Subject gets `open` if current_path matches "section/subject" pattern
     - Nest subject details inside section's `<ul>`
-  - [ ] 2.5 Implement story-level links
+  - [x] 2.5 Implement story-level links
     - For each subject, iterate over subject.items (stories list)
     - Render each story as simple `<li><a href="...">story.title</a></li>`
     - Stories are NOT collapsible (no `<details>`)
     - Use proper URL construction for story links
     - Nest story links inside subject's `<ul>`
-  - [ ] 2.6 Implement current_path parsing logic
+  - [x] 2.6 Implement current_path parsing logic
     - Create helper function to parse "section/subject/story" format
     - Return tuple: (section_name | None, subject_name | None, story_name | None)
     - Use structural pattern matching for clean parsing
     - Handle None/empty path gracefully (all details closed)
-  - [ ] 2.7 Integrate NavigationTree into Layout
+  - [x] 2.7 Integrate NavigationTree into Layout
     - Replace existing SectionsListing with NavigationTree
     - Pass site.items and current_path to NavigationTree
     - Update `<aside>` structure to wrap NavigationTree
     - Keep "Sections" heading or remove based on visual design
-  - [ ] 2.8 Ensure sidebar navigation tests pass
+  - [x] 2.8 Ensure sidebar navigation tests pass
     - Run ONLY the 2-8 tests written in 2.1
     - Verify three-level hierarchy renders correctly
     - Verify current_path controls `open` attributes
