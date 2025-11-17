@@ -10,11 +10,14 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 ## Specific Requirements
 
 **Header Navigation**
-- Place top navigation in `<header>` element with Home, About, and Debug links
+- Wrap header content in `.container` div for consistent spacing
+- Use `<hgroup>` element for branding/logo on left side
+- Place navigation in `<nav>` element with Home, About, and Debug links on right side
 - Home link navigates to site root (/)
 - About link navigates to /about route pointing to AboutView
 - Debug link navigates to /debug route pointing to DebugView
-- Use existing PicoCSS nav structure with `<ul>` lists for alignment
+- Add `class="contrast"` to navigation links for proper styling
+- Structure: `<header><div class="container"><hgroup>...</hgroup><nav>...</nav></div></header>`
 
 **Left Sidebar Tree Navigation**
 - Implement three-level hierarchy in `<aside>`: Sections (collapsible) > Subjects (collapsible) > Stories (links)
@@ -33,17 +36,21 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 - Use this mechanism for both sidebar expansion and breadcrumb generation
 
 **Breadcrumb Navigation**
-- Place breadcrumbs between sidebar and main content showing Home > Section > Subject > Story
+- Place breadcrumbs at top of `<main>` element showing Home > Section > Subject > Story
 - Generate from current_path parameter by splitting on "/" separator
 - Render each level as clickable link except current page (plain text)
 - Use " > " as separator between breadcrumb items
 - Apply default link styling without custom overrides
 
 **Main Content Area**
-- Render main content in `<article>` element within grid layout
+- Use CSS Grid on `<main>` element (direct child of body) with `grid-template-columns: 11rem 1fr`
+- First column (11rem fixed width) contains `<aside>` with navigation tree
+- Second column (flexible 1fr) contains `<div role="document">` with breadcrumbs and view content
+- Column gap of 3rem between aside and document content
 - Accept children parameter (Element | Fragment | Node | None) for view content
 - Maintain depth parameter for static asset path calculation
 - Keep existing pattern where views wrap themselves in Layout
+- Structure: `<main><aside>...</aside><div role="document">...</div></main>`
 
 **Footer**
 - Add `<footer>` element with simple copyright text: "2025 Storytime"
@@ -64,10 +71,15 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 
 **CSS Organization**
 - Add all custom layout styling to existing storytime.css file
-- Use PicoCSS grid system for header/aside/main/footer layout
+- Use CSS Grid on `body > main` element with specific dimensions:
+  - `grid-template-columns: 11rem 1fr` (sidebar 11rem, content flexible)
+  - `column-gap: 3rem` (spacing between columns)
+  - `row-gap: 2rem` (vertical spacing)
+- Grid structure: `header > main (aside + div[role=document]) > footer`
 - Preserve existing pico-docs.css import (already available)
 - Do not create additional CSS files
 - Follow PicoCSS patterns for spacing and semantic HTML styling
+- Responsive: single column on mobile (max-width: 768px)
 
 **Responsive Behavior**
 - Rely on PicoCSS responsive defaults without custom overrides
@@ -118,6 +130,23 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 - storytime.css currently empty, ready for custom layout styles
 - pico-docs.css already imported with PicoCSS documentation styles
 - pico-main.css provides base framework styling
+
+## Development Workflow
+
+**Hot Reload with Single Watcher**
+- Use a single file system watcher to monitor source file changes
+- When source files change, automatically rebuild the site
+- After successful build, trigger websocket reload to refresh browser
+- Consolidate previous separate input/output watchers into one unified watcher
+- Build process triggers websocket notification to connected clients
+- Browser automatically reloads when receiving websocket message
+
+**Implementation Approach**
+- Single watcher monitors source package location for changes
+- On file change detection, run build_site() to regenerate output
+- Build completion triggers websocket broadcast to all connected clients
+- Remove separate output directory watcher (no longer needed)
+- Simplify development workflow with unified watch-build-reload cycle
 
 ## Out of Scope
 - Version selector dropdown functionality

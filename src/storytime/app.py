@@ -12,7 +12,7 @@ from starlette.staticfiles import StaticFiles
 
 from storytime.build import build_site
 from storytime.nodes import get_package_path
-from storytime.watchers import watch_input_directory, watch_output_directory
+from storytime.watchers import watch_and_rebuild
 from storytime.websocket import broadcast_reload, websocket_endpoint
 
 logger = logging.getLogger(__name__)
@@ -25,26 +25,29 @@ async def lifespan(
     package_location: str | None = None,
     output_dir: Path | None = None,
 ) -> AsyncIterator[None]:
-    """Starlette lifespan context manager for hot reload watchers.
+    """Starlette lifespan context manager for hot reload watcher.
 
-    Starts INPUT and OUTPUT watcher tasks on app startup and cancels them
-    on shutdown. The watchers monitor file changes and trigger rebuilds
-    and browser reloads.
+    Starts a unified watcher task on app startup and cancels it on shutdown.
+    The watcher monitors source file changes, triggers rebuilds, and broadcasts
+    reload messages to the browser.
+
+    This uses a single watcher that combines the previous dual-watcher approach
+    (input + output) into a unified watch -> build -> broadcast workflow.
 
     Args:
         app: Starlette application instance
         input_path: Path to content directory to monitor (optional)
         package_location: Package location for rebuilds (optional)
-        output_dir: Output directory to monitor and rebuild to (optional)
+        output_dir: Output directory to rebuild to (optional)
 
     Yields:
         None (no app state needed)
     """
     tasks: list[asyncio.Task] = []
 
-    # Only start watchers if all required paths are provided
+    # Only start watcher if all required paths are provided
     if input_path and package_location and output_dir:
-        logger.info("Starting hot reload watchers...")
+        logger.info("Starting hot reload watcher...")
 
         # Determine paths to watch
         # Convert package name (e.g., "examples.minimal") to filesystem path
@@ -55,30 +58,21 @@ async def lifespan(
         storytime_src = Path("src/storytime")
         storytime_path = storytime_src if storytime_src.exists() else None
 
-        # Create INPUT watcher task
-        input_task = asyncio.create_task(
-            watch_input_directory(
+        # Create unified watcher task that watches, rebuilds, and broadcasts
+        watcher_task = asyncio.create_task(
+            watch_and_rebuild(
                 content_path=content_path,
                 storytime_path=storytime_path,
                 rebuild_callback=build_site,
+                broadcast_callback=broadcast_reload,
                 package_location=package_location,
                 output_dir=output_dir,
             ),
-            name="input-watcher",
+            name="unified-watcher",
         )
-        tasks.append(input_task)
+        tasks.append(watcher_task)
 
-        # Create OUTPUT watcher task
-        output_task = asyncio.create_task(
-            watch_output_directory(
-                output_dir=output_dir,
-                broadcast_callback=broadcast_reload,
-            ),
-            name="output-watcher",
-        )
-        tasks.append(output_task)
-
-        logger.info("Hot reload watchers started")
+        logger.info("Hot reload watcher started")
 
     # Yield control to the application
     try:
@@ -86,7 +80,7 @@ async def lifespan(
     finally:
         # Shutdown: cancel all watcher tasks
         if tasks:
-            logger.info("Stopping hot reload watchers...")
+            logger.info("Stopping hot reload watcher...")
             for task in tasks:
                 task.cancel()
 
@@ -97,12 +91,12 @@ async def lifespan(
                     timeout=5.0,
                 )
             except asyncio.TimeoutError:
-                logger.warning("Watcher tasks did not complete within timeout")
+                logger.warning("Watcher task did not complete within timeout")
             except asyncio.CancelledError:
-                # Expected - tasks were cancelled
+                # Expected - task was cancelled
                 pass
 
-            logger.info("Hot reload watchers stopped")
+            logger.info("Hot reload watcher stopped")
 
 
 def create_app(
@@ -118,7 +112,7 @@ def create_app(
               This directory should contain index.html, section/*, static/*
         input_path: Optional path to content directory for hot reload watching
         package_location: Optional package location for hot reload rebuilds
-        output_dir: Optional output directory for hot reload watching
+        output_dir: Optional output directory for hot reload rebuilds
 
     Returns:
         Configured Starlette application instance ready to serve
@@ -128,7 +122,9 @@ def create_app(
     provides a WebSocket endpoint at /ws/reload for hot reload functionality.
 
     If input_path, package_location, and output_dir are provided, the app
-    will start file watchers during its lifespan to enable hot reload.
+    will start a unified file watcher during its lifespan to enable hot reload.
+    The watcher monitors source files, triggers rebuilds on changes, and
+    broadcasts reload messages to the browser after successful builds.
     """
     # Create lifespan context manager with bound parameters
     @asynccontextmanager

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from storytime.watchers import watch_input_directory, watch_output_directory
+from storytime.watchers import watch_and_rebuild, watch_input_directory, watch_output_directory
 
 
 @pytest.mark.slow
@@ -415,6 +415,135 @@ async def test_output_watcher_handles_broadcast_errors(tmp_path: Path) -> None:
 
         # Verify both callbacks were called
         assert call_count == 2
+
+    finally:
+        # Clean up watcher
+        watcher_task.cancel()
+        try:
+            await watcher_task
+        except asyncio.CancelledError:
+            pass
+
+
+@pytest.mark.slow
+@pytest.mark.anyio
+async def test_unified_watcher_triggers_rebuild_and_broadcast(tmp_path: Path) -> None:
+    """Test unified watcher detects changes, triggers rebuild, and broadcasts reload."""
+    # Setup
+    content_dir = tmp_path / "content"
+    content_dir.mkdir()
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
+
+    # Create mock callbacks
+    rebuild_called = asyncio.Event()
+    broadcast_called = asyncio.Event()
+    rebuild_args: list[tuple[str, Path]] = []
+
+    def rebuild_callback(package_location: str, output_dir_arg: Path) -> None:
+        rebuild_args.append((package_location, output_dir_arg))
+        rebuild_called.set()
+
+    def broadcast_callback() -> None:
+        broadcast_called.set()
+
+    # Start unified watcher in background
+    watcher_task = asyncio.create_task(
+        watch_and_rebuild(
+            content_path=content_dir,
+            storytime_path=None,
+            rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
+            package_location="test_package",
+            output_dir=output_dir,
+        )
+    )
+
+    try:
+        # Give watcher time to start
+        await asyncio.sleep(0.5)
+
+        # Create a file in content directory
+        test_file = content_dir / "test.txt"
+        test_file.write_text("test content")
+
+        # Wait for rebuild to be called (with timeout)
+        try:
+            await asyncio.wait_for(rebuild_called.wait(), timeout=3.0)
+        except asyncio.TimeoutError:
+            pytest.fail("Rebuild callback was not called within timeout")
+
+        # Wait for broadcast to be called (with timeout)
+        try:
+            await asyncio.wait_for(broadcast_called.wait(), timeout=3.0)
+        except asyncio.TimeoutError:
+            pytest.fail("Broadcast callback was not called within timeout")
+
+        # Verify rebuild was called with correct arguments
+        assert len(rebuild_args) > 0
+        assert rebuild_args[0] == ("test_package", output_dir)
+
+    finally:
+        # Clean up watcher
+        watcher_task.cancel()
+        try:
+            await watcher_task
+        except asyncio.CancelledError:
+            pass
+
+
+@pytest.mark.slow
+@pytest.mark.anyio
+async def test_unified_watcher_does_not_broadcast_on_build_failure(tmp_path: Path) -> None:
+    """Test unified watcher does not broadcast when rebuild fails."""
+    # Setup
+    content_dir = tmp_path / "content"
+    content_dir.mkdir()
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
+
+    # Create mock callbacks - rebuild will fail
+    rebuild_called = asyncio.Event()
+    broadcast_called = asyncio.Event()
+
+    def rebuild_callback(package_location: str, output_dir_arg: Path) -> None:
+        rebuild_called.set()
+        raise RuntimeError("Simulated build failure")
+
+    def broadcast_callback() -> None:
+        broadcast_called.set()
+
+    # Start unified watcher in background
+    watcher_task = asyncio.create_task(
+        watch_and_rebuild(
+            content_path=content_dir,
+            storytime_path=None,
+            rebuild_callback=rebuild_callback,
+            broadcast_callback=broadcast_callback,
+            package_location="test_package",
+            output_dir=output_dir,
+        )
+    )
+
+    try:
+        # Give watcher time to start
+        await asyncio.sleep(0.5)
+
+        # Create a file in content directory
+        test_file = content_dir / "test.txt"
+        test_file.write_text("test content")
+
+        # Wait for rebuild to be called (with timeout)
+        try:
+            await asyncio.wait_for(rebuild_called.wait(), timeout=3.0)
+        except asyncio.TimeoutError:
+            pytest.fail("Rebuild callback was not called within timeout")
+
+        # Give time for broadcast to be called (if it would be)
+        await asyncio.sleep(1.0)
+
+        # Verify broadcast was NOT called (because rebuild failed)
+        assert not broadcast_called.is_set()
 
     finally:
         # Clean up watcher

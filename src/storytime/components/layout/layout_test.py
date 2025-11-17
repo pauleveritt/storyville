@@ -380,40 +380,43 @@ def test_layout_footer_contains_copyright() -> None:
 
 
 def test_layout_main_grid_structure() -> None:
-    """Test Layout has correct grid structure with main.container > div.grid."""
+    """Test Layout has div.grid containing aside and main elements."""
     site = Site(title="Test Site")
     layout = Layout(view_title="Test Page", site=site, children=html(t"<p>Content</p>"))
     result = layout()
 
     element = _get_element(result)
 
-    # Find main element
-    main = get_by_tag_name(element, "main")
-    assert main is not None, "Layout should have main element"
-    assert main.attrs.get("class") == "container", "Main should have container class"
-
-    # Find div.grid inside main
+    # Find div.grid element as direct child of body
+    body = get_by_tag_name(element, "body")
     grid_divs = [
         child
-        for child in main.children
-        if isinstance(child, Element) and child.tag == "div"
+        for child in body.children
+        if isinstance(child, Element) and child.tag == "div" and child.attrs.get("class") == "grid"
     ]
-    assert len(grid_divs) > 0, "Main should contain div element"
+    assert len(grid_divs) > 0, "Body should contain div.grid element"
     grid_div = grid_divs[0]
-    assert grid_div.attrs.get("class") == "grid", "Div should have grid class"
 
-    # Verify grid contains aside and article
+    # Grid should contain aside as direct child
+    aside = get_by_tag_name(grid_div, "aside")
+    assert aside is not None, "Grid should contain aside element"
+
+    # Grid should contain main as direct child
+    main = get_by_tag_name(grid_div, "main")
+    assert main is not None, "Grid should contain main element"
+
+    # Verify grid contains both aside and main as direct children
     aside_found = False
-    article_found = False
+    main_found = False
     for child in grid_div.children:
         if isinstance(child, Element):
             if child.tag == "aside":
                 aside_found = True
-            elif child.tag == "article":
-                article_found = True
+            elif child.tag == "main":
+                main_found = True
 
     assert aside_found, "Grid should contain aside element"
-    assert article_found, "Grid should contain article element"
+    assert main_found, "Grid should contain main element"
 
 
 def test_layout_accepts_current_path_parameter() -> None:

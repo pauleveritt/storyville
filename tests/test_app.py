@@ -61,12 +61,12 @@ def test_serve_index_at_root(tmp_path: Path) -> None:
 
 
 def test_serve_section_page(tmp_path: Path) -> None:
-    """Test serving section index at /section/components/."""
+    """Test serving section index at /components/."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/section/components/")
+    response = client.get("/components/")
     assert response.status_code == 200
     assert "Components" in response.text
 
@@ -99,7 +99,7 @@ def test_directory_request_resolves_to_index_html(tmp_path: Path) -> None:
     client = TestClient(app)
 
     # Request a section directory - should resolve to index.html
-    response = client.get("/section/components/")
+    response = client.get("/components/")
     assert response.status_code == 200
     assert "<html" in response.text
 
@@ -113,7 +113,7 @@ def test_serve_subject_page(tmp_path: Path) -> None:
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/section/components/heading/")
+    response = client.get("/components/heading/")
     assert response.status_code == 200
     assert "Heading" in response.text
 
@@ -124,7 +124,7 @@ def test_serve_story_page(tmp_path: Path) -> None:
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/section/components/heading/story-0/")
+    response = client.get("/components/heading/story-0/")
     assert response.status_code == 200
     assert "World" in response.text  # The heading component says hello to "World"
 
@@ -144,21 +144,19 @@ def test_app_starts_without_watchers_when_params_not_provided(tmp_path: Path) ->
 
 
 def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> None:
-    """Test that app starts with watchers when all required params provided."""
+    """Test that app starts with unified watcher when all required params provided."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_input_directory") as mock_input_watch, \
-         patch("storytime.app.watch_output_directory") as mock_output_watch:
-        # Make the mock watchers run forever until cancelled
-        async def mock_watcher(*args, **kwargs):
+    with patch("storytime.app.watch_and_rebuild") as mock_watcher:
+        # Make the mock watcher run forever until cancelled
+        async def mock_watcher_fn(*args, **kwargs):
             try:
                 while True:
                     await asyncio.sleep(0.1)
             except asyncio.CancelledError:
                 pass
 
-        mock_input_watch.return_value = mock_watcher()
-        mock_output_watch.return_value = mock_watcher()
+        mock_watcher.return_value = mock_watcher_fn()
 
         app = create_app(
             path=tmp_path,
@@ -172,30 +170,27 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
             response = client.get("/")
             assert response.status_code == 200
 
-        # Verify watchers were started
-        assert mock_input_watch.called
-        assert mock_output_watch.called
+        # Verify watcher was started
+        assert mock_watcher.called
 
 
 def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
-    """Test that watchers receive correct paths and callbacks."""
+    """Test that unified watcher receives correct paths and callbacks."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_input_directory") as mock_input_watch, \
-         patch("storytime.app.watch_output_directory") as mock_output_watch, \
+    with patch("storytime.app.watch_and_rebuild") as mock_watcher, \
          patch("storytime.app.build_site") as mock_build, \
          patch("storytime.app.broadcast_reload") as mock_broadcast:
 
-        # Make the mock watchers run forever until cancelled
-        async def mock_watcher(*args, **kwargs):
+        # Make the mock watcher run forever until cancelled
+        async def mock_watcher_fn(*args, **kwargs):
             try:
                 while True:
                     await asyncio.sleep(0.1)
             except asyncio.CancelledError:
                 pass
 
-        mock_input_watch.return_value = mock_watcher()
-        mock_output_watch.return_value = mock_watcher()
+        mock_watcher.return_value = mock_watcher_fn()
 
         app = create_app(
             path=tmp_path,
@@ -207,47 +202,31 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
         with TestClient(app):
             pass  # Just trigger lifespan
 
-        # Verify INPUT watcher was called with correct parameters
-        mock_input_watch.assert_called_once()
-        call_kwargs = mock_input_watch.call_args[1]
+        # Verify unified watcher was called with correct parameters
+        mock_watcher.assert_called_once()
+        call_kwargs = mock_watcher.call_args[1]
         assert call_kwargs["package_location"] == "examples.minimal"
         assert call_kwargs["output_dir"] == tmp_path
         assert call_kwargs["rebuild_callback"] == mock_build
-
-        # Verify OUTPUT watcher was called with correct parameters
-        mock_output_watch.assert_called_once()
-        call_kwargs = mock_output_watch.call_args[1]
-        assert call_kwargs["output_dir"] == tmp_path
         assert call_kwargs["broadcast_callback"] == mock_broadcast
 
 
 def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
-    """Test that watcher tasks are cancelled during app shutdown."""
+    """Test that watcher task is cancelled during app shutdown."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    input_cancelled = False
-    output_cancelled = False
+    watcher_cancelled = False
 
-    async def mock_input_watcher(*args, **kwargs):
-        nonlocal input_cancelled
+    async def mock_unified_watcher(*args, **kwargs):
+        nonlocal watcher_cancelled
         try:
             while True:
                 await asyncio.sleep(0.1)
         except asyncio.CancelledError:
-            input_cancelled = True
+            watcher_cancelled = True
             raise
 
-    async def mock_output_watcher(*args, **kwargs):
-        nonlocal output_cancelled
-        try:
-            while True:
-                await asyncio.sleep(0.1)
-        except asyncio.CancelledError:
-            output_cancelled = True
-            raise
-
-    with patch("storytime.app.watch_input_directory", side_effect=mock_input_watcher), \
-         patch("storytime.app.watch_output_directory", side_effect=mock_output_watcher):
+    with patch("storytime.app.watch_and_rebuild", side_effect=mock_unified_watcher):
 
         app = create_app(
             path=tmp_path,
@@ -260,9 +239,8 @@ def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
         with TestClient(app):
             pass
 
-        # Verify both watchers were cancelled
-        assert input_cancelled
-        assert output_cancelled
+        # Verify watcher was cancelled
+        assert watcher_cancelled
 
 
 def test_backward_compatibility_with_existing_tests(tmp_path: Path) -> None:
@@ -280,11 +258,10 @@ def test_backward_compatibility_with_existing_tests(tmp_path: Path) -> None:
 
 
 def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
-    """Test that app doesn't start watchers if only some params are provided."""
+    """Test that app doesn't start watcher if only some params are provided."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_input_directory") as mock_input_watch, \
-         patch("storytime.app.watch_output_directory") as mock_output_watch:
+    with patch("storytime.app.watch_and_rebuild") as mock_watcher:
 
         # Only provide some params (not all required)
         app = create_app(
@@ -297,6 +274,5 @@ def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
             response = client.get("/")
             assert response.status_code == 200
 
-        # Watchers should NOT have been started
-        assert not mock_input_watch.called
-        assert not mock_output_watch.called
+        # Watcher should NOT have been started
+        assert not mock_watcher.called

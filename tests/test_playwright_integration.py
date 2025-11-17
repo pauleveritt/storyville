@@ -205,7 +205,7 @@ def test_sidebar_shows_hierarchical_structure(page: Page, site_url: str) -> None
 
 @pytest.mark.slow
 def test_story_links_in_sidebar_have_correct_structure(page: Page, site_url: str) -> None:
-    """Story links in sidebar should follow /section/{key}/subject/{key}/story-{idx}.html pattern."""
+    """Story links in sidebar should follow /{section}/{subject}/story-{idx}.html pattern."""
     # Arrange
     page.goto(site_url)
     aside = page.locator("aside")
@@ -223,5 +223,54 @@ def test_story_links_in_sidebar_have_correct_structure(page: Page, site_url: str
     # Assert - href should match expected pattern
     href = story_link.get_attribute("href")
     assert href is not None
-    # Pattern: /section/{key}/subject/{key}/story-{idx}.html
-    assert re.match(r"^/section/[\w-]+/subject/[\w-]+/story-\d+\.html$", href)
+    # Pattern: /{section}/{subject}/story-{idx}.html
+    assert re.match(r"^/[\w-]+/[\w-]+/story-\d+\.html$", href)
+
+
+@pytest.mark.slow
+@pytest.mark.playwright
+def test_two_column_grid_layout_structure(page: Page, site_url: str) -> None:
+    """Page should have a two-column grid layout with div.grid containing aside and main."""
+    # Arrange & Act
+    page.goto(site_url)
+
+    # Assert - body should have direct children in correct order
+    body = page.locator("body")
+
+    # Header should be first with container wrapper
+    header = body.locator("> header")
+    expect(header).to_be_visible()
+    header_container = header.locator(".container")
+    expect(header_container).to_be_visible()
+
+    # div.grid should be a direct child of body
+    grid = body.locator("> div.grid")
+    expect(grid).to_be_visible()
+
+    # Grid should have aside as first child
+    aside = grid.locator("> aside")
+    expect(aside).to_be_visible()
+
+    # Grid should have main as second child (containing the content)
+    main = grid.locator("> main")
+    expect(main).to_be_visible()
+
+    # Main should contain content (h1 should be present on home page)
+    h1 = main.locator("h1")
+    expect(h1).to_be_visible()
+
+    # Footer should be a direct child of body
+    footer = body.locator("> footer")
+    expect(footer).to_be_visible()
+
+
+@pytest.mark.slow
+@pytest.mark.playwright
+def test_header_is_fixed(page: Page, site_url: str) -> None:
+    """Header should have fixed class for non-scrolling behavior."""
+    # Arrange & Act
+    page.goto(site_url)
+
+    # Assert - header should have fixed class
+    header = page.locator("header")
+    expect(header).to_have_class("fixed")

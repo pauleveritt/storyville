@@ -41,8 +41,8 @@ class SiteView:
             # Build section cards as a list - create individual li elements
             section_items = []
             for key, section in self.site.items.items():
-                # Use section title for link text and /section/{key} URL pattern
-                section_url = f"/section/{key}"
+                # Use section title for link text and /{key} URL pattern
+                section_url = f"/{key}"
 
                 # Calculate subject count
                 subject_count = len(section.items)

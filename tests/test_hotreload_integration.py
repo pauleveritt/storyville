@@ -309,35 +309,26 @@ async def test_output_direct_edit_triggers_broadcast_only(tmp_path: Path) -> Non
 def test_app_lifespan_starts_and_stops_watchers_cleanly(tmp_path: Path) -> None:
     """Test that app lifespan properly manages watcher lifecycle.
 
-    Verifies that watchers start when the app starts and stop cleanly
+    Verifies that the unified watcher starts when the app starts and stops cleanly
     when the app shuts down, simulating a full server lifecycle.
     """
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     # Track watcher lifecycle
-    watcher_started = {"input": False, "output": False}
-    watcher_stopped = {"input": False, "output": False}
+    watcher_started = False
+    watcher_stopped = False
 
-    async def mock_input_watcher(*args, **kwargs):
-        watcher_started["input"] = True
+    async def mock_unified_watcher(*args, **kwargs):
+        nonlocal watcher_started, watcher_stopped
+        watcher_started = True
         try:
             while True:
                 await asyncio.sleep(0.1)
         except asyncio.CancelledError:
-            watcher_stopped["input"] = True
+            watcher_stopped = True
             raise
 
-    async def mock_output_watcher(*args, **kwargs):
-        watcher_started["output"] = True
-        try:
-            while True:
-                await asyncio.sleep(0.1)
-        except asyncio.CancelledError:
-            watcher_stopped["output"] = True
-            raise
-
-    with patch("storytime.app.watch_input_directory", side_effect=mock_input_watcher), \
-         patch("storytime.app.watch_output_directory", side_effect=mock_output_watcher):
+    with patch("storytime.app.watch_and_rebuild", side_effect=mock_unified_watcher):
 
         app = create_app(
             path=tmp_path,
@@ -352,13 +343,11 @@ def test_app_lifespan_starts_and_stops_watchers_cleanly(tmp_path: Path) -> None:
             response = client.get("/")
             assert response.status_code == 200
 
-            # Watchers should be started
-            assert watcher_started["input"], "INPUT watcher should have started"
-            assert watcher_started["output"], "OUTPUT watcher should have started"
+            # Unified watcher should be started
+            assert watcher_started, "Unified watcher should have started"
 
-        # After context exit, watchers should be stopped
-        assert watcher_stopped["input"], "INPUT watcher should have been stopped"
-        assert watcher_stopped["output"], "OUTPUT watcher should have been stopped"
+        # After context exit, watcher should be stopped
+        assert watcher_stopped, "Unified watcher should have been stopped"
 
 
 @pytest.mark.slow

@@ -118,12 +118,12 @@ def test_breadcrumbs_renders_all_ancestors_as_links() -> None:
 
     # Section link
     section_link = all_links[1]
-    assert section_link.attrs.get("href") == "/section/getting-started"
+    assert section_link.attrs.get("href") == "/getting-started"
     assert get_text_content(section_link) == "getting-started"
 
     # Subject link
     subject_link = all_links[2]
-    assert subject_link.attrs.get("href") == "/section/getting-started/subject/installation"
+    assert subject_link.attrs.get("href") == "/getting-started/installation"
     assert get_text_content(subject_link) == "installation"
 
 
@@ -169,7 +169,7 @@ def test_breadcrumbs_subject_level_path() -> None:
     assert all_links[0].attrs.get("href") == "/"
 
     # Section link
-    assert all_links[1].attrs.get("href") == "/section/components"
+    assert all_links[1].attrs.get("href") == "/components"
 
     # Subject should be plain text (current page)
     text_content = get_text_content(nav)

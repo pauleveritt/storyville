@@ -50,7 +50,7 @@ def test_static_css(output_dir: Path) -> None:
 def test_section_page(output_dir: Path) -> None:
     """Test that section pages are rendered correctly."""
     # Check that components section exists
-    section_page = output_dir / "section" / "components" / "index.html"
+    section_page = output_dir / "components" / "index.html"
     assert section_page.exists()
 
     # Parse and verify content
@@ -62,7 +62,7 @@ def test_section_page(output_dir: Path) -> None:
 def test_subject_page(output_dir: Path) -> None:
     """Test that subject pages are rendered correctly."""
     # Check that a subject page exists (e.g., components/heading)
-    subject_page = output_dir / "section" / "components" / "heading" / "index.html"
+    subject_page = output_dir / "components" / "heading" / "index.html"
     assert subject_page.exists()
 
     # Parse and verify content
@@ -114,32 +114,32 @@ def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
     """Test stylesheet path is correct at section depth (depth=1)."""
-    section_page = output_dir / "section" / "components" / "index.html"
+    section_page = output_dir / "components" / "index.html"
     page = get_page(section_page)
 
     # Get link elements
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=1
+    # Verify hrefs are correct for depth=0 (sections now at root level)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../../static/pico-main.css" in hrefs
-    assert "../../static/storytime.css" in hrefs
+    assert "../static/pico-main.css" in hrefs
+    assert "../static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
-    """Test stylesheet path is correct at subject depth (depth=2)."""
-    subject_page = output_dir / "section" / "components" / "heading" / "index.html"
+    """Test stylesheet path is correct at subject depth (depth=1)."""
+    subject_page = output_dir / "components" / "heading" / "index.html"
     page = get_page(subject_page)
 
     # Get link elements
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=2
+    # Verify hrefs are correct for depth=1 (subject pages)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../../../static/pico-main.css" in hrefs
-    assert "../../../static/storytime.css" in hrefs
+    assert "../../static/pico-main.css" in hrefs
+    assert "../../static/storytime.css" in hrefs
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:

@@ -53,9 +53,9 @@ class SectionView:
                 subject_items.append(html(t"<li><a href=\"{subject_url}\">{subject.title}</a></li>"))
             content = html(t"<ul>{subject_items}</ul>")
 
-        # Create the main content for this view wrapped with Layout (depth=1 for section pages)
+        # Create the main content for this view wrapped with Layout (depth=0 for section pages at root level)
         view_content = html(t"""\
-<{Layout} view_title={self.section.title} site={self.site} depth={1}>
+<{Layout} view_title={self.section.title} site={self.site} depth={0}>
 <div>
 <h1>{self.section.title}</h1>
 {description_p}

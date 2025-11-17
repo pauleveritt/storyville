@@ -64,10 +64,8 @@ def test_subject_view_renders_story_cards() -> None:
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
 
-    # Verify story cards are rendered as links
-    # Get the article element which contains the actual content (not sidebar)
-    article = get_by_tag_name(main, "article")
-    all_links = query_all_by_tag_name(article, "a")
+    # Verify story cards are rendered as links (main contains the actual content)
+    all_links = query_all_by_tag_name(main, "a")
 
     # Should have 2 story links + 1 parent link = 3 total
     assert len(all_links) == 3

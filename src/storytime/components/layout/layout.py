@@ -36,9 +36,9 @@ class Layout:
             title_text = self.site.title
 
         # Calculate relative path to static assets based on depth
-        # depth=0: site root (index.html) -> ../static/
-        # depth=1: section (section/index.html) -> ../../static/
-        # depth=2: subject (section/subject/index.html) -> ../../../static/
+        # depth=0: site root or section ({section}/index.html) -> ../static/
+        # depth=1: subject ({section}/{subject}/index.html) -> ../../static/
+        # depth=2: story ({section}/{subject}/story-{idx}/index.html) -> ../../../static/
         static_prefix = "../" * (self.depth + 1)
         stylesheet_path = f"{static_prefix}static/pico-main.css"
         pico_docs_path = f"{static_prefix}static/pico-docs.css"
@@ -57,30 +57,30 @@ class Layout:
     <script src="{ws_script_path}"></script>
 </head>
 <body>
-<header>
-  <nav>
-    <ul>
-      <li><strong>Storytime</strong></li>
-    </ul>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/debug">Debug</a></li>
-    </ul>
-  </nav>
-</header>
-<main class="container">
-  <div class="grid">
-    <aside>
-      <strong>Sections</strong>
-      <{NavigationTree} sections={self.site.items} current_path={self.current_path} />
-    </aside>
-    <article>
-      <{Breadcrumbs} current_path={self.current_path} />
-      {self.children}
-    </article>
+<header class="fixed">
+  <div class="container">
+    <hgroup>
+      <p><strong>Storytime</strong></p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><a href="/" class="contrast">Home</a></li>
+        <li><a href="/about" class="contrast">About</a></li>
+        <li><a href="/debug" class="contrast">Debug</a></li>
+      </ul>
+    </nav>
   </div>
-</main>
+</header>
+<div class="grid">
+  <aside>
+    <strong>Sections</strong>
+    <{NavigationTree} sections={self.site.items} current_path={self.current_path} />
+  </aside>
+  <main>
+    <{Breadcrumbs} current_path={self.current_path} />
+    {self.children}
+  </main>
+</div>
 <footer>
   <p style="text-align: center;">2025 Storytime</p>
 </footer>

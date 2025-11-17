@@ -39,7 +39,7 @@ class Breadcrumbs:
 
         # Add section if present
         if section_name:
-            section_url = f"/section/{section_name}"
+            section_url = f"/{section_name}"
             # Section is a link unless it's the current (last) item
             if subject_name is None and story_name is None:
                 # Current page is section level (no subject or story)
@@ -52,7 +52,7 @@ class Breadcrumbs:
 
         # Add subject if present
         if subject_name:
-            subject_url = f"/section/{section_name}/subject/{subject_name}"
+            subject_url = f"/{section_name}/{subject_name}"
             # Subject is a link unless it's the current (last) item
             if story_name is None:
                 # Current page is subject level (no story)

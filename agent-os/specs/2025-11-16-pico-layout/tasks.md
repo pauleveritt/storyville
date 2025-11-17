@@ -1,7 +1,7 @@
 # Task Breakdown: Pico Layout
 
 ## Overview
-Total Tasks: 40+ sub-tasks across 5 major task groups
+Total Tasks: 46+ sub-tasks across 7 major task groups
 
 ## Task List
 
@@ -24,19 +24,22 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
     - Preserve type hints: children as Element | Fragment | Node | None
   - [x] 1.3 Implement header navigation
     - Replace existing header nav structure
+    - Wrap header content in `.container` div
+    - Use `<hgroup>` for "Storytime" branding
+    - Add Home, About, Debug links in `<nav><ul>` with `class="contrast"`
     - Add Home link (href="/")
     - Add About link (href="/about")
     - Add Debug link (href="/debug")
-    - Use PicoCSS nav structure with `<ul>` lists
-    - Keep "Storytime" branding in first `<ul>`
+    - Structure: `<header><div class="container"><hgroup>...</hgroup><nav>...</nav></div></header>`
   - [x] 1.4 Implement footer element
     - Add `<footer>` element at bottom of layout
     - Include centered copyright text: "2025 Storytime"
     - Use default PicoCSS footer styling (no custom CSS)
   - [x] 1.5 Update main grid structure
-    - Use PicoCSS grid system for layout
-    - Structure: header > main.container > div.grid > (aside + article) > footer
-    - Maintain existing `<article>` for children content
+    - Use CSS Grid on `<main>` element (not separate div.grid)
+    - Structure: header > main > (aside + div[role=document]) > footer
+    - Grid CSS: `grid-template-columns: 11rem 1fr; column-gap: 3rem;`
+    - Sidebar: 11rem fixed width, content: 1fr flexible width
     - Preserve depth-based static asset path calculation
   - [x] 1.6 Ensure layout structure tests pass
     - Run ONLY the 2-8 tests written in 1.1
@@ -141,10 +144,10 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
     - Apply default PicoCSS link styling (no custom CSS)
     - Wrap in semantic HTML (`<nav>` with aria-label="Breadcrumb")
   - [x] 3.5 Integrate Breadcrumbs into Layout
-    - Place breadcrumbs between `<aside>` and `<article>`
+    - Place breadcrumbs at top of `<div role="document">` element
     - Pass current_path to Breadcrumbs component
     - Ensure breadcrumbs only render when current_path is provided
-    - Position within grid layout appropriately
+    - Position within document content area appropriately
   - [x] 3.6 Ensure breadcrumb tests pass
     - Run ONLY the 2-8 tests written in 3.1
     - Verify breadcrumbs generate correctly from paths
@@ -156,7 +159,7 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 - Breadcrumbs generate from current_path
 - Separator " > " renders between items
 - Current page is plain text, ancestors are links
-- Breadcrumbs positioned between sidebar and main content
+- Breadcrumbs positioned at top of main content area
 
 ### New Routes and Views
 
@@ -215,11 +218,12 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 - [x] 5.0 Complete CSS styling
   - [x] 5.1 Add custom layout styles to storytime.css
     - File: src/storytime/components/layout/static/storytime.css
-    - Add grid layout spacing rules if needed
+    - Add CSS Grid to `body > main`: `grid-template-columns: 11rem 1fr`
+    - Set column-gap: 3rem, row-gap: 2rem
     - Add aside navigation spacing/indentation for hierarchy
     - Add breadcrumb inline layout styles if needed
     - Keep minimal - rely on PicoCSS defaults
-    - Do NOT add responsive overrides (trust PicoCSS)
+    - Add responsive media query for mobile (max-width: 768px)
   - [x] 5.2 Test visual rendering in browser
     - No automated tests for this sub-task
     - Manual verification only
@@ -302,6 +306,52 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 - DOM interaction tests use pytest-playwright and marked as @pytest.mark.slow
 - All quality checks pass (test, typecheck, fmt)
 
+### Hot Reload Development
+
+#### Task Group 7: Single Watcher with Build-Triggered Reload
+**Dependencies:** Task Groups 1-6 (optional enhancement)
+
+- [ ] 7.0 Implement unified watch-build-reload workflow
+  - [ ] 7.1 Remove dual watcher approach
+    - Remove separate input watcher (source files)
+    - Remove separate output watcher (built files)
+    - Consolidate into single source file watcher
+    - Simplify watcher configuration and lifecycle
+  - [ ] 7.2 Update watcher to trigger build on file changes
+    - Monitor source package location for changes
+    - On file change detection, call build_site() function
+    - Pass appropriate package_location and output_dir parameters
+    - Handle build errors gracefully without crashing watcher
+  - [ ] 7.3 Trigger websocket reload after successful build
+    - After build_site() completes successfully, broadcast reload message
+    - Send websocket notification to all connected clients
+    - Use existing websocket infrastructure (ws.js)
+    - Ensure reload only triggers on successful builds (not on errors)
+  - [ ] 7.4 Update app.py watcher configuration
+    - Modify create_app() or relevant startup logic
+    - Configure single watcher instead of dual watchers
+    - Set up proper async handling for watch -> build -> broadcast cycle
+    - Ensure watcher runs in background without blocking server
+  - [ ] 7.5 Test hot reload workflow end-to-end
+    - Start dev server with watcher enabled
+    - Modify a source file (e.g., template, component)
+    - Verify build triggers automatically
+    - Verify browser reloads after successful build
+    - Verify changes are visible without manual refresh
+  - [ ] 7.6 Update documentation for new workflow
+    - Document single watcher approach in code comments
+    - Update any developer documentation about hot reload
+    - Note removal of dual watcher approach
+    - Explain build-triggered reload mechanism
+
+**Acceptance Criteria:**
+- Single file system watcher monitors source files
+- File changes trigger automatic site rebuild
+- Successful builds trigger websocket reload to browser
+- No separate output directory watcher needed
+- Hot reload works end-to-end in development mode
+- Error handling prevents watcher crashes on build failures
+
 ## Execution Order
 
 Recommended implementation sequence:
@@ -336,6 +386,12 @@ Recommended implementation sequence:
    - Add playwright tests for DOM interactions
    - Run quality checks
 
+7. **Task Group 7: Single Watcher with Build-Triggered Reload** (Optional enhancement)
+   - Consolidate dual watchers into single source watcher
+   - Trigger build on file changes
+   - Broadcast websocket reload after successful build
+   - Improve development workflow efficiency
+
 ## Component File Structure
 
 New files to create:
@@ -345,8 +401,8 @@ New files to create:
 - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/debug_view.py`
 
 Modified files:
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py` - Updated with PicoCSS-style header and grid on main element
+- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css` - Added CSS Grid (11rem + 1fr with 3rem gap)
 - Application routing file (location TBD based on existing route registration pattern)
 
 Test files to create/modify:
@@ -382,9 +438,9 @@ Test files to create/modify:
 **CSS Philosophy:**
 - Minimal custom styles in storytime.css
 - Trust PicoCSS framework for responsive behavior
-- Use PicoCSS grid system and semantic HTML
-- No custom media queries or breakpoints
-- Follow PicoCSS documentation patterns
+- Use CSS Grid on main element: 11rem sidebar + 1fr content with 3rem gap
+- Single responsive media query for mobile layout (max-width: 768px)
+- Follow PicoCSS documentation patterns from https://picocss.com/docs/
 
 **URL Structure:**
 - Home: /

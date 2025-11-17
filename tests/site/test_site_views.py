@@ -54,10 +54,8 @@ def test_site_view_renders_section_links() -> None:
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
 
-    # Verify section cards are rendered as links
-    # Get the article element which contains the actual content (not sidebar)
-    article = get_by_tag_name(main, "article")
-    all_links = query_all_by_tag_name(article, "a")
+    # Verify section cards are rendered as links (main contains the actual content)
+    all_links = query_all_by_tag_name(main, "a")
 
     assert len(all_links) == 2
     # Links can be in any order since dict iteration order may vary
@@ -184,7 +182,7 @@ def test_site_view_shows_subject_counts() -> None:
 
 
 def test_site_view_url_pattern() -> None:
-    """Test SiteView uses /section/{section_name} URL pattern."""
+    """Test SiteView uses /{section_name} URL pattern."""
     site = Site(title="My Catalog")
     section1 = Section(title="Components")
     section2 = Section(title="Utilities")
@@ -196,8 +194,8 @@ def test_site_view_url_pattern() -> None:
     # Extract Element from Fragment (Layout wraps the result)
     element = _get_element(result)
 
-    # Verify section links follow /section/{section_name} pattern
+    # Verify section links follow /{section_name} pattern
     all_links = query_all_by_tag_name(element, "a")
     hrefs = {link.attrs.get("href") for link in all_links}
-    assert "/section/components" in hrefs
-    assert "/section/utilities" in hrefs
+    assert "/components" in hrefs
+    assert "/utilities" in hrefs

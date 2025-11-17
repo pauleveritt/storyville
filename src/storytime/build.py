@@ -69,8 +69,8 @@ def build_site(package_location: str, output_dir: Path) -> None:
 
     # Walk the tree and render each section and subject
     for section_key, section in site.items.items():
-        # Create section directory
-        section_dir = output_dir / "section" / section_key
+        # Create section directory (no "section" prefix)
+        section_dir = output_dir / section_key
         section_dir.mkdir(parents=True, exist_ok=True)
 
         # Render section index page
@@ -82,7 +82,7 @@ def build_site(package_location: str, output_dir: Path) -> None:
 
         # Walk subjects in this section
         for subject_key, subject in section.items.items():
-            # Create subject directory
+            # Create subject directory (no "subject" prefix)
             subject_dir = section_dir / subject_key
             subject_dir.mkdir(parents=True, exist_ok=True)
 
