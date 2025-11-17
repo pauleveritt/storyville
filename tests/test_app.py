@@ -16,28 +16,28 @@ from storytime.build import build_site
 
 def test_create_app_accepts_path_parameter(tmp_path: Path) -> None:
     """Test that create_app accepts Path parameter."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     assert app is not None
 
 
 def test_create_app_returns_starlette_instance(tmp_path: Path) -> None:
     """Test that create_app returns Starlette instance."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     assert isinstance(app, Starlette)
 
 
 def test_create_app_sets_debug_true(tmp_path: Path) -> None:
     """Test that app has debug=True."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     assert app.debug is True
 
 
 def test_create_app_serves_from_provided_path(tmp_path: Path) -> None:
     """Test that app serves from provided path."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
     # Simple check that we can make a request
@@ -50,19 +50,19 @@ def test_create_app_serves_from_provided_path(tmp_path: Path) -> None:
 
 def test_serve_index_at_root(tmp_path: Path) -> None:
     """Test serving index.html at root path /."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
     response = client.get("/")
     assert response.status_code == 200
-    assert "Storytime UI" in response.text
+    assert "Minimal Site" in response.text
     assert "<html" in response.text
 
 
 def test_serve_section_page(tmp_path: Path) -> None:
     """Test serving section index at /section/components/."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
@@ -73,7 +73,7 @@ def test_serve_section_page(tmp_path: Path) -> None:
 
 def test_serve_static_asset(tmp_path: Path) -> None:
     """Test serving static asset at /static/pico-main.css."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
@@ -84,7 +84,7 @@ def test_serve_static_asset(tmp_path: Path) -> None:
 
 def test_404_for_nonexistent_path(tmp_path: Path) -> None:
     """Test 404 for non-existent path."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
@@ -94,7 +94,7 @@ def test_404_for_nonexistent_path(tmp_path: Path) -> None:
 
 def test_directory_request_resolves_to_index_html(tmp_path: Path) -> None:
     """Test that directory requests resolve to index.html via html=True."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
@@ -109,24 +109,24 @@ def test_directory_request_resolves_to_index_html(tmp_path: Path) -> None:
 
 def test_serve_subject_page(tmp_path: Path) -> None:
     """Test serving subject page at deeper path."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/section/components/component_view/")
+    response = client.get("/section/components/heading/")
     assert response.status_code == 200
-    assert "Component View" in response.text
+    assert "Heading" in response.text
 
 
 def test_serve_story_page(tmp_path: Path) -> None:
     """Test serving individual story page."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/section/components/component_view/story-0/")
+    response = client.get("/section/components/heading/story-0/")
     assert response.status_code == 200
-    assert "Default Story" in response.text or "Story" in response.text
+    assert "World" in response.text  # The heading component says hello to "World"
 
 
 # Task Group 5 Tests: Lifespan Integration
@@ -134,7 +134,7 @@ def test_serve_story_page(tmp_path: Path) -> None:
 
 def test_app_starts_without_watchers_when_params_not_provided(tmp_path: Path) -> None:
     """Test that app starts cleanly without watchers when optional params not provided."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)  # No watcher params
 
     # Should be able to use TestClient which triggers lifespan
@@ -145,7 +145,7 @@ def test_app_starts_without_watchers_when_params_not_provided(tmp_path: Path) ->
 
 def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> None:
     """Test that app starts with watchers when all required params provided."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     with patch("storytime.app.watch_input_directory") as mock_input_watch, \
          patch("storytime.app.watch_output_directory") as mock_output_watch:
@@ -162,8 +162,8 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
 
         app = create_app(
             path=tmp_path,
-            input_path="storytime",
-            package_location="storytime",
+            input_path="examples.minimal",
+            package_location="examples.minimal",
             output_dir=tmp_path,
         )
 
@@ -179,7 +179,7 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
 
 def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
     """Test that watchers receive correct paths and callbacks."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     with patch("storytime.app.watch_input_directory") as mock_input_watch, \
          patch("storytime.app.watch_output_directory") as mock_output_watch, \
@@ -199,8 +199,8 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
 
         app = create_app(
             path=tmp_path,
-            input_path="storytime",
-            package_location="storytime",
+            input_path="examples.minimal",
+            package_location="examples.minimal",
             output_dir=tmp_path,
         )
 
@@ -210,7 +210,7 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
         # Verify INPUT watcher was called with correct parameters
         mock_input_watch.assert_called_once()
         call_kwargs = mock_input_watch.call_args[1]
-        assert call_kwargs["package_location"] == "storytime"
+        assert call_kwargs["package_location"] == "examples.minimal"
         assert call_kwargs["output_dir"] == tmp_path
         assert call_kwargs["rebuild_callback"] == mock_build
 
@@ -223,7 +223,7 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
 
 def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
     """Test that watcher tasks are cancelled during app shutdown."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     input_cancelled = False
     output_cancelled = False
@@ -251,8 +251,8 @@ def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
 
         app = create_app(
             path=tmp_path,
-            input_path="storytime",
-            package_location="storytime",
+            input_path="examples.minimal",
+            package_location="examples.minimal",
             output_dir=tmp_path,
         )
 
@@ -267,7 +267,7 @@ def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
 
 def test_backward_compatibility_with_existing_tests(tmp_path: Path) -> None:
     """Test that existing tests not passing watcher params still work."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     # Old-style call without watcher parameters
     app = create_app(tmp_path)
@@ -276,12 +276,12 @@ def test_backward_compatibility_with_existing_tests(tmp_path: Path) -> None:
     with TestClient(app) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "Storytime UI" in response.text
+        assert "Minimal Site" in response.text
 
 
 def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
     """Test that app doesn't start watchers if only some params are provided."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     with patch("storytime.app.watch_input_directory") as mock_input_watch, \
          patch("storytime.app.watch_output_directory") as mock_output_watch:
@@ -289,7 +289,7 @@ def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
         # Only provide some params (not all required)
         app = create_app(
             path=tmp_path,
-            input_path="storytime",
+            input_path="examples.minimal",
             # Missing package_location and output_dir
         )
 

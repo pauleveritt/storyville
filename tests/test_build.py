@@ -18,7 +18,7 @@ from tdom.parser import parse_html
 @pytest.fixture(scope="session")
 def output_dir(tmpdir_factory) -> Path:
     output_dir = Path(tmpdir_factory.getbasetemp())
-    build_site(package_location="storytime", output_dir=output_dir)
+    build_site(package_location="examples.minimal", output_dir=output_dir)
     return output_dir
 
 
@@ -34,7 +34,7 @@ def test_index(output_dir: Path) -> None:
     page = get_page(output_dir / "index.html")
     # SiteView renders the site title in h1
     h1 = get_by_tag_name(page, "h1")
-    assert get_text_content(h1) == "Storytime UI"
+    assert get_text_content(h1) == "Minimal Site"
 
 
 def test_static_css(output_dir: Path) -> None:
@@ -61,15 +61,15 @@ def test_section_page(output_dir: Path) -> None:
 
 def test_subject_page(output_dir: Path) -> None:
     """Test that subject pages are rendered correctly."""
-    # Check that a subject page exists (e.g., components/component_view)
-    subject_page = output_dir / "section" / "components" / "component_view" / "index.html"
+    # Check that a subject page exists (e.g., components/heading)
+    subject_page = output_dir / "section" / "components" / "heading" / "index.html"
     assert subject_page.exists()
 
     # Parse and verify content
     page = get_page(subject_page)
     h1 = get_by_tag_name(page, "h1")
     # Subject title should be in the h1
-    assert get_text_content(h1) == "Component View"
+    assert get_text_content(h1) == "Heading"
 
 
 def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
@@ -103,7 +103,7 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
     """Test stylesheet path is correct at subject depth (depth=2)."""
-    subject_page = output_dir / "section" / "components" / "component_view" / "index.html"
+    subject_page = output_dir / "section" / "components" / "heading" / "index.html"
     page = get_page(subject_page)
 
     # Get link elements
@@ -122,7 +122,7 @@ def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
     (tmp_path / "old_file.txt").write_text("old content")
 
     # Build the site
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     # Verify old file is gone
     assert not (tmp_path / "old_file.txt").exists()

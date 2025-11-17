@@ -146,10 +146,8 @@ async def watch_output_directory(
 
             last_change_time = current_time
 
-            # Log changes
-            for change_type, changed_path in relevant_changes:
-                change_name = Change(change_type).name if isinstance(change_type, int) else change_type
-                logger.info("Detected output change %s: %s", change_name, changed_path)
+            # Don't log individual output file changes (too noisy)
+            # Just trigger the broadcast
 
             # Trigger broadcast
             logger.info("Broadcasting reload to WebSocket clients...")

@@ -5,6 +5,8 @@ Create a minimal Starlette application factory that serves pre-built Storytime p
 
 ## User Stories
 - As a developer, I want to serve a built Storytime site so that I can view portfolios in a web browser
+- As a developer, I want to optionally specify an output directory for the serve command so that I can persist builds across sessions
+- As a developer, I want to see the output directory in logging so that I know where the site is being served from
 - As a test writer, I want tests to use isolated temporary directories so that test builds don't pollute the project workspace
 
 ## Specific Requirements
@@ -54,6 +56,14 @@ Create a minimal Starlette application factory that serves pre-built Storytime p
 - Do not accept Site model object - this is post-build serving only
 - Return type should be explicitly annotated as `-> Starlette`
 - Function should be synchronous (no async def)
+
+**Serve Command Arguments**
+- Accept required first argument: `input_path` (package location to build/serve)
+- Accept optional second argument: `output_dir` (directory to build to and serve from)
+- If `output_dir` is omitted, use a temporary directory (current behavior with TemporaryDirectory)
+- If `output_dir` is provided, use that directory for building and serving
+- Log the output directory being used for transparency
+- Include the output directory in server startup messages
 
 **Error Handling Scope**
 - Let StaticFiles handle 404 errors with default behavior

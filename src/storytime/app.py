@@ -11,6 +11,7 @@ from starlette.routing import Mount, WebSocketRoute
 from starlette.staticfiles import StaticFiles
 
 from storytime.build import build_site
+from storytime.nodes import get_package_path
 from storytime.watchers import watch_input_directory, watch_output_directory
 from storytime.websocket import broadcast_reload, websocket_endpoint
 
@@ -46,7 +47,8 @@ async def lifespan(
         logger.info("Starting hot reload watchers...")
 
         # Determine paths to watch
-        content_path = Path(input_path).resolve()
+        # Convert package name (e.g., "examples.minimal") to filesystem path
+        content_path = get_package_path(input_path)
 
         # Check if src/storytime/ exists for static asset watching
         # This would be in the project root where the package is

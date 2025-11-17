@@ -11,7 +11,7 @@ from storytime.websocket import broadcast_reload
 
 def test_websocket_accepts_connection(tmp_path: Path) -> None:
     """Test WebSocket connection acceptance at /ws/reload."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
 
     with TestClient(app) as client:
@@ -22,7 +22,7 @@ def test_websocket_accepts_connection(tmp_path: Path) -> None:
 
 def test_websocket_receives_reload_message(tmp_path: Path) -> None:
     """Test receiving reload message from WebSocket."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
 
     with TestClient(app) as client:
@@ -37,7 +37,7 @@ def test_websocket_receives_reload_message(tmp_path: Path) -> None:
 
 def test_websocket_multiple_connections(tmp_path: Path) -> None:
     """Test handling multiple simultaneous WebSocket connections."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
 
     with TestClient(app) as client:
@@ -59,7 +59,7 @@ def test_websocket_multiple_connections(tmp_path: Path) -> None:
 
 def test_websocket_graceful_disconnection(tmp_path: Path) -> None:
     """Test graceful disconnection and cleanup."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
 
     with TestClient(app) as client:
@@ -74,7 +74,7 @@ def test_websocket_graceful_disconnection(tmp_path: Path) -> None:
 
 def test_websocket_broadcast_with_no_connections(tmp_path: Path) -> None:
     """Test broadcast when no clients are connected."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     # Don't need the app for this test - just testing broadcast function
     _ = create_app(tmp_path)
 
@@ -84,7 +84,7 @@ def test_websocket_broadcast_with_no_connections(tmp_path: Path) -> None:
 
 def test_websocket_connection_cleanup_after_disconnect(tmp_path: Path) -> None:
     """Test that disconnected clients are removed from connection list."""
-    build_site(package_location="storytime", output_dir=tmp_path)
+    build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
 
     with TestClient(app) as client:

@@ -96,10 +96,13 @@ notifying connected browsers via WebSocket to reload when files are modified.
 **Error Handling and Logging**
 
 - Log watcher start/stop events to console for debugging
-- Log file change events with filename for developer visibility
+- INPUT watcher must log detected changes showing which files changed for developer visibility
+- OUTPUT watcher should NOT log individual file changes (too noisy during rebuilds)
 - Log build success/failure when INPUT watcher triggers rebuild
+- Log WebSocket broadcast events when OUTPUT watcher sends reload messages
 - Handle WebSocket connection errors silently without crashing server
 - Use Python's built-in logging module consistent with uvicorn's logging
+- Ensure all watcher events appear in Starlette/uvicorn console output
 
 **Testing Strategy**
 

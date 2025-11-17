@@ -9,7 +9,7 @@
 3. [ ] Web-Based Component Browser — Implement the Starlette-based web interface that displays the visual catalog of all
    components and stories with navigation between sections, subjects, and individual stories. `L`
 
-4. [ ] Hot Reload Development Server — Add automatic file watching and browser refresh when component or story files
+4. [x] Hot Reload Development Server — Add automatic file watching and browser refresh when component or story files
    change, providing instant visual feedback during development. `M`
 
 5. [ ] Story-to-Test Integration — Create pytest helpers and fixtures that allow stories to be used directly in tests,
