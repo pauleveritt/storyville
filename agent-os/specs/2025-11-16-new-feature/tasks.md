@@ -196,8 +196,8 @@ output and triggers browser reloads.
 
 **Dependencies:** Task Groups 3-4 (needs WebSocket endpoint and watchers)
 
-- [ ] 5.0 Complete lifespan integration and serve command
-    - [ ] 5.1 Write 2-8 focused tests for lifespan and serve integration
+- [x] 5.0 Complete lifespan integration and serve command
+    - [x] 5.1 Write 2-8 focused tests for lifespan and serve integration
         - Test Starlette app starts with lifespan
         - Test watchers start during app startup
         - Test watchers stop during app shutdown
@@ -205,43 +205,43 @@ output and triggers browser reloads.
         - Test graceful shutdown on SIGTERM/SIGINT
         - Use Starlette TestClient with lifespan context
         - Limit to critical integration behaviors only
-    - [ ] 5.2 Create Starlette lifespan context manager
+    - [x] 5.2 Create Starlette lifespan context manager
         - Implement async lifespan function for Starlette app
         - Use `@asynccontextmanager` decorator
         - Start INPUT and OUTPUT watcher tasks on startup
         - Stop watcher tasks on shutdown
         - Follow Starlette lifespan patterns
         - Integrate into `create_app()` in `src/storytime/app.py`
-    - [ ] 5.3 Manage Site instance lifecycle
+    - [x] 5.3 Manage Site instance lifecycle
         - Keep Site instance around for server duration
         - Pass Site or necessary paths to watcher functions
         - Ensure Site is available for rebuilds
         - May require refactoring `create_app()` signature
-    - [ ] 5.4 Start watcher tasks in lifespan
+    - [x] 5.4 Start watcher tasks in lifespan
         - Create asyncio tasks for INPUT and OUTPUT watchers
         - Pass input_path and output_dir to INPUT watcher
         - Pass output_dir to OUTPUT watcher
         - Store task references for cleanup on shutdown
         - Use `asyncio.create_task()` for background execution
-    - [ ] 5.5 Implement graceful shutdown
+    - [x] 5.5 Implement graceful shutdown
         - Cancel watcher tasks on app shutdown
         - Wait for tasks to complete with timeout
         - Clean up resources (file handles, WebSocket connections)
         - Log shutdown events
         - Handle Ctrl+C (SIGINT) gracefully
-    - [ ] 5.6 Modify serve command in `src/storytime/__main__.py`
+    - [x] 5.6 Modify serve command in `src/storytime/__main__.py`
         - Integrate watchers via Starlette lifespan (not direct uvicorn changes)
         - Maintain TemporaryDirectory context manager
         - Keep existing uvicorn.run() call
         - Ensure uvicorn does NOT use `reload=True` flag
         - Maintain existing CLI arguments and defaults
         - Pass paths to create_app() for lifespan use
-    - [ ] 5.7 Update create_app() signature if needed
+    - [x] 5.7 Update create_app() signature if needed
         - May need to accept input_path parameter
         - May need to accept package_location for rebuilds
         - Maintain backward compatibility with existing tests
         - Update test fixtures accordingly
-    - [ ] 5.8 Ensure serve integration tests pass
+    - [x] 5.8 Ensure serve integration tests pass
         - Run ONLY the 2-8 tests written in 5.1
         - Verify app starts and stops cleanly with watchers
         - Do NOT run entire test suite at this stage

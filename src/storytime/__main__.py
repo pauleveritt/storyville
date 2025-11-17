@@ -27,9 +27,16 @@ def serve(
         build_site(package_location=input_path, output_dir=output_dir)
         typer.echo("Build complete! Starting server...")
 
-        # Create and run the app
-        starlette_app = create_app(output_dir)
+        # Create and run the app with hot reload support
+        # Pass input_path, package_location, and output_dir to enable watchers
+        starlette_app = create_app(
+            path=output_dir,
+            input_path=input_path,
+            package_location=input_path,
+            output_dir=output_dir,
+        )
         try:
+            # Note: Do NOT use reload=True - we have custom file watching
             uvicorn.run(starlette_app, port=8080, log_level="info")
         except KeyboardInterrupt:
             print("Server ceasing operations. Cheerio!")
