@@ -21,6 +21,12 @@ dependencies = [
 testpaths = ["src", "tests"]
 python_files = ["*_test.py", "test_*.py"]
 addopts = "-p no:doctest"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+[tool.anyio]
+backends = ["asyncio"]
 
 [tool.uv.sources]
 aria-testing = { path = "../../t-strings/aria-testing" }
@@ -36,7 +42,9 @@ dev = [
     "click>=8.3.0",
     "coverage>=7.11.2",
     "httpx>=0.28.1",
+    "playwright>=1.56.0",
     "pytest>=9.0.0",
+    "pytest-playwright>=0.3.0",
     "ruff>=0.14.4",
     "ty>=0.0.1a25",
     "typer>=0.20.0",

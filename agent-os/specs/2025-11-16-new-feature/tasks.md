@@ -132,8 +132,8 @@ output and triggers browser reloads.
 
 **Dependencies:** Task Group 3 (needs WebSocket broadcast functionality)
 
-- [ ] 4.0 Complete file watcher implementation
-    - [ ] 4.1 Write 2-8 focused integration tests for watchers
+- [x] 4.0 Complete file watcher implementation
+    - [x] 4.1 Write 2-8 focused integration tests for watchers
         - Mark tests with `@pytest.mark.slow` decorator
         - Add pytest marker to `pyproject.toml`:
           `markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]`
@@ -144,7 +144,7 @@ output and triggers browser reloads.
         - Use temporary directories and simulate file changes
         - Tests should run WITHOUT Starlette (isolated watcher logic)
         - Limit to critical watcher workflows only
-    - [ ] 4.2 Create INPUT directory watcher
+    - [x] 4.2 Create INPUT directory watcher
         - Use `watchfiles` package for async file watching
         - Monitor TWO directories:
             1. Content directory (input_path argument) - watch all file types
@@ -153,30 +153,30 @@ output and triggers browser reloads.
         - Implement server-side debouncing to avoid multiple rebuilds
         - When changes detected, call `build_site()` function
         - Use modern Python 3.14+ async/await patterns
-    - [ ] 4.3 Implement rebuild trigger
+    - [x] 4.3 Implement rebuild trigger
         - Call existing `build_site(package_location, output_dir)` on file changes
         - Handle build errors gracefully (log but don't crash)
         - Continue watching after build failures
         - Log file change events and build success/failure
         - Use Python's logging module consistent with uvicorn
-    - [ ] 4.4 Create OUTPUT directory watcher
+    - [x] 4.4 Create OUTPUT directory watcher
         - Use `watchfiles` package for async file watching
         - Monitor output directory (where `build_site()` writes HTML)
         - Watch all files without filtering by extension
         - Implement server-side debouncing to avoid multiple reload messages
         - When changes detected, broadcast reload to WebSocket clients
         - Use modern Python 3.14+ async/await patterns
-    - [ ] 4.5 Implement broadcast integration
+    - [x] 4.5 Implement broadcast integration
         - Call WebSocket broadcast function from Task Group 3
         - Send `{"type": "reload"}` message to all connected clients
         - Handle broadcast errors gracefully
         - Log reload events for developer visibility
-    - [ ] 4.6 May require refactoring for testability
+    - [x] 4.6 May require refactoring for testability
         - Extract watcher logic into testable functions
         - Allow watchers to run independently of Starlette
         - Enable dependency injection for build and broadcast functions
         - Maintain clean separation of concerns
-    - [ ] 4.7 Ensure watcher tests pass
+    - [x] 4.7 Ensure watcher tests pass
         - Run ONLY the 2-8 slow tests written in 4.1
         - Use `pytest -m slow` to run marked tests
         - Verify watchers detect changes and trigger actions

@@ -1,13 +1,14 @@
 """Integration tests for Layout component with views."""
 
-from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node
 from typing import cast
 
-from storytime.site.models import Site
-from storytime.site.views import SiteView
+from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
+from tdom import Element, Fragment, Node
+
 from storytime.section.models import Section
 from storytime.section.views import SectionView
+from storytime.site.models import Site
+from storytime.site.views import SiteView
 from storytime.subject.models import Subject
 from storytime.subject.views import SubjectView
 
@@ -40,7 +41,7 @@ def test_site_view_renders_full_html_document() -> None:
     get_by_tag_name(head, "title")
     get_by_tag_name(head, "meta", attrs={"charset": "utf-8"})
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
-    assert len(links) == 2  # pico-main.css and storytime.css
+    assert len(links) == 3  # pico-main.css and storytime.css
 
     # Verify body contains header, nav, and main
     body = get_by_tag_name(element, "body")
@@ -113,8 +114,8 @@ def test_layout_handles_none_children() -> None:
 
 def test_layout_css_link_points_to_valid_static_path() -> None:
     """Test Layout CSS link href points to valid destination in static directory."""
-    from storytime.components.layout import Layout
     from storytime import PACKAGE_DIR
+    from storytime.components.layout import Layout
 
     site = Site(title="My Site")
     layout = Layout(view_title="Test", site=site, children=None)
@@ -126,7 +127,7 @@ def test_layout_css_link_points_to_valid_static_path() -> None:
     # Get link elements
     head = get_by_tag_name(element, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
-    assert len(links) == 2
+    assert len(links) == 3
 
     # Verify hrefs point to pico-main.css and storytime.css
     hrefs = [link.attrs.get("href") for link in links]
