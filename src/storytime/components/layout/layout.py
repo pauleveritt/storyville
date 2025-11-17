@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from tdom import Element, Fragment, Node, html
 
+from storytime.components.breadcrumbs import Breadcrumbs
 from storytime.components.navigation_tree import NavigationTree
 from storytime.site.models import Site
 
@@ -75,6 +76,7 @@ class Layout:
       <{NavigationTree} sections={self.site.items} current_path={self.current_path} />
     </aside>
     <article>
+      <{Breadcrumbs} current_path={self.current_path} />
       {self.children}
     </article>
   </div>

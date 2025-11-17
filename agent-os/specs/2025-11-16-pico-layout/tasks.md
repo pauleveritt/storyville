@@ -115,37 +115,37 @@ Total Tasks: 40+ sub-tasks across 5 major task groups
 #### Task Group 3: Breadcrumb Navigation
 **Dependencies:** Task Group 1, Task Group 2
 
-- [ ] 3.0 Complete breadcrumb navigation
-  - [ ] 3.1 Write 2-8 focused tests for breadcrumbs
+- [x] 3.0 Complete breadcrumb navigation
+  - [x] 3.1 Write 2-8 focused tests for breadcrumbs
     - Limit to 2-8 highly focused tests maximum
     - Test breadcrumb generation from current_path
     - Test separator rendering (" > ")
     - Test current page renders as plain text (not link)
     - Test all ancestor levels render as clickable links
     - Skip exhaustive testing of all path combinations
-  - [ ] 3.2 Create Breadcrumbs component
+  - [x] 3.2 Create Breadcrumbs component
     - New component: src/storytime/components/breadcrumbs/__init__.py
     - Accept parameter: current_path (str | None)
     - Return type: Node
     - Use dataclass pattern
     - Follow tdom html t-string syntax
-  - [ ] 3.3 Implement breadcrumb generation logic
+  - [x] 3.3 Implement breadcrumb generation logic
     - Parse current_path by splitting on "/"
     - Build breadcrumb items: ["Home", section_name, subject_name, story_name]
     - Generate URLs for each level: /, /section/, /section/subject/, etc.
     - Use list comprehension for clean rendering
-  - [ ] 3.4 Implement breadcrumb rendering
+  - [x] 3.4 Implement breadcrumb rendering
     - Render "Home" as first item (always a link unless current page is home)
     - Render each path component as link except the last (current page)
     - Use " > " as separator between items
     - Apply default PicoCSS link styling (no custom CSS)
     - Wrap in semantic HTML (`<nav>` with aria-label="Breadcrumb")
-  - [ ] 3.5 Integrate Breadcrumbs into Layout
+  - [x] 3.5 Integrate Breadcrumbs into Layout
     - Place breadcrumbs between `<aside>` and `<article>`
     - Pass current_path to Breadcrumbs component
     - Ensure breadcrumbs only render when current_path is provided
     - Position within grid layout appropriately
-  - [ ] 3.6 Ensure breadcrumb tests pass
+  - [x] 3.6 Ensure breadcrumb tests pass
     - Run ONLY the 2-8 tests written in 3.1
     - Verify breadcrumbs generate correctly from paths
     - Verify separators and link behavior
