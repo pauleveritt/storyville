@@ -90,32 +90,32 @@ output and triggers browser reloads.
 
 **Dependencies:** None (can be developed in parallel with Task Groups 1-2)
 
-- [ ] 3.0 Complete WebSocket server endpoint
-    - [ ] 3.1 Write 2-8 focused tests for WebSocket endpoint
+- [x] 3.0 Complete WebSocket server endpoint
+    - [x] 3.1 Write 2-8 focused tests for WebSocket endpoint
         - Test WebSocket connection acceptance at `/ws/reload`
         - Test broadcasting reload message to connected clients
         - Test handling multiple simultaneous connections
         - Test graceful disconnection and cleanup
         - Use Starlette's TestClient or WebSocket testing utilities
         - Limit to critical server behaviors only
-    - [ ] 3.2 Create WebSocket endpoint handler
+    - [x] 3.2 Create WebSocket endpoint handler
         - Add WebSocket endpoint function for `/ws/reload`
         - Accept WebSocket connections using Starlette's WebSocket class
         - Maintain list/set of active WebSocket connections
         - Implement async WebSocket handler compatible with Starlette
         - Follow Starlette WebSocket patterns
-    - [ ] 3.3 Implement broadcast functionality
+    - [x] 3.3 Implement broadcast functionality
         - Create function to broadcast messages to all connected clients
         - Send JSON message `{"type": "reload"}` format
         - Handle client disconnections during broadcast
         - Clean up disconnected clients from connection list
         - Use async iteration and error handling
-    - [ ] 3.4 Integrate WebSocket route into app
+    - [x] 3.4 Integrate WebSocket route into app
         - Modify `src/storytime/app.py` to add WebSocketRoute
         - Add route: `WebSocketRoute("/ws/reload", websocket_endpoint)`
         - Maintain existing StaticFiles mount and debug=True
         - Follow existing routing patterns
-    - [ ] 3.5 Ensure WebSocket tests pass
+    - [x] 3.5 Ensure WebSocket tests pass
         - Run ONLY the 2-8 tests written in 3.1
         - Verify WebSocket connections and broadcasting work
         - Do NOT run entire test suite at this stage
