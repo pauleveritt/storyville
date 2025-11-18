@@ -85,6 +85,53 @@ footer {
     border-top: 1px solid var(--pico-muted-border-color);
 }
 
+/* Story Header - Flexbox layout for title and badges */
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.story-header-left {
+    flex: 1;
+}
+
+.story-header-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Assertion Badges */
+.assertion-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assertion-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.assertion-badge-pass {
+    background-color: #4caf50;
+    color: white;
+}
+
+.assertion-badge-fail {
+    background-color: #f44336;
+    color: white;
+    cursor: help;
+}
+
 /* Responsive layout for mobile */
 @media (max-width: 768px) {
     body > div.grid {
@@ -95,5 +142,14 @@ footer {
         position: static;
         max-height: none;
         margin-bottom: 2rem;
+    }
+
+    .story-header {
+        flex-direction: column;
+    }
+
+    .story-header-right {
+        margin-top: 0.75rem;
+        width: 100%;
     }
 }

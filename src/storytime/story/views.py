@@ -67,6 +67,43 @@ class StoryView:
         # Store results on story for later rendering
         self.story.assertion_results = results
 
+    def _render_badges(self) -> list[Node]:
+        """Render assertion badges as tdom Nodes.
+
+        Returns:
+            List of tdom Node objects representing badges, or empty list if no badges.
+        """
+        # Skip badges if no assertion results
+        if not self.story.assertion_results:
+            return []
+
+        badges = []
+        for name, passed, error_msg in self.story.assertion_results:
+            # Build styles
+            base_style = "background-color: {color}; color: white; padding: 0.25rem 0.5rem; border-radius: 1rem; font-size: 0.875rem; margin-left: 0.5rem; white-space: nowrap;"
+
+            if passed:
+                # Green badge for passing assertion
+                style = base_style.format(color="#4caf50")
+                badge = html(
+                    t'<span class="assertion-badge assertion-badge-pass success" style="{style}">{name}</span>'
+                )
+            else:
+                # Red badge for failing assertion with tooltip
+                style = base_style.format(color="#f44336") + " cursor: help;"
+                if error_msg:
+                    badge = html(
+                        t'<span class="assertion-badge assertion-badge-fail danger" style="{style}" title="{error_msg}">{name}</span>'
+                    )
+                else:
+                    badge = html(
+                        t'<span class="assertion-badge assertion-badge-fail danger" style="{style}">{name}</span>'
+                    )
+
+            badges.append(badge)
+
+        return badges
+
     def __call__(self) -> Node:
         """Render the story to a tdom Node.
 
@@ -80,8 +117,34 @@ class StoryView:
         if self.story.template is not None:
             return self.story.template()
 
+        # Render badges as tdom Nodes
+        badge_nodes = self._render_badges()
+
         # Mode B: Default layout rendering wrapped with Layout (depth=2 for story pages)
-        return html(t"""\
+        # Use flexbox for header layout with title on left, badges on right
+        if badge_nodes:
+            # Header with badges (construct using tdom html)
+            return html(t"""\
+<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<div>
+<div class="story-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+  <div class="story-header-left">
+    <h1>{self.story.title}</h1>
+  </div>
+  <div class="story-header-right" style="display: flex; align-items: center; flex-wrap: wrap;">
+    {badge_nodes}
+  </div>
+</div>
+<p>Props: <code>{str(self.story.props)}</code></p>
+<div>
+{self.story.instance}
+</div>
+<a href="..">Parent</a>
+</div>
+</{Layout}>""")
+        else:
+            # Header without badges (original layout)
+            return html(t"""\
 <{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>

@@ -116,8 +116,8 @@ badges in the browser.
 
 **Dependencies:** Task Group 2
 
-- [ ] 3.0 Complete StoryView badge UI
-    - [ ] 3.1 Write 2-8 focused tests for badge rendering
+- [x] 3.0 Complete StoryView badge UI
+    - [x] 3.1 Write 2-8 focused tests for badge rendering
         - Test badge display with passing assertions
         - Test badge display with failing assertions
         - Test badge display with critical errors
@@ -125,20 +125,20 @@ badges in the browser.
         - Test no badges when with_assertions disabled
         - Test mouseover tooltip (title attribute) on failed badges
         - Use aria-testing for accessibility verification
-    - [ ] 3.2 Update StoryView template header layout
+    - [x] 3.2 Update StoryView template header layout
         - Modify Mode B template (default layout) to support badge display
         - Add flexbox/grid container for header with justify-content: space-between
         - Left side: title and description (existing content)
         - Right side: badge container (new)
         - Use semantic HTML for accessibility
         - Follow existing tdom html(t'''...) pattern
-    - [ ] 3.3 Implement conditional badge rendering logic
+    - [x] 3.3 Implement conditional badge rendering logic
         - Only render badges section when story.assertion_results is not empty
         - Skip badges when with_assertions flag disabled
         - Skip badges when story.assertions is empty/None
         - Iterate over story.assertion_results: `for name, passed, error_msg in story.assertion_results`
         - Render each badge based on pass/fail status
-    - [ ] 3.4 Design badge components using PicoCSS
+    - [x] 3.4 Design badge components using PicoCSS
         - Research PicoCSS badge/pill patterns from documentation
         - Green badge (success): use PicoCSS success semantic class
         - Red badge (failure): use PicoCSS danger semantic class
@@ -147,13 +147,13 @@ badges in the browser.
         - Failed badges: add title attribute with error_msg for mouseover tooltip
         - Use inline styles if PicoCSS doesn't have built-in pill badges
         - Follow existing PicoCSS usage patterns from Layout component
-    - [ ] 3.5 Add custom CSS if needed for badge styling
+    - [x] 3.5 Add custom CSS if needed for badge styling
         - Check if storytime.css needs additional badge styles
         - Ensure badges are right-aligned in header
         - Ensure badges don't wrap awkwardly on mobile
         - Follow responsive design principles
         - Test visual appearance in browser during development
-    - [ ] 3.6 Ensure badge UI tests pass
+    - [x] 3.6 Ensure badge UI tests pass
         - Run ONLY the 2-8 tests written in 3.1
         - Verify badges render correctly for all states
         - Verify accessibility with aria-testing
