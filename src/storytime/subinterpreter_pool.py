@@ -79,8 +79,7 @@ def _clear_user_modules(package_location: str) -> None:
     modules_to_clear = [
         module_name
         for module_name in list(sys.modules.keys())
-        if module_name.startswith(package_prefix + ".")
-        or module_name == package_prefix
+        if module_name.startswith(package_prefix + ".") or module_name == package_prefix
     ]
 
     # Clear the modules
@@ -88,7 +87,9 @@ def _clear_user_modules(package_location: str) -> None:
         del sys.modules[module_name]
 
     if modules_to_clear:
-        logger.info(f"Cleared {len(modules_to_clear)} user modules from sys.modules: {package_prefix}.*")
+        logger.info(
+            f"Cleared {len(modules_to_clear)} user modules from sys.modules: {package_prefix}.*"
+        )
     else:
         logger.info(f"No cached modules found for {package_prefix}.*")
 
@@ -97,6 +98,7 @@ def _build_site_in_interpreter(
     package_location: str,
     output_dir_str: str,
     sys_path: list[str],
+    with_assertions: bool = True,
 ) -> None:
     """Execute build_site in a subinterpreter.
 
@@ -108,6 +110,7 @@ def _build_site_in_interpreter(
         package_location: Package location to build from
         output_dir_str: Output directory path as string (Path objects can't cross interpreter boundary)
         sys_path: Python sys.path to use in the subinterpreter
+        with_assertions: Whether to enable assertions during rendering (default: True)
 
     Note:
         This function runs inside a subinterpreter and writes directly to disk.
@@ -141,10 +144,16 @@ def _build_site_in_interpreter(
         # Convert string path back to Path object
         output_dir = Path(output_dir_str)
 
-        logger.info(f"Starting build in subinterpreter: {package_location} -> {output_dir}")
+        logger.info(
+            f"Starting build in subinterpreter: {package_location} -> {output_dir}"
+        )
 
         # Execute the build - this will have fresh imports of all modules
-        build_site(package_location=package_location, output_dir=output_dir)
+        build_site(
+            package_location=package_location,
+            output_dir=output_dir,
+            with_assertions=with_assertions,
+        )
 
         logger.info("Build in subinterpreter completed successfully")
 
@@ -157,6 +166,7 @@ def build_in_subinterpreter(
     pool: InterpreterPoolExecutor,
     package_location: str,
     output_dir: Path,
+    with_assertions: bool = True,
 ) -> None:
     """Execute a build in a subinterpreter with module isolation.
 
@@ -169,6 +179,7 @@ def build_in_subinterpreter(
         pool: The InterpreterPoolExecutor to use
         package_location: Package location to build from
         output_dir: Output directory to write the built site to
+        with_assertions: Whether to enable assertions during rendering (default: True)
 
     Raises:
         Exception: If build fails in the subinterpreter
@@ -179,7 +190,9 @@ def build_in_subinterpreter(
         from the pool are used for consecutive builds. Core modules (storytime, tdom)
         remain cached for performance across builds in the same interpreter.
     """
-    logger.info(f"Submitting build to subinterpreter pool: {package_location} -> {output_dir}")
+    logger.info(
+        f"Submitting build to subinterpreter pool: {package_location} -> {output_dir}"
+    )
 
     # Convert Path to string (Path objects can't cross interpreter boundary)
     output_dir_str = str(output_dir)
@@ -192,6 +205,7 @@ def build_in_subinterpreter(
             package_location,
             output_dir_str,
             _MAIN_SYS_PATH,
+            with_assertions,
         )
         future.result(timeout=60.0)  # 60 second timeout for build
 
@@ -207,6 +221,7 @@ async def rebuild_callback_subinterpreter(
     package_location: str,
     output_dir: Path,
     pool: InterpreterPoolExecutor,
+    with_assertions: bool = True,
 ) -> None:
     """Async callback for rebuilding using subinterpreters.
 
@@ -218,6 +233,7 @@ async def rebuild_callback_subinterpreter(
         package_location: Package location to build from
         output_dir: Output directory to write the built site to
         pool: The InterpreterPoolExecutor to use for building
+        with_assertions: Whether to enable assertions during rendering (default: True)
 
     Raises:
         Exception: If build fails in the subinterpreter
@@ -236,6 +252,7 @@ async def rebuild_callback_subinterpreter(
             pool,
             package_location,
             output_dir,
+            with_assertions,
         )
 
         logger.info("Async rebuild callback completed successfully")

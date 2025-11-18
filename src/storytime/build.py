@@ -27,12 +27,15 @@ def _write_html(content: str, path: Path) -> None:
     path.write_text(content)
 
 
-def build_site(package_location: str, output_dir: Path) -> None:
+def build_site(
+    package_location: str, output_dir: Path, with_assertions: bool = True
+) -> None:
     """Write the static files and story info to the output directory.
 
     Args:
         package_location: The package location to build from
         output_dir: The output directory to write the built site to
+        with_assertions: Whether to execute assertions during rendering (default: True)
 
     The builder:
     1. Clears the output directory if it exists and is not empty
@@ -69,6 +72,7 @@ def build_site(package_location: str, output_dir: Path) -> None:
 
     # Generate cached navigation tree once (without current_path highlighting)
     from storytime.components.navigation_tree import NavigationTree
+
     cached_nav = str(NavigationTree(sections=site.items, current_path=None)())
 
     # Render the site index page (root) and convert to string
@@ -87,19 +91,31 @@ def build_site(package_location: str, output_dir: Path) -> None:
 
     for section_key, section in site.items.items():
         # Render section index page and convert to string
-        section_view = str(SectionView(section=section, site=site, cached_navigation=cached_nav)())
+        section_view = str(
+            SectionView(section=section, site=site, cached_navigation=cached_nav)()
+        )
         rendered_sections.append((section_key, section_view))
 
         # Walk subjects in this section
         for subject_key, subject in section.items.items():
             # Render subject index page and convert to string
-            subject_view = str(SubjectView(subject=subject, site=site, cached_navigation=cached_nav)())
+            subject_view = str(
+                SubjectView(subject=subject, site=site, cached_navigation=cached_nav)()
+            )
             rendered_subjects.append((section_key, subject_key, subject_view))
 
             # Walk stories in this subject
             for story_idx, story in enumerate(subject.items):
                 # Render story index page and convert to string
-                story_view = str(StoryView(story=story, site=site, cached_navigation=cached_nav)())
+                # Pass with_assertions flag to StoryView
+                story_view = str(
+                    StoryView(
+                        story=story,
+                        site=site,
+                        cached_navigation=cached_nav,
+                        with_assertions=with_assertions,
+                    )()
+                )
                 rendered_stories.append((section_key, subject_key, story_idx, story_view))
 
     end_rendering = perf_counter()

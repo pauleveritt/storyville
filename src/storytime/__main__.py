@@ -33,6 +33,16 @@ def serve(
             "Default: True (use subinterpreters for proper hot reload)."
         ),
     ),
+    with_assertions: bool = typer.Option(
+        True,
+        "--with-assertions/--no-with-assertions",
+        help=(
+            "Enable assertion execution during StoryView rendering. "
+            "When enabled, assertions defined on stories will execute and display "
+            "pass/fail badges in the rendered page. "
+            "Default: True (assertions enabled)."
+        ),
+    ),
 ) -> None:
     """Start a development server for the Storytime site.
 
@@ -53,7 +63,11 @@ def serve(
     def run_server(output_dir: Path) -> None:
         """Run the server with the given output directory."""
         typer.echo(f"Building site from '{input_path}' to '{output_dir}'...")
-        build_site(package_location=input_path, output_dir=output_dir)
+        build_site(
+            package_location=input_path,
+            output_dir=output_dir,
+            with_assertions=with_assertions,
+        )
         typer.echo("Build complete! Starting server on http://localhost:8080")
         typer.echo(f"Serving from: {output_dir}")
 
@@ -61,6 +75,11 @@ def serve(
             typer.echo("Hot reload using subinterpreters: enabled")
         else:
             typer.echo("Hot reload using direct builds: enabled")
+
+        if with_assertions:
+            typer.echo("Assertions: enabled")
+        else:
+            typer.echo("Assertions: disabled")
 
         # Create and run the app with hot reload support
         # Pass input_path, package_location, and output_dir to enable watchers
@@ -70,6 +89,7 @@ def serve(
             package_location=input_path,
             output_dir=output_dir,
             use_subinterpreters=use_subinterpreters,
+            with_assertions=with_assertions,
         )
         try:
             # Note: Do NOT use reload=True - we have custom file watching

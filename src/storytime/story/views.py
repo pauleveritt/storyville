@@ -1,5 +1,6 @@
 """StoryView for rendering Story instances with dual modes."""
 
+import logging
 from dataclasses import dataclass
 
 from tdom import Node, html
@@ -7,6 +8,8 @@ from tdom import Node, html
 from storytime.components.layout import Layout
 from storytime.site.models import Site
 from storytime.story.models import Story
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -24,6 +27,45 @@ class StoryView:
     story: Story
     site: Site
     cached_navigation: str | None = None
+    with_assertions: bool = True
+
+    def _execute_assertions(self, with_assertions: bool = True) -> None:
+        """Execute assertions against the rendered story instance.
+
+        Args:
+            with_assertions: Whether to execute assertions (default: True)
+        """
+        # Skip if assertions disabled or no assertions defined
+        if not with_assertions or not self.story.assertions:
+            return
+
+        # Get rendered element from story instance
+        rendered_element = self.story.instance
+        if rendered_element is None:
+            return
+
+        # Execute each assertion and collect results
+        results = []
+        for i, assertion in enumerate(self.story.assertions, start=1):
+            name = f"Assertion {i}"
+            try:
+                # Pass rendered element to assertion
+                assertion(rendered_element)
+                # Assertion passed (no exception raised)
+                results.append((name, True, None))
+            except AssertionError as e:
+                # Expected assertion failure
+                error_msg = str(e).split("\n")[0]  # First line only
+                results.append((name, False, error_msg))
+            except Exception as e:
+                # Critical error (unexpected exception)
+                error_msg = f"Critical error: {str(e).split('\n')[0]}"
+                results.append((name, False, error_msg))
+                # Log full exception for debugging
+                logger.error(f"Critical error in {name}: {e}", exc_info=True)
+
+        # Store results on story for later rendering
+        self.story.assertion_results = results
 
     def __call__(self) -> Node:
         """Render the story to a tdom Node.
@@ -31,6 +73,9 @@ class StoryView:
         Returns:
             A tdom Node representing the rendered story.
         """
+        # Execute assertions if enabled (after story.instance is available)
+        self._execute_assertions(with_assertions=self.with_assertions)
+
         # Mode A: Custom template rendering
         if self.story.template is not None:
             return self.story.template()

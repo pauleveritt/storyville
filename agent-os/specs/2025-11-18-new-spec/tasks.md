@@ -56,27 +56,27 @@ badges in the browser.
 
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete assertion execution engine
-    - [ ] 2.1 Write 2-8 focused tests for assertion execution
+- [x] 2.0 Complete assertion execution engine
+    - [x] 2.1 Write 2-8 focused tests for assertion execution
         - Test assertion execution with passing assertions (no error raised)
         - Test assertion execution with failing assertions (AssertionError raised)
         - Test assertion execution with critical errors (other exceptions)
         - Test position-based naming ("Assertion 1", "Assertion 2")
         - Test error message extraction (only first line captured)
         - Test assertion results storage format
-    - [ ] 2.2 Add CLI flag to __main__.py serve command
+    - [x] 2.2 Add CLI flag to __main__.py serve command
         - Add `with_assertions: bool` parameter to serve() function
         - Use typer.Option with default True
         - Add flag: `--with-assertions/--no-with-assertions`
         - Add help text: "Enable assertion execution during StoryView rendering (default: True)"
         - Pass flag through create_app() to make available to views
         - Follow existing pattern from use_subinterpreters flag
-    - [ ] 2.3 Pass with_assertions flag through app creation chain
+    - [x] 2.3 Pass with_assertions flag through app creation chain
         - Update create_app() signature to accept with_assertions parameter
         - Store flag in app.state.with_assertions for view access
         - Default to True if not provided (maintains backward compatibility)
         - Follow existing pattern from subinterpreter pool setup
-    - [ ] 2.4 Implement assertion execution in StoryView.__call__()
+    - [x] 2.4 Implement assertion execution in StoryView.__call__()
         - Import logging module and create logger
         - Add assertion execution after story instance rendering
         - Only execute if story.assertions is not empty
@@ -84,7 +84,7 @@ badges in the browser.
         - Get rendered element from self.story.instance before executing
         - Iterate with enumerate: `for i, assertion in enumerate(self.story.assertions, start=1)`
         - Generate name: `f"Assertion {i}"`
-    - [ ] 2.5 Add exception handling for assertion execution
+    - [x] 2.5 Add exception handling for assertion execution
         - Catch AssertionError: extract first line of error with `str(e).split('\n')[0]`
         - Record as: `(name, False, error_message)`
         - Catch all other exceptions: prefix with "Critical error: "
@@ -92,7 +92,7 @@ badges in the browser.
         - Record as: `(name, False, f"Critical error: {error_msg}")`
         - For passing assertions: `(name, True, None)`
         - Store all results in self.story.assertion_results
-    - [ ] 2.6 Ensure assertion execution tests pass
+    - [x] 2.6 Ensure assertion execution tests pass
         - Run ONLY the 2-8 tests written in 2.1
         - Verify assertions execute correctly
         - Verify CLI flag controls execution

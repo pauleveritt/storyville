@@ -4,6 +4,7 @@ import asyncio
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from functools import partial
 from pathlib import Path
 
 from starlette.applications import Starlette
@@ -25,6 +26,7 @@ async def lifespan(
     package_location: str | None = None,
     output_dir: Path | None = None,
     use_subinterpreters: bool = False,
+    with_assertions: bool = True,
 ) -> AsyncIterator[None]:
     """Starlette lifespan context manager for hot reload watcher.
 
@@ -41,6 +43,7 @@ async def lifespan(
         package_location: Package location for rebuilds (optional)
         output_dir: Output directory to rebuild to (optional)
         use_subinterpreters: Whether to use subinterpreters for builds (default: False)
+        with_assertions: Whether to enable assertions during builds (default: True)
 
     Yields:
         None (no app state needed)
@@ -71,18 +74,19 @@ async def lifespan(
 
         # Determine which rebuild callback to use based on mode
         if use_subinterpreters:
-            from functools import partial
-
             from storytime.subinterpreter_pool import rebuild_callback_subinterpreter
 
             # Create async callback that uses subinterpreter
+            # Bind pool and with_assertions using partial
             rebuild_callback = partial(
                 rebuild_callback_subinterpreter,
                 pool=app.state.pool,
+                with_assertions=with_assertions,
             )
         else:
             # Use direct build_site callback
-            rebuild_callback = build_site
+            # Bind with_assertions using partial
+            rebuild_callback = partial(build_site, with_assertions=with_assertions)
 
         # Create unified watcher task that watches, rebuilds, and broadcasts
         watcher_task = asyncio.create_task(
@@ -139,6 +143,7 @@ def create_app(
     package_location: str | None = None,
     output_dir: Path | None = None,
     use_subinterpreters: bool = False,
+    with_assertions: bool = True,
 ) -> Starlette:
     """Create a Starlette application to serve a built Storytime site.
 
@@ -151,6 +156,9 @@ def create_app(
         use_subinterpreters: Whether to use subinterpreters for hot reload builds (default: False)
                             When True, builds run in isolated subinterpreters for fresh module imports.
                             When False, builds run directly in the main interpreter.
+        with_assertions: Whether to enable assertion execution during rendering (default: True)
+                        When True, assertions defined on stories will execute and display badges.
+                        When False, assertion execution is skipped entirely.
 
     Returns:
         Configured Starlette application instance ready to serve
@@ -179,10 +187,12 @@ def create_app(
             package_location,
             output_dir,
             use_subinterpreters,
+            with_assertions,
         ):
             yield
 
-    return Starlette(
+    # Create the app
+    starlette_app = Starlette(
         debug=True,
         routes=[
             WebSocketRoute("/ws/reload", websocket_endpoint),
@@ -190,3 +200,8 @@ def create_app(
         ],
         lifespan=app_lifespan,
     )
+
+    # Store with_assertions flag in app state for view access
+    starlette_app.state.with_assertions = with_assertions
+
+    return starlette_app
