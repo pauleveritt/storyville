@@ -13,30 +13,30 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 **Dependencies:** None
 
-- [ ] 1.0 Complete subinterpreter pool infrastructure
-    - [ ] 1.1 Write 2-8 focused tests for pool lifecycle
+- [x] 1.0 Complete subinterpreter pool infrastructure
+    - [x] 1.1 Write 2-8 focused tests for pool lifecycle
         - Limit to 2-8 highly focused tests maximum
         - Test pool creation, warm-up execution, and shutdown
         - Test interpreter availability after warm-up
         - Skip exhaustive coverage of edge cases
-    - [ ] 1.2 Create warm-up function module
+    - [x] 1.2 Create warm-up function module
         - Create `src/storytime/subinterpreters.py` for subinterpreter utilities
         - Implement `warmup_interpreter()` as module-level callable
         - Hard-code imports: `import storytime` and `import tdom`
         - Must be compatible with `InterpreterPoolExecutor.submit()`
         - Add logging for warm-up completion
-    - [ ] 1.3 Create pool initialization function
+    - [x] 1.3 Create pool initialization function
         - Implement `create_interpreter_pool()` returning `InterpreterPoolExecutor`
         - Pool size: exactly 2 interpreters
         - Initialize pool and warm up both interpreters immediately
         - Use Python 3.14+ `concurrent.futures.InterpreterPoolExecutor`
         - Add logging for pool creation event
-    - [ ] 1.4 Create pool shutdown function
+    - [x] 1.4 Create pool shutdown function
         - Implement `shutdown_interpreter_pool(pool: InterpreterPoolExecutor)`
         - Graceful shutdown with timeout
         - Add logging for shutdown event
         - Handle exceptions during shutdown gracefully
-    - [ ] 1.5 Ensure pool infrastructure tests pass
+    - [x] 1.5 Ensure pool infrastructure tests pass
         - Run ONLY the 2-8 tests written in 1.1
         - Verify pool creates successfully with 2 interpreters
         - Verify warm-up completes without errors
