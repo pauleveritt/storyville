@@ -23,8 +23,28 @@ def serve(
         None,
         help="Output directory for the built site (default: temporary directory)",
     ),
+    use_subinterpreters: bool = typer.Option(
+        False,
+        "--use-subinterpreters",
+        help=(
+            "Enable subinterpreters for hot reload builds. "
+            "When enabled, each rebuild runs in a fresh isolated subinterpreter, "
+            "allowing module changes (e.g., to stories.py) to take effect immediately. "
+            "Useful for development but adds slight overhead. "
+            "Default: False (direct builds for backward compatibility)."
+        ),
+    ),
 ) -> None:
-    """Start a development server for the Storytime site."""
+    """Start a development server for the Storytime site.
+
+    The server provides hot reload functionality - when source files change,
+    the site is automatically rebuilt and the browser is refreshed.
+
+    By default, rebuilds run directly in the main interpreter. Use the
+    --use-subinterpreters flag to enable isolated subinterpreters for each
+    rebuild, which allows module changes to take effect without restarting
+    the server.
+    """
     # Configure logging for storytime modules to show watcher events
     logging.basicConfig(
         level=logging.INFO,
@@ -38,6 +58,11 @@ def serve(
         typer.echo("Build complete! Starting server on http://localhost:8080")
         typer.echo(f"Serving from: {output_dir}")
 
+        if use_subinterpreters:
+            typer.echo("Hot reload using subinterpreters: enabled")
+        else:
+            typer.echo("Hot reload using direct builds: enabled")
+
         # Create and run the app with hot reload support
         # Pass input_path, package_location, and output_dir to enable watchers
         starlette_app = create_app(
@@ -45,6 +70,7 @@ def serve(
             input_path=input_path,
             package_location=input_path,
             output_dir=output_dir,
+            use_subinterpreters=use_subinterpreters,
         )
         try:
             # Note: Do NOT use reload=True - we have custom file watching
@@ -74,7 +100,14 @@ def build(
         help="Output directory for the built site",
     ),
 ) -> None:
-    """Build the Storytime site to static files."""
+    """Build the Storytime site to static files.
+
+    The build command performs a one-time build without starting a server.
+    It always uses direct builds (no subinterpreters) for maximum simplicity
+    and performance.
+
+    For development with hot reload, use the 'serve' command instead.
+    """
     # Configure logging to show build phase timing
     logging.basicConfig(
         level=logging.INFO,

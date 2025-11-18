@@ -176,26 +176,26 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 **Dependencies:** Task Group 3
 
-- [ ] 4.0 Complete CLI integration
-    - [ ] 4.1 Write 2-8 focused tests for CLI integration
+- [x] 4.0 Complete CLI integration
+    - [x] 4.1 Write 2-8 focused tests for CLI integration
         - Limit to 2-8 highly focused tests maximum
         - Test `serve` command with and without `--use-subinterpreters`
         - Test `build` command always uses direct build
         - Skip exhaustive CLI testing
-    - [ ] 4.2 Add `--use-subinterpreters` flag to serve command
+    - [x] 4.2 Add `--use-subinterpreters` flag to serve command
         - Update `serve()` in `src/storytime/__main__.py`
-        - Add click option: `@click.option('--use-subinterpreters', is_flag=True, default=False)`
+        - Add typer option: `typer.Option(False, '--use-subinterpreters', help=...)`
         - Pass flag value to `create_app(use_subinterpreters=...)`
         - Add help text explaining flag purpose
-    - [ ] 4.3 Verify build command uses direct build
+    - [x] 4.3 Verify build command uses direct build
         - Ensure `build()` command in `__main__.py` always calls `build_site()` directly
         - Never use subinterpreters for CLI build (no flag needed)
         - Keep build command simple and fast
-    - [ ] 4.4 Add CLI usage documentation
+    - [x] 4.4 Add CLI usage documentation
         - Document `--use-subinterpreters` flag in docstring/help
         - Explain when to use flag (development with hot reload)
         - Explain default behavior (no subinterpreters for simplicity)
-    - [ ] 4.5 Ensure CLI integration tests pass
+    - [x] 4.5 Ensure CLI integration tests pass
         - Run ONLY the 2-8 tests written in 4.1
         - Verify serve command works with and without flag
         - Verify build command always uses direct build
@@ -211,7 +211,7 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 **Notes:**
 
-- Use click's standard flag patterns
+- Use typer's standard flag patterns
 - Maintain simplicity for CLI users
 - Default behavior should match current behavior (no breaking changes)
 
