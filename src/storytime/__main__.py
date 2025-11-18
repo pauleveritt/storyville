@@ -75,6 +75,12 @@ def build(
     ),
 ) -> None:
     """Build the Storytime site to static files."""
+    # Configure logging to show build phase timing
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(levelname)s:     %(name)s - %(message)s",
+    )
+
     # Convert output_dir to Path object
     output_p = Path(output_dir).resolve()
 

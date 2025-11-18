@@ -4,8 +4,10 @@
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import Element, Fragment, Node
 from typing import cast
+from pathlib import Path
 
 from storytime import make_site
+from storytime.build import build_site
 from storytime.section import Section
 from storytime.section.views import SectionView
 from storytime.story import Story
@@ -608,3 +610,256 @@ def test_all_examples_structural_integrity() -> None:
                                 raise AssertionError(f"Expected Subject in {example_name}")
                 case _:
                     raise AssertionError(f"Expected Section in {example_name}")
+
+
+# Task Group 1: Tests for examples.huge Site structure
+
+
+def test_huge_example_site_loads() -> None:
+    """Test huge example Site loads successfully with title."""
+    site = make_site("examples.huge")
+
+    # Verify Site has correct title
+    assert site.title == "Huge Scale Example"
+
+
+def test_huge_example_has_ten_sections() -> None:
+    """Test huge example has 10 sections."""
+    site = make_site("examples.huge")
+
+    # Verify Site has exactly 10 sections
+    assert len(site.items) == 10
+
+
+def test_huge_example_section_names() -> None:
+    """Test huge example section names match expected design system categories."""
+    site = make_site("examples.huge")
+
+    # Expected section names (directory names)
+    expected_sections = {
+        "forms",
+        "navigation",
+        "feedback",
+        "layout",
+        "data_display",
+        "overlays",
+        "media",
+        "typography",
+        "inputs",
+        "controls",
+    }
+
+    # Verify all expected sections exist
+    assert set(site.items.keys()) == expected_sections
+
+    # Verify each is a Section with the correct title
+    match site.items.get("forms"):
+        case Section() as section:
+            assert section.title == "Forms"
+            assert section.description == "Form components"
+        case _:
+            raise AssertionError("Expected Section for forms")
+
+    match site.items.get("navigation"):
+        case Section() as section:
+            assert section.title == "Navigation"
+            assert section.description == "Navigation components"
+        case _:
+            raise AssertionError("Expected Section for navigation")
+
+    match site.items.get("feedback"):
+        case Section() as section:
+            assert section.title == "Feedback"
+            assert section.description == "Feedback components"
+        case _:
+            raise AssertionError("Expected Section for feedback")
+
+    match site.items.get("layout"):
+        case Section() as section:
+            assert section.title == "Layout"
+            assert section.description == "Layout components"
+        case _:
+            raise AssertionError("Expected Section for layout")
+
+
+# Task Group 2: Tests for component rendering
+
+
+def test_huge_component_renders_correctly() -> None:
+    """Test huge example components render with correct structure."""
+    site = make_site("examples.huge")
+
+    # Get a sample component from forms section
+    match site.items.get("forms"):
+        case Section() as section:
+            # Get first subject
+            if section.items:
+                first_subject_key = list(section.items.keys())[0]
+                subject = section.items[first_subject_key]
+                assert isinstance(subject, Subject)
+
+                # Verify subject has 3 stories
+                assert len(subject.items) == 3
+
+                # Test first story renders
+                story = subject.items[0]
+                assert isinstance(story, Story)
+                rendered = story.instance
+                assert rendered is not None
+                assert isinstance(rendered, Element)
+        case _:
+            raise AssertionError("Expected Section for forms")
+
+
+def test_huge_component_props_applied() -> None:
+    """Test huge example component props are correctly applied."""
+    site = make_site("examples.huge")
+
+    # Get forms section and first component
+    section = site.items["forms"]
+    assert isinstance(section, Section)
+
+    if section.items:
+        first_subject_key = list(section.items.keys())[0]
+        subject = section.items[first_subject_key]
+        assert isinstance(subject, Subject)
+
+        # Test default state story
+        story_default = subject.items[0]
+        assert story_default.props is not None
+        assert story_default.props.get("text") == "Default"
+        assert story_default.props.get("variant") == "primary"
+        assert story_default.props.get("state") == "default"
+
+        # Test disabled state story
+        story_disabled = subject.items[1]
+        assert story_disabled.props is not None
+        assert story_disabled.props.get("text") == "Disabled"
+        assert story_disabled.props.get("state") == "disabled"
+
+        # Test loading state story
+        story_loading = subject.items[2]
+        assert story_loading.props is not None
+        assert story_loading.props.get("text") == "Loading"
+        assert story_loading.props.get("state") == "loading"
+
+
+def test_huge_component_html_structure() -> None:
+    """Test huge example components render basic HTML with class attributes."""
+    site = make_site("examples.huge")
+
+    # Get forms section
+    section = site.items["forms"]
+    assert isinstance(section, Section)
+
+    if section.items:
+        first_subject_key = list(section.items.keys())[0]
+        subject = section.items[first_subject_key]
+        assert isinstance(subject, Subject)
+
+        # Test rendered HTML has proper structure
+        story = subject.items[0]
+        rendered = story.instance
+        assert rendered is not None
+        assert isinstance(rendered, Element)
+
+        # Verify has element name (div, button, or span)
+        assert rendered.tag in ("div", "button", "span")
+
+        # Verify has class attribute
+        assert "class" in rendered.attrs
+
+
+def test_huge_all_sections_have_ten_subjects() -> None:
+    """Test all sections in huge example have 10 subjects."""
+    site = make_site("examples.huge")
+
+    # Verify each section has 10 subjects
+    for section_name, section_node in site.items.items():
+        match section_node:
+            case Section() as section:
+                assert len(section.items) == 10, f"Section {section_name} should have 10 subjects"
+
+                # Verify each subject has 3 stories
+                for subject_name, subject_node in section.items.items():
+                    match subject_node:
+                        case Subject() as subject:
+                            assert len(subject.items) == 3, f"Subject {subject_name} should have 3 stories"
+                        case _:
+                            raise AssertionError(f"Expected Subject for {subject_name}")
+            case _:
+                raise AssertionError(f"Expected Section for {section_name}")
+
+
+# Task Group 4: Performance Testing and Integration
+
+
+def test_huge_example(tmp_path: Path) -> None:
+    """Smoke test for examples.huge - verify structure loads correctly."""
+    site = make_site("examples.huge")
+
+    # Verify site has 10 sections
+    assert len(site.items) == 10
+
+    # Verify first section has 10 subjects using structural pattern matching
+    match site.items.get("forms"):
+        case Section() as section:
+            assert len(section.items) == 10
+
+            # Verify first subject has 3 stories
+            first_subject_key = list(section.items.keys())[0]
+            match section.items.get(first_subject_key):
+                case Subject() as subject:
+                    assert len(subject.items) == 3
+                case _:
+                    raise AssertionError("Expected Subject in forms section")
+        case _:
+            raise AssertionError("Expected Section for forms")
+
+
+def test_huge_build_smoke(tmp_path: Path) -> None:
+    """Build smoke test for examples.huge - verify build completes."""
+    # Build site to tmp_path
+    build_site("examples.huge", tmp_path)
+
+    # Verify build completes without errors
+    assert tmp_path.exists()
+    assert (tmp_path / "index.html").exists()
+
+    # Count output directories
+    # Expected: 1 site root + 10 sections + 100 subjects + 300 stories = 411 directories total
+    # But we're counting directories with index.html files
+    total_dirs = 0
+    for item in tmp_path.rglob("*"):
+        if item.is_dir():
+            total_dirs += 1
+
+    # Expect at least sections + subjects + stories directories (~410+)
+    # Note: The actual count includes story-N directories
+    assert total_dirs > 300, f"Expected >300 directories, got {total_dirs}"
+
+    # Verify index.html exists in key locations
+    assert (tmp_path / "index.html").exists()  # Site root
+    assert (tmp_path / "forms" / "index.html").exists()  # First section
+    assert (tmp_path / "navigation" / "index.html").exists()  # Another section
+
+    # Verify at least one subject has index.html
+    forms_subjects = list((tmp_path / "forms").iterdir())
+    subject_dirs = [d for d in forms_subjects if d.is_dir() and d.name != "static"]
+    assert len(subject_dirs) > 0
+    first_subject_dir = subject_dirs[0]
+    assert (first_subject_dir / "index.html").exists()
+
+    # Verify at least one story has index.html
+    story_dirs = [d for d in first_subject_dir.iterdir() if d.is_dir() and d.name.startswith("story-")]
+    assert len(story_dirs) > 0
+    assert (story_dirs[0] / "index.html").exists()
+
+
+def test_huge_build_performance(benchmark, tmp_path: Path) -> None:
+    """Performance benchmark test for examples.huge build."""
+    # Measure total build time using pytest-benchmark
+    benchmark(build_site, "examples.huge", tmp_path)
+
+    # No validation here - just timing
+    # The benchmark fixture will track timing metrics automatically
