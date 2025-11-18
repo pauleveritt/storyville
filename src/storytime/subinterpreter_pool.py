@@ -5,6 +5,7 @@ subinterpreters using InterpreterPoolExecutor. Subinterpreters allow fresh
 module imports on each build, enabling true hot reloading of stories.py files.
 """
 
+import asyncio
 import logging
 import sys
 from concurrent.futures import InterpreterPoolExecutor
@@ -158,6 +159,49 @@ def build_in_subinterpreter(
     except Exception as e:
         logger.error(f"Build in subinterpreter failed: {e}", exc_info=True)
         # Re-raise to allow caller to handle the error
+        raise
+
+
+async def rebuild_callback_subinterpreter(
+    package_location: str,
+    output_dir: Path,
+    pool: InterpreterPoolExecutor,
+) -> None:
+    """Async callback for rebuilding using subinterpreters.
+
+    This function is designed to be used as a rebuild callback for the watcher.
+    It runs the synchronous build_in_subinterpreter() function in a thread pool
+    to avoid blocking the async event loop.
+
+    Args:
+        package_location: Package location to build from
+        output_dir: Output directory to write the built site to
+        pool: The InterpreterPoolExecutor to use for building
+
+    Raises:
+        Exception: If build fails in the subinterpreter
+
+    Note:
+        This uses asyncio.to_thread() to run the synchronous subinterpreter
+        build without blocking the event loop. Error handling is delegated
+        to build_in_subinterpreter().
+    """
+    logger.info(f"Async rebuild callback: {package_location} -> {output_dir}")
+
+    try:
+        # Run synchronous build_in_subinterpreter in thread pool
+        await asyncio.to_thread(
+            build_in_subinterpreter,
+            pool,
+            package_location,
+            output_dir,
+        )
+
+        logger.info("Async rebuild callback completed successfully")
+
+    except Exception as e:
+        logger.error(f"Async rebuild callback failed: {e}", exc_info=True)
+        # Re-raise to allow watcher to handle the error
         raise
 
 

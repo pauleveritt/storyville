@@ -117,37 +117,37 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 **Dependencies:** Task Group 2
 
-- [ ] 3.0 Complete dual-mode integration
-    - [ ] 3.1 Write 2-8 focused tests for dual-mode operation
+- [x] 3.0 Complete dual-mode integration
+    - [x] 3.1 Write 2-8 focused tests for dual-mode operation
         - Limit to 2-8 highly focused tests maximum
         - Test CLI mode (direct build without subinterpreters)
         - Test web app mode (build with subinterpreters)
         - Test callback signature compatibility
         - Skip exhaustive testing of all integration scenarios
-    - [ ] 3.2 Add `use_subinterpreters` parameter to `create_app()`
+    - [x] 3.2 Add `use_subinterpreters` parameter to `create_app()`
         - Update signature: `create_app(..., use_subinterpreters: bool = False)`
         - Default to `False` for backward compatibility
         - Pass flag to lifespan context manager
         - Located in: `src/storytime/app.py`
-    - [ ] 3.3 Integrate pool lifecycle with Starlette lifespan
+    - [x] 3.3 Integrate pool lifecycle with Starlette lifespan
         - In `lifespan()` context manager in `app.py`
         - Create pool on app startup (before watcher) if `use_subinterpreters=True`
         - Shutdown pool on app teardown (after watcher cancelled)
         - Store pool reference in app state for access by watcher
         - Add logging for lifecycle events
-    - [ ] 3.4 Update `watch_and_rebuild()` for dual callbacks
+    - [x] 3.4 Update `watch_and_rebuild()` for dual callbacks
         - Modify signature to support both sync and async-compatible callbacks
         - When `use_subinterpreters=True`: use `asyncio.to_thread()` to run subinterpreter build
         - When `use_subinterpreters=False`: use direct `build_site()` call
         - Maintain existing error handling and debouncing
         - Keep existing WebSocket broadcast behavior (only after successful build)
         - Located in: `src/storytime/watchers.py`
-    - [ ] 3.5 Wire up subinterpreter callback in web app mode
+    - [x] 3.5 Wire up subinterpreter callback in web app mode
         - In `app.py`, when `use_subinterpreters=True`
         - Create async-compatible callback that calls `build_in_subinterpreter()`
         - Pass callback to `watch_and_rebuild()`
         - Use `asyncio.to_thread()` to run synchronous subinterpreter work
-    - [ ] 3.6 Ensure integration tests pass
+    - [x] 3.6 Ensure integration tests pass
         - Run ONLY the 2-8 tests written in 3.1
         - Verify CLI mode works (no subinterpreters)
         - Verify web app mode works (with subinterpreters)

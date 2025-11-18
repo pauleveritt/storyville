@@ -1,6 +1,7 @@
 """File watchers for hot reload functionality."""
 
 import asyncio
+import inspect
 import logging
 from collections.abc import Awaitable, Callable
 from pathlib import Path
@@ -19,7 +20,7 @@ DEBOUNCE_DELAY = 0.3
 async def watch_and_rebuild(
     content_path: Path,
     storytime_path: Path | None,
-    rebuild_callback: Callable[[str, Path], None],
+    rebuild_callback: Callable[[str, Path], None] | Callable[[str, Path], Awaitable[None]],
     broadcast_callback: Callable[[], Awaitable[None]],
     package_location: str,
     output_dir: Path,
@@ -38,6 +39,7 @@ async def watch_and_rebuild(
         content_path: Path to content directory to monitor
         storytime_path: Optional path to src/storytime/ directory
         rebuild_callback: Function to call to rebuild site (e.g., build_site)
+                         Can be sync or async
         broadcast_callback: Async function to call to broadcast reload (e.g., broadcast_reload_async)
         package_location: Package location to pass to rebuild_callback
         output_dir: Output directory to pass to rebuild_callback
@@ -100,7 +102,15 @@ async def watch_and_rebuild(
             # Trigger rebuild
             logger.info("Triggering rebuild...")
             try:
-                rebuild_callback(package_location, output_dir)
+                # Check if callback is async (coroutine function)
+                if inspect.iscoroutinefunction(rebuild_callback):
+                    # Async callback - await it directly
+                    # Runtime check ensures this is Awaitable, but type checker can't infer
+                    await rebuild_callback(package_location, output_dir)  # type: ignore[misc]
+                else:
+                    # Sync callback - call it directly
+                    rebuild_callback(package_location, output_dir)
+
                 logger.info("Rebuild completed successfully")
 
                 # After successful build, broadcast reload to WebSocket clients
