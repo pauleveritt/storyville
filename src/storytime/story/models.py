@@ -1,14 +1,18 @@
 """Story class for component-driven development."""
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable
 
-from tdom import Node
+from tdom import Element, Fragment, Node
 
 from storytime.models import Target, Template
 
 if TYPE_CHECKING:
     from storytime.subject import Subject
+
+# Type aliases for assertion support
+type AssertionCallable = Callable[[Element | Fragment], None]
+type AssertionResult = tuple[str, bool, str | None]
 
 
 @dataclass
@@ -21,6 +25,8 @@ class Story:
     title: str | None = None
     description: str | None = None
     template: Template | None = None
+    assertions: list[AssertionCallable] = field(default_factory=list)
+    assertion_results: list[AssertionResult] = field(default_factory=list)
 
     def post_update(self, parent: Subject):
         """The parent calls this after construction.

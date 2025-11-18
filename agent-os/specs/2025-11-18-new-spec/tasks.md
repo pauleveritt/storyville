@@ -14,26 +14,27 @@ badges in the browser.
 
 **Dependencies:** None
 
-- [ ] 1.0 Complete Story model updates for assertions
-    - [ ] 1.1 Write 2-8 focused tests for Story model assertion fields
+- [x] 1.0 Complete Story model updates for assertions
+    - [x] 1.1 Write 2-8 focused tests for Story model assertion fields
         - Test Story creation with populated assertions list
         - Test Story creation with empty assertions list
         - Test assertion_results field initialization
         - Test type safety of assertions field (accepts callables)
         - Verify field defaults (default_factory for empty lists)
-    - [ ] 1.2 Add type aliases to models.py
+    - [x] 1.2 Add type aliases to models.py
         - Import Element from tdom
         - Import Callable from typing
         - Add `type AssertionCallable = Callable[[Element], None]` after existing type aliases
         - Add `type AssertionResult = tuple[str, bool, str | None]` after AssertionCallable
         - Follow existing pattern: place before class definitions at module level
-    - [ ] 1.3 Update Story dataclass with new fields
-        - Add `assertions: list[AssertionCallable] = field(default_factory=list)`
-        - Add `assertion_results: list[AssertionResult] = field(default_factory=list)`
+    - [x] 1.3 Update Story dataclass with new fields
+        - Add `assertions: list[AssertionCallable] = field(default_factory=list)` (optional field)
+        - Add `assertion_results: list[AssertionResult] = field(default_factory=list)` (optional field)
+        - Both fields are **not required** on the dataclass - they have defaults
         - Import field from dataclasses if not already imported
         - Follow existing field pattern with default_factory for mutable defaults
         - Place new fields after existing fields (after template field)
-    - [ ] 1.4 Ensure Story model tests pass
+    - [x] 1.4 Ensure Story model tests pass
         - Run ONLY the 2-8 tests written in 1.1
         - Run `just typecheck` to verify type hints are correct
         - Verify assertions field accepts list of callables

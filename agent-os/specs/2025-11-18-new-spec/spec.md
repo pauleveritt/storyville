@@ -17,8 +17,10 @@ pass/fail badges in the rendered HTML page, providing immediate visual feedback 
 **Story Model: Add assertions field**
 
 - Add `assertions` field to Story dataclass with type `list[Callable[[Element], None]]`
+- **Field is optional** - not required on the dataclass
 - Field should default to empty list using `field(default_factory=list)`
 - Add `assertion_results` field with type `list[tuple[str, bool, str | None]]` to store execution results
+- **assertion_results field is also optional** - not required on the dataclass
 - Use modern Python type alias: `type AssertionCallable = Callable[[Element], None]`
 - Use modern Python type alias: `type AssertionResult = tuple[str, bool, str | None]`
 - Follow existing Story model patterns (dataclass, field defaults)
