@@ -65,7 +65,7 @@ class Layout:
     <script src="{ws_script_path}"></script>
 </head>
 <body>
-<header class="fixed">
+<header>
   <div class="container">
     <hgroup>
       <p><strong>Storytime</strong></p>
