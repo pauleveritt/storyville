@@ -1,21 +1,5 @@
 /* Storytime custom styles */
 
-/* Fixed header styling - matches PicoCSS docs behavior */
-header.fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: var(--pico-background-color);
-    border-bottom: 1px solid var(--pico-muted-border-color);
-}
-
-/* Add padding to body to prevent content from hiding under fixed header */
-body {
-    padding-top: calc(var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 2rem);
-}
-
 /* Grid layout for main content area - matches PicoCSS docs structure */
 body > div.grid {
     display: grid;

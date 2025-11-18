@@ -266,11 +266,26 @@ def test_two_column_grid_layout_structure(page: Page, site_url: str) -> None:
 
 @pytest.mark.slow
 @pytest.mark.playwright
-def test_header_is_fixed(page: Page, site_url: str) -> None:
-    """Header should have fixed class for non-scrolling behavior."""
-    # Arrange & Act
-    page.goto(site_url)
+def test_story_page_layout_elements_visible(page: Page, built_site: Path) -> None:
+    """Story page should have visible aside and main elements."""
+    # Arrange - navigate to a story page
+    # The examples.minimal site has a story at /test-section/test-subject/story-0.html
+    story_url = f"file://{built_site.absolute()}/test-section/test-subject/story-0.html"
 
-    # Assert - header should have fixed class
-    header = page.locator("header")
-    expect(header).to_have_class("fixed")
+    # Act
+    page.goto(story_url)
+
+    # Assert - both aside and main should be visible
+    aside = page.locator("aside")
+    expect(aside).to_be_visible()
+
+    main = page.locator("main")
+    expect(main).to_be_visible()
+
+    # Verify aside contains navigation
+    nav = aside.locator("nav")
+    expect(nav).to_be_visible()
+
+    # Verify main contains story content
+    story_content = main.locator("section")
+    expect(story_content).to_be_visible()
