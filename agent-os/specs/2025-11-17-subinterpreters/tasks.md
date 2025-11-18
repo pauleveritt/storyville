@@ -64,31 +64,31 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete build execution in subinterpreters
-    - [ ] 2.1 Write 2-8 focused tests for build execution
+- [x] 2.0 Complete build execution in subinterpreters
+    - [x] 2.1 Write 2-8 focused tests for build execution
         - Limit to 2-8 highly focused tests maximum
         - Test build runs successfully in subinterpreter
         - Test output files are written correctly
         - Test module isolation (fresh imports on each build)
         - Skip exhaustive testing of all build scenarios
-    - [ ] 2.2 Create subinterpreter build wrapper function
+    - [x] 2.2 Create subinterpreter build wrapper function
         - Implement `build_in_subinterpreter(pool: InterpreterPoolExecutor, package_location: str, output_dir: Path)` in
           `subinterpreters.py`
         - Submit build task to pool using `pool.submit()`
         - Execute full `build_site()` pipeline in subinterpreter
         - Subinterpreter writes directly to filesystem (no result passing)
         - Add logging for build start/completion in subinterpreter
-    - [ ] 2.3 Implement interpreter discard and replacement
+    - [x] 2.3 Implement interpreter discard and replacement
         - After each build completes, discard used interpreter
         - Pull fresh interpreter from pool
         - Immediately warm up replacement interpreter to maintain pool size of 2
         - Handle pool exhaustion gracefully
-    - [ ] 2.4 Add error handling for subinterpreter builds
+    - [x] 2.4 Add error handling for subinterpreter builds
         - Catch exceptions from subinterpreter execution
         - Log errors without crashing watcher or pool
         - Continue pool operation even if build fails
         - Don't propagate build errors to browser (log only)
-    - [ ] 2.5 Ensure build execution tests pass
+    - [x] 2.5 Ensure build execution tests pass
         - Run ONLY the 2-8 tests written in 2.1
         - Verify builds complete successfully in subinterpreters
         - Verify module isolation works (modules reimported fresh)
