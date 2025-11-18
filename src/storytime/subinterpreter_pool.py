@@ -53,6 +53,46 @@ def warmup_interpreter() -> bool:
         return False
 
 
+def _clear_user_modules(package_location: str) -> None:
+    """Clear user package modules from sys.modules.
+
+    This function removes all modules belonging to the user's package
+    from sys.modules, ensuring fresh imports on the next build.
+
+    Args:
+        package_location: Package location string (e.g., "examples.basic")
+
+    Note:
+        This function must be called from within a subinterpreter.
+        It preserves core modules (storytime, tdom) while clearing user modules.
+    """
+    import logging
+    import sys
+
+    logger = logging.getLogger(__name__)
+
+    # Extract the top-level package name from package_location
+    # e.g., "examples.basic" -> "examples"
+    package_prefix = package_location.split(".")[0]
+
+    # Find all modules that belong to the user's package
+    modules_to_clear = [
+        module_name
+        for module_name in list(sys.modules.keys())
+        if module_name.startswith(package_prefix + ".")
+        or module_name == package_prefix
+    ]
+
+    # Clear the modules
+    for module_name in modules_to_clear:
+        del sys.modules[module_name]
+
+    if modules_to_clear:
+        logger.info(f"Cleared {len(modules_to_clear)} user modules from sys.modules: {package_prefix}.*")
+    else:
+        logger.info(f"No cached modules found for {package_prefix}.*")
+
+
 def _build_site_in_interpreter(
     package_location: str,
     output_dir_str: str,
@@ -71,10 +111,12 @@ def _build_site_in_interpreter(
 
     Note:
         This function runs inside a subinterpreter and writes directly to disk.
-        Logging from within the subinterpreter will use the subinterpreter's
-        logging configuration.
+        User package modules are cleared from sys.modules BEFORE the build to ensure
+        fresh imports, since the pool reuses interpreters and a different interpreter
+        might be used for each build.
     """
     import logging
+    import os
     import sys
     from pathlib import Path
 
@@ -83,6 +125,14 @@ def _build_site_in_interpreter(
     sys.path.extend(sys_path)
 
     logger = logging.getLogger(__name__)
+
+    # Log which interpreter we're in (for debugging)
+    logger.info(f"Running in subinterpreter (PID: {os.getpid()})")
+
+    # IMPORTANT: Clear user modules BEFORE building
+    # This ensures fresh imports even if this interpreter was previously used
+    # Since the pool has multiple interpreters, we can't rely on clearing after build
+    _clear_user_modules(package_location)
 
     try:
         # Import build_site fresh in this subinterpreter
@@ -112,9 +162,8 @@ def build_in_subinterpreter(
 
     This function:
     1. Submits the build task to the interpreter pool
-    2. Waits for completion
-    3. Discards the used interpreter (implicit via pool behavior)
-    4. Warms up a replacement interpreter to maintain pool size
+    2. The subinterpreter clears user modules before building (fresh imports)
+    3. Waits for completion
 
     Args:
         pool: The InterpreterPoolExecutor to use
@@ -125,8 +174,10 @@ def build_in_subinterpreter(
         Exception: If build fails in the subinterpreter
 
     Note:
-        After each build, the used interpreter is discarded (implicit pool behavior)
-        and a fresh interpreter is warmed up to maintain pool size of 2.
+        User package modules are cleared from sys.modules BEFORE each build
+        to ensure fresh imports. This handles the case where different interpreters
+        from the pool are used for consecutive builds. Core modules (storytime, tdom)
+        remain cached for performance across builds in the same interpreter.
     """
     logger.info(f"Submitting build to subinterpreter pool: {package_location} -> {output_dir}")
 
@@ -145,16 +196,6 @@ def build_in_subinterpreter(
         future.result(timeout=60.0)  # 60 second timeout for build
 
         logger.info("Build in subinterpreter completed successfully")
-
-        # After build completes, warm up a replacement interpreter
-        # This maintains pool size of 2 (one just used, one warming up)
-        logger.info("Warming up replacement interpreter")
-        warmup_future = pool.submit(warmup_interpreter)
-        try:
-            warmup_future.result(timeout=10.0)
-            logger.info("Replacement interpreter warmed up successfully")
-        except Exception as e:
-            logger.error(f"Failed to warm up replacement interpreter: {e}")
 
     except Exception as e:
         logger.error(f"Build in subinterpreter failed: {e}", exc_info=True)
@@ -209,10 +250,11 @@ def create_pool() -> InterpreterPoolExecutor:
     """Create a pool of subinterpreters for running builds.
 
     Creates an InterpreterPoolExecutor with a pool size of 2 interpreters.
-    Both interpreters are immediately warmed up by importing common modules.
+    The interpreters start clean with no pre-imported modules to ensure
+    complete module isolation.
 
     Returns:
-        InterpreterPoolExecutor: The created pool with 2 interpreters
+        InterpreterPoolExecutor: The created pool with 2 clean interpreters
 
     Note:
         The pool should be shut down using shutdown_pool() when no longer needed.
@@ -222,19 +264,10 @@ def create_pool() -> InterpreterPoolExecutor:
     logger.info(f"Creating interpreter pool with size={pool_size}")
 
     # Create the pool with exactly 2 interpreters
+    # No warmup - start with completely clean interpreters for guaranteed fresh imports
     pool = InterpreterPoolExecutor(max_workers=pool_size)
 
-    # Warm up both interpreters immediately
-    futures = [pool.submit(warmup_interpreter) for _ in range(pool_size)]
-
-    # Wait for warm-up to complete
-    for future in futures:
-        try:
-            future.result(timeout=10.0)
-        except Exception as e:
-            logger.error(f"Interpreter warm-up failed: {e}")
-
-    logger.info(f"Interpreter pool created with {pool_size} interpreters")
+    logger.info(f"Interpreter pool created with {pool_size} clean interpreters")
 
     return pool
 

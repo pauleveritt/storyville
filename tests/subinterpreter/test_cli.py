@@ -16,7 +16,7 @@ def runner() -> CliRunner:
 
 
 def test_serve_command_without_flag(runner: CliRunner, tmp_path: Path) -> None:
-    """Test serve command without --use-subinterpreters flag (default behavior)."""
+    """Test serve command without flag (default: subinterpreters enabled)."""
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
@@ -37,14 +37,14 @@ def test_serve_command_without_flag(runner: CliRunner, tmp_path: Path) -> None:
         # Should succeed
         assert result.exit_code == 0
 
-        # create_app should be called with use_subinterpreters=False (default)
+        # create_app should be called with use_subinterpreters=True (new default)
         mock_create_app.assert_called_once()
         call_kwargs = mock_create_app.call_args.kwargs
-        assert call_kwargs.get("use_subinterpreters", False) is False
+        assert call_kwargs.get("use_subinterpreters") is True
 
 
 def test_serve_command_with_flag_enabled(runner: CliRunner, tmp_path: Path) -> None:
-    """Test serve command with --use-subinterpreters flag."""
+    """Test serve command with explicit --use-subinterpreters flag."""
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
@@ -69,6 +69,34 @@ def test_serve_command_with_flag_enabled(runner: CliRunner, tmp_path: Path) -> N
         mock_create_app.assert_called_once()
         call_kwargs = mock_create_app.call_args.kwargs
         assert call_kwargs.get("use_subinterpreters") is True
+
+
+def test_serve_command_with_flag_disabled(runner: CliRunner, tmp_path: Path) -> None:
+    """Test serve command with --no-use-subinterpreters flag to disable."""
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
+
+    # Mock uvicorn.run and build_site to avoid actually starting server
+    with (
+        patch("storytime.__main__.uvicorn.run"),
+        patch("storytime.__main__.build_site"),
+        patch("storytime.__main__.create_app") as mock_create_app,
+    ):
+        mock_create_app.return_value = MagicMock()
+
+        # Run serve command with --no-use-subinterpreters flag
+        result = runner.invoke(
+            cli_app,
+            ["serve", "--no-use-subinterpreters", "examples.minimal", str(output_dir)],
+        )
+
+        # Should succeed
+        assert result.exit_code == 0
+
+        # create_app should be called with use_subinterpreters=False
+        mock_create_app.assert_called_once()
+        call_kwargs = mock_create_app.call_args.kwargs
+        assert call_kwargs.get("use_subinterpreters") is False
 
 
 def test_build_command_uses_direct_build(runner: CliRunner, tmp_path: Path) -> None:

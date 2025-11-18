@@ -11,6 +11,6 @@ def this_subject() -> Subject:
         description="A Heading component that says hello to a name",
         target=Heading,
         items=[
-            Story(props=dict(name="World")),
+            Story(props=dict(name="88World")),
         ],
     )

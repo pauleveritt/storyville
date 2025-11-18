@@ -49,11 +49,15 @@ class Layout:
         # Use cached navigation if available, otherwise render fresh
         if self.cached_navigation is not None:
             from markupsafe import Markup
+
             navigation_html = Markup(self.cached_navigation)
         else:
-            navigation_html = NavigationTree(sections=self.site.items, current_path=self.current_path)()
+            navigation_html = NavigationTree(
+                sections=self.site.items, current_path=self.current_path
+            )()
 
         return html(t'''\
+<!DOCTYPE html>
 <html lang="EN">
 <head>
     <meta charset="utf-8" />

@@ -9,7 +9,7 @@ from storytime.subinterpreter_pool import create_pool, shutdown_pool
 
 
 def test_create_app_with_subinterpreters_disabled(tmp_path: Path) -> None:
-    """Test create_app() with use_subinterpreters=False (default)."""
+    """Test create_app() with use_subinterpreters=False (explicit disable)."""
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 

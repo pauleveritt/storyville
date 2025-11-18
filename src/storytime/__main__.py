@@ -24,14 +24,13 @@ def serve(
         help="Output directory for the built site (default: temporary directory)",
     ),
     use_subinterpreters: bool = typer.Option(
-        False,
-        "--use-subinterpreters",
+        True,
+        "--use-subinterpreters/--no-use-subinterpreters",
         help=(
             "Enable subinterpreters for hot reload builds. "
             "When enabled, each rebuild runs in a fresh isolated subinterpreter, "
             "allowing module changes (e.g., to stories.py) to take effect immediately. "
-            "Useful for development but adds slight overhead. "
-            "Default: False (direct builds for backward compatibility)."
+            "Default: True (use subinterpreters for proper hot reload)."
         ),
     ),
 ) -> None:
