@@ -26,6 +26,7 @@ class SiteView:
     """
 
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the site to a tdom Node.
@@ -72,7 +73,7 @@ class SiteView:
 
         # Create the main content for this view
         view_content = html(t"""\
-<{Layout} view_title="Home" site={self.site} depth={0}>
+<{Layout} view_title="Home" site={self.site} depth={0} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.site.title}</h1>
 {content}

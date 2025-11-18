@@ -26,6 +26,7 @@ class SectionView:
 
     section: Section
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the section to a tdom Node.
@@ -55,7 +56,7 @@ class SectionView:
 
         # Create the main content for this view wrapped with Layout (depth=0 for section pages at root level)
         view_content = html(t"""\
-<{Layout} view_title={self.section.title} site={self.site} depth={0}>
+<{Layout} view_title={self.section.title} site={self.site} depth={0} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.section.title}</h1>
 {description_p}

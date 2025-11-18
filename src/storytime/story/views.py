@@ -23,6 +23,7 @@ class StoryView:
 
     story: Story
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the story to a tdom Node.
@@ -36,7 +37,7 @@ class StoryView:
 
         # Mode B: Default layout rendering wrapped with Layout (depth=2 for story pages)
         return html(t"""\
-<{Layout} view_title={self.story.title} site={self.site} depth={2}>
+<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>
 <p>Props: <code>{str(self.story.props)}</code></p>

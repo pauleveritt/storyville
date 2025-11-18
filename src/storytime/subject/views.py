@@ -26,6 +26,7 @@ class SubjectView:
 
     subject: Subject
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the subject to a tdom Node.
@@ -42,7 +43,7 @@ class SubjectView:
         if not self.subject.items:
             # Empty state - wrapped with Layout (depth=1 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={1}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>
@@ -60,7 +61,7 @@ class SubjectView:
 
             # Create the main content wrapped with Layout (depth=1 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={1}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 <p>Target: {target_name}</p>

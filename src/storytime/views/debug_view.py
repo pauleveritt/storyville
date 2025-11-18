@@ -22,6 +22,7 @@ class DebugView:
     """
 
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the debug page to a tdom Node.
@@ -45,6 +46,6 @@ class DebugView:
 
         # Wrap content in Layout with Debug title
         return html(t"""\
-<{Layout} view_title="Debug" site={self.site} depth={0}>
+<{Layout} view_title="Debug" site={self.site} depth={0} cached_navigation={self.cached_navigation}>
 {content}
 </{Layout}>""")

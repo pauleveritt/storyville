@@ -22,6 +22,7 @@ class Layout:
     children: Element | Fragment | Node | None
     depth: int = 0
     current_path: str | None = None
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the layout to a tdom Node.
@@ -44,6 +45,13 @@ class Layout:
         pico_docs_path = f"{static_prefix}static/pico-docs.css"
         storytime_css_path = f"{static_prefix}static/storytime.css"
         ws_script_path = f"{static_prefix}static/ws.js"
+
+        # Use cached navigation if available, otherwise render fresh
+        if self.cached_navigation is not None:
+            from markupsafe import Markup
+            navigation_html = Markup(self.cached_navigation)
+        else:
+            navigation_html = NavigationTree(sections=self.site.items, current_path=self.current_path)()
 
         return html(t'''\
 <html lang="EN">
@@ -74,7 +82,7 @@ class Layout:
 <div class="grid">
   <aside>
     <strong>Sections</strong>
-    <{NavigationTree} sections={self.site.items} current_path={self.current_path} />
+    {navigation_html}
   </aside>
   <main>
     <{Breadcrumbs} current_path={self.current_path} />

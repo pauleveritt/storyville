@@ -22,6 +22,7 @@ class AboutView:
     """
 
     site: Site
+    cached_navigation: str | None = None
 
     def __call__(self) -> Node:
         """Render the about page to a tdom Node.
@@ -46,6 +47,6 @@ class AboutView:
 
         # Wrap content in Layout with About title
         return html(t"""\
-<{Layout} view_title="About" site={self.site} depth={0}>
+<{Layout} view_title="About" site={self.site} depth={0} cached_navigation={self.cached_navigation}>
 {content}
 </{Layout}>""")

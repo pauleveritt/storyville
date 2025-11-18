@@ -5,8 +5,6 @@ from pathlib import Path
 from shutil import copytree, rmtree
 from time import perf_counter
 
-from tdom import Node
-
 from storytime.section.views import SectionView
 from storytime.site.views import SiteView
 from storytime.stories import make_site
@@ -18,15 +16,15 @@ from storytime.views.debug_view import DebugView
 logger = logging.getLogger(__name__)
 
 
-def _write_html(content: Node, path: Path) -> None:
+def _write_html(content: str, path: Path) -> None:
     """Write rendered HTML content to file.
 
     Args:
-        content: The rendered HTML node to write
+        content: The rendered HTML string to write
         path: The file path to write to (parent dirs created automatically)
     """
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(str(content))
+    path.write_text(content)
 
 
 def build_site(package_location: str, output_dir: Path) -> None:
@@ -69,14 +67,18 @@ def build_site(package_location: str, output_dir: Path) -> None:
     # Phase 2: Rendering - Process views and generate HTML
     start_rendering = perf_counter()
 
-    # Render the site index page (root)
-    site_view = SiteView(site=site)()
+    # Generate cached navigation tree once (without current_path highlighting)
+    from storytime.components.navigation_tree import NavigationTree
+    cached_nav = str(NavigationTree(sections=site.items, current_path=None)())
 
-    # Render the About page
-    about_view = AboutView(site=site)()
+    # Render the site index page (root) and convert to string
+    site_view = str(SiteView(site=site, cached_navigation=cached_nav)())
 
-    # Render the Debug page
-    debug_view = DebugView(site=site)()
+    # Render the About page and convert to string
+    about_view = str(AboutView(site=site, cached_navigation=cached_nav)())
+
+    # Render the Debug page and convert to string
+    debug_view = str(DebugView(site=site, cached_navigation=cached_nav)())
 
     # Walk the tree and render each section and subject
     rendered_sections = []
@@ -84,20 +86,20 @@ def build_site(package_location: str, output_dir: Path) -> None:
     rendered_stories = []
 
     for section_key, section in site.items.items():
-        # Render section index page
-        section_view = SectionView(section=section, site=site)()
+        # Render section index page and convert to string
+        section_view = str(SectionView(section=section, site=site, cached_navigation=cached_nav)())
         rendered_sections.append((section_key, section_view))
 
         # Walk subjects in this section
         for subject_key, subject in section.items.items():
-            # Render subject index page
-            subject_view = SubjectView(subject=subject, site=site)()
+            # Render subject index page and convert to string
+            subject_view = str(SubjectView(subject=subject, site=site, cached_navigation=cached_nav)())
             rendered_subjects.append((section_key, subject_key, subject_view))
 
             # Walk stories in this subject
             for story_idx, story in enumerate(subject.items):
-                # Render story index page
-                story_view = StoryView(story=story, site=site)()
+                # Render story index page and convert to string
+                story_view = str(StoryView(story=story, site=site, cached_navigation=cached_nav)())
                 rendered_stories.append((section_key, subject_key, story_idx, story_view))
 
     end_rendering = perf_counter()
