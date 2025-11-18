@@ -37,7 +37,7 @@
             ws = new WebSocket(url);
 
             ws.onopen = function () {
-                console.debug('[Storytime] WebSocket connected');
+                console.log('[Storytime] WebSocket connected');
                 // Reset reconnect attempt counter on successful connection
                 reconnectAttempt = 0;
                 if (reconnectTimeout) {
@@ -47,12 +47,12 @@
             };
 
             ws.onmessage = function (event) {
-                console.debug('[Storytime] WebSocket message received:', event.data);
+                console.log('[Storytime] WebSocket message received:', event.data);
                 try {
                     const message = JSON.parse(event.data);
-                    console.debug('[Storytime] Parsed message:', message);
+                    console.log('[Storytime] Parsed message:', message);
                     if (message.type === 'reload') {
-                        console.debug('[Storytime] Reload message received, scheduling reload...');
+                        console.log('[Storytime] Reload message received, scheduling reload...');
                         scheduleReload();
                     }
                 } catch (e) {

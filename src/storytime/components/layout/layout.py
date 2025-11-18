@@ -45,6 +45,7 @@ class Layout:
         pico_docs_path = f"{static_prefix}static/pico-docs.css"
         storytime_css_path = f"{static_prefix}static/storytime.css"
         ws_script_path = f"{static_prefix}static/ws.js"
+        favicon_path = f"{static_prefix}static/favicon.svg"
 
         # Use cached navigation if available, otherwise render fresh
         if self.cached_navigation is not None:
@@ -63,6 +64,7 @@ class Layout:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title_text}</title>
+    <link rel="icon" type="image/svg+xml" href="{favicon_path}" />
     <link rel="stylesheet" href="{stylesheet_path}" />
     <link rel="stylesheet" href="{pico_docs_path}" />
     <link rel="stylesheet" href="{storytime_css_path}" />
