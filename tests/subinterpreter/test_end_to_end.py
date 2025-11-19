@@ -4,10 +4,13 @@ import asyncio
 from pathlib import Path
 from unittest.mock import AsyncMock
 
+import pytest
+
 from storytime.subinterpreter_pool import create_pool, shutdown_pool
 from storytime.watchers import watch_and_rebuild
 
 
+@pytest.mark.slow
 async def test_end_to_end_watcher_rebuild_flow(tmp_path: Path) -> None:
     """End-to-end test: watcher detects change -> rebuild in subinterpreter -> broadcast.
 

@@ -156,7 +156,7 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
             except asyncio.CancelledError:
                 pass
 
-        mock_watcher.return_value = mock_watcher_fn()
+        mock_watcher.side_effect = mock_watcher_fn
 
         app = create_app(
             path=tmp_path,
@@ -176,6 +176,8 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
 
 def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
     """Test that unified watcher receives correct paths and callbacks."""
+    from functools import partial
+
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     with patch("storytime.app.watch_and_rebuild") as mock_watcher, \
@@ -190,7 +192,7 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
             except asyncio.CancelledError:
                 pass
 
-        mock_watcher.return_value = mock_watcher_fn()
+        mock_watcher.side_effect = mock_watcher_fn
 
         app = create_app(
             path=tmp_path,
@@ -207,7 +209,13 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
         call_kwargs = mock_watcher.call_args[1]
         assert call_kwargs["package_location"] == "examples.minimal"
         assert call_kwargs["output_dir"] == tmp_path
-        assert call_kwargs["rebuild_callback"] == mock_build
+
+        # rebuild_callback is now a partial wrapping build_site with with_assertions bound
+        rebuild_callback = call_kwargs["rebuild_callback"]
+        assert isinstance(rebuild_callback, partial)
+        assert rebuild_callback.func == mock_build
+        assert rebuild_callback.keywords == {"with_assertions": True}
+
         assert call_kwargs["broadcast_callback"] == mock_broadcast
 
 

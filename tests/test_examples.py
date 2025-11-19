@@ -1,10 +1,12 @@
 """Integrate example testing into the main suite."""
 
 
+from pathlib import Path
+from typing import cast
+
+import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import Element, Fragment, Node
-from typing import cast
-from pathlib import Path
 
 from storytime import make_site
 from storytime.build import build_site
@@ -615,6 +617,7 @@ def test_all_examples_structural_integrity() -> None:
 # Task Group 1: Tests for examples.huge Site structure
 
 
+@pytest.mark.slow
 def test_huge_example_site_loads() -> None:
     """Test huge example Site loads successfully with title."""
     site = make_site("examples.huge")
@@ -623,6 +626,7 @@ def test_huge_example_site_loads() -> None:
     assert site.title == "Huge Scale Example"
 
 
+@pytest.mark.slow
 def test_huge_example_has_ten_sections() -> None:
     """Test huge example has 10 sections."""
     site = make_site("examples.huge")
@@ -631,6 +635,7 @@ def test_huge_example_has_ten_sections() -> None:
     assert len(site.items) == 10
 
 
+@pytest.mark.slow
 def test_huge_example_section_names() -> None:
     """Test huge example section names match expected design system categories."""
     site = make_site("examples.huge")
@@ -685,6 +690,7 @@ def test_huge_example_section_names() -> None:
 # Task Group 2: Tests for component rendering
 
 
+@pytest.mark.slow
 def test_huge_component_renders_correctly() -> None:
     """Test huge example components render with correct structure."""
     site = make_site("examples.huge")
@@ -711,6 +717,7 @@ def test_huge_component_renders_correctly() -> None:
             raise AssertionError("Expected Section for forms")
 
 
+@pytest.mark.slow
 def test_huge_component_props_applied() -> None:
     """Test huge example component props are correctly applied."""
     site = make_site("examples.huge")
@@ -744,6 +751,7 @@ def test_huge_component_props_applied() -> None:
         assert story_loading.props.get("state") == "loading"
 
 
+@pytest.mark.slow
 def test_huge_component_html_structure() -> None:
     """Test huge example components render basic HTML with class attributes."""
     site = make_site("examples.huge")
@@ -770,6 +778,7 @@ def test_huge_component_html_structure() -> None:
         assert "class" in rendered.attrs
 
 
+@pytest.mark.slow
 def test_huge_all_sections_have_ten_subjects() -> None:
     """Test all sections in huge example have 10 subjects."""
     site = make_site("examples.huge")
@@ -794,6 +803,7 @@ def test_huge_all_sections_have_ten_subjects() -> None:
 # Task Group 4: Performance Testing and Integration
 
 
+@pytest.mark.slow
 def test_huge_example(tmp_path: Path) -> None:
     """Smoke test for examples.huge - verify structure loads correctly."""
     site = make_site("examples.huge")
@@ -817,6 +827,7 @@ def test_huge_example(tmp_path: Path) -> None:
             raise AssertionError("Expected Section for forms")
 
 
+@pytest.mark.slow
 def test_huge_build_smoke(tmp_path: Path) -> None:
     """Build smoke test for examples.huge - verify build completes."""
     # Build site to tmp_path
@@ -856,6 +867,7 @@ def test_huge_build_smoke(tmp_path: Path) -> None:
     assert (story_dirs[0] / "index.html").exists()
 
 
+@pytest.mark.slow
 def test_huge_build_performance(benchmark, tmp_path: Path) -> None:
     """Performance benchmark test for examples.huge build."""
     # Measure total build time using pytest-benchmark

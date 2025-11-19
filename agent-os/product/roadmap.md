@@ -12,7 +12,7 @@
 4. [x] Hot Reload Development Server — Add automatic file watching and browser refresh when component or story files
    change, providing instant visual feedback during development. `M`
 
-5. [ ] Story-to-Test Integration — Create pytest helpers and fixtures that allow stories to be used directly in tests,
+5. [x] Story-to-Test Integration — Create pytest helpers and fixtures that allow stories to be used directly in tests,
    enabling render verification, snapshot testing, and behavioral assertions. `M`
 
 6. [x] Component Organization System — Finalize the hierarchical structure (Site → Section → Subject → Story) with

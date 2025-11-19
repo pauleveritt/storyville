@@ -13,6 +13,7 @@ from storytime.subinterpreter_pool import (
 )
 
 
+@pytest.mark.slow
 def test_concurrent_builds_handling(tmp_path: Path) -> None:
     """Test that multiple concurrent builds are handled correctly by the pool.
 
@@ -54,6 +55,7 @@ def test_concurrent_builds_handling(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 async def test_rapid_rebuilds_with_debouncing(tmp_path: Path) -> None:
     """Test rapid rebuild requests are handled gracefully.
 
@@ -80,6 +82,7 @@ async def test_rapid_rebuilds_with_debouncing(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 def test_build_timeout_handling(tmp_path: Path) -> None:
     """Test that build timeout is enforced and handled gracefully.
 
@@ -121,6 +124,7 @@ def test_build_timeout_handling(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 def test_pool_recovery_after_multiple_failures(tmp_path: Path) -> None:
     """Test that pool remains functional after multiple build failures.
 
@@ -156,6 +160,7 @@ def test_pool_recovery_after_multiple_failures(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 def test_filesystem_error_handling(tmp_path: Path) -> None:
     """Test handling of filesystem errors during build.
 
@@ -200,6 +205,7 @@ def test_filesystem_error_handling(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 async def test_module_state_isolation_between_builds(tmp_path: Path) -> None:
     """Test that global module state doesn't leak between builds.
 
@@ -233,6 +239,7 @@ async def test_module_state_isolation_between_builds(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 def test_error_recovery_full_cycle(tmp_path: Path) -> None:
     """Test full error -> recovery -> success cycle.
 
@@ -274,6 +281,7 @@ def test_error_recovery_full_cycle(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 async def test_async_callback_error_propagation(tmp_path: Path) -> None:
     """Test that errors in async callback are properly propagated.
 
@@ -303,6 +311,7 @@ async def test_async_callback_error_propagation(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 def test_pool_cleanup_on_shutdown_with_pending_work(tmp_path: Path) -> None:
     """Test that pool shutdown handles pending work gracefully.
 

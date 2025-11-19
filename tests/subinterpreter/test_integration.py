@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+import pytest
 from starlette.testclient import TestClient
 
 from storytime.app import create_app
@@ -48,6 +49,7 @@ def test_create_app_with_subinterpreters_enabled(tmp_path: Path) -> None:
     assert app is not None
 
 
+@pytest.mark.slow
 async def test_lifespan_creates_pool_when_enabled(tmp_path: Path) -> None:
     """Test that lifespan creates pool on startup when use_subinterpreters=True."""
     output_dir = tmp_path / "output"
@@ -95,6 +97,7 @@ async def test_lifespan_skips_pool_when_disabled(tmp_path: Path) -> None:
         assert not hasattr(app.state, "pool")
 
 
+@pytest.mark.slow
 async def test_async_callback_for_subinterpreter_builds(tmp_path: Path) -> None:
     """Test that async callback for subinterpreter builds works correctly."""
     from storytime.subinterpreter_pool import rebuild_callback_subinterpreter
@@ -118,6 +121,7 @@ async def test_async_callback_for_subinterpreter_builds(tmp_path: Path) -> None:
         shutdown_pool(pool)
 
 
+@pytest.mark.slow
 async def test_watcher_with_subinterpreter_callback(tmp_path: Path) -> None:
     """Test that watcher integration works with subinterpreter callback."""
     from storytime.subinterpreter_pool import rebuild_callback_subinterpreter

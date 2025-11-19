@@ -17,8 +17,11 @@ dependencies = [
     "watchfiles>=1.1.1",
 ]
 
+[project.entry-points.pytest11]
+storytime = "storytime.pytest_plugin"
+
 [tool.pytest.ini_options]
-testpaths = ["src", "tests"]
+testpaths = ["src", "tests", "examples/complete"]
 python_files = ["*_test.py", "test_*.py"]
 addopts = "-p no:doctest -m \"not playwright\""
 anyio_mode = "auto"
@@ -26,6 +29,9 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "playwright: marks tests that use playwright (conflicts with anyio tests)",
 ]
+
+[tool.storytime.pytest]
+enabled = true
 
 [tool.anyio]
 backends = ["asyncio"]
