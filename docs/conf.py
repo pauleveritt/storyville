@@ -1,16 +1,40 @@
-"""Sphinx configuration."""
+# Configuration file for the Sphinx documentation builder.
 
-from datetime import datetime
+# -- Project information
+project = 'Storytime'
+copyright = '2025, Paul Everitt'
+author = 'Paul Everitt'
+release = '0.1.0'
 
-
-project = "Storytime"
-author = "Paul Everitt"
-copyright = f"{datetime.now().year}, {author}"
+# -- General configuration
 extensions = [
-    "myst_parser",
+    'myst_parser',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.intersphinx',
 ]
-html_theme = "furo"
+
+templates_path = ['_templates']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+# -- Options for HTML output
+html_theme = 'sphinx_rtd_theme'
+html_static_path = ['_static']
+
+# -- MyST configuration
 myst_enable_extensions = [
-    "colon_fence",
+    'colon_fence',
+    'deflist',
+    'fieldlist',
 ]
-myst_url_schemes = ["http", "https", "mailto"]
+
+# -- Intersphinx configuration
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'pytest': ('https://docs.pytest.org/en/stable/', None),
+}
+
+# -- Autodoc configuration
+autodoc_typehints = 'description'
+autodoc_member_order = 'bysource'
