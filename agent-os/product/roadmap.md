@@ -21,8 +21,9 @@
 7. [x] CLI and Development Workflow — Build the command-line interface for starting the development server, running
    builds, and managing the Storytime development experience. `S`
 
-8. [ ] Theme and Customization System — Implement theming support for the component browser interface, allowing teams to
-   customize the catalog appearance and branding. `M`
+8. [ ] Themed Stories — Show a rendering of the story as a full HTML file, shown in an
+   `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
+   defined on the `Site`. `M`
 
 9. [ ] Component Props Documentation — Add automatic documentation generation from type hints and docstrings, displaying
    component APIs directly in the browser. `M`
