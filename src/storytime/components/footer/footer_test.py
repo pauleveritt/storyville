@@ -52,4 +52,5 @@ def test_layout_footer_has_centered_paragraph() -> None:
     para = get_by_tag_name(element, "p")
     assert para is not None
     # The original layout uses inline style for center alignment
-    assert "text-align: center" in para.attrs.get("style", "")
+    style_attr = para.attrs.get("style") or ""
+    assert "text-align: center" in style_attr

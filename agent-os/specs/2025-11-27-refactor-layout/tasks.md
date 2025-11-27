@@ -111,14 +111,14 @@ This refactoring will extract 4 components from the monolithic Layout component 
 #### Task Group 3: Implement CSS Grid with Template Areas
 **Dependencies:** Task Group 2
 
-- [ ] 3.0 Complete CSS Grid implementation
-  - [ ] 3.1 Write 2-8 focused visual/structural tests
+- [x] 3.0 Complete CSS Grid implementation
+  - [x] 3.1 Write 2-8 focused visual/structural tests
     - Test body element has CSS Grid applied (check for grid display in rendered output)
     - Test header, aside, main, footer elements exist as direct children of body
     - Test grid template areas structure is correct
     - Test responsive behavior on mobile (single column stack)
     - Skip pixel-perfect visual testing or screenshot comparison
-  - [ ] 3.2 Update storytime.css at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+  - [x] 3.2 Update storytime.css at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
     - Remove existing `body > div.grid` styles (lines 11-17)
     - Add CSS Grid to body element:
       ```css
@@ -142,7 +142,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Update aside positioning from `body > div.grid > aside` to just `aside`
     - Keep aside sticky positioning: `position: sticky; top: calc(...);`
     - Keep aside overflow: `max-height: calc(...); overflow-y: auto;`
-  - [ ] 3.3 Implement responsive mobile layout
+  - [x] 3.3 Implement responsive mobile layout
     - Update `@media (max-width: 768px)` section
     - Remove `body > div.grid` mobile styles
     - Add mobile body styles:
@@ -158,7 +158,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
       ```
     - Update aside mobile positioning from `body > div.grid > aside` to just `aside`
     - Keep aside mobile behavior: `position: static; max-height: none;`
-  - [ ] 3.4 Ensure CSS Grid tests pass
+  - [x] 3.4 Ensure CSS Grid tests pass
     - Run ONLY the 2-8 tests written in 3.1
     - Verify layout visually in browser if needed
     - Do NOT run the entire test suite at this stage

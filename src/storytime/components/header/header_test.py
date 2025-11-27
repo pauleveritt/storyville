@@ -64,7 +64,8 @@ def test_layout_header_has_container_structure() -> None:
 
     # Check for container div
     container = get_by_tag_name(element, "div")
-    assert "container" in container.attrs.get("class", "")
+    class_attr = container.attrs.get("class") or ""
+    assert "container" in class_attr
 
     # Check for hgroup
     hgroup = get_by_tag_name(element, "hgroup")

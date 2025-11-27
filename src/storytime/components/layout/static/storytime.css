@@ -1,16 +1,37 @@
 /* Storytime custom styles */
 
-/* Grid layout for main content area - matches PicoCSS docs structure */
-body > div.grid {
+/* CSS Grid layout for main content area */
+body {
     display: grid;
+    grid-template-areas:
+        "header header"
+        "aside main"
+        "footer footer";
     grid-template-columns: 11rem 1fr;
+    grid-template-rows: auto 1fr auto;
     column-gap: 3rem;
     row-gap: 2rem;
     align-items: start;
 }
 
+header {
+    grid-area: header;
+}
+
+aside {
+    grid-area: aside;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+}
+
 /* Sidebar navigation styling */
-body > div.grid > aside {
+aside {
     position: sticky;
     top: calc(var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 3rem);
     max-height: calc(100vh - (var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 4rem));
@@ -134,11 +155,16 @@ footer {
 
 /* Responsive layout for mobile */
 @media (max-width: 768px) {
-    body > div.grid {
+    body {
+        grid-template-areas:
+            "header"
+            "aside"
+            "main"
+            "footer";
         grid-template-columns: 1fr;
     }
 
-    body > div.grid > aside {
+    aside {
         position: static;
         max-height: none;
         margin-bottom: 2rem;

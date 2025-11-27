@@ -482,5 +482,115 @@ def test_layout_body_has_no_grid_wrapper() -> None:
     # Check that there is no div.grid as direct child of body
     for child in body.children:
         if isinstance(child, Element) and child.tag == "div":
-            class_attr = child.attrs.get("class", "")
+            class_attr = child.attrs.get("class") or ""
             assert "grid" not in class_attr, "Body should NOT contain div.grid wrapper"
+
+
+# CSS Grid Implementation Tests
+
+
+def test_layout_body_contains_four_direct_child_elements() -> None:
+    """Test Layout body has exactly four direct child elements: header, aside, main, footer."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Collect all direct child elements
+    direct_children = [child for child in body.children if isinstance(child, Element)]
+
+    # Should have exactly 4 direct child elements
+    assert len(direct_children) == 4, f"Body should have 4 direct child elements, got {len(direct_children)}"
+
+    # Verify the tags are correct
+    child_tags = [child.tag for child in direct_children]
+    assert child_tags == ["header", "aside", "main", "footer"], \
+        f"Body children should be [header, aside, main, footer], got {child_tags}"
+
+
+def test_layout_header_is_first_child_of_body() -> None:
+    """Test Layout header element is the first direct child of body."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=None)
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Get first element child
+    first_element = None
+    for child in body.children:
+        if isinstance(child, Element):
+            first_element = child
+            break
+
+    assert first_element is not None, "Body should have at least one element child"
+    assert first_element.tag == "header", f"First child of body should be header, got {first_element.tag}"
+
+
+def test_layout_footer_is_last_child_of_body() -> None:
+    """Test Layout footer element is the last direct child of body."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=None)
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Get all element children
+    element_children = [child for child in body.children if isinstance(child, Element)]
+
+    assert len(element_children) > 0, "Body should have element children"
+    last_element = element_children[-1]
+    assert last_element.tag == "footer", f"Last child of body should be footer, got {last_element.tag}"
+
+
+def test_layout_aside_and_main_are_middle_children() -> None:
+    """Test Layout aside and main elements are positioned between header and footer."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Get all element children in order
+    element_children = [child for child in body.children if isinstance(child, Element)]
+    child_tags = [child.tag for child in element_children]
+
+    # Verify order: header, aside, main, footer
+    assert len(child_tags) == 4, f"Should have 4 children, got {len(child_tags)}"
+    assert child_tags[0] == "header", "First child should be header"
+    assert child_tags[1] == "aside", "Second child should be aside"
+    assert child_tags[2] == "main", "Third child should be main"
+    assert child_tags[3] == "footer", "Fourth child should be footer"
+
+
+def test_layout_aside_appears_before_main() -> None:
+    """Test Layout aside element appears before main element in DOM order."""
+    site = Site(title="Test Site")
+    section = Section(title="Test Section")
+    site.items = {"test": section}
+
+    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Find aside and main elements
+    aside_index = None
+    main_index = None
+
+    for i, child in enumerate(body.children):
+        if isinstance(child, Element):
+            if child.tag == "aside":
+                aside_index = i
+            elif child.tag == "main":
+                main_index = i
+
+    assert aside_index is not None, "Body should contain aside element"
+    assert main_index is not None, "Body should contain main element"
+    assert aside_index < main_index, "Aside should appear before main in DOM order"
