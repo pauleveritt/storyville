@@ -4,8 +4,10 @@ from dataclasses import dataclass
 
 from tdom import Element, Fragment, Node, html
 
-from storytime.components.breadcrumbs import Breadcrumbs
-from storytime.components.navigation_tree import NavigationTree
+from storytime.components.aside.aside import LayoutAside
+from storytime.components.footer.footer import LayoutFooter
+from storytime.components.header.header import LayoutHeader
+from storytime.components.main.main import LayoutMain
 from storytime.site.models import Site
 
 
@@ -47,16 +49,6 @@ class Layout:
         ws_script_path = f"{static_prefix}static/ws.js"
         favicon_path = f"{static_prefix}static/favicon.svg"
 
-        # Use cached navigation if available, otherwise render fresh
-        if self.cached_navigation is not None:
-            from markupsafe import Markup
-
-            navigation_html = Markup(self.cached_navigation)
-        else:
-            navigation_html = NavigationTree(
-                sections=self.site.items, current_path=self.current_path
-            )()
-
         return html(t'''\
 <!DOCTYPE html>
 <html lang="EN">
@@ -71,33 +63,10 @@ class Layout:
     <script src="{ws_script_path}"></script>
 </head>
 <body>
-<header>
-  <div class="container">
-    <hgroup>
-      <p><strong>Storytime</strong></p>
-    </hgroup>
-    <nav>
-      <ul>
-        <li><a href="/" class="contrast">Home</a></li>
-        <li><a href="/about" class="contrast">About</a></li>
-        <li><a href="/debug" class="contrast">Debug</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-<div class="grid">
-  <aside>
-    <strong>Sections</strong>
-    {navigation_html}
-  </aside>
-  <main>
-    <{Breadcrumbs} current_path={self.current_path} />
-    {self.children}
-  </main>
-</div>
-<footer>
-  <p style="text-align: center;">2025 Storytime</p>
-</footer>
+<{LayoutHeader} site_title={self.site.title} depth={self.depth} />
+<{LayoutAside} sections={self.site.items} current_path={self.current_path} cached_navigation={self.cached_navigation} />
+<{LayoutMain} current_path={self.current_path}>{self.children}</{LayoutMain}>
+<{LayoutFooter} year={2025} text={"Storytime"} />
 </body>
 </html>
 ''')

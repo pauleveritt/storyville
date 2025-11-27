@@ -140,7 +140,7 @@ def test_layout_inserts_children_content_into_main() -> None:
 
 
 def test_layout_includes_navigation_bar() -> None:
-    """Test Layout includes navigation bar with site branding."""
+    """Test Layout includes navigation bar with site title."""
     site = Site(title="My Site")
     layout = Layout(view_title="Test", site=site, children=None)
     result = layout()
@@ -151,9 +151,9 @@ def test_layout_includes_navigation_bar() -> None:
     # Get header element
     header = get_by_tag_name(element, "header")
 
-    # Verify "Storytime" branding is present in header
+    # Verify site title is present in header
     header_text = get_text_content(header)
-    assert "Storytime" in header_text
+    assert "My Site" in header_text
 
 
 def test_layout_includes_sidebar_with_sections() -> None:
@@ -379,44 +379,26 @@ def test_layout_footer_contains_copyright() -> None:
     assert "2025 Storytime" in footer_text, f"Footer should contain copyright text, got: {footer_text}"
 
 
-def test_layout_main_grid_structure() -> None:
-    """Test Layout has div.grid containing aside and main elements."""
+def test_layout_body_structure_with_direct_children() -> None:
+    """Test Layout body contains header, aside, main, footer as direct children."""
     site = Site(title="Test Site")
     layout = Layout(view_title="Test Page", site=site, children=html(t"<p>Content</p>"))
     result = layout()
 
     element = _get_element(result)
-
-    # Find div.grid element as direct child of body
     body = get_by_tag_name(element, "body")
-    grid_divs = [
-        child
-        for child in body.children
-        if isinstance(child, Element) and child.tag == "div" and child.attrs.get("class") == "grid"
-    ]
-    assert len(grid_divs) > 0, "Body should contain div.grid element"
-    grid_div = grid_divs[0]
 
-    # Grid should contain aside as direct child
-    aside = get_by_tag_name(grid_div, "aside")
-    assert aside is not None, "Grid should contain aside element"
-
-    # Grid should contain main as direct child
-    main = get_by_tag_name(grid_div, "main")
-    assert main is not None, "Grid should contain main element"
-
-    # Verify grid contains both aside and main as direct children
-    aside_found = False
-    main_found = False
-    for child in grid_div.children:
+    # Collect direct child element tags
+    direct_child_tags = []
+    for child in body.children:
         if isinstance(child, Element):
-            if child.tag == "aside":
-                aside_found = True
-            elif child.tag == "main":
-                main_found = True
+            direct_child_tags.append(child.tag)
 
-    assert aside_found, "Grid should contain aside element"
-    assert main_found, "Grid should contain main element"
+    # Verify header, aside, main, footer are direct children
+    assert "header" in direct_child_tags, "Body should contain header as direct child"
+    assert "aside" in direct_child_tags, "Body should contain aside as direct child"
+    assert "main" in direct_child_tags, "Body should contain main as direct child"
+    assert "footer" in direct_child_tags, "Body should contain footer as direct child"
 
 
 def test_layout_accepts_current_path_parameter() -> None:
@@ -447,3 +429,77 @@ def test_layout_current_path_can_be_none() -> None:
     result = layout()
     element = _get_element(result)
     assert element is not None, "Layout should render with current_path=None"
+
+
+# Component Composition Tests
+
+
+def test_layout_renders_all_four_components() -> None:
+    """Test Layout renders header, aside, main, and footer components."""
+    site = Site(title="Test Site")
+    section = Section(title="Test Section")
+    site.items = {"test": section}
+
+    layout = Layout(
+        view_title="Test Page",
+        site=site,
+        children=html(t"<p>Content</p>"),
+        current_path="test/page",
+    )
+    result = layout()
+    element = _get_element(result)
+
+    # Verify all four components are rendered
+    body = get_by_tag_name(element, "body")
+
+    # Check for header
+    header = get_by_tag_name(body, "header")
+    assert header is not None, "Layout should render LayoutHeader component"
+
+    # Check for aside
+    aside = get_by_tag_name(body, "aside")
+    assert aside is not None, "Layout should render LayoutAside component"
+
+    # Check for main
+    main = get_by_tag_name(body, "main")
+    assert main is not None, "Layout should render LayoutMain component"
+
+    # Check for footer
+    footer = get_by_tag_name(body, "footer")
+    assert footer is not None, "Layout should render LayoutFooter component"
+
+
+def test_layout_passes_cached_navigation_to_aside() -> None:
+    """Test Layout passes cached_navigation HTML to LayoutAside."""
+    site = Site(title="Test Site")
+    cached_nav = "<nav><ul><li>Cached Navigation Item</li></ul></nav>"
+
+    layout = Layout(
+        view_title="Page",
+        site=site,
+        children=None,
+        cached_navigation=cached_nav,
+    )
+    result = layout()
+    element = _get_element(result)
+
+    # Verify cached navigation is rendered in aside
+    aside = get_by_tag_name(element, "aside")
+    aside_text = get_text_content(aside)
+    assert "Cached Navigation Item" in aside_text
+
+
+def test_layout_body_has_no_grid_wrapper() -> None:
+    """Test Layout body no longer has div.grid wrapper."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=None)
+    result = layout()
+    element = _get_element(result)
+
+    body = get_by_tag_name(element, "body")
+
+    # Check that there is no div.grid as direct child of body
+    for child in body.children:
+        if isinstance(child, Element) and child.tag == "div":
+            class_attr = child.attrs.get("class", "")
+            assert "grid" not in class_attr, "Body should NOT contain div.grid wrapper"

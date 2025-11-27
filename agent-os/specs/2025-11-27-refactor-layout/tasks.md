@@ -70,15 +70,15 @@ This refactoring will extract 4 components from the monolithic Layout component 
 #### Task Group 2: Update Layout Component to Use Extracted Components
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete Layout component refactoring
-  - [ ] 2.1 Write 2-8 focused integration tests
+- [x] 2.0 Complete Layout component refactoring
+  - [x] 2.1 Write 2-8 focused integration tests
     - Test Layout renders all four components (header, aside, main, footer)
     - Test Layout passes correct props to each component
     - Test Layout preserves existing functionality (title logic, depth calculation, cached navigation)
     - Test Layout body structure no longer has `<div class="grid">` wrapper
     - Test components are direct children of body element
     - Skip redundant testing of component internals already tested in Group 1
-  - [ ] 2.2 Update Layout component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
+  - [x] 2.2 Update Layout component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
     - Add imports: `from storytime.components.header.header import LayoutHeader`
     - Add imports: `from storytime.components.aside.aside import LayoutAside`
     - Add imports: `from storytime.components.main.main import LayoutMain`
@@ -86,15 +86,15 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Keep existing imports for Site, Element, Fragment, Node, html
     - Remove direct imports of Breadcrumbs and NavigationTree (now used by sub-components)
     - Remove `<div class="grid">` wrapper from body
-    - Replace inline header HTML with `<{LayoutHeader} site_title={self.site.title} depth={self.depth} />`
-    - Replace inline aside HTML with `<{LayoutAside} sections={self.site.items} current_path={self.current_path} cached_navigation={self.cached_navigation} />`
-    - Replace inline main HTML with `<{LayoutMain} current_path={self.current_path} children={self.children} />`
-    - Replace inline footer HTML with `<{LayoutFooter} year={2025} text={"Storytime"} />`
+    - Replace inline header HTML with instantiated LayoutHeader component
+    - Replace inline aside HTML with instantiated LayoutAside component
+    - Replace inline main HTML with instantiated LayoutMain component
+    - Replace inline footer HTML with instantiated LayoutFooter component
     - Keep head section unchanged (meta tags, title, stylesheets, script)
     - Preserve title_text concatenation logic
     - Preserve static_prefix calculation logic (used in head)
     - Remove navigation_html variable (moved to LayoutAside)
-  - [ ] 2.3 Ensure Layout integration tests pass
+  - [x] 2.3 Ensure Layout integration tests pass
     - Run ONLY the 2-8 tests written in 2.1
     - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_integration_test.py`
     - Do NOT run the entire test suite at this stage
