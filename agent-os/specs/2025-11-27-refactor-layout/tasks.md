@@ -177,41 +177,41 @@ This refactoring will extract 4 components from the monolithic Layout component 
 #### Task Group 4: Test Review and Quality Checks
 **Dependencies:** Task Groups 1-3
 
-- [ ] 4.0 Review existing tests and validate refactoring
-  - [ ] 4.1 Review tests from Task Groups 1-3
+- [x] 4.0 Review existing tests and validate refactoring
+  - [x] 4.1 Review tests from Task Groups 1-3
     - Review the 2-8 tests written for component extraction (Task 1.1)
     - Review the 2-8 tests written for Layout integration (Task 2.1)
     - Review the 2-8 tests written for CSS Grid (Task 3.1)
     - Total existing tests: approximately 6-24 tests
-  - [ ] 4.2 Run existing Layout tests to verify backward compatibility
+  - [x] 4.2 Run existing Layout tests to verify backward compatibility
     - Run all tests in `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py`
     - These tests cover the original Layout behavior and should still pass
     - Expected: All existing tests pass without modification
     - Fix any breaking changes to maintain API compatibility
-  - [ ] 4.3 Analyze test coverage gaps for this refactoring only
+  - [x] 4.3 Analyze test coverage gaps for this refactoring only
     - Identify critical workflows that lack coverage (e.g., depth calculation edge cases, cached navigation with None sections)
     - Focus ONLY on gaps related to the Layout refactoring
     - Prioritize integration workflows over unit test gaps
     - Do NOT assess entire application test coverage
-  - [ ] 4.4 Write up to 10 additional strategic tests maximum
+  - [x] 4.4 Write up to 10 additional strategic tests maximum
     - Add maximum of 10 new tests to fill identified critical gaps
     - Focus on component composition and integration points
     - Test edge cases: None children, empty sections dict, depth boundary values
     - Test cached_navigation integration with LayoutAside
     - Do NOT write comprehensive coverage for all scenarios
     - Skip visual regression tests
-  - [ ] 4.5 Run feature-specific tests only
+  - [x] 4.5 Run feature-specific tests only
     - Run all Layout component tests: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/`
     - Expected total: approximately 16-34 tests plus existing layout_test.py tests
     - Verify all tests pass
     - Do NOT run the entire application test suite yet
-  - [ ] 4.6 Run full quality checks per CLAUDE.md
+  - [x] 4.6 Run full quality checks per CLAUDE.md
     - Run full test suite: `just test`
     - Run type checking: `just typecheck`
     - Run formatting: `just fmt`
     - All checks must pass
     - Fix any issues that arise
-  - [ ] 4.7 Verify CSS file is copied to var/static/
+  - [x] 4.7 Verify CSS file is copied to var/static/
     - Check that updated storytime.css exists at `/Users/pauleveritt/projects/pauleveritt/storytime/var/static/storytime.css`
     - Ensure changes are reflected in the built output
     - Run build command if necessary to copy static assets

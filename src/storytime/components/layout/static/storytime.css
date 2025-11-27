@@ -26,6 +26,14 @@ main {
     grid-area: main;
 }
 
+/* Override PicoCSS body>main grid layout that constrains content width */
+body > main {
+    display: block !important;
+    grid-template-areas: none !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+}
+
 footer {
     grid-area: footer;
 }

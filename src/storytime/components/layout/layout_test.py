@@ -594,3 +594,206 @@ def test_layout_aside_appears_before_main() -> None:
     assert aside_index is not None, "Body should contain aside element"
     assert main_index is not None, "Body should contain main element"
     assert aside_index < main_index, "Aside should appear before main in DOM order"
+
+
+# Task Group 4: Strategic Edge Case Tests
+
+
+def test_layout_with_empty_sections_dict() -> None:
+    """Test Layout renders correctly when site has no sections (empty dict)."""
+    site = Site(title="Test Site")
+    site.items = {}  # Empty sections dict
+
+    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    result = layout()
+    element = _get_element(result)
+
+    # Should still render aside with "Sections" label
+    aside = get_by_tag_name(element, "aside")
+    assert aside is not None, "Layout should render aside even with empty sections"
+
+    # Verify "Sections" label is present
+    aside_text = get_text_content(aside)
+    assert "Sections" in aside_text
+
+
+def test_layout_depth_boundary_at_depth_3() -> None:
+    """Test Layout handles depth=3 correctly (nested story pages)."""
+    site = Site(title="Test Site")
+    layout = Layout(
+        view_title="Nested Story",
+        site=site,
+        children=html(t"<p>Deep content</p>"),
+        depth=3
+    )
+    result = layout()
+    element = _get_element(result)
+
+    # Verify script path calculation at depth=3
+    script_tags = query_all_by_tag_name(element, "script")
+    ws_script = None
+    for script in script_tags:
+        src = script.attrs.get("src")
+        if src and "ws.js" in src:
+            ws_script = script
+            break
+
+    assert ws_script is not None, "Should have ws.js script tag"
+    # At depth=3: ../../../../static/ws.js
+    assert ws_script.attrs["src"] == "../../../../static/ws.js"
+
+
+def test_layout_cached_navigation_with_empty_sections() -> None:
+    """Test Layout with cached_navigation and empty sections dict."""
+    site = Site(title="Test Site")
+    site.items = {}
+    cached_nav = "<nav><ul><li>Cached Section</li></ul></nav>"
+
+    layout = Layout(
+        view_title="Page",
+        site=site,
+        children=None,
+        cached_navigation=cached_nav,
+    )
+    result = layout()
+    element = _get_element(result)
+
+    # Verify cached navigation is used instead of generating from empty sections
+    aside = get_by_tag_name(element, "aside")
+    aside_text = get_text_content(aside)
+    assert "Cached Section" in aside_text
+    assert "Sections" in aside_text
+
+
+def test_layout_stylesheet_paths_at_depth_2() -> None:
+    """Test Layout calculates all stylesheet paths correctly at depth=2."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Subject Page", site=site, children=None, depth=2)
+    result = layout()
+    element = _get_element(result)
+
+    head = get_by_tag_name(element, "head")
+    link_tags = query_all_by_tag_name(head, "link")
+
+    # Find stylesheet links
+    stylesheet_hrefs = []
+    for link in link_tags:
+        rel = link.attrs.get("rel")
+        if rel == "stylesheet":
+            href = link.attrs.get("href")
+            if href:
+                stylesheet_hrefs.append(href)
+
+    # At depth=2, all static assets should have ../../../static/ prefix
+    assert any("../../../static/pico-main.css" in href for href in stylesheet_hrefs), \
+        "pico-main.css should have correct depth prefix"
+    assert any("../../../static/storytime.css" in href for href in stylesheet_hrefs), \
+        "storytime.css should have correct depth prefix"
+
+
+def test_layout_favicon_path_at_depth_1() -> None:
+    """Test Layout calculates favicon path correctly at depth=1."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Section Page", site=site, children=None, depth=1)
+    result = layout()
+    element = _get_element(result)
+
+    head = get_by_tag_name(element, "head")
+    link_tags = query_all_by_tag_name(head, "link")
+
+    # Find favicon link
+    favicon_link = None
+    for link in link_tags:
+        rel = link.attrs.get("rel")
+        if rel == "icon":
+            favicon_link = link
+            break
+
+    assert favicon_link is not None, "Should have favicon link"
+    # At depth=1: ../../static/favicon.svg
+    assert favicon_link.attrs["href"] == "../../static/favicon.svg"
+
+
+def test_layout_all_static_assets_use_same_depth_prefix() -> None:
+    """Test Layout ensures all static assets use consistent depth-based prefix."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Test", site=site, children=None, depth=1)
+    result = layout()
+    element = _get_element(result)
+
+    head = get_by_tag_name(element, "head")
+
+    # Collect all static asset paths
+    link_tags = query_all_by_tag_name(head, "link")
+    script_tags = query_all_by_tag_name(head, "script")
+
+    static_paths = []
+    for link in link_tags:
+        href = link.attrs.get("href")
+        if href and "static/" in href:
+            static_paths.append(href)
+
+    for script in script_tags:
+        src = script.attrs.get("src")
+        if src and "static/" in src:
+            static_paths.append(src)
+
+    # All paths should have the same depth prefix for depth=1
+    expected_prefix = "../../static/"
+    for path in static_paths:
+        assert path.startswith(expected_prefix), \
+            f"Static asset path {path} should start with {expected_prefix}"
+
+
+def test_layout_children_can_be_fragment() -> None:
+    """Test Layout handles Fragment as children (not just Element)."""
+    site = Site(title="Test Site")
+
+    # Create a Fragment with multiple elements
+    children = html(t"<div>First</div><div>Second</div>")
+
+    layout = Layout(view_title="Test", site=site, children=children)
+    result = layout()
+    element = _get_element(result)
+
+    # Verify both pieces of content are rendered in main
+    main = get_by_tag_name(element, "main")
+    main_text = get_text_content(main)
+    assert "First" in main_text
+    assert "Second" in main_text
+
+
+def test_layout_depth_affects_header_navigation_links() -> None:
+    """Test Layout passes depth to LayoutHeader for correct navigation link paths."""
+    site = Site(title="Test Site")
+    layout = Layout(view_title="Page", site=site, children=None, depth=1)
+    result = layout()
+    element = _get_element(result)
+
+    # The header should have been instantiated with depth=1
+    # This test verifies the integration between Layout and LayoutHeader
+    header = get_by_tag_name(element, "header")
+    assert header is not None
+
+    # Verify header contains navigation links (integration check)
+    links = query_all_by_tag_name(header, "a")
+    assert len(links) >= 3, "Header should contain navigation links"
+
+
+def test_layout_passes_site_items_to_aside() -> None:
+    """Test Layout passes site.items dict to LayoutAside component."""
+    site = Site(title="Test Site")
+    section1 = Section(title="Getting Started")
+    section2 = Section(title="Advanced")
+    site.items = {"getting-started": section1, "advanced": section2}
+
+    layout = Layout(view_title="Page", site=site, children=None, current_path="getting-started/intro")
+    result = layout()
+    element = _get_element(result)
+
+    # Verify aside component received sections and rendered them
+    aside = get_by_tag_name(element, "aside")
+    aside_text = get_text_content(aside)
+
+    # Should contain section titles from the navigation tree
+    assert "Getting Started" in aside_text or "getting-started" in aside_text.lower()
