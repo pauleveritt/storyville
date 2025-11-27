@@ -1,12 +1,12 @@
 # Product Roadmap
 
-1. [ ] Component Rendering System — Build the core rendering engine that takes stories and produces HTML output,
+1. [x] Component Rendering System — Build the core rendering engine that takes stories and produces HTML output,
    supporting Node, Markup, and string types with proper escaping and safety. `M`
 
-2. [ ] Story Definition API — Create the Python API for defining stories with type-safe props and variations, including
+2. [x] Story Definition API — Create the Python API for defining stories with type-safe props and variations, including
    Subject and Story classes with clean registration and discovery mechanisms. `M`
 
-3. [ ] Web-Based Component Browser — Implement the Starlette-based web interface that displays the visual catalog of all
+3. [x] Web-Based Component Browser — Implement the Starlette-based web interface that displays the visual catalog of all
    components and stories with navigation between sections, subjects, and individual stories. `L`
 
 4. [x] Hot Reload Development Server — Add automatic file watching and browser refresh when component or story files
@@ -18,7 +18,7 @@
 6. [x] Component Organization System — Finalize the hierarchical structure (Site → Section → Subject → Story) with
    automatic discovery, navigation, and clear separation of concerns. `S`
 
-7. [ ] CLI and Development Workflow — Build the command-line interface for starting the development server, running
+7. [x] CLI and Development Workflow — Build the command-line interface for starting the development server, running
    builds, and managing the Storytime development experience. `S`
 
 8. [ ] Theme and Customization System — Implement theming support for the component browser interface, allowing teams to

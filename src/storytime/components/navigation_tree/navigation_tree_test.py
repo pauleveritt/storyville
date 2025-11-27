@@ -228,3 +228,73 @@ def test_subject_open_when_current_path_matches_section_subject():
 
     # Second subject (inputs) should be closed
     assert details_list[2].attrs.get("open") is None
+
+
+def test_story_urls_use_index_html_format():
+    """Story URLs should use /story-{idx}/index.html format, not /story-{idx}.html."""
+    section = Section(name="components", title="Components")
+    subject = Subject(name="heading", title="Heading", parent=section)
+    story = Story(title="Basic Heading", parent=subject)
+
+    subject.items = [story]
+    section.items = {"heading": subject}
+    sections = {"components": section}
+
+    tree = NavigationTree(sections=sections, current_path=None)
+    result = tree()
+
+    # Get the story link
+    links = query_all_by_tag_name(result, "a")
+    assert len(links) == 1
+    link = links[0]
+
+    # Verify URL format is /section/subject/story-0/index.html
+    assert link.attrs.get("href") == "/components/heading/story-0/index.html"
+
+
+def test_multiple_stories_have_correct_url_indices():
+    """Multiple stories should have incrementing indices in their URLs."""
+    section = Section(name="components", title="Components")
+    subject = Subject(name="button", title="Button", parent=section)
+    story0 = Story(title="Primary", parent=subject)
+    story1 = Story(title="Secondary", parent=subject)
+    story2 = Story(title="Tertiary", parent=subject)
+
+    subject.items = [story0, story1, story2]
+    section.items = {"button": subject}
+    sections = {"components": section}
+
+    tree = NavigationTree(sections=sections, current_path=None)
+    result = tree()
+
+    # Get all story links
+    links = query_all_by_tag_name(result, "a")
+    assert len(links) == 3
+
+    # Verify each URL has correct index
+    assert links[0].attrs.get("href") == "/components/button/story-0/index.html"
+    assert links[1].attrs.get("href") == "/components/button/story-1/index.html"
+    assert links[2].attrs.get("href") == "/components/button/story-2/index.html"
+
+
+def test_story_urls_use_section_and_subject_names():
+    """Story URLs should incorporate section and subject names."""
+    section = Section(name="forms", title="Forms")
+    subject = Subject(name="inputs", title="Inputs", parent=section)
+    story = Story(title="Text Input", parent=subject)
+
+    subject.items = [story]
+    section.items = {"inputs": subject}
+    sections = {"forms": section}
+
+    tree = NavigationTree(sections=sections, current_path=None)
+    result = tree()
+
+    # Get the story link
+    link = get_by_tag_name(result, "a")
+
+    # Verify URL uses section and subject names
+    href = link.attrs.get("href")
+    assert href == "/forms/inputs/story-0/index.html"
+    assert "/forms/" in href
+    assert "/inputs/" in href

@@ -70,8 +70,8 @@ class NavigationTree:
                 story_links = []
                 for idx, story in enumerate(subject.items):
                     # Build URL for story
-                    # Format: /{section}/{subject}/story-{idx}.html
-                    story_url = f"/{sec_key}/{subj_key}/story-{idx}.html"
+                    # Format: /{section}/{subject}/story-{idx}/index.html
+                    story_url = f"/{sec_key}/{subj_key}/story-{idx}/index.html"
                     story_title = story.title or f"Story {idx}"
                     story_links.append(
                         html(
