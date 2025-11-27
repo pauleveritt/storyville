@@ -10,27 +10,27 @@ Refactor the Layout component to use modern CSS Grid layout with template areas 
 ## Specific Requirements
 
 **Extract LayoutHeader Component**
-- Create `layout_header.py` with a `LayoutHeader` dataclass component
+- Create `components/header/header.py` with a `LayoutHeader` dataclass component
 - Accept props: `site_title` (str), `depth` (int) for relative path calculation
 - Return header element with container, hgroup with site branding, and nav with Home/About/Debug links
 - Use relative path calculation for link hrefs based on depth
 - Match current structure from lines 74-87 of layout.py
 
 **Extract LayoutAside Component**
-- Create `layout_aside.py` with a `LayoutAside` dataclass component
+- Create `components/aside/aside.py` with a `LayoutAside` dataclass component
 - Accept props: `sections` (dict[str, Section]), `current_path` (str | None), `cached_navigation` (str | None)
 - Return aside element with "Sections" label and NavigationTree component
 - Handle cached navigation HTML using Markup when provided, otherwise render NavigationTree fresh
 - Match current structure from lines 89-92 of layout.py
 
 **Extract LayoutMain Component**
-- Create `layout_main.py` with a `LayoutMain` dataclass component
+- Create `components/main/main.py` with a `LayoutMain` dataclass component
 - Accept props: `current_path` (str | None), `children` (Element | Fragment | Node | None)
 - Return main element containing Breadcrumbs component and children content
 - Match current structure from lines 93-96 of layout.py
 
 **Extract LayoutFooter Component**
-- Create `layout_footer.py` with a `LayoutFooter` dataclass component
+- Create `components/footer/footer.py` with a `LayoutFooter` dataclass component
 - Accept props: `year` (str or int), optional `text` (str) for copyright message
 - Return footer element with centered paragraph containing copyright text
 - Default text should be "2025 Storytime" if not provided

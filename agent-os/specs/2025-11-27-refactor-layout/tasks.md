@@ -12,8 +12,8 @@ This refactoring will extract 4 components from the monolithic Layout component 
 #### Task Group 1: Extract and Test Layout Sub-Components
 **Dependencies:** None
 
-- [ ] 1.0 Complete component extraction
-  - [ ] 1.1 Write 2-8 focused tests for extracted components
+- [x] 1.0 Complete component extraction
+  - [x] 1.1 Write 2-8 focused tests for extracted components
     - Test LayoutHeader renders with site_title and depth props
     - Test LayoutHeader generates correct relative paths at different depths
     - Test LayoutAside handles cached_navigation HTML using Markup
@@ -21,7 +21,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Test LayoutMain renders children and Breadcrumbs
     - Test LayoutFooter renders with year and optional text props
     - Skip exhaustive edge case testing at this stage
-  - [ ] 1.2 Create LayoutHeader component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_header.py`
+  - [x] 1.2 Create LayoutHeader component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/header/header.py`
     - Use `@dataclass` decorator
     - Props: `site_title: str`, `depth: int = 0`
     - Calculate relative paths using `"../" * (depth + 1)` pattern
@@ -29,7 +29,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Include Home, About, Debug navigation links
     - Follow pattern from layout.py lines 74-87
     - Import necessary types: `Node`, `html` from tdom
-  - [ ] 1.3 Create LayoutAside component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_aside.py`
+  - [x] 1.3 Create LayoutAside component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside.py`
     - Use `@dataclass` decorator
     - Props: `sections: dict[str, Section]`, `current_path: str | None = None`, `cached_navigation: str | None = None`
     - Return `<aside>` with "Sections" label
@@ -38,24 +38,24 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Follow pattern from layout.py lines 89-92 and 50-58
     - Import: `Node`, `html` from tdom; `Section` from storytime.section.models; `NavigationTree` from storytime.components.navigation_tree
     - Import `Markup` from markupsafe conditionally when needed
-  - [ ] 1.4 Create LayoutMain component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_main.py`
+  - [x] 1.4 Create LayoutMain component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main.py`
     - Use `@dataclass` decorator
     - Props: `current_path: str | None = None`, `children: Element | Fragment | Node | None = None`
     - Return `<main>` containing Breadcrumbs component and children
     - Follow pattern from layout.py lines 93-96
     - Import: `Element`, `Fragment`, `Node`, `html` from tdom; `Breadcrumbs` from storytime.components.breadcrumbs
-  - [ ] 1.5 Create LayoutFooter component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_footer.py`
+  - [x] 1.5 Create LayoutFooter component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/footer/footer.py`
     - Use `@dataclass` decorator
     - Props: `year: str | int = 2025`, `text: str = "Storytime"`
     - Return `<footer>` with centered paragraph containing `{year} {text}`
     - Follow pattern from layout.py lines 98-100
     - Import: `Node`, `html` from tdom
-  - [ ] 1.6 Ensure component-level tests pass
+  - [x] 1.6 Ensure component-level tests pass
     - Run ONLY the 2-8 tests written in 1.1
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_header_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_aside_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_main_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_footer_test.py`
+    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/header/header_test.py`
+    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside_test.py`
+    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main_test.py`
+    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/footer/footer_test.py`
     - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
@@ -79,10 +79,10 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Test components are direct children of body element
     - Skip redundant testing of component internals already tested in Group 1
   - [ ] 2.2 Update Layout component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
-    - Add imports: `from storytime.components.layout.layout_header import LayoutHeader`
-    - Add imports: `from storytime.components.layout.layout_aside import LayoutAside`
-    - Add imports: `from storytime.components.layout.layout_main import LayoutMain`
-    - Add imports: `from storytime.components.layout.layout_footer import LayoutFooter`
+    - Add imports: `from storytime.components.header.header import LayoutHeader`
+    - Add imports: `from storytime.components.aside.aside import LayoutAside`
+    - Add imports: `from storytime.components.main.main import LayoutMain`
+    - Add imports: `from storytime.components.footer.footer import LayoutFooter`
     - Keep existing imports for Site, Element, Fragment, Node, html
     - Remove direct imports of Breadcrumbs and NavigationTree (now used by sub-components)
     - Remove `<div class="grid">` wrapper from body
@@ -236,7 +236,8 @@ Recommended implementation sequence:
 ## Implementation Notes
 
 **File Locations:**
-- New components: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/`
+- New components: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/{header,aside,main,footer}/`
+- Component files: Named `header.py`, `aside.py`, `main.py`, `footer.py` within their respective directories
 - Component test files: Same directory as components, named `{component}_test.py`
 - CSS file: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
 - Built CSS: `/Users/pauleveritt/projects/pauleveritt/storytime/var/static/storytime.css`
