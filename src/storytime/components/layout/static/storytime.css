@@ -44,11 +44,15 @@ aside {
     top: calc(var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 3rem);
     max-height: calc(100vh - (var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 4rem));
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: var(--pico-spacing, 1rem);
 }
 
 /* Navigation tree hierarchy */
 aside nav details {
     margin-bottom: 0.5rem;
+    overflow-x: hidden;
+    min-width: 0;
 }
 
 aside nav details summary {
