@@ -1,7 +1,8 @@
 """Tests for Layout component."""
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node, Text, html
+from aria_testing.utils import get_all_elements
+from tdom import Element, Fragment, Node, html
 
 from storytime.components.layout.layout import Layout
 from storytime.section import Section
@@ -9,31 +10,11 @@ from storytime.site.models import Site
 
 
 def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    # Type guard - we know result is an Element if not Fragment
-    if not isinstance(result, Element):
-        raise ValueError("Result is not an Element or Fragment")
-    return result
-
-
-def _extract_text(node: Node) -> str:
-    """Recursively extract text from a tdom node."""
-    if isinstance(node, Text):
-        return node.text
-    if isinstance(node, str):
-        return node
-    if isinstance(node, Element):
-        result = ""
-        for child in node.children:
-            result += _extract_text(child)
-        return result
-    return ""
+    """Extract first Element from result (handles Fragment wrapper)."""
+    elements = get_all_elements(result)
+    if not elements:
+        raise ValueError("No Element found in result")
+    return elements[0]
 
 
 # Basic Layout Structure Tests
@@ -349,7 +330,7 @@ def test_layout_header_contains_navigation_links() -> None:
 
     # Find all anchor tags in header
     links = query_all_by_tag_name(header, "a")
-    link_texts = [_extract_text(link) for link in links]
+    link_texts = [get_text_content(link) for link in links]
     link_hrefs = [link.attrs.get("href") for link in links]
 
     # Verify Home, About, and Debug links exist
@@ -375,7 +356,7 @@ def test_layout_footer_contains_copyright() -> None:
     # Footer should exist and contain copyright text
     assert footer is not None, "Layout should have a footer element"
     # Extract all text from footer
-    footer_text = _extract_text(footer)
+    footer_text = get_text_content(footer)
     assert "2025 Storytime" in footer_text, f"Footer should contain copyright text, got: {footer_text}"
 
 

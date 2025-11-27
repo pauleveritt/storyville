@@ -8,6 +8,84 @@
 - Mock external dependencies
 - Fast execution (milliseconds)
 
+## Use aria-testing Query Functions
+
+Always use `aria-testing` library functions instead of writing custom helper functions for DOM queries and text extraction.
+
+### Available Functions
+
+**Query Functions:**
+- `get_by_tag_name()` - Get single element by tag name (throws if not found)
+- `query_by_tag_name()` - Query single element by tag name (returns None if not found)
+- `query_all_by_tag_name()` - Query all elements by tag name
+- `get_by_text()`, `get_by_role()`, `get_by_class()` - Semantic queries
+- `get_text_content()` - Extract text content from an element
+
+**Utility Functions:**
+- `get_all_elements()` - Extract all Element nodes from a container (handles Fragment)
+- `normalize_text()` - Normalize whitespace in text
+
+### ✓ Correct Usage
+
+```python
+from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
+from aria_testing.utils import get_all_elements
+from tdom import Element, Fragment, Node, html
+
+def _get_element(result: Node) -> Element:
+    """Extract first Element from result (handles Fragment wrapper)."""
+    elements = get_all_elements(result)
+    if not elements:
+        raise ValueError("No Element found in result")
+    return elements[0]
+
+def test_layout_header_contains_links() -> None:
+    layout = Layout(...)
+    result = layout()
+    element = _get_element(result)
+
+    header = get_by_tag_name(element, "header")
+    links = query_all_by_tag_name(header, "a")
+    link_texts = [get_text_content(link) for link in links]
+
+    assert "Home" in link_texts
+```
+
+### ✗ Incorrect Usage
+
+```python
+# DON'T write custom text extraction functions
+def _extract_text(node: Node) -> str:
+    """Recursively extract text from a tdom node."""
+    if isinstance(node, Text):
+        return node.text
+    if isinstance(node, Element):
+        result = ""
+        for child in node.children:
+            result += _extract_text(child)
+        return result
+    return ""
+
+# DON'T write custom element extraction functions
+def _get_element(result: Node) -> Element:
+    """Extract Element from Fragment."""
+    if isinstance(result, Fragment):
+        for child in result.children:
+            if isinstance(child, Element):
+                return child
+    return result
+
+# USE aria-testing utilities instead!
+```
+
+### Benefits
+
+1. **Consistency** - Same API across all tests
+2. **Tested** - aria-testing functions are well-tested
+3. **Semantic** - Query by role, text, label (accessibility-focused)
+4. **Maintained** - Bug fixes and improvements in one place
+5. **Less code** - No need to write and maintain custom helpers
+
 ## Component Testing Strategy
 
 ### Single Test File Per Component
