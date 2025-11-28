@@ -25,7 +25,7 @@
    `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
    defined on the `Site`. `M`
 
-9. [ ] Story/Subject/Section — Add into the rendered HTML the `description` field on `Story`, `Subject`, and `Section`.
+9. [x] Story/Subject/Section — Add into the rendered HTML the `description` field on `Story`, `Subject`, and `Section`.
    `M`
 
 10. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django

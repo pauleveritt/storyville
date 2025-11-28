@@ -37,7 +37,7 @@ class SectionView:
         # Conditionally create description paragraph
         description_p = (
             html(t"<p>{self.section.description}</p>")
-            if self.section.description is not None
+            if self.section.description
             else ""
         )
 

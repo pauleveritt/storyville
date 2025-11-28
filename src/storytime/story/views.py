@@ -121,6 +121,13 @@ class StoryView:
         # Render badges as tdom Nodes
         badge_nodes = self._render_badges()
 
+        # Conditionally create description paragraph
+        description_p = (
+            html(t"<p>{self.story.description}</p>")
+            if self.story.description
+            else ""
+        )
+
         # Mode C: Themed iframe rendering (when themed_layout is configured)
         if self.site.themed_layout is not None:
             # Wrap story content in iframe pointing to ./themed_story.html
@@ -140,6 +147,7 @@ class StoryView:
     {badge_nodes}
   </div>
 </div>
+{description_p}
 <p>Props: <code>{str(self.story.props)}</code></p>
 <iframe src="./themed_story.html" style="{iframe_style}"></iframe>
 <a href="..">Parent</a>
@@ -151,6 +159,7 @@ class StoryView:
 <{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>
+{description_p}
 <p>Props: <code>{str(self.story.props)}</code></p>
 <iframe src="./themed_story.html" style="{iframe_style}"></iframe>
 <a href="..">Parent</a>
@@ -172,6 +181,7 @@ class StoryView:
     {badge_nodes}
   </div>
 </div>
+{description_p}
 <p>Props: <code>{str(self.story.props)}</code></p>
 <div>
 {self.story.instance}
@@ -185,6 +195,7 @@ class StoryView:
 <{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>
+{description_p}
 <p>Props: <code>{str(self.story.props)}</code></p>
 <div>
 {self.story.instance}

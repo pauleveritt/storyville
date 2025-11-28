@@ -16,6 +16,7 @@ class SubjectView:
 
     The view renders:
     - Subject title in h1
+    - Description in p element if present
     - Target information if present
     - Parent navigation link
     - List of story cards (title + link) or empty state message
@@ -34,6 +35,13 @@ class SubjectView:
         Returns:
             A tdom Node representing the rendered subject.
         """
+        # Conditionally create description paragraph
+        description_p = (
+            html(t"<p>{self.subject.description}</p>")
+            if self.subject.description
+            else ""
+        )
+
         # Prepare target display
         target_name = "None"
         if self.subject.target is not None:
@@ -46,6 +54,7 @@ class SubjectView:
 <{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
+{description_p}
 <p>Target: {target_name}</p>
 <p>No stories defined for this component</p>
 <a href="..">Parent</a>
@@ -64,6 +73,7 @@ class SubjectView:
 <{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
+{description_p}
 <p>Target: {target_name}</p>
 <ul>
 {story_items}
