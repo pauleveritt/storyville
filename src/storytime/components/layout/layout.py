@@ -39,15 +39,16 @@ class Layout:
             title_text = self.site.title
 
         # Calculate relative path to static assets based on depth
-        # depth=0: site root or section ({section}/index.html) -> ../static/
-        # depth=1: subject ({section}/{subject}/index.html) -> ../../static/
-        # depth=2: story ({section}/{subject}/story-{idx}/index.html) -> ../../../static/
+        # Static assets from layout component use storytime_static/ prefix
+        # depth=0: site root or section ({section}/index.html) -> ../storytime_static/
+        # depth=1: subject ({section}/{subject}/index.html) -> ../../storytime_static/
+        # depth=2: story ({section}/{subject}/story-{idx}/index.html) -> ../../../storytime_static/
         static_prefix = "../" * (self.depth + 1)
-        stylesheet_path = f"{static_prefix}static/pico-main.css"
-        pico_docs_path = f"{static_prefix}static/pico-docs.css"
-        storytime_css_path = f"{static_prefix}static/storytime.css"
-        ws_script_path = f"{static_prefix}static/ws.js"
-        favicon_path = f"{static_prefix}static/favicon.svg"
+        stylesheet_path = f"{static_prefix}storytime_static/components/layout/static/pico-main.css"
+        pico_docs_path = f"{static_prefix}storytime_static/components/layout/static/pico-docs.css"
+        storytime_css_path = f"{static_prefix}storytime_static/components/layout/static/storytime.css"
+        ws_script_path = f"{static_prefix}storytime_static/components/layout/static/ws.js"
+        favicon_path = f"{static_prefix}storytime_static/components/layout/static/favicon.svg"
 
         return html(t'''\
 <!DOCTYPE html>

@@ -10,7 +10,7 @@ from watchfiles import Change, awatch
 
 logger = logging.getLogger(__name__)
 
-# Static file extensions to watch in src/storytime/
+# Static file extensions to watch in src/storytime/ and input directories
 STATIC_EXTENSIONS = {".css", ".js", ".png", ".jpg", ".jpeg", ".svg", ".ico", ".gif"}
 
 # Debounce delay in seconds
@@ -29,8 +29,9 @@ async def watch_and_rebuild(
 
     Single unified watcher that:
     1. Monitors content and storytime static files for changes
-    2. Triggers rebuild via rebuild_callback when changes detected
-    3. Broadcasts reload to WebSocket clients after successful rebuild
+    2. Monitors all static/ folders in both content_path and storytime_path
+    3. Triggers rebuild via rebuild_callback when changes detected
+    4. Broadcasts reload to WebSocket clients after successful rebuild
 
     This replaces the previous dual-watcher approach (watch_input_directory +
     watch_output_directory) with a simpler workflow: watch -> build -> broadcast.
@@ -65,19 +66,22 @@ async def watch_and_rebuild(
                 if "__pycache__" in path_obj.parts or path_obj.suffix == ".pyc":
                     continue
 
-                # Check if change is in content directory (accept all files)
+                # Check if change is in content directory
                 try:
                     path_obj.relative_to(content_path)
+                    # Accept all files in content directory
                     relevant_changes.append((change_type, changed_path))
                     continue
                 except ValueError:
                     pass
 
-                # Check if change is in storytime directory (only static files)
+                # Check if change is in storytime directory
                 if storytime_path:
                     try:
                         path_obj.relative_to(storytime_path)
-                        if path_obj.suffix.lower() in STATIC_EXTENSIONS:
+                        # Only accept static files in storytime directory
+                        # This includes all files in static/ folders
+                        if path_obj.suffix.lower() in STATIC_EXTENSIONS or "static" in path_obj.parts:
                             relevant_changes.append((change_type, changed_path))
                     except ValueError:
                         pass

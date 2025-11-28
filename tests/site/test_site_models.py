@@ -56,46 +56,6 @@ def test_site_post_update_title_fallback(mock_tree_node) -> None:
     assert site.title == "examples.minimal"
 
 
-def test_site_static_dir_detection(tmp_path: Path) -> None:
-    """Test Site.__post_init__ detects static directory."""
-    import storytime
-
-    # Save original PACKAGE_DIR
-    original_package_dir = storytime.PACKAGE_DIR
-
-    # Create a temporary static directory at new location
-    static_dir = tmp_path / "components" / "layout" / "static"
-    static_dir.mkdir(parents=True)
-
-    # Temporarily set PACKAGE_DIR to tmp_path
-    storytime.PACKAGE_DIR = tmp_path
-
-    try:
-        site = Site(title="My Site")
-        assert site.static_dir == static_dir
-    finally:
-        # Restore original PACKAGE_DIR
-        storytime.PACKAGE_DIR = original_package_dir
-
-
-def test_site_no_static_dir(tmp_path: Path) -> None:
-    """Test Site.__post_init__ when static directory doesn't exist."""
-    import storytime
-
-    # Save original PACKAGE_DIR
-    original_package_dir = storytime.PACKAGE_DIR
-
-    # Temporarily set PACKAGE_DIR to tmp_path (without creating static/)
-    storytime.PACKAGE_DIR = tmp_path
-
-    try:
-        site = Site(title="My Site")
-        assert site.static_dir is None
-    finally:
-        # Restore original PACKAGE_DIR
-        storytime.PACKAGE_DIR = original_package_dir
-
-
 def test_site_has_no_parent(mock_tree_node) -> None:
     """Test Site parent is always None (Site is root)."""
     site = Site(title="My Site")

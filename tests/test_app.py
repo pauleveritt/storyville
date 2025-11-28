@@ -72,12 +72,12 @@ def test_serve_section_page(tmp_path: Path) -> None:
 
 
 def test_serve_static_asset(tmp_path: Path) -> None:
-    """Test serving static asset at /static/pico-main.css."""
+    """Test serving static asset at /storytime_static/components/layout/static/pico-main.css."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
     app = create_app(tmp_path)
     client = TestClient(app)
 
-    response = client.get("/static/pico-main.css")
+    response = client.get("/storytime_static/components/layout/static/pico-main.css")
     assert response.status_code == 200
     assert "pico" in response.text
 

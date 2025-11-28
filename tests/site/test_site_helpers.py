@@ -53,10 +53,6 @@ def test_make_site_parent_child_relationships() -> None:
     if found_heading:
         assert found_heading.title == "Heading"
 
-    # Verify static_dir is detected
-    assert site.static_dir is not None
-    assert site.static_dir.is_dir()
-
 
 def test_find_path_finds_site() -> None:
     """Test find_path() with root path."""

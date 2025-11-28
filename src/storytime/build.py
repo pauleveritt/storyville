@@ -2,12 +2,14 @@
 
 import logging
 from pathlib import Path
-from shutil import copytree, rmtree
+from shutil import rmtree
 from time import perf_counter
 
+from storytime import PACKAGE_DIR
 from storytime.components.themed_story import ThemedStory
 from storytime.section.views import SectionView
 from storytime.site.views import SiteView
+from storytime.static_assets import copy_all_static_assets
 from storytime.stories import make_site
 from storytime.story.views import StoryView
 from storytime.subject.views import SubjectView
@@ -43,7 +45,7 @@ def build_site(
     2. Creates a site from the package location
     3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
     4. Renders About and Debug pages
-    5. Copies static assets from layout to output/static
+    5. Discovers and copies static assets from both src/storytime and input_dir
     """
 
     # Clear output directory if it exists and is not empty
@@ -169,16 +171,41 @@ def build_site(
         story_dir = subject_dir / f"story-{story_idx}"
         _write_html(themed_story_html, story_dir / "themed_story.html")
 
-    # Copy static assets from layout to output/static
-    if site.static_dir:
-        copytree(site.static_dir, output_dir / "static", dirs_exist_ok=True)
-
     end_writing = perf_counter()
     writing_duration = end_writing - start_writing
     logger.info(f"Phase Writing: completed in {writing_duration:.2f}s")
 
+    # Phase 4: Static Assets - Discover and copy static assets
+    start_static = perf_counter()
+
+    # Determine input_dir from package_location
+    from importlib.util import find_spec
+
+    spec = find_spec(package_location)
+    if spec is None or spec.origin is None:
+        # Fallback: treat package_location as file path
+        input_dir = Path(package_location).resolve()
+        if input_dir.is_file():
+            input_dir = input_dir.parent
+    else:
+        input_dir = Path(spec.origin).parent
+
+    # Copy all static assets from both sources
+    output_paths = copy_all_static_assets(
+        storytime_base=PACKAGE_DIR,
+        input_dir=input_dir,
+        output_dir=output_dir,
+    )
+
+    end_static = perf_counter()
+    static_duration = end_static - start_static
+    logger.info(
+        f"Phase Static Assets: discovered and copied {len(output_paths)} folders "
+        f"in {static_duration:.2f}s"
+    )
+
     # Log total build time
-    total_duration = reading_duration + rendering_duration + writing_duration
+    total_duration = reading_duration + rendering_duration + writing_duration + static_duration
     logger.info(f"Build completed in {total_duration:.2f}s")
 
 

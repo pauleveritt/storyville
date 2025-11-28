@@ -250,8 +250,8 @@ def test_layout_depth_boundary_at_depth_3() -> None:
             break
 
     assert ws_script is not None, "Should have ws.js script tag"
-    # At depth=3: ../../../../static/ws.js
-    assert ws_script.attrs["src"] == "../../../../static/ws.js"
+    # At depth=3: ../../../../storytime_static/components/layout/static/ws.js
+    assert ws_script.attrs["src"] == "../../../../storytime_static/components/layout/static/ws.js"
 
 def test_layout_cached_navigation_with_empty_sections() -> None:
     """Test Layout with cached_navigation and empty sections dict."""
@@ -293,10 +293,10 @@ def test_layout_stylesheet_paths_at_depth_2() -> None:
             if href:
                 stylesheet_hrefs.append(href)
 
-    # At depth=2, all static assets should have ../../../static/ prefix
-    assert any("../../../static/pico-main.css" in href for href in stylesheet_hrefs), \
+    # At depth=2, all static assets should have ../../../storytime_static/ prefix
+    assert any("../../../storytime_static/components/layout/static/pico-main.css" in href for href in stylesheet_hrefs), \
         "pico-main.css should have correct depth prefix"
-    assert any("../../../static/storytime.css" in href for href in stylesheet_hrefs), \
+    assert any("../../../storytime_static/components/layout/static/storytime.css" in href for href in stylesheet_hrefs), \
         "storytime.css should have correct depth prefix"
 
 def test_layout_favicon_path_at_depth_1() -> None:
@@ -318,8 +318,8 @@ def test_layout_favicon_path_at_depth_1() -> None:
             break
 
     assert favicon_link is not None, "Should have favicon link"
-    # At depth=1: ../../static/favicon.svg
-    assert favicon_link.attrs["href"] == "../../static/favicon.svg"
+    # At depth=1: ../../storytime_static/components/layout/static/favicon.svg
+    assert favicon_link.attrs["href"] == "../../storytime_static/components/layout/static/favicon.svg"
 
 def test_layout_all_static_assets_use_same_depth_prefix() -> None:
     """Test Layout ensures all static assets use consistent depth-based prefix."""
@@ -346,7 +346,7 @@ def test_layout_all_static_assets_use_same_depth_prefix() -> None:
             static_paths.append(src)
 
     # All paths should have the same depth prefix for depth=1
-    expected_prefix = "../../static/"
+    expected_prefix = "../../storytime_static/"
     for path in static_paths:
         assert path.startswith(expected_prefix), \
             f"Static asset path {path} should start with {expected_prefix}"

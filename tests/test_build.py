@@ -40,8 +40,9 @@ def test_index(output_dir: Path) -> None:
 def test_static_css(output_dir: Path) -> None:
     """Confirm that the chosen CSS file made it to the build dir."""
 
-    assert (output_dir / "static").exists()
-    pico_file = output_dir / "static" / "pico-main.css"
+    # Static assets from storytime core should be in storytime_static/
+    assert (output_dir / "storytime_static").exists()
+    pico_file = output_dir / "storytime_static" / "components" / "layout" / "static" / "pico-main.css"
     assert pico_file.exists()
     pico_text = pico_file.read_text()
     assert "pico" in pico_text
@@ -106,10 +107,10 @@ def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=0
+    # Verify hrefs are correct for depth=0 with new storytime_static/ structure
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../static/pico-main.css" in hrefs
-    assert "../static/storytime.css" in hrefs
+    assert "../storytime_static/components/layout/static/pico-main.css" in hrefs
+    assert "../storytime_static/components/layout/static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
@@ -123,8 +124,8 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
 
     # Verify hrefs are correct for depth=0 (sections now at root level)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../static/pico-main.css" in hrefs
-    assert "../static/storytime.css" in hrefs
+    assert "../storytime_static/components/layout/static/pico-main.css" in hrefs
+    assert "../storytime_static/components/layout/static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
@@ -138,8 +139,8 @@ def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
 
     # Verify hrefs are correct for depth=1 (subject pages)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../../static/pico-main.css" in hrefs
-    assert "../../static/storytime.css" in hrefs
+    assert "../../storytime_static/components/layout/static/pico-main.css" in hrefs
+    assert "../../storytime_static/components/layout/static/storytime.css" in hrefs
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
@@ -155,4 +156,48 @@ def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
 
     # Verify new files exist
     assert (tmp_path / "index.html").exists()
-    assert (tmp_path / "static").exists()
+    assert (tmp_path / "storytime_static").exists()
+
+
+def test_storytime_static_directory_structure(output_dir: Path) -> None:
+    """Test that storytime static assets are in storytime_static/ with full path preservation."""
+    # Check that storytime_static/ directory exists
+    storytime_static = output_dir / "storytime_static"
+    assert storytime_static.exists()
+
+    # Check that layout component static assets are in the correct location
+    layout_static = storytime_static / "components" / "layout" / "static"
+    assert layout_static.exists()
+
+    # Verify specific assets exist
+    assert (layout_static / "pico-main.css").exists()
+    assert (layout_static / "storytime.css").exists()
+
+
+def test_no_old_static_directory(output_dir: Path) -> None:
+    """Test that old site-level static/ directory no longer exists."""
+    # The old static/ directory at root should not exist anymore
+    # (unless it's from input_dir, but examples.minimal doesn't have one)
+    old_static = output_dir / "static"
+
+    # It might exist if input_dir has static assets, but it should not contain
+    # the layout's assets (those should be in storytime_static/)
+    if old_static.exists():
+        # If it exists, ensure it doesn't have layout assets
+        assert not (old_static / "pico-main.css").exists()
+        assert not (old_static / "storytime.css").exists()
+
+
+def test_static_assets_phase_logs(output_dir: Path, caplog) -> None:
+    """Test that static assets discovery and copying is logged."""
+    # Build again to capture logs
+    import logging
+    caplog.set_level(logging.INFO)
+
+    tmp_output = output_dir.parent / "test_logging"
+    tmp_output.mkdir(exist_ok=True)
+
+    build_site(package_location="examples.minimal", output_dir=tmp_output)
+
+    # Check that static assets phase is logged
+    assert any("Phase Static Assets" in record.message for record in caplog.records)
