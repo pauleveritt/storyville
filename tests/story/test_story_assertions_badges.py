@@ -1,26 +1,12 @@
 """Test badge rendering in StoryView for assertions."""
 
 from aria_testing import get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node, html
+from tdom import html
 
 from storytime.site.models import Site
 from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    if isinstance(result, Element):
-        return result
-    raise TypeError(f"Expected Element or Fragment, got {type(result)}")
-
 
 def test_story_view_badges_display_passing_assertion() -> None:
     """Test that passing assertions display green badges."""
@@ -28,7 +14,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def passing_assertion(element: Element | Fragment) -> None:
+    def passing_assertion(element) -> None:
         """Assertion that always passes."""
         assert element is not None
 
@@ -45,7 +31,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags (badges should be spans)
     all_spans = query_all_by_tag_name(element, "span")
@@ -65,14 +51,13 @@ def test_story_view_badges_display_passing_assertion() -> None:
     # Check that the badge has success/green styling
     assert "success" in badge_class or "assertion-badge-pass" in badge_class
 
-
 def test_story_view_badges_display_failing_assertion() -> None:
     """Test that failing assertions display red badges with error tooltip."""
 
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def failing_assertion(element: Element | Fragment) -> None:
+    def failing_assertion(element) -> None:
         """Assertion that always fails."""
         raise AssertionError("Expected condition not met")
 
@@ -89,7 +74,7 @@ def test_story_view_badges_display_failing_assertion() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags (badges should be spans)
     all_spans = query_all_by_tag_name(element, "span")
@@ -113,7 +98,6 @@ def test_story_view_badges_display_failing_assertion() -> None:
     badge_title = str(badge.attrs.get("title", ""))
     assert "Expected condition not met" in badge_title
 
-
 def test_story_view_no_badges_when_assertions_empty() -> None:
     """Test that no badges are shown when story has no assertions."""
 
@@ -133,7 +117,7 @@ def test_story_view_no_badges_when_assertions_empty() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags
     all_spans = query_all_by_tag_name(element, "span")
@@ -148,14 +132,13 @@ def test_story_view_no_badges_when_assertions_empty() -> None:
     # Should have no assertion badges
     assert len(badge_spans) == 0, "Should have no assertion badges when assertions empty"
 
-
 def test_story_view_no_badges_when_assertions_disabled() -> None:
     """Test that no badges are shown when with_assertions is False."""
 
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def passing_assertion(element: Element | Fragment) -> None:
+    def passing_assertion(element) -> None:
         """Assertion that always passes."""
         assert element is not None
 
@@ -172,7 +155,7 @@ def test_story_view_no_badges_when_assertions_disabled() -> None:
     view = StoryView(story=story, site=site, with_assertions=False)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags
     all_spans = query_all_by_tag_name(element, "span")
@@ -187,20 +170,19 @@ def test_story_view_no_badges_when_assertions_disabled() -> None:
     # Should have no assertion badges when disabled
     assert len(badge_spans) == 0, "Should have no assertion badges when disabled"
 
-
 def test_story_view_multiple_assertions_multiple_badges() -> None:
     """Test that multiple assertions result in multiple badges."""
 
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def assertion_1(element: Element | Fragment) -> None:
+    def assertion_1(element) -> None:
         assert element is not None
 
-    def assertion_2(element: Element | Fragment) -> None:
+    def assertion_2(element) -> None:
         assert element is not None
 
-    def assertion_3(element: Element | Fragment) -> None:
+    def assertion_3(element) -> None:
         raise AssertionError("This one fails")
 
     site = Site(title="Test Site")
@@ -216,7 +198,7 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags
     all_spans = query_all_by_tag_name(element, "span")
@@ -237,14 +219,13 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     assert "Assertion 2" in badge_texts[1]
     assert "Assertion 3" in badge_texts[2]
 
-
 def test_story_view_critical_error_badge() -> None:
     """Test that critical errors (non-AssertionError) display red badges."""
 
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def critical_error_assertion(element: Element | Fragment) -> None:
+    def critical_error_assertion(element) -> None:
         """Assertion that raises a non-AssertionError exception."""
         raise ValueError("Unexpected error")
 
@@ -261,7 +242,7 @@ def test_story_view_critical_error_badge() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find all span tags
     all_spans = query_all_by_tag_name(element, "span")
@@ -282,14 +263,13 @@ def test_story_view_critical_error_badge() -> None:
     assert "Critical error:" in badge_title
     assert "Unexpected error" in badge_title
 
-
 def test_story_view_badge_container_flexbox() -> None:
     """Test that badge container uses flexbox for proper alignment."""
 
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def passing_assertion(element: Element | Fragment) -> None:
+    def passing_assertion(element) -> None:
         assert element is not None
 
     site = Site(title="Test Site")
@@ -306,7 +286,7 @@ def test_story_view_badge_container_flexbox() -> None:
     view = StoryView(story=story, site=site, with_assertions=True)
     result = view()
 
-    element = _get_element(result)
+    element = result
 
     # Find the main content div (contains h1 and badge container)
     # Look for a div that has both title and badges as children

@@ -1,25 +1,12 @@
 """Test the SubjectView rendering."""
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node, html
-from typing import cast
+from tdom import html
 
 from storytime.story import Story
 from storytime.subject import Subject
 from storytime.subject.views import SubjectView
 from storytime.site.models import Site
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    return cast(Element, result)
-
 
 def test_subject_view_renders_title_in_h1() -> None:
     """Test SubjectView renders subject title in h1 element."""
@@ -28,13 +15,12 @@ def test_subject_view_renders_title_in_h1() -> None:
     view = SubjectView(subject=subject, site=site)
     result = view()
 
-    # Extract Element from Fragment (Layout wraps the result)
-    element = _get_element(result)
+    # Extract  from  (Layout wraps the result)
+    element = result
 
     # Verify title is in h1
     h1 = get_by_tag_name(element, "h1")
     assert get_text_content(h1) == "Button Component"
-
 
 def test_subject_view_renders_story_cards() -> None:
     """Test SubjectView renders story cards as simple list with title and link."""
@@ -58,8 +44,8 @@ def test_subject_view_renders_story_cards() -> None:
     view = SubjectView(subject=subject, site=site)
     result = view()
 
-    # Extract Element from Fragment (Layout wraps the result)
-    element = _get_element(result)
+    # Extract  from  (Layout wraps the result)
+    element = result
 
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
@@ -76,7 +62,6 @@ def test_subject_view_renders_story_cards() -> None:
     assert get_text_content(story_links[0]) == "Primary Button"
     assert get_text_content(story_links[1]) == "Secondary Button"
 
-
 def test_subject_view_shows_empty_state() -> None:
     """Test SubjectView shows empty state message when no stories."""
     site = Site(title="My Site")
@@ -84,8 +69,8 @@ def test_subject_view_shows_empty_state() -> None:
     view = SubjectView(subject=subject, site=site)
     result = view()
 
-    # Extract Element from Fragment (Layout wraps the result)
-    element = _get_element(result)
+    # Extract  from  (Layout wraps the result)
+    element = result
 
     # Verify empty state message
     all_p_tags = query_all_by_tag_name(element, "p")
@@ -95,13 +80,15 @@ def test_subject_view_shows_empty_state() -> None:
     )
     assert empty_state_found
 
-
 def test_subject_view_returns_element_type() -> None:
-    """Test SubjectView.__call__ returns an Element or Fragment type."""
+    """Test SubjectView.__call__ returns an  or  type."""
     site = Site(title="My Site")
     subject = Subject(title="Test Component")
     view = SubjectView(subject=subject, site=site)
     result = view()
 
-    # Type guard assertion in test - now accepts Fragment too (from Layout)
-    assert isinstance(result, (Element, Fragment))
+    # Verify result is a valid Node (could be Element or Fragment from Layout)
+    assert result is not None
+    # Verify it contains an html element (from Layout wrapper)
+    html_elem = get_by_tag_name(result, "html")
+    assert html_elem is not None

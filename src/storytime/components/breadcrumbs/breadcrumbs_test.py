@@ -1,59 +1,40 @@
 """Test the Breadcrumbs component."""
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node
-
 from storytime.components.breadcrumbs import Breadcrumbs
-
-
-def _get_element(result: Node) -> Element | None:
-    """Extract Element from result (handles Fragment wrapper).
-
-    Returns None if result is empty Fragment or empty content.
-    """
-    if isinstance(result, Fragment):
-        # Fragment may contain empty children for empty breadcrumbs
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        return None
-    # Type guard - we know result is an Element if not Fragment
-    if not isinstance(result, Element):
-        return None
-    return result
-
 
 def test_breadcrumbs_renders_nothing_when_path_is_none() -> None:
     """Test Breadcrumbs renders nothing when current_path is None."""
     breadcrumbs = Breadcrumbs(current_path=None)
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
 
     # Should render nothing (no nav element)
-    assert element is None
-
+    # result might be just a Text node with empty string, so check it's not an Element with tag nav
+    from tdom import Element
+    if isinstance(element, Element) and element.tag == "nav":
+        assert False, "Should not render a nav element"
 
 def test_breadcrumbs_renders_nothing_when_path_is_empty() -> None:
     """Test Breadcrumbs renders nothing when current_path is empty string."""
     breadcrumbs = Breadcrumbs(current_path="")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
 
     # Should render nothing (no nav element)
-    assert element is None
-
+    # result might be just a Text node with empty string, so check it's not an Element with tag nav
+    from tdom import Element
+    if isinstance(element, Element) and element.tag == "nav":
+        assert False, "Should not render a nav element"
 
 def test_breadcrumbs_renders_home_and_section_for_section_path() -> None:
     """Test Breadcrumbs renders Home link and section name for section-level path."""
     breadcrumbs = Breadcrumbs(current_path="getting-started")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
     assert element is not None
 
     # Verify nav element with aria-label
@@ -74,14 +55,12 @@ def test_breadcrumbs_renders_home_and_section_for_section_path() -> None:
     assert "getting-started" in all_text
     assert " > " in all_text  # Separator between items
 
-
 def test_breadcrumbs_renders_separator_between_items() -> None:
     """Test Breadcrumbs uses ' > ' as separator between items."""
     breadcrumbs = Breadcrumbs(current_path="getting-started/installation")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
     assert element is not None
 
     # Get full text content
@@ -95,14 +74,12 @@ def test_breadcrumbs_renders_separator_between_items() -> None:
     separator_count = text_content.count(" > ")
     assert separator_count == 2
 
-
 def test_breadcrumbs_renders_all_ancestors_as_links() -> None:
     """Test Breadcrumbs renders all ancestor levels as clickable links."""
     breadcrumbs = Breadcrumbs(current_path="getting-started/installation/quick-start")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
     assert element is not None
 
     nav = get_by_tag_name(element, "nav")
@@ -126,14 +103,12 @@ def test_breadcrumbs_renders_all_ancestors_as_links() -> None:
     assert subject_link.attrs.get("href") == "/getting-started/installation"
     assert get_text_content(subject_link) == "installation"
 
-
 def test_breadcrumbs_current_page_not_clickable() -> None:
     """Test Breadcrumbs renders current page as plain text (not a link)."""
     breadcrumbs = Breadcrumbs(current_path="getting-started/installation/quick-start")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
     assert element is not None
 
     nav = get_by_tag_name(element, "nav")
@@ -149,14 +124,12 @@ def test_breadcrumbs_current_page_not_clickable() -> None:
     text_content = get_text_content(nav)
     assert "quick-start" in text_content
 
-
 def test_breadcrumbs_subject_level_path() -> None:
     """Test Breadcrumbs renders correctly for subject-level path."""
     breadcrumbs = Breadcrumbs(current_path="components/button")
     result = breadcrumbs()
 
-    # Extract Element from Fragment
-    element = _get_element(result)
+    element = result
     assert element is not None
 
     nav = get_by_tag_name(element, "nav")

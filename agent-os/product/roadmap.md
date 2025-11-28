@@ -21,12 +21,12 @@
 7. [x] CLI and Development Workflow — Build the command-line interface for starting the development server, running
    builds, and managing the Storytime development experience. `S`
 
-8. [ ] Themed Stories — Show a rendering of the story as a full HTML file, shown in an
+8. [x] Themed Stories — Show a rendering of the story as a full HTML file, shown in an
    `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
    defined on the `Site`. `M`
 
 9. [ ] Component Props Documentation — Add automatic documentation generation from type hints and docstrings, displaying
-   component APIs directly in the browser. `M`
+   component APIs directly in the browser, as well as the `description` field on `Story`, `Subject`, and `Section`. `M`
 
 10. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`

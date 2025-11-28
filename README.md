@@ -47,6 +47,13 @@ Storytime is a component-driven development (CDD) system for Python that helps y
 - Works with pytest-xdist for parallel execution
 - Fresh rendering per test for proper isolation
 
+### 🎨 **Themed Stories**
+- Preview components within custom-themed layouts
+- Isolated iframe rendering for visual separation
+- Site-level theme configuration with automatic fallback
+- Full HTML document control for real-world context
+- Perfect for matching your project's design system
+
 ---
 
 ## 📦 Installation
@@ -107,7 +114,46 @@ storytime serve my_package
 # Hot reload enabled by default!
 ```
 
-### 4. Run Tests
+### 4. Add Custom Theming (Optional)
+
+```python
+# my_package/themed_layout/themed_layout.py
+from dataclasses import dataclass
+from tdom import html as t, Node
+
+@dataclass
+class ThemedLayout:
+    story_title: str | None
+    children: Node | None
+
+    def __call__(self) -> Node:
+        return t.html(
+            t.head(
+                t.meta(charset="utf-8"),
+                t.title(f"{self.story_title or 'Story'}"),
+                t.style("""
+                    body {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        font-family: system-ui;
+                    }
+                """),
+            ),
+            t.body(t.div(self.children, class_="story-wrapper")),
+            lang="en",
+        )
+
+# my_package/__init__.py
+from storytime import Site
+from my_package.themed_layout.themed_layout import ThemedLayout
+
+def themed_layout_wrapper(story_title: str, children: Node) -> Node:
+    return ThemedLayout(story_title, children)()
+
+def this_site() -> Site:
+    return Site(themed_layout=themed_layout_wrapper)
+```
+
+### 5. Run Tests
 
 ```bash
 # Configure pytest in pyproject.toml
@@ -128,6 +174,7 @@ pytest my_package/
 
 - **[Getting Started](docs/getting-started.md)** - Installation and first steps
 - **[Writing Stories](docs/writing-stories.md)** - Component stories and assertions
+- **[Themed Stories](docs/themed-stories.md)** - Custom layouts and design system integration
 - **[pytest Plugin](docs/pytest-plugin.md)** - Automatic test generation
 - **[Hot Reload](docs/hot-reload.md)** - Subinterpreter architecture
 - **[API Reference](docs/api-reference.md)** - Complete API documentation

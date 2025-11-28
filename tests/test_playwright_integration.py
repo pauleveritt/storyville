@@ -205,7 +205,7 @@ def test_sidebar_shows_hierarchical_structure(page: Page, site_url: str) -> None
 
 @pytest.mark.slow
 def test_story_links_in_sidebar_have_correct_structure(page: Page, site_url: str) -> None:
-    """Story links in sidebar should follow /{section}/{subject}/story-{idx}.html pattern."""
+    """Story links in sidebar should follow /{section}/{subject}/story-{idx}/index.html pattern."""
     # Arrange
     page.goto(site_url)
     aside = page.locator("aside")
@@ -223,8 +223,8 @@ def test_story_links_in_sidebar_have_correct_structure(page: Page, site_url: str
     # Assert - href should match expected pattern
     href = story_link.get_attribute("href")
     assert href is not None
-    # Pattern: /{section}/{subject}/story-{idx}.html
-    assert re.match(r"^/[\w-]+/[\w-]+/story-\d+\.html$", href)
+    # Pattern: /{section}/{subject}/story-{idx}/index.html
+    assert re.match(r"^/[\w-]+/[\w-]+/story-\d+/index\.html$", href)
 
 
 @pytest.mark.slow
@@ -269,8 +269,8 @@ def test_two_column_grid_layout_structure(page: Page, site_url: str) -> None:
 def test_story_page_layout_elements_visible(page: Page, built_site: Path) -> None:
     """Story page should have visible aside and main elements."""
     # Arrange - navigate to a story page
-    # The examples.minimal site has a story at /test-section/test-subject/story-0.html
-    story_url = f"file://{built_site.absolute()}/test-section/test-subject/story-0.html"
+    # The examples.minimal site has a story at /test-section/test-subject/story-0/index.html
+    story_url = f"file://{built_site.absolute()}/test-section/test-subject/story-0/index.html"
 
     # Act
     page.goto(story_url)

@@ -1,26 +1,12 @@
 """Integration tests for Story Assertions feature end-to-end."""
 
 from aria_testing import get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node, html
+from tdom import html
 
 from storytime.site.models import Site
 from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    if isinstance(result, Element):
-        return result
-    raise TypeError(f"Expected Element or Fragment, got {type(result)}")
-
 
 def test_complete_workflow_story_with_assertions_to_badges() -> None:
     """Test complete flow: Story with assertions -> execution -> badge display."""
@@ -28,11 +14,11 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
     def simple_component():
         return html(t"<div id='test'>Content</div>")
 
-    def passing_assertion(element: Element | Fragment) -> None:
+    def passing_assertion(element) -> None:
         """Assertion that validates the component."""
         assert element is not None
 
-    def failing_assertion(element: Element | Fragment) -> None:
+    def failing_assertion(element) -> None:
         """Assertion that fails."""
         raise AssertionError("Something is wrong")
 
@@ -53,7 +39,7 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
     result = view()
 
     # Verify the rendered output
-    element = _get_element(result)
+    element = result
 
     # Verify badges were rendered
     all_spans = query_all_by_tag_name(element, "span")
@@ -76,7 +62,6 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
     badge2_title = str(badge2.attrs.get("title", ""))
     assert "Something is wrong" in badge2_title
 
-
 def test_cli_flag_with_assertions_enabled() -> None:
     """Test CLI flag integration: --with-assertions enables assertion execution."""
 
@@ -85,7 +70,7 @@ def test_cli_flag_with_assertions_enabled() -> None:
 
     assertion_executed = False
 
-    def tracking_assertion(element: Element | Fragment) -> None:
+    def tracking_assertion(element) -> None:
         nonlocal assertion_executed
         assertion_executed = True
         assert element is not None
@@ -108,13 +93,12 @@ def test_cli_flag_with_assertions_enabled() -> None:
     assert assertion_executed
 
     # Verify badge was rendered
-    element = _get_element(result)
+    element = result
     all_spans = query_all_by_tag_name(element, "span")
     badge_spans = [
         span for span in all_spans if "Assertion" in get_text_content(span)
     ]
     assert len(badge_spans) == 1
-
 
 def test_cli_flag_no_with_assertions_disabled() -> None:
     """Test CLI flag integration: --no-with-assertions disables assertion execution."""
@@ -124,7 +108,7 @@ def test_cli_flag_no_with_assertions_disabled() -> None:
 
     assertion_executed = False
 
-    def tracking_assertion(element: Element | Fragment) -> None:
+    def tracking_assertion(element) -> None:
         nonlocal assertion_executed
         assertion_executed = True
         assert element is not None
@@ -147,13 +131,12 @@ def test_cli_flag_no_with_assertions_disabled() -> None:
     assert not assertion_executed
 
     # Verify NO badges were rendered
-    element = _get_element(result)
+    element = result
     all_spans = query_all_by_tag_name(element, "span")
     badge_spans = [
         span for span in all_spans if "Assertion" in get_text_content(span)
     ]
     assert len(badge_spans) == 0
-
 
 def test_error_handling_does_not_crash_rendering() -> None:
     """Test that assertion failures don't crash the rendering process."""
@@ -161,7 +144,7 @@ def test_error_handling_does_not_crash_rendering() -> None:
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def critical_error_assertion(element: Element | Fragment) -> None:
+    def critical_error_assertion(element) -> None:
         """Assertion that raises unexpected error."""
         raise RuntimeError("Unexpected critical error")
 
@@ -181,7 +164,7 @@ def test_error_handling_does_not_crash_rendering() -> None:
 
     # Verify rendering completed successfully
     assert result is not None
-    element = _get_element(result)
+    element = result
 
     # Verify error badge was rendered with "Critical error:" prefix
     all_spans = query_all_by_tag_name(element, "span")
@@ -195,7 +178,6 @@ def test_error_handling_does_not_crash_rendering() -> None:
     assert "Critical error:" in badge_title
     assert "Unexpected critical error" in badge_title
 
-
 def test_multiple_assertions_in_single_story() -> None:
     """Test multiple assertions execute correctly in sequence."""
 
@@ -204,15 +186,15 @@ def test_multiple_assertions_in_single_story() -> None:
 
     execution_order = []
 
-    def assertion1(element: Element | Fragment) -> None:
+    def assertion1(element) -> None:
         execution_order.append(1)
         assert element is not None
 
-    def assertion2(element: Element | Fragment) -> None:
+    def assertion2(element) -> None:
         execution_order.append(2)
         assert element is not None
 
-    def assertion3(element: Element | Fragment) -> None:
+    def assertion3(element) -> None:
         execution_order.append(3)
         assert element is not None
 
@@ -233,13 +215,12 @@ def test_multiple_assertions_in_single_story() -> None:
     assert execution_order == [1, 2, 3]
 
     # Verify all badges rendered
-    element = _get_element(result)
+    element = result
     all_spans = query_all_by_tag_name(element, "span")
     badge_spans = [
         span for span in all_spans if "Assertion" in get_text_content(span)
     ]
     assert len(badge_spans) == 3
-
 
 def test_mixed_pass_fail_assertions_in_single_story() -> None:
     """Test story with both passing and failing assertions."""
@@ -247,16 +228,16 @@ def test_mixed_pass_fail_assertions_in_single_story() -> None:
     def simple_component():
         return html(t"<div>Test</div>")
 
-    def pass1(element: Element | Fragment) -> None:
+    def pass1(element) -> None:
         assert element is not None
 
-    def fail1(element: Element | Fragment) -> None:
+    def fail1(element) -> None:
         raise AssertionError("Fail 1")
 
-    def pass2(element: Element | Fragment) -> None:
+    def pass2(element) -> None:
         assert element is not None
 
-    def fail2(element: Element | Fragment) -> None:
+    def fail2(element) -> None:
         raise AssertionError("Fail 2")
 
     site = Site(title="Test Site")
@@ -273,7 +254,7 @@ def test_mixed_pass_fail_assertions_in_single_story() -> None:
     result = view()
 
     # Verify all 4 badges rendered
-    element = _get_element(result)
+    element = result
     all_spans = query_all_by_tag_name(element, "span")
     badge_spans = [
         span for span in all_spans if "Assertion" in get_text_content(span)

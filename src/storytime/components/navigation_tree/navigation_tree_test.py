@@ -1,27 +1,10 @@
 """Tests for NavigationTree component."""
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node
-
 from storytime.components.navigation_tree import NavigationTree
 from storytime.section import Section
 from storytime.story import Story
 from storytime.subject import Subject
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the nav element
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    # Type guard - we know result is an Element if not Fragment
-    if not isinstance(result, Element):
-        raise ValueError("Result is not an Element or Fragment")
-    return result
-
 
 def test_renders_three_level_hierarchy():
     """NavigationTree renders sections, subjects, and stories."""
@@ -37,10 +20,9 @@ def test_renders_three_level_hierarchy():
     tree = NavigationTree(sections=sections, current_path=None)
     result = tree()
 
-    # Extract element from result
-    nav = _get_element(result)
-    assert isinstance(nav, Element)
-    assert nav.tag == "nav"
+    # Find the nav element (handles both Element and Fragment)
+    nav = get_by_tag_name(result, "nav")
+    assert nav is not None
 
     # Should have section details with summary
     details_list = query_all_by_tag_name(result, "details")
@@ -56,7 +38,6 @@ def test_renders_three_level_hierarchy():
     assert len(links) >= 1
     assert get_text_content(links[0]) == "Primary Button"
 
-
 def test_details_elements_use_correct_structure():
     """Sections and subjects use details/summary elements."""
     section = Section(name="layout", title="Layout")
@@ -69,9 +50,6 @@ def test_details_elements_use_correct_structure():
 
     tree = NavigationTree(sections=sections, current_path=None)
     result = tree()
-
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
 
     # Should have details elements (section + subject = 2)
     details_list = query_all_by_tag_name(result, "details")
@@ -88,7 +66,6 @@ def test_details_elements_use_correct_structure():
     link = get_by_tag_name(result, "a")
     assert get_text_content(link) == "Basic Grid"
 
-
 def test_current_path_controls_open_attribute():
     """Only the current path's ancestors have open attribute."""
     section = Section(name="forms", title="Forms")
@@ -103,9 +80,6 @@ def test_current_path_controls_open_attribute():
     tree = NavigationTree(sections=sections, current_path="forms/inputs")
     result = tree()
 
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
-
     # Section details should have 'open' attribute
     details_list = query_all_by_tag_name(result, "details")
     section_details = details_list[0]  # First details is the section
@@ -114,7 +88,6 @@ def test_current_path_controls_open_attribute():
     # Subject details should also have 'open' attribute
     subject_details = details_list[1]  # Second details is the subject
     assert subject_details.attrs.get("open") == "open"
-
 
 def test_all_details_closed_when_current_path_none():
     """When current_path is None, all details are closed by default."""
@@ -129,14 +102,10 @@ def test_all_details_closed_when_current_path_none():
     tree = NavigationTree(sections=sections, current_path=None)
     result = tree()
 
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
-
     # All details should NOT have 'open' attribute
     details_list = query_all_by_tag_name(result, "details")
     for details in details_list:
         assert details.attrs.get("open") is None
-
 
 def test_stories_render_as_simple_links():
     """Stories are simple li/a elements, not collapsible."""
@@ -152,9 +121,6 @@ def test_stories_render_as_simple_links():
     tree = NavigationTree(sections=sections, current_path=None)
     result = tree()
 
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
-
     # Should have exactly 2 details elements (1 section + 1 subject)
     # Stories should NOT add details elements
     details_list = query_all_by_tag_name(result, "details")
@@ -166,7 +132,6 @@ def test_stories_render_as_simple_links():
     link_texts = [get_text_content(link) for link in links]
     assert "Dropdown Menu" in link_texts
     assert "Sidebar Menu" in link_texts
-
 
 def test_section_open_when_current_path_starts_with_section_name():
     """Section gets open attribute if current_path starts with section name."""
@@ -182,9 +147,6 @@ def test_section_open_when_current_path_starts_with_section_name():
     tree = NavigationTree(sections=sections, current_path="sec1/subj1")
     result = tree()
 
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
-
     # Get all details elements
     details_list = query_all_by_tag_name(result, "details")
 
@@ -197,7 +159,6 @@ def test_section_open_when_current_path_starts_with_section_name():
     # They should be closed
     assert details_list[2].attrs.get("open") is None  # sec2
     assert details_list[3].attrs.get("open") is None  # subj2
-
 
 def test_subject_open_when_current_path_matches_section_subject():
     """Subject gets open attribute if current_path matches section/subject."""
@@ -214,9 +175,6 @@ def test_subject_open_when_current_path_matches_section_subject():
     tree = NavigationTree(sections=sections, current_path="components/buttons")
     result = tree()
 
-    # Verify result is an Element (or Fragment containing Element)
-    _get_element(result)
-
     # Get all details elements
     details_list = query_all_by_tag_name(result, "details")
 
@@ -228,7 +186,6 @@ def test_subject_open_when_current_path_matches_section_subject():
 
     # Second subject (inputs) should be closed
     assert details_list[2].attrs.get("open") is None
-
 
 def test_story_urls_use_index_html_format():
     """Story URLs should use /story-{idx}/index.html format, not /story-{idx}.html."""
@@ -250,7 +207,6 @@ def test_story_urls_use_index_html_format():
 
     # Verify URL format is /section/subject/story-0/index.html
     assert link.attrs.get("href") == "/components/heading/story-0/index.html"
-
 
 def test_multiple_stories_have_correct_url_indices():
     """Multiple stories should have incrementing indices in their URLs."""
@@ -275,7 +231,6 @@ def test_multiple_stories_have_correct_url_indices():
     assert links[0].attrs.get("href") == "/components/button/story-0/index.html"
     assert links[1].attrs.get("href") == "/components/button/story-1/index.html"
     assert links[2].attrs.get("href") == "/components/button/story-2/index.html"
-
 
 def test_story_urls_use_section_and_subject_names():
     """Story URLs should incorporate section and subject names."""

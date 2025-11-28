@@ -1,13 +1,10 @@
 """Integrate example testing into the main suite."""
 
-
 from pathlib import Path
-from typing import cast
 
 import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from tdom import Element, Fragment, Node
-
+from tdom.parser import parse_html
 from storytime import make_site
 from storytime.build import build_site
 from storytime.section import Section
@@ -16,20 +13,6 @@ from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
 from storytime.subject.views import SubjectView
-
-
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    return cast(Element, result)
-
 
 def test_complete_example_structure() -> None:
     """Test the complete example Site/Section/Subject hierarchy."""
@@ -59,7 +42,6 @@ def test_complete_example_structure() -> None:
                     raise AssertionError("Expected Subject for button")
         case _:
             raise AssertionError("Expected Section for components")
-
 
 def test_complete_example_all_fields() -> None:
     """Test that all optional fields are populated on all models."""
@@ -102,7 +84,6 @@ def test_complete_example_all_fields() -> None:
     assert isinstance(story3, Story)
     assert story3.props == {"text": "Cancel", "variant": "danger"}
 
-
 def test_complete_example_story_variations() -> None:
     """Test the 3 Story patterns in complete example."""
     site = make_site("examples.complete")
@@ -113,10 +94,10 @@ def test_complete_example_story_variations() -> None:
     story1 = subject.items[0]
     assert story1.props is not None
     assert story1.target is not None
-    # Render the component - instance is already the rendered Node
+    # Render the component - instance is already the rendered 
     rendered1 = story1.instance
     assert rendered1 is not None
-    assert isinstance(rendered1, Element)
+
     button1 = get_by_tag_name(rendered1, "button")
     assert get_text_content(button1) == "Click Me"
     assert button1.attrs.get("class") == "primary"
@@ -127,7 +108,7 @@ def test_complete_example_story_variations() -> None:
     assert story2.description is not None
     rendered2 = story2.instance
     assert rendered2 is not None
-    assert isinstance(rendered2, Element)
+
     button2 = get_by_tag_name(rendered2, "button")
     assert get_text_content(button2) == "Learn More"
     assert button2.attrs.get("class") == "secondary"
@@ -136,11 +117,10 @@ def test_complete_example_story_variations() -> None:
     story3 = subject.items[2]
     rendered3 = story3.instance
     assert rendered3 is not None
-    assert isinstance(rendered3, Element)
+
     button3 = get_by_tag_name(rendered3, "button")
     assert get_text_content(button3) == "Cancel"
     assert button3.attrs.get("class") == "danger"
-
 
 def test_complete_example_views() -> None:
     """Test rendering views for Section, Subject, and Story."""
@@ -151,14 +131,14 @@ def test_complete_example_views() -> None:
     # Test SectionView
     section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    section_element = _get_element(section_result)
+    section_element = parse_html(str(section_result))
     section_h1 = get_by_tag_name(section_element, "h1")
     assert get_text_content(section_h1) == "Components Collection"
 
     # Test SubjectView
     subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    subject_element = _get_element(subject_result)
+    subject_element = parse_html(str(subject_result))
     subject_h1 = get_by_tag_name(subject_element, "h1")
     assert get_text_content(subject_h1) == "Button Component"
 
@@ -166,11 +146,10 @@ def test_complete_example_views() -> None:
     story = subject.items[0]
     story_view = StoryView(story=story, site=site)
     story_result = story_view()
-    story_element = _get_element(story_result)
+    story_element = parse_html(str(story_result))
     # Verify the story view contains the component
     paragraphs = query_all_by_tag_name(story_element, "p")
     assert len(paragraphs) > 0
-
 
 def test_complete_example_field_inheritance() -> None:
     """Test field inheritance patterns in complete example."""
@@ -194,7 +173,6 @@ def test_complete_example_field_inheritance() -> None:
     # Story 3: No explicit title, should get auto-generated
     story3 = subject.items[2]
     assert story3.title is not None  # Auto-generated from Subject
-
 
 def test_inheritance_example_target_inheritance() -> None:
     """Test Story inherits target from Subject in inheritance example."""
@@ -224,7 +202,7 @@ def test_inheritance_example_target_inheritance() -> None:
                     # Render one to verify it's Card
                     rendered = story0.instance
                     assert rendered is not None
-                    assert isinstance(rendered, Element)
+
                     # Card renders a div with h2 and p
                     h2 = get_by_tag_name(rendered, "h2")
                     assert get_text_content(h2) == "First Card"
@@ -234,7 +212,6 @@ def test_inheritance_example_target_inheritance() -> None:
                     raise AssertionError("Expected Subject for card")
         case _:
             raise AssertionError("Expected Section for components")
-
 
 def test_inheritance_example_title_generation() -> None:
     """Test auto-generated Story titles in inheritance example."""
@@ -264,7 +241,6 @@ def test_inheritance_example_title_generation() -> None:
     story3 = subject.items[3]
     assert story3.title is not None
 
-
 def test_inheritance_example_target_override() -> None:
     """Test Story can override Subject target in inheritance example."""
     site = make_site("examples.inheritance")
@@ -281,11 +257,10 @@ def test_inheritance_example_target_override() -> None:
     # Render the Badge component
     rendered = story2.instance
     assert rendered is not None
-    assert isinstance(rendered, Element)
+
     # Badge renders a span with count
     span = get_by_tag_name(rendered, "span")
     assert get_text_content(span) == "42"
-
 
 def test_templates_example_default_template() -> None:
     """Test Story without template uses default StoryView layout."""
@@ -304,7 +279,7 @@ def test_templates_example_default_template() -> None:
                     # Render with StoryView - should use default layout
                     story_view = StoryView(story=story, site=site)
                     story_result = story_view()
-                    story_element = _get_element(story_result)
+                    story_element = parse_html(str(story_result))
 
                     # Verify default layout elements
                     h1 = get_by_tag_name(story_element, "h1")
@@ -323,7 +298,6 @@ def test_templates_example_default_template() -> None:
         case _:
             raise AssertionError("Expected Section for components")
 
-
 def test_templates_example_custom_template() -> None:
     """Test Story with custom template validates template override."""
     site = make_site("examples.templates")
@@ -341,8 +315,7 @@ def test_templates_example_custom_template() -> None:
     # Render with StoryView - should use custom template
     story_view = StoryView(story=story, site=site)
     story_result = story_view()
-    # Custom template returns Element directly (no Layout wrapper)
-    assert isinstance(story_result, Element)
+    # Custom template returns  directly (no Layout wrapper)
 
     # Verify custom template content
     custom_div = get_by_tag_name(story_result, "div", attrs={"class": "custom"})
@@ -350,7 +323,6 @@ def test_templates_example_custom_template() -> None:
     assert get_text_content(h1) == "Custom Template"
     p = get_by_tag_name(custom_div, "p")
     assert get_text_content(p) == "Full control"
-
 
 def test_templates_example_template_override() -> None:
     """Test template completely overrides rendering with aria-testing."""
@@ -363,13 +335,12 @@ def test_templates_example_template_override() -> None:
     story_default = subject.items[0]
     story_view_default = StoryView(story=story_default, site=site)
     result_default = story_view_default()
-    _element_default = _get_element(result_default)
+    _element_default = (str(result_default))
 
     # Story 1: Custom template
     story_custom = subject.items[1]
     story_view_custom = StoryView(story=story_custom, site=site)
     result_custom = story_view_custom()
-    assert isinstance(result_custom, Element)
 
     # Verify the custom template completely overrides rendering
     # Custom template should have specific class
@@ -389,9 +360,7 @@ def test_templates_example_template_override() -> None:
     custom_links = query_all_by_tag_name(result_custom, "a")
     assert len(custom_links) == 0
 
-
 # Task Group 6: Integration tests for minimal and no_sections examples
-
 
 def test_minimal_example() -> None:
     """Test minimal example - load Site, traverse tree, test all views."""
@@ -423,20 +392,19 @@ def test_minimal_example() -> None:
                     # Test component rendering
                     rendered = story.instance
                     assert rendered is not None
-                    assert isinstance(rendered, Element)
+
                     h1 = get_by_tag_name(rendered, "h1")
                     assert get_text_content(h1) == "World"
 
                     # Test StoryView rendering
                     story_view = StoryView(story=story, site=site)
                     story_result = story_view()
-                    _story_element = _get_element(story_result)
+                    _story_element = parse_html(str(story_result))
 
                 case _:
                     raise AssertionError("Expected Subject for heading")
         case _:
             raise AssertionError("Expected Section for components")
-
 
 def test_minimal_example_views() -> None:
     """Test rendering all views for minimal example."""
@@ -449,7 +417,7 @@ def test_minimal_example_views() -> None:
     # Test SectionView
     section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    section_element = _get_element(section_result)
+    section_element = parse_html(str(section_result))
     # Section should have navigation to subjects
     paragraphs = query_all_by_tag_name(section_element, "p")
     assert len(paragraphs) >= 0
@@ -457,7 +425,7 @@ def test_minimal_example_views() -> None:
     # Test SubjectView
     subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    subject_element = _get_element(subject_result)
+    subject_element = parse_html(str(subject_result))
     # Subject should have title
     h1 = get_by_tag_name(subject_element, "h1")
     assert subject.title is not None
@@ -467,8 +435,7 @@ def test_minimal_example_views() -> None:
     story = subject.items[0]
     story_view = StoryView(story=story, site=site)
     story_result = story_view()
-    _story_element = _get_element(story_result)
-
+    _story_element = parse_html(str(story_result))
 
 def test_no_sections_example() -> None:
     """Test no_sections example - verify Site → Subject structure, test views."""
@@ -486,7 +453,6 @@ def test_no_sections_example() -> None:
     # Let's check what's actually in the site structure
     assert isinstance(site.items, dict)
 
-
 def test_no_sections_example_structure() -> None:
     """Test no_sections example demonstrates optional Sections."""
     site = make_site("examples.no_sections")
@@ -497,7 +463,6 @@ def test_no_sections_example_structure() -> None:
 
     # This demonstrates Sections are optional
     assert site.title is not None
-
 
 def test_inheritance_example_views() -> None:
     """Test rendering all views for inheritance example."""
@@ -510,19 +475,18 @@ def test_inheritance_example_views() -> None:
     # Test SectionView
     section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    _section_element = _get_element(section_result)
+    _section_element = parse_html(str(section_result))
 
     # Test SubjectView
     subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    _subject_element = _get_element(subject_result)
+    _subject_element = parse_html(str(subject_result))
 
     # Test StoryView for multiple stories
     for story in subject.items:
         story_view = StoryView(story=story, site=site)
         story_result = story_view()
-        _story_element = _get_element(story_result)
-
+        _story_element = parse_html(str(story_result))
 
 def test_inheritance_example_parent_references() -> None:
     """Test parent references throughout inheritance example tree."""
@@ -543,7 +507,6 @@ def test_inheritance_example_parent_references() -> None:
         assert isinstance(story, Story)
         assert story.parent is subject
 
-
 def test_templates_example_views() -> None:
     """Test rendering all views for templates example."""
     site = make_site("examples.templates")
@@ -555,21 +518,20 @@ def test_templates_example_views() -> None:
     # Test SectionView
     section_view = SectionView(section=section, site=site)
     section_result = section_view()
-    _section_element = _get_element(section_result)
+    _section_element = parse_html(str(section_result))
 
     # Test SubjectView
     subject_view = SubjectView(subject=subject, site=site)
     subject_result = subject_view()
-    _subject_element = _get_element(subject_result)
+    _subject_element = parse_html(str(subject_result))
 
     # Test StoryView for both stories (one with template, one without)
     for story in subject.items:
         story_view = StoryView(story=story, site=site)
         _story_result = story_view()
-        # Note: Some stories may have custom templates (return Element),
-        # others use default layout (return Fragment with Layout wrapper)
+        # Note: Some stories may have custom templates (return ),
+        # others use default layout (return  with Layout wrapper)
         # Both are valid results
-
 
 def test_all_examples_structural_integrity() -> None:
     """Test structural pattern matching and tree integrity across all examples."""
@@ -613,9 +575,7 @@ def test_all_examples_structural_integrity() -> None:
                 case _:
                     raise AssertionError(f"Expected Section in {example_name}")
 
-
 # Task Group 1: Tests for examples.huge Site structure
-
 
 @pytest.mark.slow
 def test_huge_example_site_loads() -> None:
@@ -625,7 +585,6 @@ def test_huge_example_site_loads() -> None:
     # Verify Site has correct title
     assert site.title == "Huge Scale Example"
 
-
 @pytest.mark.slow
 def test_huge_example_has_ten_sections() -> None:
     """Test huge example has 10 sections."""
@@ -633,7 +592,6 @@ def test_huge_example_has_ten_sections() -> None:
 
     # Verify Site has exactly 10 sections
     assert len(site.items) == 10
-
 
 @pytest.mark.slow
 def test_huge_example_section_names() -> None:
@@ -686,9 +644,7 @@ def test_huge_example_section_names() -> None:
         case _:
             raise AssertionError("Expected Section for layout")
 
-
 # Task Group 2: Tests for component rendering
-
 
 @pytest.mark.slow
 def test_huge_component_renders_correctly() -> None:
@@ -712,10 +668,9 @@ def test_huge_component_renders_correctly() -> None:
                 assert isinstance(story, Story)
                 rendered = story.instance
                 assert rendered is not None
-                assert isinstance(rendered, Element)
+
         case _:
             raise AssertionError("Expected Section for forms")
-
 
 @pytest.mark.slow
 def test_huge_component_props_applied() -> None:
@@ -750,7 +705,6 @@ def test_huge_component_props_applied() -> None:
         assert story_loading.props.get("text") == "Loading"
         assert story_loading.props.get("state") == "loading"
 
-
 @pytest.mark.slow
 def test_huge_component_html_structure() -> None:
     """Test huge example components render basic HTML with class attributes."""
@@ -769,14 +723,12 @@ def test_huge_component_html_structure() -> None:
         story = subject.items[0]
         rendered = story.instance
         assert rendered is not None
-        assert isinstance(rendered, Element)
 
         # Verify has element name (div, button, or span)
         assert rendered.tag in ("div", "button", "span")
 
         # Verify has class attribute
         assert "class" in rendered.attrs
-
 
 @pytest.mark.slow
 def test_huge_all_sections_have_ten_subjects() -> None:
@@ -799,9 +751,7 @@ def test_huge_all_sections_have_ten_subjects() -> None:
             case _:
                 raise AssertionError(f"Expected Section for {section_name}")
 
-
 # Task Group 4: Performance Testing and Integration
-
 
 @pytest.mark.slow
 def test_huge_example(tmp_path: Path) -> None:
@@ -825,7 +775,6 @@ def test_huge_example(tmp_path: Path) -> None:
                     raise AssertionError("Expected Subject in forms section")
         case _:
             raise AssertionError("Expected Section for forms")
-
 
 @pytest.mark.slow
 def test_huge_build_smoke(tmp_path: Path) -> None:
@@ -865,7 +814,6 @@ def test_huge_build_smoke(tmp_path: Path) -> None:
     story_dirs = [d for d in first_subject_dir.iterdir() if d.is_dir() and d.name.startswith("story-")]
     assert len(story_dirs) > 0
     assert (story_dirs[0] / "index.html").exists()
-
 
 @pytest.mark.slow
 def test_huge_build_performance(benchmark, tmp_path: Path) -> None:

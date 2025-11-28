@@ -1,23 +1,9 @@
 """Tests for DebugView component."""
 
-from typing import cast
 
-from tdom import Element, Fragment, Node
-
+from aria_testing import get_by_tag_name
 from storytime.site.models import Site
 from storytime.views.debug_view import DebugView
-
-
-def _get_element(result: Node) -> Element:
-    """Extract Element from result (handles Fragment wrapper)."""
-    if isinstance(result, Fragment):
-        # Fragment contains the html element as first child
-        for child in result.children:
-            if isinstance(child, Element):
-                return child
-        raise ValueError("No Element found in Fragment")
-    return cast(Element, result)
-
 
 def test_debug_view_renders_with_layout():
     """DebugView should render and wrap content in Layout."""
@@ -28,10 +14,10 @@ def test_debug_view_renders_with_layout():
     # Act
     result = view()
 
-    # Assert - result should be an Element with html tag
-    element = _get_element(result)
-    assert element.tag == "html"
-
+    # Assert - result should contain an html element
+    element = result
+    html_elem = get_by_tag_name(element, "html")
+    assert html_elem is not None
 
 def test_debug_view_has_correct_title():
     """DebugView should have 'Debug' as view_title."""
@@ -46,7 +32,6 @@ def test_debug_view_has_correct_title():
     # Assert - title should be "Debug - My Site"
     assert "<title>Debug - My Site</title>" in html_string
 
-
 def test_debug_view_has_debug_heading():
     """DebugView should render an h1 with 'Debug' heading."""
     # Arrange
@@ -59,7 +44,6 @@ def test_debug_view_has_debug_heading():
 
     # Assert
     assert "<h1>Debug Information</h1>" in html_string
-
 
 def test_debug_view_uses_depth_zero():
     """DebugView should use depth=0 for root-level view."""

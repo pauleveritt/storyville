@@ -16,9 +16,10 @@ logger = logging.getLogger(__name__)
 class StoryView:
     """View for rendering a Story with custom template or default layout.
 
-    This view implements dual rendering modes:
+    This view implements multiple rendering modes:
     - Mode A (Custom Template): When story.template is not None, uses it for ALL rendering
     - Mode B (Default Layout): When story.template is None, renders a complete default layout
+    - Mode C (Themed Iframe): When site.themed_layout is not None, wraps content in iframe
 
     The view satisfies the View Protocol by implementing __call__() -> Node.
     Tests use type guards to verify the result is an Element.
@@ -119,6 +120,42 @@ class StoryView:
 
         # Render badges as tdom Nodes
         badge_nodes = self._render_badges()
+
+        # Mode C: Themed iframe rendering (when themed_layout is configured)
+        if self.site.themed_layout is not None:
+            # Wrap story content in iframe pointing to ./themed_story.html
+            # Keep assertion badges in parent StoryView (not in iframe)
+            iframe_style = "width: 100%; min-height: 600px; border: 1px solid #ccc;"
+
+            if badge_nodes:
+                # Header with badges and iframe
+                return html(t"""\
+<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<div>
+<div class="story-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+  <div class="story-header-left">
+    <h1>{self.story.title}</h1>
+  </div>
+  <div class="story-header-right" style="display: flex; align-items: center; flex-wrap: wrap;">
+    {badge_nodes}
+  </div>
+</div>
+<p>Props: <code>{str(self.story.props)}</code></p>
+<iframe src="./themed_story.html" style="{iframe_style}"></iframe>
+<a href="..">Parent</a>
+</div>
+</{Layout}>""")
+            else:
+                # Header without badges and iframe
+                return html(t"""\
+<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<div>
+<h1>{self.story.title}</h1>
+<p>Props: <code>{str(self.story.props)}</code></p>
+<iframe src="./themed_story.html" style="{iframe_style}"></iframe>
+<a href="..">Parent</a>
+</div>
+</{Layout}>""")
 
         # Mode B: Default layout rendering wrapped with Layout (depth=2 for story pages)
         # Use flexbox for header layout with title on left, badges on right

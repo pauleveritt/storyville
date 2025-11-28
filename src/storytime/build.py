@@ -5,6 +5,7 @@ from pathlib import Path
 from shutil import copytree, rmtree
 from time import perf_counter
 
+from storytime.components.themed_story import ThemedStory
 from storytime.section.views import SectionView
 from storytime.site.views import SiteView
 from storytime.stories import make_site
@@ -88,6 +89,7 @@ def build_site(
     rendered_sections = []
     rendered_subjects = []
     rendered_stories = []
+    rendered_themed_stories = []
 
     for section_key, section in site.items.items():
         # Render section index page and convert to string
@@ -118,6 +120,18 @@ def build_site(
                 )
                 rendered_stories.append((section_key, subject_key, story_idx, story_view))
 
+                # Render themed story if site has themed_layout configured
+                if site.themed_layout is not None and story.instance is not None:
+                    themed_story = ThemedStory(
+                        story_title=story.title or "Untitled Story",
+                        children=story.instance,
+                        site=site
+                    )
+                    themed_story_html = str(themed_story())
+                    rendered_themed_stories.append(
+                        (section_key, subject_key, story_idx, themed_story_html)
+                    )
+
     end_rendering = perf_counter()
     rendering_duration = end_rendering - start_rendering
     logger.info(f"Phase Rendering: completed in {rendering_duration:.2f}s")
@@ -147,6 +161,13 @@ def build_site(
         subject_dir = section_dir / subject_key
         story_dir = subject_dir / f"story-{story_idx}"
         _write_html(story_view, story_dir / "index.html")
+
+    # Write themed stories
+    for section_key, subject_key, story_idx, themed_story_html in rendered_themed_stories:
+        section_dir = output_dir / section_key
+        subject_dir = section_dir / subject_key
+        story_dir = subject_dir / f"story-{story_idx}"
+        _write_html(themed_story_html, story_dir / "themed_story.html")
 
     # Copy static assets from layout to output/static
     if site.static_dir:
