@@ -30,15 +30,11 @@ __all__ = [
 
 def copy_all_static_assets(
     storytime_base: Path, input_dir: Path, output_dir: Path
-) -> list[Path]:
-    """Discover and copy all static assets from both sources to output directory.
+) -> int:
+    """Discover and copy all static assets to a single static/ directory.
 
-    This function:
-    1. Discovers static folders from storytime core (src/storytime)
-    2. Discovers static folders from input directory
-    3. Validates for collisions (should never happen due to path preservation)
-    4. Copies all discovered static folders to appropriate output locations
-    5. Returns list of output paths for verification
+    Simplified approach: All static folders (from storytime and input_dir)
+    copy their contents into output_dir/static/. Collisions are acceptable.
 
     Args:
         storytime_base: Path to storytime installation (e.g., src/storytime)
@@ -46,32 +42,33 @@ def copy_all_static_assets(
         output_dir: Path to output directory for built site
 
     Returns:
-        List of output paths where static folders were copied
+        Number of static files copied
 
     Example:
         >>> from pathlib import Path
-        >>> output_paths = copy_all_static_assets(
+        >>> count = copy_all_static_assets(
         ...     Path("src/storytime"),
         ...     Path("examples/minimal"),
         ...     Path("output")
         ... )
-        >>> print(output_paths)
-        [Path('output/storytime_static/...'), Path('output/static/...')]
+        >>> print(f"Copied {count} static files")
     """
+    import shutil
+
+    # Create single static output directory
+    static_out = output_dir / "static"
+    static_out.mkdir(parents=True, exist_ok=True)
+
     # Discover from both sources
     storytime_folders = discover_static_folders(storytime_base, "storytime")
     input_folders = discover_static_folders(input_dir, "input_dir")
 
-    # Combine all folders
-    all_folders = storytime_folders + input_folders
+    # Copy all files to single static/ directory
+    file_count = 0
+    for static_folder in storytime_folders + input_folders:
+        for file_path in static_folder.source_path.rglob("*"):
+            if file_path.is_file():
+                shutil.copy2(file_path, static_out / file_path.name)
+                file_count += 1
 
-    # Validate for collisions (should never happen but good to check)
-    validate_no_collisions(all_folders)
-
-    # Copy all folders and collect output paths
-    output_paths: list[Path] = []
-    for static_folder in all_folders:
-        copy_static_folder(static_folder, output_dir)
-        output_paths.append(static_folder.calculate_output_path(output_dir))
-
-    return output_paths
+    return file_count

@@ -55,5 +55,5 @@ def test_about_view_uses_depth_zero():
     result = view()
     html_string = str(result)
 
-    # Assert - depth=0 means ../storytime_static/ for CSS paths
-    assert '../storytime_static/components/layout/static/pico-main.css' in html_string
+    # Assert - depth=0 means ../static/ for CSS paths
+    assert '../static/pico-main.css' in html_string

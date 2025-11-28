@@ -9,6 +9,7 @@ from storytime.components.footer.footer import LayoutFooter
 from storytime.components.header.header import LayoutHeader
 from storytime.components.main.main import LayoutMain
 from storytime.site.models import Site
+from storytime.utils import rewrite_static_paths
 
 
 @dataclass
@@ -38,30 +39,20 @@ class Layout:
         else:
             title_text = self.site.title
 
-        # Calculate relative path to static assets based on depth
-        # Static assets from layout component use storytime_static/ prefix
-        # depth=0: site root or section ({section}/index.html) -> ../storytime_static/
-        # depth=1: subject ({section}/{subject}/index.html) -> ../../storytime_static/
-        # depth=2: story ({section}/{subject}/story-{idx}/index.html) -> ../../../storytime_static/
-        static_prefix = "../" * (self.depth + 1)
-        stylesheet_path = f"{static_prefix}storytime_static/components/layout/static/pico-main.css"
-        pico_docs_path = f"{static_prefix}storytime_static/components/layout/static/pico-docs.css"
-        storytime_css_path = f"{static_prefix}storytime_static/components/layout/static/storytime.css"
-        ws_script_path = f"{static_prefix}storytime_static/components/layout/static/ws.js"
-        favicon_path = f"{static_prefix}storytime_static/components/layout/static/favicon.svg"
-
-        return html(t'''\
+        # Use paths relative to this component file
+        # static/ refers to the static folder next to layout.py
+        result = html(t'''\
 <!DOCTYPE html>
 <html lang="EN">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title_text}</title>
-    <link rel="icon" type="image/svg+xml" href="{favicon_path}" />
-    <link rel="stylesheet" href="{stylesheet_path}" />
-    <link rel="stylesheet" href="{pico_docs_path}" />
-    <link rel="stylesheet" href="{storytime_css_path}" />
-    <script src="{ws_script_path}"></script>
+    <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
+    <link rel="stylesheet" href="static/pico-main.css" />
+    <link rel="stylesheet" href="static/pico-docs.css" />
+    <link rel="stylesheet" href="static/storytime.css" />
+    <script src="static/ws.js"></script>
 </head>
 <body>
 <{LayoutHeader} site_title={self.site.title} depth={self.depth} />
@@ -71,3 +62,6 @@ class Layout:
 </body>
 </html>
 ''')
+
+        # Rewrite static/ paths to be relative to page location
+        return rewrite_static_paths(result, depth=self.depth)

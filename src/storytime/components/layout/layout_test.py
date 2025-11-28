@@ -229,7 +229,7 @@ def test_layout_with_empty_sections_dict() -> None:
     assert "Sections" in aside_text
 
 def test_layout_depth_boundary_at_depth_3() -> None:
-    """Test Layout handles depth=3 correctly (nested story pages)."""
+    """Test Layout adds correct depth prefix at depth=3."""
     site = Site(title="Test Site")
     layout = Layout(
         view_title="Nested Story",
@@ -240,7 +240,7 @@ def test_layout_depth_boundary_at_depth_3() -> None:
     result = layout()
     element = result
 
-    # Verify script path calculation at depth=3
+    # Verify script path has correct depth prefix
     script_tags = query_all_by_tag_name(element, "script")
     ws_script = None
     for script in script_tags:
@@ -250,8 +250,8 @@ def test_layout_depth_boundary_at_depth_3() -> None:
             break
 
     assert ws_script is not None, "Should have ws.js script tag"
-    # At depth=3: ../../../../storytime_static/components/layout/static/ws.js
-    assert ws_script.attrs["src"] == "../../../../storytime_static/components/layout/static/ws.js"
+    # depth=3 means ../../../../static/ws.js
+    assert ws_script.attrs["src"] == "../../../../static/ws.js"
 
 def test_layout_cached_navigation_with_empty_sections() -> None:
     """Test Layout with cached_navigation and empty sections dict."""
@@ -275,7 +275,7 @@ def test_layout_cached_navigation_with_empty_sections() -> None:
     assert "Sections" in aside_text
 
 def test_layout_stylesheet_paths_at_depth_2() -> None:
-    """Test Layout calculates all stylesheet paths correctly at depth=2."""
+    """Test Layout calculates stylesheet paths with correct depth prefix."""
     site = Site(title="Test Site")
     layout = Layout(view_title="Subject Page", site=site, children=None, depth=2)
     result = layout()
@@ -293,14 +293,14 @@ def test_layout_stylesheet_paths_at_depth_2() -> None:
             if href:
                 stylesheet_hrefs.append(href)
 
-    # At depth=2, all static assets should have ../../../storytime_static/ prefix
-    assert any("../../../storytime_static/components/layout/static/pico-main.css" in href for href in stylesheet_hrefs), \
+    # depth=2 means ../../../static/
+    assert any("../../../static/pico-main.css" in href for href in stylesheet_hrefs), \
         "pico-main.css should have correct depth prefix"
-    assert any("../../../storytime_static/components/layout/static/storytime.css" in href for href in stylesheet_hrefs), \
+    assert any("../../../static/storytime.css" in href for href in stylesheet_hrefs), \
         "storytime.css should have correct depth prefix"
 
 def test_layout_favicon_path_at_depth_1() -> None:
-    """Test Layout calculates favicon path correctly at depth=1."""
+    """Test Layout calculates favicon path with correct depth prefix."""
     site = Site(title="Test Site")
     layout = Layout(view_title="Section Page", site=site, children=None, depth=1)
     result = layout()
@@ -318,11 +318,11 @@ def test_layout_favicon_path_at_depth_1() -> None:
             break
 
     assert favicon_link is not None, "Should have favicon link"
-    # At depth=1: ../../storytime_static/components/layout/static/favicon.svg
-    assert favicon_link.attrs["href"] == "../../storytime_static/components/layout/static/favicon.svg"
+    # depth=1 means ../../static/favicon.svg
+    assert favicon_link.attrs["href"] == "../../static/favicon.svg"
 
 def test_layout_all_static_assets_use_same_depth_prefix() -> None:
-    """Test Layout ensures all static assets use consistent depth-based prefix."""
+    """Test Layout uses consistent depth prefix for all static assets."""
     site = Site(title="Test Site")
     layout = Layout(view_title="Test", site=site, children=None, depth=1)
     result = layout()
@@ -345,8 +345,8 @@ def test_layout_all_static_assets_use_same_depth_prefix() -> None:
         if src and "static/" in src:
             static_paths.append(src)
 
-    # All paths should have the same depth prefix for depth=1
-    expected_prefix = "../../storytime_static/"
+    # All paths should use the same depth prefix (depth=1 means ../../static/)
+    expected_prefix = "../../static/"
     for path in static_paths:
         assert path.startswith(expected_prefix), \
             f"Static asset path {path} should start with {expected_prefix}"

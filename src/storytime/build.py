@@ -190,8 +190,8 @@ def build_site(
     else:
         input_dir = Path(spec.origin).parent
 
-    # Copy all static assets from both sources
-    output_paths = copy_all_static_assets(
+    # Copy all static assets from both sources to single static/ directory
+    file_count = copy_all_static_assets(
         storytime_base=PACKAGE_DIR,
         input_dir=input_dir,
         output_dir=output_dir,
@@ -200,7 +200,7 @@ def build_site(
     end_static = perf_counter()
     static_duration = end_static - start_static
     logger.info(
-        f"Phase Static Assets: discovered and copied {len(output_paths)} folders "
+        f"Phase Static Assets: copied {file_count} files "
         f"in {static_duration:.2f}s"
     )
 
