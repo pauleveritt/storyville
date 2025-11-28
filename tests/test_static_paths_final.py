@@ -55,28 +55,22 @@ def test_end_to_end_both_sources_copied(
     output_dir.mkdir()
 
     # Copy all static assets from both sources
-    output_paths = copy_all_static_assets(
+    file_count = copy_all_static_assets(
         storytime_base=mock_storytime_static,
         input_dir=mock_input_static,
         output_dir=output_dir,
     )
 
-    # Verify both sources were processed
-    assert len(output_paths) == 2
+    # Verify correct number of files copied (4 total from both sources)
+    assert file_count == 4
 
-    # Verify storytime assets in storytime_static/
-    storytime_output = (
-        output_dir / "storytime_static" / "components" / "layout" / "static"
-    )
-    assert storytime_output.exists()
-    assert (storytime_output / "style.css").exists()
-    assert (storytime_output / "app.js").exists()
-
-    # Verify input_dir assets in static/
-    input_output = output_dir / "static" / "components" / "button" / "static"
-    assert input_output.exists()
-    assert (input_output / "button.css").exists()
-    assert (input_output / "icon.svg").exists()
+    # Verify all assets copied to single static/ directory with path preservation
+    static_output = output_dir / "static"
+    assert static_output.exists()
+    assert (static_output / "components" / "layout" / "static" / "style.css").exists()
+    assert (static_output / "components" / "layout" / "static" / "app.js").exists()
+    assert (static_output / "components" / "button" / "static" / "button.css").exists()
+    assert (static_output / "components" / "button" / "static" / "icon.svg").exists()
 
 
 def test_rewrite_static_paths_with_mixed_references(
@@ -274,17 +268,17 @@ def test_copy_multiple_static_folders_performance(tmp_path: Path) -> None:
 
     # Measure copy time
     start = time.perf_counter()
-    output_paths = copy_all_static_assets(
+    file_count = copy_all_static_assets(
         storytime_base=storytime_base,
         input_dir=input_dir,
         output_dir=output_dir,
     )
     duration = time.perf_counter() - start
 
-    # Verify all folders were copied
-    assert len(output_paths) == 20  # 10 components * 2 sources
+    # Verify all files were copied (10 components * 2 sources * 5 files = 100)
+    assert file_count == 100
 
-    # Performance assertion: should complete in under 1 second for 20 folders
+    # Performance assertion: should complete in under 1 second for 100 files
     assert duration < 1.0, f"Copying took {duration:.2f}s, expected < 1.0s"
 
 

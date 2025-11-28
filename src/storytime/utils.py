@@ -32,9 +32,20 @@ def rewrite_static_paths(node: Node, depth: int) -> Node:
                     attr_value = element.attrs[attr_name]
                     if isinstance(attr_value, str) and attr_value.startswith("static/"):
                         # Add ../ prefix based on depth
-                        # depth=0: ../static/file.css
-                        # depth=1: ../../static/file.css
-                        prefix = "../" * (depth + 1)
+                        # depth=0: static/file.css (no prefix)
+                        # depth=1: ../../static/file.css (up 2 levels to get to root from section/subject/)
+                        # For section pages at root (components/index.html), depth=0 but need ../
+                        # Wait, sections are at depth 0 too since they're at root level
+                        # The issue is: index.html is at root (depth 0) -> needs "static/"
+                        # components/index.html is ALSO at depth 0 (sections at root) -> needs "../static/"
+                        # components/heading/index.html is at depth 1 -> needs "../../static/"
+
+                        # Actually, for file-based paths:
+                        # - index.html (0 dirs deep) -> static/
+                        # - components/index.html (1 dir deep) -> ../static/
+                        # - components/heading/index.html (2 dirs deep) -> ../../static/
+                        # So we need ../ for each directory level, which IS depth
+                        prefix = "../" * depth if depth > 0 else ""
                         element.attrs[attr_name] = f"{prefix}{attr_value}"
 
         # Recursively process children

@@ -26,7 +26,7 @@ def test_build_in_subinterpreter_executes_successfully(tmp_path: Path) -> None:
         # Verify build outputs exist
         assert output_dir.exists()
         assert (output_dir / "index.html").exists()
-        assert (output_dir / "storytime_static").exists()
+        assert (output_dir / "static").exists()
 
     finally:
         shutdown_pool(pool)

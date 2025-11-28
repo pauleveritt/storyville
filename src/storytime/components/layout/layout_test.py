@@ -250,8 +250,8 @@ def test_layout_depth_boundary_at_depth_3() -> None:
             break
 
     assert ws_script is not None, "Should have ws.js script tag"
-    # depth=3 means ../../../../static/ws.js
-    assert ws_script.attrs["src"] == "../../../../static/ws.js"
+    # depth=3 means 3 directories deep = ../../../static/ws.js
+    assert ws_script.attrs["src"] == "../../../static/ws.js"
 
 def test_layout_cached_navigation_with_empty_sections() -> None:
     """Test Layout with cached_navigation and empty sections dict."""
@@ -293,10 +293,10 @@ def test_layout_stylesheet_paths_at_depth_2() -> None:
             if href:
                 stylesheet_hrefs.append(href)
 
-    # depth=2 means ../../../static/
-    assert any("../../../static/pico-main.css" in href for href in stylesheet_hrefs), \
+    # depth=2 means 2 directories deep = ../../static/
+    assert any("../../static/pico-main.css" in href for href in stylesheet_hrefs), \
         "pico-main.css should have correct depth prefix"
-    assert any("../../../static/storytime.css" in href for href in stylesheet_hrefs), \
+    assert any("../../static/storytime.css" in href for href in stylesheet_hrefs), \
         "storytime.css should have correct depth prefix"
 
 def test_layout_favicon_path_at_depth_1() -> None:
@@ -318,8 +318,8 @@ def test_layout_favicon_path_at_depth_1() -> None:
             break
 
     assert favicon_link is not None, "Should have favicon link"
-    # depth=1 means ../../static/favicon.svg
-    assert favicon_link.attrs["href"] == "../../static/favicon.svg"
+    # depth=1 means 1 directory deep, so ../static/favicon.svg
+    assert favicon_link.attrs["href"] == "../static/favicon.svg"
 
 def test_layout_all_static_assets_use_same_depth_prefix() -> None:
     """Test Layout uses consistent depth prefix for all static assets."""
@@ -345,8 +345,8 @@ def test_layout_all_static_assets_use_same_depth_prefix() -> None:
         if src and "static/" in src:
             static_paths.append(src)
 
-    # All paths should use the same depth prefix (depth=1 means ../../static/)
-    expected_prefix = "../../static/"
+    # All paths should use the same depth prefix (depth=1 means 1 dir deep = ../static/)
+    expected_prefix = "../static/"
     for path in static_paths:
         assert path.startswith(expected_prefix), \
             f"Static asset path {path} should start with {expected_prefix}"

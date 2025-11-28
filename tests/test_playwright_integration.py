@@ -289,3 +289,66 @@ def test_story_page_layout_elements_visible(page: Page, built_site: Path) -> Non
     # Verify main contains story content
     story_content = main.locator("section")
     expect(story_content).to_be_visible()
+
+
+@pytest.mark.slow
+@pytest.mark.playwright
+def test_static_assets_load_correctly_at_root(page: Page, site_url: str) -> None:
+    """Static assets should load correctly from root-level pages."""
+    # Arrange & Act
+    page.goto(site_url)
+
+    # Assert - CSS should be loaded (check for link elements with correct paths)
+    # For a root-level page (depth 0), static assets should be at ./static/ or static/
+    link = page.locator('link[rel="stylesheet"][href*="static"]').first
+    expect(link).to_be_attached()
+
+    # Verify the href doesn't start with ../ (which would go outside output_dir)
+    href = link.get_attribute("href")
+    assert href is not None
+    assert not href.startswith("../"), f"Root page should not use ../ prefix, got: {href}"
+
+    # Should start with static/ or ./static/
+    assert href.startswith("static/") or href.startswith("./static/"), f"Expected static/ or ./static/ prefix, got: {href}"
+
+
+@pytest.mark.slow
+@pytest.mark.playwright
+def test_static_assets_load_correctly_at_depth_1(page: Page, built_site: Path) -> None:
+    """Static assets should load correctly from depth-1 pages."""
+    # Arrange - navigate to a depth-1 page (section page)
+    # The minimal example has a "components" section
+    section_url = f"file://{built_site.absolute()}/components/index.html"
+
+    # Act
+    page.goto(section_url)
+
+    # Assert - CSS should be loaded with correct relative path
+    link = page.locator('link[rel="stylesheet"][href*="static"]').first
+    expect(link).to_be_attached()
+
+    # For depth-0 page (sections at root), should use ../static/
+    href = link.get_attribute("href")
+    assert href is not None
+    assert href.startswith("../static/"), f"Section page should use ../static/ prefix, got: {href}"
+
+
+@pytest.mark.slow
+@pytest.mark.playwright
+def test_static_assets_load_correctly_at_depth_2(page: Page, built_site: Path) -> None:
+    """Static assets should load correctly from depth-2 pages (subject level)."""
+    # Arrange - navigate to a depth-1 page (subject page at section/subject/)
+    # The minimal example has components/heading subject
+    subject_url = f"file://{built_site.absolute()}/components/heading/index.html"
+
+    # Act
+    page.goto(subject_url)
+
+    # Assert - CSS should be loaded with correct relative path
+    link = page.locator('link[rel="stylesheet"][href*="static"]').first
+    expect(link).to_be_attached()
+
+    # For depth-1 page, should use ../../static/
+    href = link.get_attribute("href")
+    assert href is not None
+    assert href.startswith("../../static/"), f"Subject page should use ../../static/ prefix, got: {href}"

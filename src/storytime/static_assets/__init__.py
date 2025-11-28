@@ -34,7 +34,8 @@ def copy_all_static_assets(
     """Discover and copy all static assets to a single static/ directory.
 
     Simplified approach: All static folders (from storytime and input_dir)
-    copy their contents into output_dir/static/. Collisions are acceptable.
+    copy their contents into output_dir/static/, preserving the relative path
+    from the base directory. Collisions are acceptable.
 
     Args:
         storytime_base: Path to storytime installation (e.g., src/storytime)
@@ -52,6 +53,11 @@ def copy_all_static_assets(
         ...     Path("output")
         ... )
         >>> print(f"Copied {count} static files")
+
+    Note:
+        Files are copied with their relative path preserved:
+        - src/storytime/components/layout/static/pico.css
+          -> output/static/components/layout/static/pico.css
     """
     import shutil
 
@@ -63,12 +69,23 @@ def copy_all_static_assets(
     storytime_folders = discover_static_folders(storytime_base, "storytime")
     input_folders = discover_static_folders(input_dir, "input_dir")
 
-    # Copy all files to single static/ directory
+    # Copy all files to single static/ directory, preserving relative paths
     file_count = 0
     for static_folder in storytime_folders + input_folders:
+        # Get the base path for this source type
+        base_path = storytime_base if static_folder.source_type == "storytime" else input_dir
+
         for file_path in static_folder.source_path.rglob("*"):
             if file_path.is_file():
-                shutil.copy2(file_path, static_out / file_path.name)
+                # Calculate relative path from base directory
+                relative_file = file_path.relative_to(base_path)
+                dest_path = static_out / relative_file
+
+                # Create parent directories if needed
+                dest_path.parent.mkdir(parents=True, exist_ok=True)
+
+                # Copy the file
+                shutil.copy2(file_path, dest_path)
                 file_count += 1
 
     return file_count

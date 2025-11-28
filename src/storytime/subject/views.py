@@ -49,9 +49,9 @@ class SubjectView:
 
         # Render stories or empty state
         if not self.subject.items:
-            # Empty state - wrapped with Layout (depth=1 for subject pages)
+            # Empty state - wrapped with Layout (depth=2 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 {description_p}
@@ -68,9 +68,9 @@ class SubjectView:
                 story_url = f"story-{idx}"
                 story_items.append(html(t"<li><a href=\"{story_url}\">{story.title}</a></li>"))
 
-            # Create the main content wrapped with Layout (depth=1 for subject pages)
+            # Create the main content wrapped with Layout (depth=2 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 {description_p}

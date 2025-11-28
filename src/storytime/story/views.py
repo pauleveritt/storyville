@@ -137,7 +137,7 @@ class StoryView:
             if badge_nodes:
                 # Header with badges and iframe
                 return html(t"""\
-<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.story.title} site={self.site} depth={3} cached_navigation={self.cached_navigation}>
 <div>
 <div class="story-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
   <div class="story-header-left">
@@ -156,7 +156,7 @@ class StoryView:
             else:
                 # Header without badges and iframe
                 return html(t"""\
-<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.story.title} site={self.site} depth={3} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>
 {description_p}
@@ -171,7 +171,7 @@ class StoryView:
         if badge_nodes:
             # Header with badges (construct using tdom html)
             return html(t"""\
-<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.story.title} site={self.site} depth={3} cached_navigation={self.cached_navigation}>
 <div>
 <div class="story-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
   <div class="story-header-left">
@@ -192,7 +192,7 @@ class StoryView:
         else:
             # Header without badges (original layout)
             return html(t"""\
-<{Layout} view_title={self.story.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.story.title} site={self.site} depth={3} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.story.title}</h1>
 {description_p}
