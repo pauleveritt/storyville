@@ -1,6 +1,5 @@
 """Test the Site model."""
 
-from pathlib import Path
 
 from tdom import Node, html
 

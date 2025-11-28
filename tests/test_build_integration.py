@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import pytest
-from storytime import PACKAGE_DIR
 from storytime.build import build_site
 
 

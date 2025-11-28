@@ -11,7 +11,6 @@ Maximum 10 strategic tests to complement existing coverage from Task Groups 1-3.
 """
 
 from pathlib import Path
-from unittest.mock import Mock
 
 import pytest
 from storytime.static_assets import (
@@ -20,7 +19,7 @@ from storytime.static_assets import (
     rewrite_static_paths,
 )
 from storytime.watchers import STATIC_EXTENSIONS
-from tdom import Node, html
+from tdom import html
 
 
 @pytest.fixture
