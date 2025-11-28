@@ -25,8 +25,8 @@
    `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
    defined on the `Site`. `M`
 
-9. [ ] Component Props Documentation — Add automatic documentation generation from type hints and docstrings, displaying
-   component APIs directly in the browser, as well as the `description` field on `Story`, `Subject`, and `Section`. `M`
+9. [ ] Story/Subject/Section — Add into the rendered HTML the `description` field on `Story`, `Subject`, and `Section`.
+   `M`
 
 10. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`

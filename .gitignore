@@ -9,7 +9,7 @@
 /src/*.egg-info/
 __pycache__/
 var
-
+.DS_Store
 
 .junie
 .aiassistant
