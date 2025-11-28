@@ -9,13 +9,21 @@ from pathlib import Path
 from storytime.static_assets.copying import copy_static_folder
 from storytime.static_assets.discovery import discover_static_folders
 from storytime.static_assets.models import StaticFolder
+from storytime.static_assets.paths import calculate_relative_static_path
+from storytime.static_assets.rewriting import (
+    build_discovered_assets_map,
+    rewrite_static_paths,
+)
 from storytime.static_assets.validation import validate_no_collisions
 
 __all__ = [
     "StaticFolder",
+    "build_discovered_assets_map",
+    "calculate_relative_static_path",
     "copy_all_static_assets",
     "copy_static_folder",
     "discover_static_folders",
+    "rewrite_static_paths",
     "validate_no_collisions",
 ]
 

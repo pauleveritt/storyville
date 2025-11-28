@@ -51,6 +51,9 @@ class StaticFolder:
                 return "storytime_static"
             case "input_dir":
                 return "static"
+            case _:
+                # This should never happen due to Literal type constraint
+                raise ValueError(f"Invalid source_type: {self.source_type}")
 
     def calculate_output_path(self, output_dir: Path) -> Path:
         """Calculate the full output path for this static folder.

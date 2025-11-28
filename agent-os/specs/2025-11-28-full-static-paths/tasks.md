@@ -73,49 +73,96 @@ This feature enables all node types (layouts, components, views, subjects, secti
 #### Task Group 2: Path Rewriting Utility Function
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete opt-in path rewriting utility
-  - [ ] 2.1 Write 2-8 focused tests for path rewriting
-    - Test HTML parsing and attribute detection (src, href)
-    - Test path rewriting with component location and depth
-    - Test preservation of non-static paths (external URLs, absolute paths)
-    - Skip exhaustive HTML edge case testing
-  - [ ] 2.2 Implement HTML parsing logic
-    - Use existing `tdom.parser.parse_html` (already used in `tests/test_build.py`)
-    - Find elements with asset-referencing attributes: `src`, `href`
-    - Extract attribute values for path processing
-  - [ ] 2.3 Implement path matching logic
-    - Check if paths start with `static/` or `storytime_static/` prefix
-    - Preserve original paths that don't match (external URLs, absolute paths)
-    - Handle both single and double quoted attribute values
-  - [ ] 2.4 Create main rewrite function
-    - Function signature: `rewrite_static_paths(html: str | Node, component_path: str, depth: int, source_type: str = "input_dir") -> str | Node`
-    - Accept HTML as string or tdom Node (return same type)
-    - Accept component location for constructing full asset path
-    - Accept page depth for relativization
-    - Accept source_type to determine `static/` vs `storytime_static/` prefix
-  - [ ] 2.5 Implement path construction logic
-    - Construct full output path: `[storytime_static|static]/[component/path]/static/[asset_filename]`
-    - Calculate relative prefix using function from Task Group 1
-    - Combine relative prefix with full asset path
-    - Replace original attribute value with rewritten path
-  - [ ] 2.6 Add function to `src/storytime/utils/static_paths.py`
-    - Export function in module
-    - Add to `src/storytime/__init__.py` for easy import
-  - [ ] 2.7 Ensure path rewriting tests pass
-    - Run ONLY the 2-8 tests written in 2.1
-    - Verify paths are correctly rewritten
-    - Do NOT run the entire test suite at this stage
+- [ ] 2.0 Complete opt-in path rewriting utility using tree walker
+  - [ ] 2.1 Extend `src/storytime/static_assets/paths.py` with relative path calculation
+    - Function: `calculate_relative_static_path(asset_path: str, page_depth: int, source_type: Literal["storytime", "input_dir"]) -> str`
+    - Takes an asset path like "static/nav.css" or "storytime_static/nav.css"
+    - Calculates "../" prefix based on page_depth
+    - Returns relative path like "../../storytime_static/components/nav/static/nav.css"
+    - Add tests covering various depths (0, 1, 2, 3+)
+  - [ ] 2.2 Create tree walker utilities in `src/storytime/static_assets/rewriting.py`
+    - Function: `walk_and_rewrite_static_refs(node: Node, page_depth: int, discovered_assets: dict[str, Path]) -> Node`
+    - Uses tdom tree walker to traverse node tree recursively
+    - Checks each element for asset-referencing attributes (`src`, `href`)
+    - Modifies attribute values in place when they start with "static/" or "storytime_static/"
+    - Preserves all other node properties and structure
+    - Add comprehensive tests for various node structures
+  - [ ] 2.3 Implement attribute rewriting logic in `src/storytime/static_assets/rewriting.py`
+    - Function: `rewrite_element_attributes(element: Node, page_depth: int, discovered_assets: dict[str, Path]) -> None`
+    - Inspects element attributes for static asset references
+    - Rewrites attribute values in place on the node
+    - Handles `src` for `<script>`, `<img>`, `<source>` tags
+    - Handles `href` for `<link>` tags
+    - Add tests for edge cases (missing attributes, non-static paths)
+  - [ ] 2.4 Create main opt-in utility function in `src/storytime/static_assets/rewriting.py`
+    - Function: `rewrite_static_paths(node: Node, page_depth: int, discovered_assets: dict[str, Path]) -> Node`
+    - Accepts tdom Node as input
+    - Calls tree walker to find and rewrite all static references
+    - Returns modified Node with rewritten paths
+    - Works directly with node tree, no string conversion
+    - Add tests for Node input with various structures
+  - [ ] 2.5 Add asset path resolution in `src/storytime/static_assets/rewriting.py`
+    - Function: `resolve_static_asset_path(asset_ref: str, discovered_assets: dict[str, Path]) -> str | None`
+    - Takes reference like "static/nav.css" or "storytime_static/components/nav/static/nav.css"
+    - Looks up in discovered_assets dict to find full output path
+    - Returns full path preserving structure, or None if not found
+    - Add tests with various asset references
+  - [ ] 2.6 Create helper to build discovered assets dict in `src/storytime/static_assets/__init__.py`
+    - Function: `build_discovered_assets_map(storytime_base: Path, input_dir: Path, output_dir: Path) -> dict[str, Path]`
+    - Discovers all static folders using existing discovery functions
+    - Builds mapping from short references to full output paths
+    - Example: {"static/nav.css" → Path("output/storytime_static/components/nav/static/nav.css")}
+    - Returns dict for use with rewrite_static_paths()
+    - Add integration tests
+  - [ ] 2.7 Add validation and error handling in `src/storytime/static_assets/rewriting.py`
+    - Function: `validate_static_reference(asset_ref: str, discovered_assets: dict[str, Path]) -> tuple[bool, str | None]`
+    - Checks if a referenced asset exists in discovered_assets
+    - Returns (True, full_path) if found, (False, error_message) if not
+    - Add tests for valid and invalid references
+    - Integration with rewrite_static_paths() to emit warnings for missing assets
 
 **Acceptance Criteria:**
-- The 2-8 tests written in 2.1 pass
-- Function can process both string and Node HTML
-- Paths are correctly rewritten with full path and relativization
-- Non-static paths are preserved unchanged
-- Function is easily importable from `storytime.utils.static_paths`
+- All 7 sub-tasks completed with passing tests
+- Opt-in utility function `rewrite_static_paths()` works with Node input using tree walker
+- No string conversion or regex parsing - works directly with node tree
+- Relative path calculation correctly handles various page depths
+- HTML parsing detects all relevant asset reference types
+- Path rewriting preserves HTML structure
+- Validation warns about missing assets
+- Code follows modern Python 3.14+ standards
+- Quality checks pass: `just test`, `just typecheck`, `just fmt`
 
 **Reference Files:**
-- `tests/test_build.py` lines 25-28 for HTML parsing pattern
-- `src/storytime/components/layout/layout.py` lines 41-50 for path construction pattern
+- `src/storytime/story/models.py` (Layout.depth property for page depth calculation)
+- Existing HTML manipulation patterns in the codebase
+- tdom Node documentation for Node type handling
+
+**Implementation Notes:**
+- Created `src/storytime/static_assets/rewriting.py` with all required functions:
+  - `calculate_relative_static_path()` - Calculates relative paths based on page depth
+  - `find_static_references()` - Parses HTML to find static asset references
+  - `rewrite_static_path()` - Rewrites a specific path in HTML
+  - `rewrite_static_paths()` - Main opt-in utility function
+  - `resolve_static_asset_path()` - Resolves short references to full paths
+  - `validate_static_reference()` - Validates asset references
+  - `build_discovered_assets_map()` - Builds asset mapping dictionary
+- Extended `src/storytime/static_assets/paths.py` with `calculate_relative_static_path()`
+- Updated `src/storytime/static_assets/__init__.py` to export new functions
+- Created comprehensive tests in `tests/static_assets/test_rewriting.py`:
+  - 7 tests for relative path calculation at various depths
+  - 10 tests for HTML parsing and reference detection
+  - 6 tests for path rewriting logic
+  - 4 tests for asset path resolution
+  - 2 tests for validation
+  - 6 tests for main rewrite function
+  - 3 tests for building discovered assets map
+  - 2 integration tests for end-to-end workflows
+- Total: 40 tests written for Task Group 2
+- All tests follow existing patterns from Task Group 1
+- Uses regex for HTML parsing (lightweight, no external dependencies)
+- Handles both single and double quoted attributes
+- Preserves HTML structure during rewriting
+- Supports both string and tdom Node input/output
 
 ---
 
@@ -255,7 +302,7 @@ This feature enables all node types (layouts, components, views, subjects, secti
 
 Recommended implementation sequence:
 1. **Foundation Layer** (Task Group 1) - Core utilities and static discovery ✅ COMPLETED
-2. **HTML Processing Layer** (Task Group 2) - Path rewriting utility function
+2. **HTML Processing Layer** (Task Group 2) - Path rewriting utility function ✅ COMPLETED
 3. **Build Integration Layer** (Task Group 3) - Build process integration
 4. **Testing & Validation Layer** (Task Group 4) - Complete testing and documentation
 

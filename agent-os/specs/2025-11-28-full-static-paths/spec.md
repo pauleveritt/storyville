@@ -25,20 +25,22 @@ Enable all node types (layouts, components, views, subjects, sections, stories) 
 
 **Opt-In Path Rewriting Utility Function**
 - Create a utility function (e.g., `rewrite_static_paths()`) that components/stories must explicitly call
-- Function accepts HTML content as input (string or tdom Node) and returns processed HTML
-- Parses HTML to find asset references in `src`, `href`, and other relevant attributes
-- Only processes paths that start with `static/` or `storytime_static/` prefix
+- Function accepts tdom Node as input and returns modified Node (works directly with node tree)
+- Uses tdom tree walker to traverse the node tree and identify elements with asset references
+- Only processes attribute values that start with `static/` or `storytime_static/` prefix
 - Rewrites found paths to include full component path and relativize based on page depth
+- Modifies attributes in place on the node tree, avoiding string conversion and regex
 - Calculates correct number of `../` segments based on page location in site hierarchy
 - Depth 0 (site root or section index): `../static/...` or `../storytime_static/...`
 - Depth 1 (subject index): `../../static/...` or `../../storytime_static/...`
 - Depth 2 (story page): `../../../static/...` or `../../../storytime_static/...`
 
 **HTML Asset Reference Detection**
-- Scan for `<script src="...">`, `<link href="...">`, `<img src="...">`, and other asset-referencing tags
-- Use HTML parsing library or regex to identify attributes that contain asset paths
-- Support both single and double quoted attribute values
-- Handle edge cases like self-closing tags and multiple attributes per element
+- Use tdom tree walker to traverse the node tree and find elements with asset-referencing attributes
+- Check attributes: `src` (for `<script>`, `<img>`, `<source>`), `href` (for `<link>`), and other relevant attributes
+- Work directly with tdom Node objects, avoiding string conversion and regex parsing
+- For each matching element, inspect attribute values to identify static asset references
+- Modify attributes in place on the node tree, preserving all other node properties and structure
 
 **Path Construction Logic**
 - Accept component location information to determine asset source path
@@ -76,6 +78,11 @@ Enable all node types (layouts, components, views, subjects, sections, stories) 
 
 ## Visual Design
 No visual mockups provided for this feature.
+
+## Documentation
+
+- Write documentation for how to use this
+- Short version in README.md and longer in docs
 
 ## Existing Code to Leverage
 

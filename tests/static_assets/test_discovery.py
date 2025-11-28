@@ -2,10 +2,8 @@
 
 from pathlib import Path
 
-import pytest
 
 from storytime.static_assets.discovery import discover_static_folders
-from storytime.static_assets.models import StaticFolder
 
 
 def test_discover_static_folders_finds_single_folder(tmp_path: Path) -> None:
