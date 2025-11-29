@@ -17,6 +17,10 @@ install:
 
 # Run tests (sequential)
 test *ARGS:
+    uv run pytest {{ ARGS }}
+
+# Run tests (sequential)
+test-parallel *ARGS:
     uv run pytest -n auto {{ ARGS }}
 
 # Run only slow tests in parallel
