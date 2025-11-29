@@ -96,47 +96,37 @@ def broadcast_reload() -> None:
     """
     import concurrent.futures
 
+    # Early return if no clients connected
     if not _active_connections:
         logger.debug("No WebSocket clients to broadcast to")
         return
 
-    # Use the stored websocket loop if available
-    if _websocket_loop is not None:
-        # Check if the stored loop is still running
-        if _websocket_loop.is_closed():
-            # Loop was closed (e.g., TestClient was closed between tests)
-            logger.warning("Stored websocket loop is closed, clearing reference")
-            # Clear the stale reference
-            globals()["_websocket_loop"] = None
-            # Fall through to the else branch
-        else:
-            # Schedule the broadcast in the websocket event loop
-            # This handles cross-thread scenarios like TestClient
-            logger.debug("Scheduling broadcast in websocket event loop")
-            try:
-                future = asyncio.run_coroutine_threadsafe(
-                    broadcast_reload_async(), _websocket_loop
-                )
-                # Wait for completion
-                future.result(timeout=5.0)
-                return  # Success, exit early
-            except concurrent.futures.TimeoutError as e:
-                msg = "Broadcast timed out after 5 seconds"
-                raise TimeoutError(msg) from e
-            except RuntimeError as e:
-                # Loop might have been closed during the call
-                if "closed" in str(e).lower() or "runner is closed" in str(e).lower():
-                    logger.warning("Loop closed during broadcast: %s", e)
-                    globals()["_websocket_loop"] = None
-                    # Fall through to handle with current/new loop
-                else:
-                    raise
-
-    # No stored websocket loop (or it was closed)
+    # Early return if no websocket loop available
     if _websocket_loop is None:
-        # With no known websocket loop, we cannot safely schedule work from the
-        # watchers' event loop (may be a different runner/thread). To avoid
-        # nested-loop and closed-runner errors under pytest-anyio, treat this as
-        # a no-op.
         logger.debug("No websocket loop available; skipping broadcast")
         return
+
+    # Check if the stored loop is closed and clear if necessary
+    if _websocket_loop.is_closed():
+        logger.warning("Stored websocket loop is closed, clearing reference")
+        globals()["_websocket_loop"] = None
+        logger.debug("No websocket loop available; skipping broadcast")
+        return
+
+    # Schedule the broadcast in the websocket event loop
+    logger.debug("Scheduling broadcast in websocket event loop")
+    try:
+        future = asyncio.run_coroutine_threadsafe(
+            broadcast_reload_async(), _websocket_loop
+        )
+        future.result(timeout=5.0)
+    except concurrent.futures.TimeoutError as e:
+        msg = "Broadcast timed out after 5 seconds"
+        raise TimeoutError(msg) from e
+    except RuntimeError as e:
+        # Loop might have been closed during the call
+        if "closed" in str(e).lower() or "runner is closed" in str(e).lower():
+            logger.warning("Loop closed during broadcast: %s", e)
+            globals()["_websocket_loop"] = None
+        else:
+            raise

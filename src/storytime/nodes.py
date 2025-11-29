@@ -97,8 +97,9 @@ class TreeNode:
 
     def __post_init__(self) -> None:
         """Assign calculated fields."""
-        root_package_path = self._get_root_package_path()
-        relative_stories_path = self._get_relative_stories_path(root_package_path)
+        root_package_path = get_package_path(self.package_location)
+        this_package_path = self.stories_path.parent
+        relative_stories_path = this_package_path.relative_to(root_package_path)
 
         # Configure based on whether this is root or nested location
         if relative_stories_path.name == "":
@@ -120,15 +121,6 @@ class TreeNode:
 
         story_module = self._import_story_module()
         self.called_instance = get_certain_callable(story_module)
-
-    def _get_root_package_path(self) -> Path:
-        """Get the root package path for relative calculations."""
-        return get_package_path(self.package_location)
-
-    def _get_relative_stories_path(self, root_package_path: Path) -> Path:
-        """Get the relative path from root to the stories directory."""
-        this_package_path = self.stories_path.parent
-        return this_package_path.relative_to(root_package_path)
 
     def _import_story_module(self) -> Any:
         """Import the story module based on package location."""

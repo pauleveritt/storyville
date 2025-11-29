@@ -281,53 +281,6 @@ def test_tree_node_section() -> None:
 
 
 # Test TreeNode helper methods
-def test_treenode_get_root_package_path() -> None:
-    """Test _get_root_package_path returns correct path."""
-    from examples.minimal import stories
-
-    assert stories.__file__
-    stories_path = Path(stories.__file__)
-    tree_node = TreeNode.__new__(TreeNode)
-    tree_node.package_location = "examples.minimal"
-    tree_node.stories_path = stories_path
-
-    root_path = tree_node._get_root_package_path()
-    assert root_path.name == "minimal"
-    assert root_path.exists()
-
-
-def test_treenode_get_relative_stories_path_for_root() -> None:
-    """Test _get_relative_stories_path for root location."""
-    from examples.minimal import stories
-
-    assert stories.__file__
-    stories_path = Path(stories.__file__)
-    tree_node = TreeNode.__new__(TreeNode)
-    tree_node.package_location = "examples.minimal"
-    tree_node.stories_path = stories_path
-
-    root_path = tree_node._get_root_package_path()
-    relative_path = tree_node._get_relative_stories_path(root_path)
-
-    assert relative_path.name == ""
-
-
-def test_treenode_get_relative_stories_path_for_nested() -> None:
-    """Test _get_relative_stories_path for nested location."""
-    from examples.minimal.components import stories
-
-    assert stories.__file__
-    stories_path = Path(stories.__file__)
-    tree_node = TreeNode.__new__(TreeNode)
-    tree_node.package_location = "examples.minimal"
-    tree_node.stories_path = stories_path
-
-    root_path = tree_node._get_root_package_path()
-    relative_path = tree_node._get_relative_stories_path(root_path)
-
-    assert relative_path.name == "components"
-
-
 def test_treenode_import_story_module_root() -> None:
     """Test _import_story_module for root location."""
     tree_node = TreeNode.__new__(TreeNode)

@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 from shutil import rmtree
 from time import perf_counter
+from typing import TYPE_CHECKING
 
 from storytime import PACKAGE_DIR
 from storytime.components.themed_story import ThemedStory
@@ -16,64 +17,25 @@ from storytime.subject.views import SubjectView
 from storytime.views.about_view import AboutView
 from storytime.views.debug_view import DebugView
 
+if TYPE_CHECKING:
+    from storytime.site import Site
+
 logger = logging.getLogger(__name__)
 
 
-def _write_html(content: str, path: Path) -> None:
-    """Write rendered HTML content to file.
+def _render_all_views(
+    site: "Site", with_assertions: bool
+) -> tuple[str, str, str, list, list, list, list]:
+    """Render all views to HTML strings.
 
     Args:
-        content: The rendered HTML string to write
-        path: The file path to write to (parent dirs created automatically)
+        site: The site to render
+        with_assertions: Whether to execute assertions during rendering
+
+    Returns:
+        Tuple of (site_view, about_view, debug_view, rendered_sections,
+                 rendered_subjects, rendered_stories, rendered_themed_stories)
     """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content)
-
-
-def build_site(
-    package_location: str, output_dir: Path, with_assertions: bool = True
-) -> None:
-    """Write the static files and story info to the output directory.
-
-    Args:
-        package_location: The package location to build from
-        output_dir: The output directory to write the built site to
-        with_assertions: Whether to execute assertions during rendering (default: True)
-
-    The builder:
-    1. Clears the output directory if it exists and is not empty
-    2. Creates a site from the package location
-    3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
-    4. Renders About and Debug pages
-    5. Discovers and copies static assets from both src/storytime and input_dir
-    """
-
-    # Clear output directory if it exists and is not empty
-    if output_dir.exists():
-        # Remove all contents
-        for item in output_dir.iterdir():
-            if item.is_symlink():
-                # Skip symlinks (e.g., pytest's "current" links)
-                continue
-            elif item.is_dir():
-                rmtree(item)
-            else:
-                item.unlink()
-    else:
-        # Create output directory
-        output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Phase 1: Reading - Load content from filesystem
-    start_reading = perf_counter()
-    site = make_site(package_location=package_location)
-    end_reading = perf_counter()
-    reading_duration = end_reading - start_reading
-    logger.info(f"Phase Reading: completed in {reading_duration:.2f}s")
-
-    # Phase 2: Rendering - Process views and generate HTML
-    start_rendering = perf_counter()
-
-    # Generate cached navigation tree once (without current_path highlighting)
     from storytime.components.navigation_tree import NavigationTree
 
     cached_nav = str(NavigationTree(sections=site.items, current_path=None)())
@@ -134,6 +96,134 @@ def build_site(
                         (section_key, subject_key, story_idx, themed_story_html)
                     )
 
+    return (
+        site_view,
+        about_view,
+        debug_view,
+        rendered_sections,
+        rendered_subjects,
+        rendered_stories,
+        rendered_themed_stories,
+    )
+
+
+def _write_all_files(
+    output_dir: Path,
+    site_view: str,
+    about_view: str,
+    debug_view: str,
+    rendered_sections: list,
+    rendered_subjects: list,
+    rendered_stories: list,
+    rendered_themed_stories: list,
+) -> None:
+    """Write all rendered HTML files to disk.
+
+    Args:
+        output_dir: The output directory
+        site_view: Rendered site index page
+        about_view: Rendered about page
+        debug_view: Rendered debug page
+        rendered_sections: List of (section_key, section_view) tuples
+        rendered_subjects: List of (section_key, subject_key, subject_view) tuples
+        rendered_stories: List of (section_key, subject_key, story_idx, story_view) tuples
+        rendered_themed_stories: List of (section_key, subject_key, story_idx, themed_story_html) tuples
+    """
+    # Write site pages
+    (output_dir / "index.html").parent.mkdir(parents=True, exist_ok=True)
+    (output_dir / "index.html").write_text(site_view)
+    (output_dir / "about.html").parent.mkdir(parents=True, exist_ok=True)
+    (output_dir / "about.html").write_text(about_view)
+    (output_dir / "debug.html").parent.mkdir(parents=True, exist_ok=True)
+    (output_dir / "debug.html").write_text(debug_view)
+
+    # Write sections
+    for section_key, section_view in rendered_sections:
+        section_dir = output_dir / section_key
+        path = section_dir / "index.html"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(section_view)
+
+    # Write subjects
+    for section_key, subject_key, subject_view in rendered_subjects:
+        section_dir = output_dir / section_key
+        subject_dir = section_dir / subject_key
+        path = subject_dir / "index.html"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(subject_view)
+
+    # Write stories
+    for section_key, subject_key, story_idx, story_view in rendered_stories:
+        section_dir = output_dir / section_key
+        subject_dir = section_dir / subject_key
+        story_dir = subject_dir / f"story-{story_idx}"
+        path = story_dir / "index.html"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(story_view)
+
+    # Write themed stories
+    for section_key, subject_key, story_idx, themed_story_html in rendered_themed_stories:
+        section_dir = output_dir / section_key
+        subject_dir = section_dir / subject_key
+        story_dir = subject_dir / f"story-{story_idx}"
+        path = story_dir / "themed_story.html"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(themed_story_html)
+
+
+def build_site(
+    package_location: str, output_dir: Path, with_assertions: bool = True
+) -> None:
+    """Write the static files and story info to the output directory.
+
+    Args:
+        package_location: The package location to build from
+        output_dir: The output directory to write the built site to
+        with_assertions: Whether to execute assertions during rendering (default: True)
+
+    The builder:
+    1. Clears the output directory if it exists and is not empty
+    2. Creates a site from the package location
+    3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
+    4. Renders About and Debug pages
+    5. Discovers and copies static assets from both src/storytime and input_dir
+    """
+
+    # Clear output directory if it exists and is not empty
+    if output_dir.exists():
+        # Remove all contents
+        for item in output_dir.iterdir():
+            if item.is_symlink():
+                # Skip symlinks (e.g., pytest's "current" links)
+                continue
+            elif item.is_dir():
+                rmtree(item)
+            else:
+                item.unlink()
+    else:
+        # Create output directory
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Phase 1: Reading - Load content from filesystem
+    start_reading = perf_counter()
+    site = make_site(package_location=package_location)
+    end_reading = perf_counter()
+    reading_duration = end_reading - start_reading
+    logger.info(f"Phase Reading: completed in {reading_duration:.2f}s")
+
+    # Phase 2: Rendering - Process views and generate HTML
+    start_rendering = perf_counter()
+
+    (
+        site_view,
+        about_view,
+        debug_view,
+        rendered_sections,
+        rendered_subjects,
+        rendered_stories,
+        rendered_themed_stories,
+    ) = _render_all_views(site, with_assertions)
+
     end_rendering = perf_counter()
     rendering_duration = end_rendering - start_rendering
     logger.info(f"Phase Rendering: completed in {rendering_duration:.2f}s")
@@ -141,35 +231,16 @@ def build_site(
     # Phase 3: Writing - Write files to disk
     start_writing = perf_counter()
 
-    # Write site pages
-    _write_html(site_view, output_dir / "index.html")
-    _write_html(about_view, output_dir / "about.html")
-    _write_html(debug_view, output_dir / "debug.html")
-
-    # Write sections
-    for section_key, section_view in rendered_sections:
-        section_dir = output_dir / section_key
-        _write_html(section_view, section_dir / "index.html")
-
-    # Write subjects
-    for section_key, subject_key, subject_view in rendered_subjects:
-        section_dir = output_dir / section_key
-        subject_dir = section_dir / subject_key
-        _write_html(subject_view, subject_dir / "index.html")
-
-    # Write stories
-    for section_key, subject_key, story_idx, story_view in rendered_stories:
-        section_dir = output_dir / section_key
-        subject_dir = section_dir / subject_key
-        story_dir = subject_dir / f"story-{story_idx}"
-        _write_html(story_view, story_dir / "index.html")
-
-    # Write themed stories
-    for section_key, subject_key, story_idx, themed_story_html in rendered_themed_stories:
-        section_dir = output_dir / section_key
-        subject_dir = section_dir / subject_key
-        story_dir = subject_dir / f"story-{story_idx}"
-        _write_html(themed_story_html, story_dir / "themed_story.html")
+    _write_all_files(
+        output_dir,
+        site_view,
+        about_view,
+        debug_view,
+        rendered_sections,
+        rendered_subjects,
+        rendered_stories,
+        rendered_themed_stories,
+    )
 
     end_writing = perf_counter()
     writing_duration = end_writing - start_writing

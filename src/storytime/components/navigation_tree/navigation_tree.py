@@ -16,22 +16,15 @@ def parse_current_path(path: str | None) -> tuple[str | None, str | None, str | 
     Returns:
         Tuple of (section_name, subject_name, story_name), each can be None.
     """
-    match path:
-        case None | "":
-            return (None, None, None)
-        case str(p):
-            parts = p.split("/")
-            match len(parts):
-                case 1:
-                    return (parts[0], None, None)
-                case 2:
-                    return (parts[0], parts[1], None)
-                case n if n >= 3:
-                    return (parts[0], parts[1], parts[2])
-                case _:
-                    return (None, None, None)
-        case _:
-            return (None, None, None)
+    if not path:
+        return (None, None, None)
+
+    parts = path.split("/")
+    return (
+        parts[0] if len(parts) >= 1 else None,
+        parts[1] if len(parts) >= 2 else None,
+        parts[2] if len(parts) >= 3 else None,
+    )
 
 
 @dataclass
