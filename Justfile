@@ -15,9 +15,18 @@ info:
 install:
     uv sync --all-groups
 
-# Run tests fast
+# Run tests (sequential)
 test *ARGS:
-    uv run pytest {{ ARGS }}
+    uv run pytest -n auto {{ ARGS }}
+
+# Run only slow tests in parallel
+test-slow:
+    uv run pytest -m slow -n auto -v
+
+# Benchmark parallel vs sequential execution
+test-benchmark:
+    @echo "Running benchmark..."
+    @./scripts/benchmark_parallel.sh
 
 # Format (no changes)
 fmt:
@@ -49,4 +58,4 @@ ci:
     just install
     just fmt
     just typecheck
-    just test
+    just test-parallel
