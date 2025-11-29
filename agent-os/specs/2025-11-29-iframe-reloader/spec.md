@@ -18,7 +18,7 @@ Enable fast, smooth hot reloading for Mode C story views by reloading only the i
 - When WebSocket receives `{"type": "reload"}` message, check if page is Mode C
 - If Mode C (iframe present), reload only the iframe by updating its `src` attribute
 - If not Mode C (Mode A or Mode B), perform full page reload using `window.location.reload()`
-- Maintain existing 300ms debounce delay for all reload types
+- Change existing 300ms debounce delay for all reload types to a 100ms
 
 **Scroll Position Preservation**
 - Before reloading iframe, capture the current scroll position using `iframe.contentWindow.scrollY` and `iframe.contentWindow.scrollX`
@@ -40,7 +40,7 @@ Enable fast, smooth hot reloading for Mode C story views by reloading only the i
 - Handle cross-origin access errors when checking scroll position without crashing
 
 **Debouncing Behavior**
-- Apply same 300ms debounce to iframe reloads as full page reloads
+- Apply a 100ms debounce to iframe reloads as full page reloads
 - Use existing `reloadDebounceTimeout` mechanism to prevent rapid successive reloads
 - Clear any pending reload when new reload is scheduled
 - Ensure debounce works correctly for both iframe and full page reload paths
@@ -54,7 +54,7 @@ No visual assets provided.
 **`src/storytime/components/layout/static/ws.js`**
 - WebSocket connection logic with automatic reconnection and exponential backoff
 - Message parsing that extracts `{"type": "reload"}` from WebSocket events
-- Existing `scheduleReload()` function that implements 300ms debounce using `reloadDebounceTimeout`
+- Existing `scheduleReload()` function that implements 100ms debounce using `reloadDebounceTimeout`
 - Current full page reload implementation using `window.location.reload()`
 - IIFE pattern that keeps state isolated and prevents global namespace pollution
 
@@ -76,7 +76,7 @@ No visual assets provided.
 
 **`src/storytime/watchers.py` (File watching)**
 - Triggers rebuild and broadcasts reload after detecting file changes
-- Uses 300ms debounce (`DEBOUNCE_DELAY = 0.3`) on the backend
+- Uses 100ms debounce (`DEBOUNCE_DELAY = 0.1`) on the backend
 - No changes needed - continues broadcasting same message type
 
 ## Out of Scope
