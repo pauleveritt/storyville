@@ -284,26 +284,26 @@ def find_path(catalog: Catalog, path: str) -> TreeNode | Story | None:
 **Example:**
 
 ```python
-from storytime import make_site, find_path
+from storytime import make_catalog, find_path
 
-site = make_site("my_package")
-subject = find_path(site, ".components.button")
-story = find_path(site, ".components.button.primary")
+catalog = make_catalog("my_package")
+subject = find_path(catalog, ".components.button")
+story = find_path(catalog, ".components.button.primary")
 ```
 
 ## Build Functions
 
-### build_site
+### build_catalog
 
-Build static site from stories:
+Build static catalog from stories:
 
 ```python
-def build_site(
+def build_catalog(
     package_location: str,
     output_dir: Path,
     with_assertions: bool = True,
 ) -> None:
-    """Build static site.
+    """Build static catalog.
     
     Args:
         package_location: Package to build from
@@ -387,7 +387,7 @@ storytime serve [PACKAGE] [OPTIONS]
 
 ### build
 
-Build static site:
+Build static catalog:
 
 ```bash
 storytime build [PACKAGE] [OUTPUT_DIR]
@@ -414,7 +414,7 @@ enabled = true
 ### Generated Tests
 
 For each story with assertions, generates tests:
-- Test name: `test_story[site.section.subject.story::assertion_name]`
+- Test name: `test_story[catalog.section.subject.story::assertion_name]`
 - Test renders story fresh
 - Test executes assertion
 - Test reports failure with HTML diff

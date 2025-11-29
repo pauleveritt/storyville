@@ -1,6 +1,8 @@
 # Themed Stories
 
-Themed Stories allow you to preview your components within custom-themed layouts, providing visual isolation and real-world context. When configured, Storytime generates an additional HTML file for each story that renders the component within your custom theme, displayed in an iframe for visual separation.
+Themed Stories allow you to preview your components within custom-themed layouts, providing visual isolation and
+real-world context. When configured, Storytime generates an additional HTML file for each story that renders the
+component within your custom theme, displayed in an iframe for visual separation.
 
 ## Overview
 
@@ -21,6 +23,7 @@ Create a callable component that accepts `story_title` and `children` props and 
 # my_package/themed_layout/themed_layout.py
 from dataclasses import dataclass
 from tdom import html as t, Node
+
 
 @dataclass
 class ThemedLayout:
@@ -70,9 +73,11 @@ Add the themed layout to your Catalog configuration:
 from storytime import Catalog
 from my_package.themed_layout.themed_layout import ThemedLayout
 
+
 def themed_layout_wrapper(story_title: str, children: Node) -> Node:
     """Wrapper function to instantiate and call ThemedLayout."""
     return ThemedLayout(story_title, children)()
+
 
 def this_catalog() -> Catalog:
     return Catalog(themed_layout=themed_layout_wrapper)
@@ -114,8 +119,8 @@ During the build process:
 
 1. **Phase 2 (Rendering)**: Storytime renders both the standard StoryView and the ThemedStory for each story
 2. **Phase 3 (Writing)**: Two HTML files are written to disk:
-   - `index.html` contains the StoryView with iframe
-   - `themed_story.html` contains the full themed HTML document
+    - `index.html` contains the StoryView with iframe
+    - `themed_story.html` contains the full themed HTML document
 
 ### Directory Structure
 
@@ -140,6 +145,7 @@ Here's a more complete example showing integration with a design system:
 ```python
 from dataclasses import dataclass
 from tdom import html as t, Node
+
 
 @dataclass
 class DesignSystemLayout:
@@ -221,7 +227,8 @@ def themed_layout_wrapper(story_title: str, children: Node) -> Node:
     return ThemedLayout(story_title, children)()
 ```
 
-This pattern ensures the callable signature matches Storytime's expectations while allowing you to use dataclasses for your layout components.
+This pattern ensures the callable signature matches Storytime's expectations while allowing you to use dataclasses for
+your layout components.
 
 ### 4. Testing Your Theme
 
@@ -269,4 +276,3 @@ Future enhancements planned:
 
 - [Writing Stories](writing-stories.md) - How to create component stories
 - [Component Architecture](architecture.md) - Understanding Storytime's structure
-- [Examples](../examples/) - Working examples including themed layouts

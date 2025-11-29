@@ -28,12 +28,12 @@
 9. [x] Story/Subject/Section — Add into the rendered HTML the `description` field on `Story`, `Subject`, and `Section`.
    `M`
 
-10. [] Update Docs — Look at all the features implemented under agent-os/specs and compare against README.md (short
+10. [x] Update Docs — Look at all the features implemented under agent-os/specs and compare against README.md (short
     version) and docs/* (long version.) Update the docs to show all the user features. Also, add `docs/architecture.md`
     to explain the architecture decisions in this project: async watchers based on watchfiles, use of subinterpreters,
     the reloading server, how stories are collected, the pytest plugin, etc. `M`
 
-11. [] Story reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
+11. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
     right. But if I change the story description, it should reload the whole page. `M`
 
 12. [] Breadcrumbs — Put the path to the current node in a breadcrumbs-style navigation, in `<main>` above the title.

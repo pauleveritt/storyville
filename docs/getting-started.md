@@ -82,7 +82,7 @@ storytime serve my_project
 ```
 
 This will:
-1. Build the site from your stories
+1. Build the catalog from your stories
 2. Start a server at http://localhost:8080
 3. Enable hot reload (changes auto-update in browser)
 4. Use subinterpreters for true module reloading
@@ -118,7 +118,7 @@ storytime serve my_project --no-with-assertions
 
 ### build
 
-Build the static site without starting a server:
+Build the static catalog without starting a server:
 
 ```bash
 storytime build [PACKAGE] [OUTPUT_DIR]

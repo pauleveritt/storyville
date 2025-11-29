@@ -183,7 +183,7 @@ Custom templates give you full control over story rendering:
 ```python
 from tdom import html as h
 
-def custom_story_template(story, site):
+def custom_story_template(story, catalog):
     """Custom template for story rendering."""
     return h.div(
         h.h1("Custom Story View"),

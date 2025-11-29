@@ -13,8 +13,10 @@
 
 getting-started
 writing-stories
+themed-stories
 pytest-plugin
 hot-reload
+static
 ```
 
 ```{toctree}
@@ -22,6 +24,7 @@ hot-reload
 :caption: Reference
 
 api-reference
+architecture
 ```
 
 ## Features Overview

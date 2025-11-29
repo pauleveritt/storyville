@@ -6,7 +6,7 @@ Storytime includes a built-in pytest plugin that automatically generates tests f
 
 - **Automatic test discovery** - Finds all stories with assertions
 - **Zero boilerplate** - One test per assertion, automatically generated
-- **Clear naming** - `test_story[site.section.subject.story::assertion]`
+- **Clear naming** - `test_story[catalog.section.subject.story::assertion]`
 - **Rich failure reporting** - Story metadata, rendered HTML, and diffs
 - **Parallel execution** - Works with `pytest -n auto` (pytest-xdist)
 - **Fresh rendering** - Each test gets a fresh component instance
@@ -78,9 +78,9 @@ def this_subject() -> Subject:
 ```
 
 This story generates **3 tests automatically**:
-- `test_story[site.section.subject.story::Assertion 1]`
-- `test_story[site.section.subject.story::Assertion 2]`
-- `test_story[site.section.subject.story::Assertion 3]`
+- `test_story[catalog.section.subject.story::Assertion 1]`
+- `test_story[catalog.section.subject.story::Assertion 2]`
+- `test_story[catalog.section.subject.story::Assertion 3]`
 
 ### Using aria-testing
 

@@ -168,7 +168,7 @@ storytime serve my_project
 
 # Output shows:
 INFO:     storytime.watchers - File change detected: stories.py
-INFO:     storytime.build - Building site...
+INFO:     storytime.build - Building catalog...
 INFO:     storytime.build - Build complete
 ```
 
