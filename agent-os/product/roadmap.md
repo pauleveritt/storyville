@@ -33,11 +33,11 @@
     to explain the architecture decisions in this project: async watchers based on watchfiles, use of subinterpreters,
     the reloading server, how stories are collected, the pytest plugin, etc. `M`
 
-11. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
-    right. But if I change the story description, it should reload the whole page. `M`
-
-12. [] Breadcrumbs — Put the path to the current node in a breadcrumbs-style navigation, in `<main>` above the title.
+11. [] Breadcrumbs — Put the path to the current node in a breadcrumbs-style navigation, in `<main>` above the title.
     Provide links for each hop. Remove the `Parent` link in the template. `M`
+
+12. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
+    right. But if I change the story description, it should reload the whole page. `M`
 
 13. [] Responsive `M`
 
