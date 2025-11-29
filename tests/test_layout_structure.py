@@ -148,7 +148,7 @@ def test_story_links_in_sidebar_have_correct_structure(built_site: Path) -> None
     # Find a story link (should have story- in the href)
     story_link = None
     for link in all_links:
-        href = link.attrs.get("href", "")
+        href = link.attrs.get("href", "") or ""
         if "story-" in href:
             story_link = link
             break
@@ -242,7 +242,8 @@ def test_static_assets_load_correctly_at_root(built_site: Path) -> None:
     all_links = query_all_by_tag_name(doc, "link")
     stylesheet_link = None
     for link in all_links:
-        if link.attrs.get("rel") == "stylesheet" and "static" in link.attrs.get("href", ""):
+        href = link.attrs.get("href", "") or ""
+        if link.attrs.get("rel") == "stylesheet" and "static" in href:
             stylesheet_link = link
             break
 
@@ -278,7 +279,8 @@ def test_static_assets_load_correctly_at_depth_1(built_site: Path) -> None:
     all_links = query_all_by_tag_name(doc, "link")
     stylesheet_link = None
     for link in all_links:
-        if link.attrs.get("rel") == "stylesheet" and "static" in link.attrs.get("href", ""):
+        href = link.attrs.get("href", "") or ""
+        if link.attrs.get("rel") == "stylesheet" and "static" in href:
             stylesheet_link = link
             break
 
@@ -315,7 +317,8 @@ def test_static_assets_load_correctly_at_depth_2(built_site: Path) -> None:
     all_links = query_all_by_tag_name(doc, "link")
     stylesheet_link = None
     for link in all_links:
-        if link.attrs.get("rel") == "stylesheet" and "static" in link.attrs.get("href", ""):
+        href = link.attrs.get("href", "") or ""
+        if link.attrs.get("rel") == "stylesheet" and "static" in href:
             stylesheet_link = link
             break
 
