@@ -125,27 +125,27 @@ def this_section() -> Section:
     )
 ```
 
-### Site
+### Catalog
 
 Root of the story tree, auto-discovered from package.
 
 ```python
 @dataclass
-class Site(TreeNode):
+class Catalog(TreeNode):
     title: str | None = None
     items: dict[str, Section | Subject] = field(default_factory=dict)
 ```
 
 **Fields:**
-- `title` - Site display title
+- `title` - Catalog display title
 - `items` - Dictionary of section/subject name → Section or Subject
 
 **Created automatically by:**
 
 ```python
-from storytime import make_site
+from storytime import make_catalog
 
-site = make_site("my_package")
+catalog = make_catalog("my_package")
 ```
 
 ## Type Aliases
@@ -218,17 +218,17 @@ def Button(text: str) -> Element:
 Custom rendering template for stories:
 
 ```python
-type Template = Callable[[Story, Site], Node]
+type Template = Callable[[Story, Catalog], Node]
 ```
 
 **Signature:**
-- Takes: Story instance, Site instance
+- Takes: Story instance, Catalog instance
 - Returns: Node (Element or Fragment)
 
 **Example:**
 
 ```python
-def custom_template(story: Story, site: Site) -> Node:
+def custom_template(story: Story, catalog: Catalog) -> Node:
     return h.div(
         h.h1(story.title),
         story.instance,
@@ -238,30 +238,30 @@ def custom_template(story: Story, site: Site) -> Node:
 
 ## Helper Functions
 
-### make_site
+### make_catalog
 
-Build a Site from a package:
+Build a Catalog from a package:
 
 ```python
-def make_site(package_location: str) -> Site:
+def make_catalog(package_location: str) -> Catalog:
     """Build story tree from package.
-    
+
     Args:
         package_location: Python package path (e.g., "my_package")
-        
+
     Returns:
-        Site instance with full tree loaded
+        Catalog instance with full tree loaded
     """
 ```
 
 **Example:**
 
 ```python
-from storytime import make_site
+from storytime import make_catalog
 
-site = make_site("my_package")
-print(site.title)
-print(len(site.items))
+catalog = make_catalog("my_package")
+print(catalog.title)
+print(len(catalog.items))
 ```
 
 ### find_path
@@ -269,11 +269,11 @@ print(len(site.items))
 Traverse tree using dotted notation:
 
 ```python
-def find_path(site: Site, path: str) -> TreeNode | Story | None:
+def find_path(catalog: Catalog, path: str) -> TreeNode | Story | None:
     """Find node by dotted path.
-    
+
     Args:
-        site: Site root
+        catalog: Catalog root
         path: Dotted path (e.g., ".section.subject.story")
         
     Returns:
@@ -442,8 +442,8 @@ class TreeNode(BaseNode):
 ```
 
 **Inherited by:**
-- Site
-- Section  
+- Catalog
+- Section
 - Subject
 
 ## Exceptions

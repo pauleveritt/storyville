@@ -64,7 +64,7 @@ class MyComponent:
 # Layout component using proper children syntax
 return html(t'''
 <body>
-  <{Header} title="Site" />
+  <{Header} title="Catalog" />
   <{Main} current_path="/home">
     <article>
       <h1>Page Content</h1>

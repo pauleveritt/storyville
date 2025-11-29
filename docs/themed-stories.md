@@ -61,26 +61,26 @@ class ThemedLayout:
         )
 ```
 
-### 2. Configure Your Site
+### 2. Configure Your Catalog
 
-Add the themed layout to your Site configuration:
+Add the themed layout to your Catalog configuration:
 
 ```python
 # my_package/__init__.py
-from storytime import Site
+from storytime import Catalog
 from my_package.themed_layout.themed_layout import ThemedLayout
 
 def themed_layout_wrapper(story_title: str, children: Node) -> Node:
     """Wrapper function to instantiate and call ThemedLayout."""
     return ThemedLayout(story_title, children)()
 
-def this_site() -> Site:
-    return Site(themed_layout=themed_layout_wrapper)
+def this_catalog() -> Catalog:
+    return Catalog(themed_layout=themed_layout_wrapper)
 ```
 
 ### 3. Build and View
 
-When you build your site or start the dev server, Storytime will now generate two HTML files per story:
+When you build your catalog or start the dev server, Storytime will now generate two HTML files per story:
 
 - `story-N/index.html` - The standard Storytime view with an iframe
 - `story-N/themed_story.html` - Your component rendered in the custom theme
@@ -98,9 +98,9 @@ Your ThemedLayout must be a callable that accepts two parameters:
 
 And returns a tdom `Node` representing a complete HTML document.
 
-### Site Configuration
+### Catalog Configuration
 
-The `Site.themed_layout` property accepts:
+The `Catalog.themed_layout` property accepts:
 
 ```python
 themed_layout: Callable[..., Node] | None = None
@@ -251,7 +251,7 @@ def test_themed_layout_renders_full_html():
 
 Themed Stories is an opt-in feature:
 
-- If `Site.themed_layout` is `None` (default), stories render with standard Layout
+- If `Catalog.themed_layout` is `None` (default), stories render with standard Layout
 - No iframe is displayed when themed layout is not configured
 - Existing builds remain unchanged
 - No performance impact when feature is unused

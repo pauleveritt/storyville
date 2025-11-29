@@ -36,11 +36,14 @@
 11. [] Story reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
     right. But if I change the story description, it should reload the whole page. `M`
 
-12. [] Breadcrumbs `M`
+12. [] Breadcrumbs — Put the path to the current node in a breadcrumbs-style navigation, in `<main>` above the title.
+    Provide links for each hop. Remove the `Parent` link in the template. `M`
 
 13. [] Responsive `M`
 
 14. [] Inspector `M`
+
+15. [] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. `M`
 
 15. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`

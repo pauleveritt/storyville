@@ -160,12 +160,12 @@ def this_section() -> Section:
     )
 ```
 
-## Site Structure
+## Catalog Structure
 
 The complete hierarchy:
 
 ```
-Site (auto-discovered from package)
+Catalog (auto-discovered from package)
   └─ Section (optional, from __init__.py)
       └─ Subject (from stories.py)
           └─ Story (items in Subject)
