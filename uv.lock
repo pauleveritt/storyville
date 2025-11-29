@@ -27,7 +27,7 @@ wheels = [
 [[package]]
 name = "aria-testing"
 version = "0.1.0"
-source = { directory = "../../../../../../../../projects/t-strings/aria-testing" }
+source = { directory = "../../t-strings/aria-testing" }
 dependencies = [
     { name = "tdom" },
 ]
@@ -756,14 +756,14 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "starlette", specifier = ">=0.50.0" },
-    { name = "tdom", directory = "../../../../../../../../projects/t-strings/tdom" },
+    { name = "tdom", directory = "../../t-strings/tdom" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.38.0" },
     { name = "watchfiles", specifier = ">=1.1.1" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "aria-testing", directory = "../../../../../../../../projects/t-strings/aria-testing" },
+    { name = "aria-testing", directory = "../../t-strings/aria-testing" },
     { name = "click", specifier = ">=8.3.0" },
     { name = "coverage", specifier = ">=7.11.2" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -782,7 +782,7 @@ dev = [
 [[package]]
 name = "tdom"
 version = "0.1.9"
-source = { directory = "../../../../../../../../projects/t-strings/tdom" }
+source = { directory = "../../t-strings/tdom" }
 dependencies = [
     { name = "markupsafe" },
 ]

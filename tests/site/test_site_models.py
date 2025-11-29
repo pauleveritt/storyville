@@ -1,7 +1,6 @@
 """Test the Site model."""
 
 
-from tdom import Node, html
 
 from storytime.site.models import Site
 
