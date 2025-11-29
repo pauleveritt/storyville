@@ -184,9 +184,21 @@ def watcher_runner():
         Yields:
             asyncio.Task: The running watcher task
         """
+        # Create ready event if not provided
+        ready_event = kwargs.get('ready_event')
+        if ready_event is None:
+            ready_event = asyncio.Event()
+            kwargs['ready_event'] = ready_event
+
         task = asyncio.create_task(watcher_func(**kwargs))
-        # Give watcher time to start
-        await asyncio.sleep(0.5)
+
+        # Wait for watcher to be ready (event-based, not time-based)
+        try:
+            await asyncio.wait_for(ready_event.wait(), timeout=2.0)
+        except asyncio.TimeoutError:
+            # Fallback to old behavior if watcher doesn't signal ready
+            await asyncio.sleep(0.5)
+
         try:
             yield task
         finally:

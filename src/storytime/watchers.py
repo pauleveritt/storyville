@@ -24,6 +24,7 @@ async def watch_and_rebuild(
     broadcast_callback: Callable[[], Awaitable[None]],
     package_location: str,
     output_dir: Path,
+    ready_event: asyncio.Event | None = None,
 ) -> None:
     """Watch source files, rebuild on changes, and trigger browser reload.
 
@@ -44,6 +45,7 @@ async def watch_and_rebuild(
         broadcast_callback: Async function to call to broadcast reload (e.g., broadcast_reload_async)
         package_location: Package location to pass to rebuild_callback
         output_dir: Output directory to pass to rebuild_callback
+        ready_event: Optional Event to signal when watcher is ready (for testing)
     """
     # Build list of paths to watch
     watch_paths: list[Path] = [content_path]
@@ -57,6 +59,10 @@ async def watch_and_rebuild(
 
     try:
         async for changes in awatch(*watch_paths):
+            # Signal that watcher is ready on first iteration
+            if ready_event and not ready_event.is_set():
+                ready_event.set()
+                logger.debug("Watcher ready event set")
             # Filter changes based on path
             relevant_changes = []
             for change_type, changed_path in changes:

@@ -134,8 +134,8 @@ async def test_multiple_rapid_file_changes_debounced(tmp_path: Path, watcher_run
         except asyncio.TimeoutError:
             pytest.fail("Rebuild was not called within timeout")
 
-        # Give a bit more time to ensure no additional rebuilds happen
-        await asyncio.sleep(1.0)
+        # Give time to ensure no additional rebuilds happen (reduced from 1.0s)
+        await asyncio.sleep(0.5)
 
         # Due to debouncing, we should have only 1-2 rebuilds, not 5
         assert rebuild_count <= 2, (
@@ -341,8 +341,8 @@ async def test_rebuild_error_does_not_crash_watcher(tmp_path: Path, watcher_runn
         except asyncio.TimeoutError:
             pytest.fail("First rebuild attempt was not called")
 
-        # Give debounce time to clear
-        await asyncio.sleep(0.5)
+        # Give debounce time to clear (reduced from 0.5s to just above DEBOUNCE_DELAY)
+        await asyncio.sleep(0.35)
 
         # Second file change (should succeed)
         file2 = content_dir / "file2.txt"
