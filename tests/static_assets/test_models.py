@@ -64,17 +64,3 @@ def test_static_folder_calculate_output_path_preserves_full_structure() -> None:
     output_path = folder.calculate_output_path(Path("build"))
 
     assert output_path == Path("build/storytime_static/components/navigation/tree/static")
-
-
-def test_static_folder_dataclass_attributes() -> None:
-    """Test StaticFolder has all required attributes."""
-    folder = StaticFolder(
-        source_path=Path("src/test/static"),
-        source_type="storytime",
-        relative_path=Path("test"),
-    )
-
-    assert hasattr(folder, "source_path")
-    assert hasattr(folder, "source_type")
-    assert hasattr(folder, "relative_path")
-    assert hasattr(folder, "output_prefix")

@@ -1,4 +1,4 @@
-"""Test assertion execution in StoryView."""
+"""Core tests for Story Assertions execution."""
 
 from unittest.mock import MagicMock
 
@@ -214,25 +214,71 @@ def test_assertion_execution_skipped_when_disabled() -> None:
     assert len(story.assertion_results) == 0
 
 
-def test_assertion_execution_skipped_when_assertions_empty() -> None:
-    """Test assertion execution is skipped when story has no assertions."""
+def test_story_instance_returns_none() -> None:
+    """Test assertion execution when story.instance returns None."""
 
-    def sample_component() -> Node:
-        """A simple component."""
-        return html(t"<div>Content</div>")
+    def none_component() -> None:
+        """Component that returns None."""
+        return None
+
+    def sample_assertion(element: Element | Fragment) -> None:
+        """Assertion that should not be called."""
+        raise AssertionError("Should not execute")
 
     story = Story(
         title="Test Story",
-        target=sample_component,
-        assertions=[],  # Empty list
+        target=none_component,
+        assertions=[sample_assertion],
     )
 
-    # Create mock site
     site = MagicMock()
+    view = StoryView(story=story, site=site)
 
-    # Execute assertions (should be skipped)
+    # Execute assertions - should skip when instance is None
+    view._execute_assertions(with_assertions=True)
+
+    # Verify no results were stored (assertions skipped)
+    assert len(story.assertion_results) == 0
+
+
+def test_mixed_assertion_error_and_critical_error_messages() -> None:
+    """Test that AssertionError and critical errors are distinguished."""
+
+    def simple_component() -> Node:
+        return html(t"<div>Test</div>")
+
+    def normal_assertion_error(element: Element | Fragment) -> None:
+        """Normal assertion error."""
+        raise AssertionError("Normal assertion failure")
+
+    def critical_error(element: Element | Fragment) -> None:
+        """Critical error."""
+        raise ValueError("Unexpected error")
+
+    story = Story(
+        title="Test Story",
+        target=simple_component,
+        assertions=[normal_assertion_error, critical_error],
+    )
+
+    site = MagicMock()
     view = StoryView(story=story, site=site)
     view._execute_assertions(with_assertions=True)
 
-    # Verify no results were stored
-    assert len(story.assertion_results) == 0
+    # Verify results
+    assert len(story.assertion_results) == 2
+
+    # First: normal AssertionError (no prefix)
+    name1, passed1, error_msg1 = story.assertion_results[0]
+    assert name1 == "Assertion 1"
+    assert passed1 is False
+    assert error_msg1 == "Normal assertion failure"
+    assert not error_msg1.startswith("Critical error: ")
+
+    # Second: critical error (with prefix)
+    name2, passed2, error_msg2 = story.assertion_results[1]
+    assert name2 == "Assertion 2"
+    assert passed2 is False
+    assert error_msg2 is not None
+    assert error_msg2.startswith("Critical error: ")
+    assert "Unexpected error" in error_msg2

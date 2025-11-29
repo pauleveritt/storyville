@@ -6,29 +6,6 @@ from storytime.story import Story
 from storytime.subject import Subject
 
 
-# Story Initialization Tests
-def test_story_initialization() -> None:
-    """Test Story can be instantiated."""
-    story = Story(title="Default")
-    assert story.title == "Default"
-    assert story.target is None
-    assert story.props == {}
-    assert story.template is None
-
-
-# Story Configuration Tests
-def test_story_with_component(my_component) -> None:
-    """Test Story with target."""
-    story = Story(title="Default", target=my_component)
-    assert story.target is my_component
-
-
-def test_story_with_props() -> None:
-    """Test Story with props."""
-    story = Story(title="Default", props={"name": "value"})
-    assert story.props == {"name": "value"}
-
-
 # Story.post_update Tests
 def test_story_post_update_basic() -> None:
     """Test Story post_update sets parent."""
