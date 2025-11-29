@@ -84,6 +84,17 @@ async def broadcast_reload_async() -> None:
     logger.info("Broadcast reload to %d clients", len(_active_connections))
 
 
+def _clear_websocket_loop() -> None:
+    """Clear the stored websocket loop reference."""
+    globals()["_websocket_loop"] = None
+
+
+def _is_loop_closed_error(e: RuntimeError) -> bool:
+    """Check if RuntimeError indicates a closed event loop."""
+    error_msg = str(e).lower()
+    return "closed" in error_msg or "runner is closed" in error_msg
+
+
 def broadcast_reload() -> None:
     """Synchronous wrapper for broadcast_reload_async.
 
@@ -106,11 +117,10 @@ def broadcast_reload() -> None:
         logger.debug("No websocket loop available; skipping broadcast")
         return
 
-    # Check if the stored loop is closed and clear if necessary
+    # Check if the stored loop is closed
     if _websocket_loop.is_closed():
         logger.warning("Stored websocket loop is closed, clearing reference")
-        globals()["_websocket_loop"] = None
-        logger.debug("No websocket loop available; skipping broadcast")
+        _clear_websocket_loop()
         return
 
     # Schedule the broadcast in the websocket event loop
@@ -125,8 +135,8 @@ def broadcast_reload() -> None:
         raise TimeoutError(msg) from e
     except RuntimeError as e:
         # Loop might have been closed during the call
-        if "closed" in str(e).lower() or "runner is closed" in str(e).lower():
+        if _is_loop_closed_error(e):
             logger.warning("Loop closed during broadcast: %s", e)
-            globals()["_websocket_loop"] = None
+            _clear_websocket_loop()
         else:
             raise
