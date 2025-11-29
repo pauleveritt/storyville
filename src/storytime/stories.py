@@ -1,20 +1,20 @@
-"""The ``Site`` for stories used for the Storytime UI itself."""
+"""The ``Catalog`` for stories used for the Storytime UI itself."""
 
 
-from storytime import Site, make_site
+from storytime import Catalog, make_catalog
 
 
-def this_site() -> Site:
+def this_catalog() -> Catalog:
     """The top of the Storytime UI story catalog."""
-    return Site(
+    return Catalog(
         title="Storytime UI",
     )
 
 
 def test_storytime_ui() -> None:
     """Ensure this example works."""
-    site = make_site("storytime")
-    section = site.items["components"]
+    catalog = make_catalog("storytime")
+    section = catalog.items["components"]
     subject = section.items["index"]
     story = subject.items[0]
     assert story.title == "Index Page Story"

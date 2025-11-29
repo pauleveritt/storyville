@@ -6,13 +6,13 @@ import pytest
 @pytest.mark.slow
 def test_items_generated_for_assertions(pytestconfig: pytest.Config):
     """Test that one pytest Item is generated per assertion."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Count total assertions across all stories
     total_assertions = 0
-    for section in site.items.values():
+    for section in catalog.items.values():
         for subject in section.items.values():
             for story in subject.items:
                 total_assertions += len(story.assertions)

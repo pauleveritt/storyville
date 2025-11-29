@@ -55,7 +55,7 @@ def test_build_in_subinterpreter_writes_correct_files(tmp_path: Path) -> None:
 
         # Verify content is written correctly
         index_content = (output_dir / "index.html").read_text()
-        assert "Minimal Site" in index_content
+        assert "Minimal Catalog" in index_content
 
     finally:
         shutdown_pool(pool)

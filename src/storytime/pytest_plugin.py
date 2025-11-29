@@ -7,7 +7,7 @@ boilerplate while providing excellent developer experience.
 Key Features:
 - Automatic test discovery from configured story paths
 - One test item generated per assertion in each story
-- Clear test naming: test_story[site.section.subject.story_name::assertion_name]
+- Clear test naming: test_story[catalog.section.subject.story_name::assertion_name]
 - Rich failure reporting with unified HTML diffs
 - Fresh rendering per test for proper isolation
 - Works with pytest-xdist for parallel execution
@@ -33,7 +33,7 @@ from _pytest._code.code import TerminalRepr
 if TYPE_CHECKING:
     from typing import Any
 
-    from storytime.site.models import Site
+    from storytime.catalog.models import Catalog
     from storytime.story import Story
 
 # Type aliases
@@ -97,29 +97,29 @@ class StoryFileCollector(pytest.File):
 
         This method:
         1. Determines the package location from the file path
-        2. Uses make_site() to build the story tree
+        2. Uses make_catalog() to build the story tree
         3. Traverses the tree to find all stories with assertions
         4. Generates one test item per assertion
 
         Returns:
             List of pytest Items for assertions in this file's stories.
         """
-        from storytime.site.helpers import make_site
+        from storytime.catalog.helpers import make_catalog
 
         # Determine package location from file path
         # For example: examples/huge_assertions/forms/stories.py -> examples.huge_assertions
         package_location = self._get_package_location()
 
-        # Build the site tree
+        # Build the catalog tree
         try:
-            site = make_site(package_location)
+            catalog = make_catalog(package_location)
         except Exception:
-            # If we can't build the site, skip this file
+            # If we can't build the catalog, skip this file
             return []
 
         # Collect all stories with assertions
         items: list[pytest.Item] = []
-        for story, story_path in self._find_stories_with_assertions(site):
+        for story, story_path in self._find_stories_with_assertions(catalog):
             # Generate test items for each assertion
             items.extend(self._create_items_for_story(story, story_path))
 
@@ -159,28 +159,28 @@ class StoryFileCollector(pytest.File):
         return ".".join(package_parts)
 
     def _find_stories_with_assertions(
-        self, site: Site
+        self, catalog: Catalog
     ) -> list[tuple[Story, str]]:
-        """Find all stories with non-empty assertions in the site tree.
+        """Find all stories with non-empty assertions in the catalog tree.
 
         Args:
-            site: The Site to traverse.
+            catalog: The Catalog to traverse.
 
         Returns:
             List of (story, dotted_path) tuples for stories with assertions.
         """
         stories_with_assertions: list[tuple[Story, str]] = []
 
-        # Traverse: Site -> Section -> Subject -> Story
-        for section_name, section in site.items.items():
+        # Traverse: Catalog -> Section -> Subject -> Story
+        for section_name, section in catalog.items.items():
             for subject_name, subject in section.items.items():
                 for story_idx, story in enumerate(subject.items):
                     if story.assertions:
-                        # Build dotted path: site.section.subject.story_name
+                        # Build dotted path: catalog.section.subject.story_name
                         story_name = story.title or f"story_{story_idx}"
                         # Make filesystem-safe
                         story_name = story_name.replace(" ", "_").lower()
-                        dotted_path = f"{site.title or 'site'}.{section_name}.{subject_name}.{story_name}"
+                        dotted_path = f"{catalog.title or 'catalog'}.{section_name}.{subject_name}.{story_name}"
                         # Make filesystem-safe
                         dotted_path = dotted_path.replace(" ", "_").lower()
 

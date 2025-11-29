@@ -23,29 +23,29 @@ def test_discovery_respects_enabled_setting(pytestconfig: pytest.Config):
 
 @pytest.mark.slow
 def test_collect_builds_story_tree(pytestconfig: pytest.Config):
-    """Test that make_site() builds story tree correctly."""
-    from storytime.site.helpers import make_site
+    """Test that make_catalog() builds story tree correctly."""
+    from storytime.catalog.helpers import make_catalog
 
     # Build the site for the examples.huge_assertions package
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Verify site structure
-    assert site is not None
-    assert site.title == "Huge Scale Example"
-    assert len(site.items) > 0
+    assert catalog is not None
+    assert catalog.title == "Huge Scale Example"
+    assert len(catalog.items) > 0
 
 
 @pytest.mark.slow
 def test_traversal_finds_stories_with_assertions(pytestconfig: pytest.Config):
     """Test that traversal finds stories with non-empty assertions."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
     # Build the site
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Find stories with assertions by traversing the tree
     stories_with_assertions = []
-    for section_name, section in site.items.items():
+    for section_name, section in catalog.items.items():
         for subject_name, subject in section.items.items():
             for story in subject.items:
                 if story.assertions:
@@ -58,12 +58,12 @@ def test_traversal_finds_stories_with_assertions(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_story_has_assertions_field(pytestconfig: pytest.Config):
     """Test that stories have the assertions field."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Find a story with assertions
-    for section in site.items.values():
+    for section in catalog.items.values():
         for subject in section.items.values():
             for story in subject.items:
                 if story.assertions:

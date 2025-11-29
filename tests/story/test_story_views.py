@@ -3,7 +3,7 @@
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import html
 
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
@@ -15,12 +15,12 @@ def test_story_view_with_custom_template_mode() -> None:
         """Custom template with full control over rendering."""
         return html(t"<div><h1>Custom Template Output</h1></div>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     story = Story(title="Test Story", template=custom_template)
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
-    # Type guard in test to verify 
+    # Type guard in test to verify
 
     # Verify custom template content is present
     h1 = get_by_tag_name(result, "h1")
@@ -33,14 +33,14 @@ def test_story_view_with_default_layout_mode() -> None:
         """Simple component that returns a ."""
         return html(t"<p>Hello {name}</p>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Components")
     parent.package_path = ".components"
 
     story = Story(target=simple_component, props={"name": "World"})
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Extract  from result (handles Layout's  wrapper)
@@ -72,14 +72,14 @@ def test_story_view_default_layout_shows_props() -> None:
         """Component with multiple props."""
         return html(t"<div>{title}: {count}</div>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test Component")
     parent.package_path = ".components.test"
 
     story = Story(target=test_component, props={"title": "Example", "count": 42})
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Extract  from result
@@ -97,14 +97,14 @@ def test_story_view_default_layout_with_empty_props() -> None:
         """Component that takes no props."""
         return html(t"<span>No props needed</span>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Simple")
     parent.package_path = ".simple"
 
     story = Story(target=no_props_component, props={})
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Extract  from result
@@ -126,13 +126,13 @@ def test_story_view_returns_element_type() -> None:
         """Basic component."""
         return html(t"<div>Test</div>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     story = Story(target=basic_component)
     parent = Subject()
     parent.package_path = ".test"
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Verify result is a valid Node (could be Element or Fragment)
@@ -148,9 +148,9 @@ def test_story_view_custom_template_no_wrapping() -> None:
         """Minimal template for testing."""
         return html(t"<article>Pure template content</article>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     story = Story(title="Minimal", template=minimal_template)
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Should only have the article from the template, no additional wrapping
@@ -167,7 +167,7 @@ def test_story_view_default_layout_complete_structure() -> None:
         """Component with a prop."""
         return html(t"<section>{message}</section>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Full Test")
     parent.package_path = ".components.full"
 
@@ -176,7 +176,7 @@ def test_story_view_default_layout_complete_structure() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site)
+    view = StoryView(story=story, site=catalog)
     result = view()
 
     # Extract  from result

@@ -6,13 +6,13 @@ from tdom import html
 from storytime.story import Story
 from storytime.subject import Subject
 from storytime.subject.views import SubjectView
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 
 def test_subject_view_renders_title_in_h1() -> None:
     """Test SubjectView renders subject title in h1 element."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     subject = Subject(title="Button Component")
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -29,7 +29,7 @@ def test_subject_view_renders_story_cards() -> None:
         """Button component."""
         return html(t"<button>Click me</button>")
 
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     subject = Subject(title="Button Component", target=button_component)
     subject.package_path = ".components.button"
 
@@ -41,7 +41,7 @@ def test_subject_view_renders_story_cards() -> None:
 
     subject.items = [story1, story2]
 
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -64,9 +64,9 @@ def test_subject_view_renders_story_cards() -> None:
 
 def test_subject_view_shows_empty_state() -> None:
     """Test SubjectView shows empty state message when no stories."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     subject = Subject(title="Empty Component")
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -82,9 +82,9 @@ def test_subject_view_shows_empty_state() -> None:
 
 def test_subject_view_returns_element_type() -> None:
     """Test SubjectView.__call__ returns an  or  type."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     subject = Subject(title="Test Component")
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Verify result is a valid Node (could be Element or Fragment from Layout)

@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING
 from storytime.nodes import BaseNode
 
 if TYPE_CHECKING:
-    from storytime.site import Site
+    from storytime.catalog import Catalog
     from storytime.subject import Subject
 
 
 @dataclass
 class Section(BaseNode["Section"]):
-    """A grouping of subjects within a site.
+    """A grouping of subjects within a catalog.
 
     Sections provide organizational structure, containing multiple
     subjects with their stories. A section can have an optional
@@ -25,6 +25,6 @@ class Section(BaseNode["Section"]):
     and package path handling.
     """
 
-    parent: Site | None = None
+    parent: Catalog | None = None
     description: str | None = None
     items: dict[str, Subject] = field(default_factory=dict)

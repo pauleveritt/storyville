@@ -20,10 +20,10 @@ def test_serve_command_without_flag(runner: CliRunner, tmp_path: Path) -> None:
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Mock uvicorn.run and build_site to avoid actually starting server
+    # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
         patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_site"),
+        patch("storytime.__main__.build_catalog"),
         patch("storytime.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
@@ -48,10 +48,10 @@ def test_serve_command_with_flag_enabled(runner: CliRunner, tmp_path: Path) -> N
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Mock uvicorn.run and build_site to avoid actually starting server
+    # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
         patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_site"),
+        patch("storytime.__main__.build_catalog"),
         patch("storytime.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
@@ -76,10 +76,10 @@ def test_serve_command_with_flag_disabled(runner: CliRunner, tmp_path: Path) -> 
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Mock uvicorn.run and build_site to avoid actually starting server
+    # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
         patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_site"),
+        patch("storytime.__main__.build_catalog"),
         patch("storytime.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
@@ -100,12 +100,12 @@ def test_serve_command_with_flag_disabled(runner: CliRunner, tmp_path: Path) -> 
 
 
 def test_build_command_uses_direct_build(runner: CliRunner, tmp_path: Path) -> None:
-    """Test build command always uses direct build_site (no subinterpreters)."""
+    """Test build command always uses direct build_catalog (no subinterpreters)."""
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Mock build_site to avoid actual build
-    with patch("storytime.__main__.build_site") as mock_build:
+    # Mock build_catalog to avoid actual build
+    with patch("storytime.__main__.build_catalog") as mock_build:
         # Run build command
         result = runner.invoke(
             cli_app,
@@ -115,7 +115,7 @@ def test_build_command_uses_direct_build(runner: CliRunner, tmp_path: Path) -> N
         # Should succeed
         assert result.exit_code == 0
 
-        # build_site should be called directly (not through subinterpreter)
+        # build_catalog should be called directly (not through subinterpreter)
         mock_build.assert_called_once()
         assert mock_build.call_args.kwargs["package_location"] == "examples.minimal"
         assert mock_build.call_args.kwargs["output_dir"] == Path(output_dir).resolve()

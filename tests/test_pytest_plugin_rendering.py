@@ -6,12 +6,12 @@ import pytest
 @pytest.mark.slow
 def test_story_renders_fresh(pytestconfig: pytest.Config):
     """Test that story is rendered fresh for each test execution."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Find a story with assertions
-    for section in site.items.values():
+    for section in catalog.items.values():
         for subject in section.items.values():
             for story in subject.items:
                 if story.assertions:
@@ -30,12 +30,12 @@ def test_story_renders_fresh(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_assertion_executed_against_fresh_instance(pytestconfig: pytest.Config):
     """Test that assertion is executed against freshly rendered instance."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Find a story with assertions
-    for section in site.items.values():
+    for section in catalog.items.values():
         for subject in section.items.values():
             for story in subject.items:
                 if story.assertions:
@@ -60,12 +60,12 @@ def test_assertion_executed_against_fresh_instance(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_no_cached_results_used(pytestconfig: pytest.Config):
     """Test that cached assertion_results are not used."""
-    from storytime.site.helpers import make_site
+    from storytime.catalog.helpers import make_catalog
 
-    site = make_site("examples.huge_assertions")
+    catalog = make_catalog("examples.huge_assertions")
 
     # Find a story with assertions
-    for section in site.items.values():
+    for section in catalog.items.values():
         for subject in section.items.values():
             for story in subject.items:
                 if story.assertions:

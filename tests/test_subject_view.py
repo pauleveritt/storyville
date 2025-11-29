@@ -3,22 +3,22 @@
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 
 from storytime.section.models import Section
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 from storytime.subject.models import Subject
 from storytime.subject.views import SubjectView
 
 
 def test_subject_view_description_renders() -> None:
     """Test that subject description renders after title and before Target line."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(
         title="Button",
         description="A clickable button component",
         parent=section,
     )
 
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Verify result is not None
@@ -44,15 +44,15 @@ def test_subject_view_description_renders() -> None:
 
 def test_subject_view_description_skipped_when_none() -> None:
     """Test that description is not rendered when None."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(
         title="Button",
         description=None,
         parent=section,
     )
 
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Verify result is not None
@@ -76,15 +76,15 @@ def test_subject_view_description_skipped_when_none() -> None:
 
 def test_subject_view_description_skipped_when_empty() -> None:
     """Test that description is not rendered when empty string."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(
         title="Button",
         description="",
         parent=section,
     )
 
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Verify result is not None
@@ -108,15 +108,15 @@ def test_subject_view_description_skipped_when_empty() -> None:
 
 def test_subject_view_description_html_escaped() -> None:
     """Test that dangerous HTML characters are automatically escaped."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(
         title="Button",
         description="<script>alert('xss')</script>Safe text",
         parent=section,
     )
 
-    view = SubjectView(subject=subject, site=site)
+    view = SubjectView(subject=subject, site=catalog)
     result = view()
 
     # Verify result is not None

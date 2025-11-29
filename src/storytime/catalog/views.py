@@ -1,47 +1,47 @@
-"""SiteView for rendering Site instances."""
+"""CatalogView for rendering Catalog instances."""
 
 from dataclasses import dataclass
 
 from tdom import Node, html
 
 from storytime.components.layout import Layout
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 
 
 @dataclass
-class SiteView:
-    """View for rendering a Site with title and section cards.
+class CatalogView:
+    """View for rendering a Catalog with title and section cards.
 
     The view renders:
-    - Site title in h1
+    - Catalog title in h1
     - List of section cards with:
       - Section title as a link
       - Section description (if present)
       - Subject count
     - Empty state message when no sections
 
-    The view does NOT render a parent link since Site is the root node.
+    The view does NOT render a parent link since Catalog is the root node.
     The view satisfies the View Protocol by implementing __call__() -> Node.
     Tests use type guards to verify the result is an Element.
     """
 
-    site: Site
+    catalog: Catalog
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
-        """Render the site to a tdom Node.
+        """Render the catalog to a tdom Node.
 
         Returns:
-            A tdom Node representing the rendered site.
+            A tdom Node representing the rendered catalog.
         """
         # Conditionally render sections or empty state
-        if not self.site.items:
+        if not self.catalog.items:
             # Empty state
-            content = html(t"<p>No sections defined for this site</p>")
+            content = html(t"<p>No sections defined for this catalog</p>")
         else:
             # Build section cards as a list - create individual li elements
             section_items = []
-            for key, section in self.site.items.items():
+            for key, section in self.catalog.items.items():
                 # Use section title for link text and /{key} URL pattern
                 section_url = f"/{key}"
 
@@ -72,10 +72,11 @@ class SiteView:
             content = html(t"<ul>{section_items}</ul>")
 
         # Create the main content for this view
+        # Note: Layout still uses 'site' parameter name for backward compatibility
         view_content = html(t"""\
-<{Layout} view_title="Home" site={self.site} depth={0} cached_navigation={self.cached_navigation}>
+<{Layout} view_title="Home" site={self.catalog} depth={0} cached_navigation={self.cached_navigation}>
 <div>
-<h1>{self.site.title}</h1>
+<h1>{self.catalog.title}</h1>
 {content}
 </div>
 </{Layout}>""")

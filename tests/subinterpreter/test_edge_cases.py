@@ -143,7 +143,7 @@ async def test_module_state_isolation_between_builds(tmp_path: Path) -> None:
 
             assert (output_dir / "index.html").exists()
             content = (output_dir / "index.html").read_text()
-            assert "Minimal Site" in content
+            assert "Minimal Catalog" in content
 
         # All outputs should be identical (module state was reset)
         contents = [(d / "index.html").read_text() for d in output_dirs]

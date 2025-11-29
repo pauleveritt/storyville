@@ -3,7 +3,7 @@
 from aria_testing import get_text_content, query_all_by_tag_name
 from tdom import html
 
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
@@ -23,7 +23,7 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
         raise AssertionError("Something is wrong")
 
     # Create story with assertions
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test Subject")
     parent.package_path = ".test"
 
@@ -35,7 +35,7 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
     story.post_update(parent=parent)
 
     # Execute the view with assertions enabled
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     # Verify the rendered output
@@ -75,7 +75,7 @@ def test_cli_flag_with_assertions_enabled() -> None:
         assertion_executed = True
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -86,7 +86,7 @@ def test_cli_flag_with_assertions_enabled() -> None:
     story.post_update(parent=parent)
 
     # Simulate --with-assertions flag enabled (default)
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     # Verify assertion was executed
@@ -113,7 +113,7 @@ def test_cli_flag_no_with_assertions_disabled() -> None:
         assertion_executed = True
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -124,7 +124,7 @@ def test_cli_flag_no_with_assertions_disabled() -> None:
     story.post_update(parent=parent)
 
     # Simulate --no-with-assertions flag
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify assertion was NOT executed
@@ -148,7 +148,7 @@ def test_error_handling_does_not_crash_rendering() -> None:
         """Assertion that raises unexpected error."""
         raise RuntimeError("Unexpected critical error")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -159,7 +159,7 @@ def test_error_handling_does_not_crash_rendering() -> None:
     story.post_update(parent=parent)
 
     # Execute view - should not crash despite critical error
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     # Verify rendering completed successfully
@@ -198,7 +198,7 @@ def test_multiple_assertions_in_single_story() -> None:
         execution_order.append(3)
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -208,7 +208,7 @@ def test_multiple_assertions_in_single_story() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     # Verify assertions executed in order
@@ -240,7 +240,7 @@ def test_mixed_pass_fail_assertions_in_single_story() -> None:
     def fail2(element) -> None:
         raise AssertionError("Fail 2")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -250,7 +250,7 @@ def test_mixed_pass_fail_assertions_in_single_story() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     # Verify all 4 badges rendered

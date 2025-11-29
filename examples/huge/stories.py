@@ -1,11 +1,11 @@
-"""The Site for the huge example package."""
+"""The Catalog for the huge example package."""
 
 
-from storytime import Site
+from storytime import Catalog
 
 
-def this_site() -> Site:
+def this_catalog() -> Catalog:
     """The top of this package's story catalog."""
-    return Site(
+    return Catalog(
         title="Huge Scale Example",
     )

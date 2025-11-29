@@ -141,8 +141,8 @@ def module_factory():
 
     Example:
         def test_something(module_factory):
-            def my_func() -> Site:
-                return Site(title="Test")
+            def my_func() -> Catalog:
+                return Catalog(title="Test")
             module = module_factory("test_module", my_func)
     """
     def _create(module_name: str = "test_module", callable_func=None):

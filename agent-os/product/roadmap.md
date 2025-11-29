@@ -15,7 +15,7 @@
 5. [x] Story-to-Test Integration — Create pytest helpers and fixtures that allow stories to be used directly in tests,
    enabling render verification, snapshot testing, and behavioral assertions. `M`
 
-6. [x] Component Organization System — Finalize the hierarchical structure (Site → Section → Subject → Story) with
+6. [x] Component Organization System — Finalize the hierarchical structure (Catalog → Section → Subject → Story) with
    automatic discovery, navigation, and clear separation of concerns. `S`
 
 7. [x] CLI and Development Workflow — Build the command-line interface for starting the development server, running
@@ -23,42 +23,56 @@
 
 8. [x] Themed Stories — Show a rendering of the story as a full HTML file, shown in an
    `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
-   defined on the `Site`. `M`
+   defined on the `Catalog`. `M`
 
 9. [x] Story/Subject/Section — Add into the rendered HTML the `description` field on `Story`, `Subject`, and `Section`.
    `M`
 
-10. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
+10. [] Update Docs — Look at all the features implemented under agent-os/specs and compare against README.md (short
+    version) and docs/* (long version.) Update the docs to show all the user features. Also, add `docs/architecture.md`
+    to explain the architecture decisions in this project: async watchers based on watchfiles, use of subinterpreters,
+    the reloading server, how stories are collected, the pytest plugin, etc. `M`
+
+11. [] Story reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
+    right. But if I change the story description, it should reload the whole page. `M`
+
+12. [] Breadcrumbs `M`
+
+13. [] Responsive `M`
+
+14. [] Inspector `M`
+
+15. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`
 
-11. [ ] FastAPI Integration — Build integration layer for using Storytime components with FastAPI's templating and
+16. [ ] FastAPI Integration — Build integration layer for using Storytime components with FastAPI's templating and
     response system. `M`
 
-12. [ ] Flask Integration — Develop adapters for Flask templates and rendering context to work with Storytime
+17. [ ] Flask Integration — Develop adapters for Flask templates and rendering context to work with Storytime
     components. `M`
 
-13. [ ] Accessibility Testing Integration — Add aria-testing integration to verify component accessibility directly from
+18. [ ] Accessibility Testing Integration — Add aria-testing integration to verify component accessibility directly from
     stories, catching a11y issues during development. `L`
 
-14. [ ] Visual Regression Testing — Implement snapshot comparison capabilities to detect unintended visual changes in
+19. [ ] Visual Regression Testing — Implement snapshot comparison capabilities to detect unintended visual changes in
     components across test runs. `L`
 
-15. [ ] Component Search and Filtering — Add search functionality to the browser interface for quickly finding
+20. [ ] Component Search and Filtering — Add search functionality to the browser interface for quickly finding
     components in large catalogs. `S`
 
-16. [ ] Export and Documentation Generation — Build static site generation to export component catalogs as standalone
+21. [ ] Export and Documentation Generation — Build static site generation to export component catalogs as standalone
     HTML documentation that can be hosted anywhere. `M`
 
-17. [ ] Component Composition Utilities — Create helper functions and patterns for composing complex components from
+22. [ ] Component Composition Utilities — Create helper functions and patterns for composing complex components from
     simpler ones, promoting reusability. `M`
 
-18. [ ] Performance Optimization — Optimize rendering performance for large component catalogs, implementing lazy
+23. [ ] Performance Optimization — Optimize rendering performance for large component catalogs, implementing lazy
     loading and efficient tree traversal. `M`
 
-19. [ ] Interactive Props Editor — Add UI controls in the browser for dynamically changing component props and seeing
+24. [ ] Interactive Props Editor — Add UI controls in the browser for dynamically changing component props and seeing
     results in real-time without editing code. `L`
 
-20. [ ] Multi-Theme Story Variants — Support rendering the same story with different themes or configurations
+25. [ ] Multi-Theme Story Variants — Support rendering the same story with different themes or configurations
     side-by-side for comparison. `S`
 
 > Notes

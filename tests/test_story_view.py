@@ -6,7 +6,7 @@ from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_nam
 from tdom import Node, html
 
 from storytime.section.models import Section
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 from storytime.story.models import Story
 from storytime.story.views import StoryView
 from storytime.subject.models import Subject
@@ -25,8 +25,8 @@ class SimpleComponent:
 
 def test_story_view_description_renders_mode_b() -> None:
     """Test that story description renders in Mode B above Props line."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(title="Button", parent=section, target=SimpleComponent)
     story = Story(
         title="Primary Button",
@@ -35,7 +35,7 @@ def test_story_view_description_renders_mode_b() -> None:
         parent=subject,
     )
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify result is not None
@@ -69,8 +69,8 @@ def test_story_view_description_renders_mode_c() -> None:
         """Custom themed layout for testing Mode C."""
         return html(t"<html><body>{children}</body></html>")
 
-    site = Site(title="Test Site", themed_layout=custom_themed_layout)
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog", themed_layout=custom_themed_layout)
+    section = Section(title="Components", parent=catalog)
     subject = Subject(title="Button", parent=section, target=SimpleComponent)
     story = Story(
         title="Primary Button",
@@ -79,7 +79,7 @@ def test_story_view_description_renders_mode_c() -> None:
         parent=subject,
     )
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify result is not None
@@ -111,8 +111,8 @@ def test_story_view_description_not_rendered_mode_a() -> None:
         """Custom template for the story."""
         return html(t"<div>Custom Template Content</div>")
 
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(title="Button", parent=section)
     story = Story(
         title="Custom Story",
@@ -121,7 +121,7 @@ def test_story_view_description_not_rendered_mode_a() -> None:
         parent=subject,
     )
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify result is not None
@@ -145,8 +145,8 @@ def test_story_view_description_not_rendered_mode_a() -> None:
 
 def test_story_view_description_skipped_when_none_mode_b() -> None:
     """Test that description is not rendered when None in Mode B."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(title="Button", parent=section, target=SimpleComponent)
     story = Story(
         title="Button Story",
@@ -155,7 +155,7 @@ def test_story_view_description_skipped_when_none_mode_b() -> None:
         parent=subject,
     )
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify result is not None
@@ -178,8 +178,8 @@ def test_story_view_description_skipped_when_none_mode_b() -> None:
 
 def test_story_view_description_html_escaped_mode_b() -> None:
     """Test that dangerous HTML characters are automatically escaped in Mode B."""
-    site = Site(title="Test Site")
-    section = Section(title="Components", parent=site)
+    catalog = Catalog(title="Test Catalog")
+    section = Section(title="Components", parent=catalog)
     subject = Subject(title="Button", parent=section, target=SimpleComponent)
     story = Story(
         title="Button Story",
@@ -188,7 +188,7 @@ def test_story_view_description_html_escaped_mode_b() -> None:
         parent=subject,
     )
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     # Verify result is not None

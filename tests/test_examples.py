@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom.parser import parse_html
-from storytime import make_site
-from storytime.build import build_site
+from storytime import make_catalog
+from storytime.build import build_catalog
 from storytime.section import Section
 from storytime.section.views import SectionView
 from storytime.story import Story
@@ -15,18 +15,18 @@ from storytime.subject import Subject
 from storytime.subject.views import SubjectView
 
 def test_complete_example_structure() -> None:
-    """Test the complete example Site/Section/Subject hierarchy."""
-    site = make_site("examples.complete")
+    """Test the complete example Catalog/Section/Subject hierarchy."""
+    catalog = make_catalog("examples.complete")
 
-    # Verify Site has title
-    assert site.title == "Complete Example"
+    # Verify Catalog has title
+    assert catalog.title == "Complete Example"
 
     # Traverse to Section using structural pattern matching
-    match site.items.get("components"):
+    match catalog.items.get("components"):
         case Section() as section:
             assert section.title == "Components Collection"
             assert section.description == "A collection of component examples with all optional fields populated"
-            assert section.parent is site
+            assert section.parent is catalog
 
             # Traverse to Subject
             match section.items.get("button"):
@@ -45,13 +45,13 @@ def test_complete_example_structure() -> None:
 
 def test_complete_example_all_fields() -> None:
     """Test that all optional fields are populated on all models."""
-    site = make_site("examples.complete")
+    catalog = make_catalog("examples.complete")
 
-    # Site fields
-    assert site.title is not None
+    # Catalogfields
+    assert catalog.title is not None
 
     # Section fields
-    section = site.items["components"]
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     assert section.title is not None
     assert section.description is not None
@@ -86,15 +86,15 @@ def test_complete_example_all_fields() -> None:
 
 def test_complete_example_story_variations() -> None:
     """Test the 3 Story patterns in complete example."""
-    site = make_site("examples.complete")
-    section = site.items["components"]
+    catalog = make_catalog("examples.complete")
+    section = catalog.items["components"]
     subject = section.items["button"]
 
     # Pattern 1: Props only (minimal)
     story1 = subject.items[0]
     assert story1.props is not None
     assert story1.target is not None
-    # Render the component - instance is already the rendered 
+    # Render the component - instance is already the rendered
     rendered1 = story1.instance
     assert rendered1 is not None
 
@@ -124,19 +124,19 @@ def test_complete_example_story_variations() -> None:
 
 def test_complete_example_views() -> None:
     """Test rendering views for Section, Subject, and Story."""
-    site = make_site("examples.complete")
-    section = site.items["components"]
+    catalog = make_catalog("examples.complete")
+    section = catalog.items["components"]
     subject = section.items["button"]
 
     # Test SectionView
-    section_view = SectionView(section=section, site=site)
+    section_view = SectionView(section=section, site=catalog)
     section_result = section_view()
     section_element = parse_html(str(section_result))
     section_h1 = get_by_tag_name(section_element, "h1")
     assert get_text_content(section_h1) == "Components Collection"
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject, site=site)
+    subject_view = SubjectView(subject=subject, site=catalog)
     subject_result = subject_view()
     subject_element = parse_html(str(subject_result))
     subject_h1 = get_by_tag_name(subject_element, "h1")
@@ -144,7 +144,7 @@ def test_complete_example_views() -> None:
 
     # Test StoryView for one story (default layout)
     story = subject.items[0]
-    story_view = StoryView(story=story, site=site)
+    story_view = StoryView(story=story, site=catalog)
     story_result = story_view()
     story_element = parse_html(str(story_result))
     # Verify the story view contains the component
@@ -153,8 +153,8 @@ def test_complete_example_views() -> None:
 
 def test_complete_example_field_inheritance() -> None:
     """Test field inheritance patterns in complete example."""
-    site = make_site("examples.complete")
-    section = site.items["components"]
+    catalog = make_catalog("examples.complete")
+    section = catalog.items["components"]
     subject = section.items["button"]
 
     # All stories should have inherited target from Subject
@@ -176,10 +176,10 @@ def test_complete_example_field_inheritance() -> None:
 
 def test_inheritance_example_target_inheritance() -> None:
     """Test Story inherits target from Subject in inheritance example."""
-    site = make_site("examples.inheritance")
+    catalog = make_catalog("examples.inheritance")
 
     # Traverse to Section and Subject using structural pattern matching
-    match site.items.get("components"):
+    match catalog.items.get("components"):
         case Section() as section:
             match section.items.get("card"):
                 case Subject() as subject:
@@ -215,9 +215,9 @@ def test_inheritance_example_target_inheritance() -> None:
 
 def test_inheritance_example_title_generation() -> None:
     """Test auto-generated Story titles in inheritance example."""
-    site = make_site("examples.inheritance")
+    catalog = make_catalog("examples.inheritance")
 
-    section = site.items["components"]
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     subject = section.items["card"]
     assert isinstance(subject, Subject)
@@ -243,9 +243,9 @@ def test_inheritance_example_title_generation() -> None:
 
 def test_inheritance_example_target_override() -> None:
     """Test Story can override Subject target in inheritance example."""
-    site = make_site("examples.inheritance")
+    catalog = make_catalog("examples.inheritance")
 
-    section = site.items["components"]
+    section = catalog.items["components"]
     subject = section.items["card"]
 
     # Story 2 has target=Badge, overriding Subject's Card target
@@ -264,10 +264,10 @@ def test_inheritance_example_target_override() -> None:
 
 def test_templates_example_default_template() -> None:
     """Test Story without template uses default StoryView layout."""
-    site = make_site("examples.templates")
+    catalog = make_catalog("examples.templates")
 
     # Traverse to Section and Subject using structural pattern matching
-    match site.items.get("components"):
+    match catalog.items.get("components"):
         case Section() as section:
             match section.items.get("alert"):
                 case Subject() as subject:
@@ -277,7 +277,7 @@ def test_templates_example_default_template() -> None:
                     assert story.template is None  # No custom template
 
                     # Render with StoryView - should use default layout
-                    story_view = StoryView(story=story, site=site)
+                    story_view = StoryView(story=story, site=catalog)
                     story_result = story_view()
                     story_element = parse_html(str(story_result))
 
@@ -300,9 +300,9 @@ def test_templates_example_default_template() -> None:
 
 def test_templates_example_custom_template() -> None:
     """Test Story with custom template validates template override."""
-    site = make_site("examples.templates")
+    catalog = make_catalog("examples.templates")
 
-    section = site.items["components"]
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     subject = section.items["alert"]
     assert isinstance(subject, Subject)
@@ -313,7 +313,7 @@ def test_templates_example_custom_template() -> None:
     assert story.template is not None  # Custom template is set
 
     # Render with StoryView - should use custom template
-    story_view = StoryView(story=story, site=site)
+    story_view = StoryView(story=story, site=catalog)
     story_result = story_view()
     # Custom template returns  directly (no Layout wrapper)
 
@@ -326,20 +326,20 @@ def test_templates_example_custom_template() -> None:
 
 def test_templates_example_template_override() -> None:
     """Test template completely overrides rendering with aria-testing."""
-    site = make_site("examples.templates")
+    catalog = make_catalog("examples.templates")
 
-    section = site.items["components"]
+    section = catalog.items["components"]
     subject = section.items["alert"]
 
     # Story 0: Default layout
     story_default = subject.items[0]
-    story_view_default = StoryView(story=story_default, site=site)
+    story_view_default = StoryView(story=story_default, site=catalog)
     result_default = story_view_default()
     _element_default = (str(result_default))
 
     # Story 1: Custom template
     story_custom = subject.items[1]
-    story_view_custom = StoryView(story=story_custom, site=site)
+    story_view_custom = StoryView(story=story_custom, site=catalog)
     result_custom = story_view_custom()
 
     # Verify the custom template completely overrides rendering
@@ -364,15 +364,15 @@ def test_templates_example_template_override() -> None:
 
 def test_minimal_example() -> None:
     """Test minimal example - load Site, traverse tree, test all views."""
-    site = make_site("examples.minimal")
+    catalog = make_catalog("examples.minimal")
 
-    # Verify Site has title
-    assert site.title == "Minimal Site"
+    # Verify Catalog has title
+    assert catalog.title == "Minimal Catalog"
 
     # Traverse to Section using structural pattern matching
-    match site.items.get("components"):
+    match catalog.items.get("components"):
         case Section() as section:
-            assert section.parent is site
+            assert section.parent is catalog
             assert section.package_path.endswith("components")
 
             # Traverse to Subject (heading)
@@ -397,7 +397,7 @@ def test_minimal_example() -> None:
                     assert get_text_content(h1) == "World"
 
                     # Test StoryView rendering
-                    story_view = StoryView(story=story, site=site)
+                    story_view = StoryView(story=story, site=catalog)
                     story_result = story_view()
                     _story_element = parse_html(str(story_result))
 
@@ -408,14 +408,14 @@ def test_minimal_example() -> None:
 
 def test_minimal_example_views() -> None:
     """Test rendering all views for minimal example."""
-    site = make_site("examples.minimal")
-    section = site.items["components"]
+    catalog = make_catalog("examples.minimal")
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     subject = section.items["heading"]
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section, site=site)
+    section_view = SectionView(section=section, site=catalog)
     section_result = section_view()
     section_element = parse_html(str(section_result))
     # Section should have navigation to subjects
@@ -423,7 +423,7 @@ def test_minimal_example_views() -> None:
     assert len(paragraphs) >= 0
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject, site=site)
+    subject_view = SubjectView(subject=subject, site=catalog)
     subject_result = subject_view()
     subject_element = parse_html(str(subject_result))
     # Subject should have title
@@ -433,69 +433,69 @@ def test_minimal_example_views() -> None:
 
     # Test StoryView
     story = subject.items[0]
-    story_view = StoryView(story=story, site=site)
+    story_view = StoryView(story=story, site=catalog)
     story_result = story_view()
     _story_element = parse_html(str(story_result))
 
 def test_no_sections_example() -> None:
     """Test no_sections example - verify Site → Subject structure, test views."""
-    site = make_site("examples.no_sections")
+    catalog = make_catalog("examples.no_sections")
 
-    # Verify Site has title
-    assert site.title == "No Sections Site"
+    # Verify Catalog has title
+    assert catalog.title == "No Sections Catalog"
 
     # Verify no sections in site.items
-    assert len(site.items) == 0
+    assert len(catalog.items) == 0
 
     # In no_sections, Subjects are discovered via package discovery
     # The structure should be: Site has no Sections, Subjects are at top level
     # Based on the existing structure, we should verify the flat hierarchy
-    # Let's check what's actually in the site structure
-    assert isinstance(site.items, dict)
+    # Let's check what's actually in the catalog structure
+    assert isinstance(catalog.items, dict)
 
 def test_no_sections_example_structure() -> None:
     """Test no_sections example demonstrates optional Sections."""
-    site = make_site("examples.no_sections")
+    catalog = make_catalog("examples.no_sections")
 
     # The key feature: no Section layer between Site and Subjects
     # Site.items should be empty (no Sections)
-    assert len(site.items) == 0
+    assert len(catalog.items) == 0
 
     # This demonstrates Sections are optional
-    assert site.title is not None
+    assert catalog.title is not None
 
 def test_inheritance_example_views() -> None:
     """Test rendering all views for inheritance example."""
-    site = make_site("examples.inheritance")
-    section = site.items["components"]
+    catalog = make_catalog("examples.inheritance")
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     subject = section.items["card"]
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section, site=site)
+    section_view = SectionView(section=section, site=catalog)
     section_result = section_view()
     _section_element = parse_html(str(section_result))
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject, site=site)
+    subject_view = SubjectView(subject=subject, site=catalog)
     subject_result = subject_view()
     _subject_element = parse_html(str(subject_result))
 
     # Test StoryView for multiple stories
     for story in subject.items:
-        story_view = StoryView(story=story, site=site)
+        story_view = StoryView(story=story, site=catalog)
         story_result = story_view()
         _story_element = parse_html(str(story_result))
 
 def test_inheritance_example_parent_references() -> None:
     """Test parent references throughout inheritance example tree."""
-    site = make_site("examples.inheritance")
+    catalog = make_catalog("examples.inheritance")
 
     # Verify Section parent
-    section = site.items["components"]
+    section = catalog.items["components"]
     assert isinstance(section, Section)
-    assert section.parent is site
+    assert section.parent is catalog
 
     # Verify Subject parent
     subject = section.items["card"]
@@ -509,25 +509,25 @@ def test_inheritance_example_parent_references() -> None:
 
 def test_templates_example_views() -> None:
     """Test rendering all views for templates example."""
-    site = make_site("examples.templates")
-    section = site.items["components"]
+    catalog = make_catalog("examples.templates")
+    section = catalog.items["components"]
     assert isinstance(section, Section)
     subject = section.items["alert"]
     assert isinstance(subject, Subject)
 
     # Test SectionView
-    section_view = SectionView(section=section, site=site)
+    section_view = SectionView(section=section, site=catalog)
     section_result = section_view()
     _section_element = parse_html(str(section_result))
 
     # Test SubjectView
-    subject_view = SubjectView(subject=subject, site=site)
+    subject_view = SubjectView(subject=subject, site=catalog)
     subject_result = subject_view()
     _subject_element = parse_html(str(subject_result))
 
     # Test StoryView for both stories (one with template, one without)
     for story in subject.items:
-        story_view = StoryView(story=story, site=site)
+        story_view = StoryView(story=story, site=catalog)
         _story_result = story_view()
         # Note: Some stories may have custom templates (return ),
         # others use default layout (return  with Layout wrapper)
@@ -538,18 +538,18 @@ def test_all_examples_structural_integrity() -> None:
     examples = ["complete", "inheritance", "templates", "minimal"]
 
     for example_name in examples:
-        site = make_site(f"examples.{example_name}")
+        catalog = make_catalog(f"examples.{example_name}")
 
-        # Verify Site loads successfully
-        assert site is not None
-        assert site.title is not None
+        # Verify Catalog loads successfully
+        assert catalog is not None
+        assert catalog.title is not None
 
         # Traverse Sections using structural pattern matching
-        for section_name, section_node in site.items.items():
+        for section_name, section_node in catalog.items.items():
             match section_node:
                 case Section() as section:
                     # Verify parent reference
-                    assert section.parent is site
+                    assert section.parent is catalog
                     assert section.package_path.endswith(section_name)
 
                     # Traverse Subjects
@@ -580,23 +580,23 @@ def test_all_examples_structural_integrity() -> None:
 @pytest.mark.slow
 def test_huge_example_site_loads() -> None:
     """Test huge example Site loads successfully with title."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
-    # Verify Site has correct title
-    assert site.title == "Huge Scale Example"
+    # Verify Catalog has correct title
+    assert catalog.title == "Huge Scale Example"
 
 @pytest.mark.slow
 def test_huge_example_has_ten_sections() -> None:
     """Test huge example has 10 sections."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
-    # Verify Site has exactly 10 sections
-    assert len(site.items) == 10
+    # Verify Catalog has exactly 10 sections
+    assert len(catalog.items) == 10
 
 @pytest.mark.slow
 def test_huge_example_section_names() -> None:
     """Test huge example section names match expected design system categories."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Expected section names (directory names)
     expected_sections = {
@@ -613,31 +613,31 @@ def test_huge_example_section_names() -> None:
     }
 
     # Verify all expected sections exist
-    assert set(site.items.keys()) == expected_sections
+    assert set(catalog.items.keys()) == expected_sections
 
     # Verify each is a Section with the correct title
-    match site.items.get("forms"):
+    match catalog.items.get("forms"):
         case Section() as section:
             assert section.title == "Forms"
             assert section.description == "Form components"
         case _:
             raise AssertionError("Expected Section for forms")
 
-    match site.items.get("navigation"):
+    match catalog.items.get("navigation"):
         case Section() as section:
             assert section.title == "Navigation"
             assert section.description == "Navigation components"
         case _:
             raise AssertionError("Expected Section for navigation")
 
-    match site.items.get("feedback"):
+    match catalog.items.get("feedback"):
         case Section() as section:
             assert section.title == "Feedback"
             assert section.description == "Feedback components"
         case _:
             raise AssertionError("Expected Section for feedback")
 
-    match site.items.get("layout"):
+    match catalog.items.get("layout"):
         case Section() as section:
             assert section.title == "Layout"
             assert section.description == "Layout components"
@@ -649,10 +649,10 @@ def test_huge_example_section_names() -> None:
 @pytest.mark.slow
 def test_huge_component_renders_correctly() -> None:
     """Test huge example components render with correct structure."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Get a sample component from forms section
-    match site.items.get("forms"):
+    match catalog.items.get("forms"):
         case Section() as section:
             # Get first subject
             if section.items:
@@ -675,10 +675,10 @@ def test_huge_component_renders_correctly() -> None:
 @pytest.mark.slow
 def test_huge_component_props_applied() -> None:
     """Test huge example component props are correctly applied."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Get forms section and first component
-    section = site.items["forms"]
+    section = catalog.items["forms"]
     assert isinstance(section, Section)
 
     if section.items:
@@ -708,10 +708,10 @@ def test_huge_component_props_applied() -> None:
 @pytest.mark.slow
 def test_huge_component_html_structure() -> None:
     """Test huge example components render basic HTML with class attributes."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Get forms section
-    section = site.items["forms"]
+    section = catalog.items["forms"]
     assert isinstance(section, Section)
 
     if section.items:
@@ -733,10 +733,10 @@ def test_huge_component_html_structure() -> None:
 @pytest.mark.slow
 def test_huge_all_sections_have_ten_subjects() -> None:
     """Test all sections in huge example have 10 subjects."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Verify each section has 10 subjects
-    for section_name, section_node in site.items.items():
+    for section_name, section_node in catalog.items.items():
         match section_node:
             case Section() as section:
                 assert len(section.items) == 10, f"Section {section_name} should have 10 subjects"
@@ -756,13 +756,13 @@ def test_huge_all_sections_have_ten_subjects() -> None:
 @pytest.mark.slow
 def test_huge_example(tmp_path: Path) -> None:
     """Smoke test for examples.huge - verify structure loads correctly."""
-    site = make_site("examples.huge")
+    catalog = make_catalog("examples.huge")
 
     # Verify site has 10 sections
-    assert len(site.items) == 10
+    assert len(catalog.items) == 10
 
     # Verify first section has 10 subjects using structural pattern matching
-    match site.items.get("forms"):
+    match catalog.items.get("forms"):
         case Section() as section:
             assert len(section.items) == 10
 
@@ -780,7 +780,7 @@ def test_huge_example(tmp_path: Path) -> None:
 def test_huge_build_smoke(tmp_path: Path) -> None:
     """Build smoke test for examples.huge - verify build completes."""
     # Build site to tmp_path
-    build_site("examples.huge", tmp_path)
+    build_catalog("examples.huge", tmp_path)
 
     # Verify build completes without errors
     assert tmp_path.exists()
@@ -819,7 +819,7 @@ def test_huge_build_smoke(tmp_path: Path) -> None:
 def test_huge_build_performance(benchmark, tmp_path: Path) -> None:
     """Performance benchmark test for examples.huge build."""
     # Measure total build time using pytest-benchmark
-    benchmark(build_site, "examples.huge", tmp_path)
+    benchmark(build_catalog, "examples.huge", tmp_path)
 
     # No validation here - just timing
     # The benchmark fixture will track timing metrics automatically

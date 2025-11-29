@@ -117,12 +117,12 @@ def test_build_reports_static_file_count(tmp_build_dir: Path, caplog) -> None:
 
 def test_build_no_site_static_dir_property(tmp_build_dir: Path) -> None:
     """Test that Site model no longer has static_dir property."""
-    from storytime.stories import make_site
+    from storytime.stories import make_catalog
 
-    site = make_site(package_location="examples.minimal")
+    catalog = make_catalog(package_location="examples.minimal")
 
     # Verify static_dir property doesn't exist
-    assert not hasattr(site, "static_dir")
+    assert not hasattr(catalog, "static_dir")
 
 
 def test_layout_uses_new_static_paths(tmp_build_dir: Path) -> None:

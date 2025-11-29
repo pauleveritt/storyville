@@ -1,10 +1,9 @@
-"""The ``Site`` for the stories in this package."""
+"""The ``Catalog`` for the stories in this package."""
 
 from tdom import Node
 
-from storytime import Site
-
 from examples.minimal.themed_layout import ThemedLayout
+from storytime import Catalog
 
 
 def themed_layout_wrapper(story_title: str | None = None, children: Node | None = None) -> Node:
@@ -13,9 +12,9 @@ def themed_layout_wrapper(story_title: str | None = None, children: Node | None 
     return layout()
 
 
-def this_site() -> Site:
+def this_catalog() -> Catalog:
     """The top of this package's story catalog."""
-    return Site(
-        title="Minimal Site",
+    return Catalog(
+        title="Minimal Catalog",
         themed_layout=themed_layout_wrapper,
     )

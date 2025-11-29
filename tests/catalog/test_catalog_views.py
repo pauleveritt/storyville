@@ -1,16 +1,16 @@
-"""Test the SiteView rendering."""
+"""Test the CatalogView rendering."""
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 
 from storytime.section import Section
-from storytime.site.models import Site
-from storytime.site.views import SiteView
+from storytime.catalog.models import Catalog
+from storytime.catalog.views import CatalogView
 from storytime.subject import Subject
 
-def test_site_view_renders_title_in_h1() -> None:
-    """Test SiteView renders site title in h1 element."""
-    site = Site(title="My Catalog")
-    view = SiteView(site=site)
+def test_catalog_view_renders_title_in_h1() -> None:
+    """Test CatalogView renders catalog title in h1 element."""
+    catalog = Catalog(title="My Catalog")
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -20,17 +20,17 @@ def test_site_view_renders_title_in_h1() -> None:
     h1 = get_by_tag_name(element, "h1")
     assert get_text_content(h1) == "My Catalog"
 
-def test_site_view_renders_section_links() -> None:
-    """Test SiteView renders section links when sections exist."""
-    site = Site(title="My Catalog")
-    site.package_path = "."
+def test_catalog_view_renders_section_links() -> None:
+    """Test CatalogView renders section links when sections exist."""
+    catalog = Catalog(title="My Catalog")
+    catalog.package_path = "."
 
-    # Add sections to site
+    # Add sections to catalog
     section1 = Section(title="Components")
     section2 = Section(title="Utilities")
-    site.items = {"components": section1, "utilities": section2}
+    catalog.items = {"components": section1, "utilities": section2}
 
-    view = SiteView(site=site)
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -47,10 +47,10 @@ def test_site_view_renders_section_links() -> None:
     link_texts = {get_text_content(link) for link in all_links}
     assert link_texts == {"Components", "Utilities"}
 
-def test_site_view_shows_empty_state() -> None:
-    """Test SiteView shows empty state message when no sections."""
-    site = Site(title="Empty Catalog")
-    view = SiteView(site=site)
+def test_catalog_view_shows_empty_state() -> None:
+    """Test CatalogView shows empty state message when no sections."""
+    catalog = Catalog(title="Empty Catalog")
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -59,15 +59,15 @@ def test_site_view_shows_empty_state() -> None:
     # Verify empty state message
     all_p_tags = query_all_by_tag_name(element, "p")
     empty_state_found = any(
-        "No sections defined for this site" in get_text_content(p)
+        "No sections defined for this catalog" in get_text_content(p)
         for p in all_p_tags
     )
     assert empty_state_found
 
-def test_site_view_does_not_include_parent_link() -> None:
-    """Test SiteView does NOT include parent link (Site is root)."""
-    site = Site(title="My Catalog")
-    view = SiteView(site=site)
+def test_catalog_view_does_not_include_parent_link() -> None:
+    """Test CatalogView does NOT include parent link (Catalog is root)."""
+    catalog = Catalog(title="My Catalog")
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -81,10 +81,10 @@ def test_site_view_does_not_include_parent_link() -> None:
     parent_links = [link for link in all_links if link.attrs.get("href") == ".."]
     assert len(parent_links) == 0
 
-def test_site_view_satisfies_view_protocol() -> None:
-    """Test SiteView satisfies View Protocol (__call__() -> )."""
-    site = Site(title="My Catalog")
-    view = SiteView(site=site)
+def test_catalog_view_satisfies_view_protocol() -> None:
+    """Test CatalogView satisfies View Protocol (__call__() -> )."""
+    catalog = Catalog(title="My Catalog")
+    view = CatalogView(catalog=catalog)
 
     # Verify __call__ returns  (verified by type checker)
     result = view()
@@ -95,14 +95,14 @@ def test_site_view_satisfies_view_protocol() -> None:
     html_elem = get_by_tag_name(result, "html")
     assert html_elem is not None
 
-def test_site_view_shows_section_descriptions() -> None:
-    """Test SiteView shows section descriptions when present."""
-    site = Site(title="My Catalog")
+def test_catalog_view_shows_section_descriptions() -> None:
+    """Test CatalogView shows section descriptions when present."""
+    catalog = Catalog(title="My Catalog")
     section1 = Section(title="Components", description="UI building blocks")
     section2 = Section(title="Utilities", description="Helper functions")
-    site.items = {"components": section1, "utilities": section2}
+    catalog.items = {"components": section1, "utilities": section2}
 
-    view = SiteView(site=site)
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -113,14 +113,14 @@ def test_site_view_shows_section_descriptions() -> None:
     assert "UI building blocks" in text_content
     assert "Helper functions" in text_content
 
-def test_site_view_omits_none_descriptions() -> None:
-    """Test SiteView omits descriptions when None."""
-    site = Site(title="My Catalog")
+def test_catalog_view_omits_none_descriptions() -> None:
+    """Test CatalogView omits descriptions when None."""
+    catalog = Catalog(title="My Catalog")
     section1 = Section(title="Components", description=None)
     section2 = Section(title="Utilities", description="Helper functions")
-    site.items = {"components": section1, "utilities": section2}
+    catalog.items = {"components": section1, "utilities": section2}
 
-    view = SiteView(site=site)
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -131,9 +131,9 @@ def test_site_view_omits_none_descriptions() -> None:
     # Section with description shows it
     assert "Helper functions" in text_content
 
-def test_site_view_shows_subject_counts() -> None:
-    """Test SiteView shows correct subject counts for each section."""
-    site = Site(title="My Catalog")
+def test_catalog_view_shows_subject_counts() -> None:
+    """Test CatalogView shows correct subject counts for each section."""
+    catalog = Catalog(title="My Catalog")
 
     # Section 1 with 3 subjects
     section1 = Section(title="Components")
@@ -149,9 +149,9 @@ def test_site_view_shows_subject_counts() -> None:
         "helpers": Subject(title="Helpers"),
     }
 
-    site.items = {"components": section1, "utilities": section2}
+    catalog.items = {"components": section1, "utilities": section2}
 
-    view = SiteView(site=site)
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -162,14 +162,14 @@ def test_site_view_shows_subject_counts() -> None:
     assert "3 subjects" in text_content
     assert "1 subject" in text_content
 
-def test_site_view_url_pattern() -> None:
-    """Test SiteView uses /{section_name} URL pattern."""
-    site = Site(title="My Catalog")
+def test_catalog_view_url_pattern() -> None:
+    """Test CatalogView uses /{section_name} URL pattern."""
+    catalog = Catalog(title="My Catalog")
     section1 = Section(title="Components")
     section2 = Section(title="Utilities")
-    site.items = {"components": section1, "utilities": section2}
+    catalog.items = {"components": section1, "utilities": section2}
 
-    view = SiteView(site=site)
+    view = CatalogView(catalog=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)

@@ -8,7 +8,7 @@ import typer
 import uvicorn
 
 from storytime.app import create_app
-from storytime.build import build_site
+from storytime.build import build_catalog
 
 app = typer.Typer()
 
@@ -21,7 +21,7 @@ def serve(
     ),
     output_dir_arg: str | None = typer.Argument(
         None,
-        help="Output directory for the built site (default: temporary directory)",
+        help="Output directory for the built catalog (default: temporary directory)",
     ),
     use_subinterpreters: bool = typer.Option(
         True,
@@ -44,10 +44,10 @@ def serve(
         ),
     ),
 ) -> None:
-    """Start a development server for the Storytime site.
+    """Start a development server for the Storytime catalog.
 
     The server provides hot reload functionality - when source files change,
-    the site is automatically rebuilt and the browser is refreshed.
+    the catalog is automatically rebuilt and the browser is refreshed.
 
     By default, rebuilds run directly in the main interpreter. Use the
     --use-subinterpreters flag to enable isolated subinterpreters for each
@@ -62,8 +62,8 @@ def serve(
 
     def run_server(output_dir: Path) -> None:
         """Run the server with the given output directory."""
-        typer.echo(f"Building site from '{input_path}' to '{output_dir}'...")
-        build_site(
+        typer.echo(f"Building catalog from '{input_path}' to '{output_dir}'...")
+        build_catalog(
             package_location=input_path,
             output_dir=output_dir,
             with_assertions=with_assertions,
@@ -116,10 +116,10 @@ def build(
     ),
     output_dir: str = typer.Argument(
         ...,
-        help="Output directory for the built site",
+        help="Output directory for the built catalog",
     ),
 ) -> None:
-    """Build the Storytime site to static files.
+    """Build the Storytime catalog to static files.
 
     The build command performs a one-time build without starting a server.
     It always uses direct builds (no subinterpreters) for maximum simplicity
@@ -136,9 +136,9 @@ def build(
     # Convert output_dir to Path object
     output_p = Path(output_dir).resolve()
 
-    # Build the site
-    typer.echo(f"Building site from '{input_path}' to '{output_p}'...")
-    build_site(package_location=input_path, output_dir=output_p)
+    # Build the catalog
+    typer.echo(f"Building catalog from '{input_path}' to '{output_p}'...")
+    build_catalog(package_location=input_path, output_dir=output_p)
     typer.echo("Build complete!")
 
 

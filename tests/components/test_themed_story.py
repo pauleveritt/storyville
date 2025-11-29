@@ -4,7 +4,7 @@ from aria_testing import get_by_tag_name, get_text_content
 from tdom import Node, html
 
 from storytime.components.themed_story import ThemedStory
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 
 
 def test_themed_story_renders_with_custom_themed_layout() -> None:
@@ -25,15 +25,15 @@ def test_themed_story_renders_with_custom_themed_layout() -> None:
 </html>
 ''')
 
-    # Create site with custom themed_layout
-    site = Site(title="My Site", themed_layout=custom_themed_layout)
+    # Create catalog with custom themed_layout
+    catalog = Catalog(title="My Catalog", themed_layout=custom_themed_layout)
 
     # Create ThemedStory with test content
     story_content = html(t'<p>Story content here</p>')
     themed_story = ThemedStory(
         story_title="Test Story",
         children=story_content,
-        site=site
+        site=catalog
     )
 
     # Render and verify
@@ -53,26 +53,26 @@ def test_themed_story_renders_with_custom_themed_layout() -> None:
 
 def test_themed_story_falls_back_to_layout_when_themed_layout_none() -> None:
     """Test ThemedStory falls back to Layout when themed_layout=None."""
-    # Create site without themed_layout
-    site = Site(title="My Site")
-    assert site.themed_layout is None
+    # Create catalog without themed_layout
+    catalog = Catalog(title="My Catalog")
+    assert catalog.themed_layout is None
 
     # Create ThemedStory with test content
     story_content = html(t'<p>Story content here</p>')
     themed_story = ThemedStory(
         story_title="Test Story",
         children=story_content,
-        site=site
+        site=catalog
     )
 
     # Render and verify
     result = themed_story()
     element = result
 
-    # Verify it uses standard Layout (will have site title in page title)
+    # Verify it uses standard Layout (will have catalog title in page title)
     title_elem = get_by_tag_name(element, "title")
     title_text = get_text_content(title_elem)
-    assert "My Site" in title_text
+    assert "My Catalog" in title_text
 
 
 def test_themed_story_passes_story_title_correctly() -> None:
@@ -91,12 +91,12 @@ def test_themed_story_passes_story_title_correctly() -> None:
 </html>
 ''')
 
-    site = Site(title="My Site", themed_layout=title_themed_layout)
+    catalog = Catalog(title="My Catalog", themed_layout=title_themed_layout)
     story_content = html(t'<div>Content</div>')
     themed_story = ThemedStory(
         story_title="Amazing Story",
         children=story_content,
-        site=site
+        site=catalog
     )
 
     result = themed_story()
@@ -122,12 +122,12 @@ def test_themed_story_passes_children_correctly() -> None:
 </html>
 ''')
 
-    site = Site(title="My Site", themed_layout=wrapper_themed_layout)
+    catalog = Catalog(title="My Catalog", themed_layout=wrapper_themed_layout)
     story_content = html(t'<p id="unique-content">My unique story content</p>')
     themed_story = ThemedStory(
         story_title="Test",
         children=story_content,
-        site=site
+        site=catalog
     )
 
     result = themed_story()
@@ -142,12 +142,12 @@ def test_themed_story_passes_children_correctly() -> None:
 
 def test_themed_story_returns_full_html_structure() -> None:
     """Test ThemedStory returns full HTML structure (DOCTYPE, html, head, body)."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     story_content = html(t'<p>Content</p>')
     themed_story = ThemedStory(
         story_title="Test Story",
         children=story_content,
-        site=site
+        site=catalog
     )
 
     result = themed_story()

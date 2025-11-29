@@ -1,11 +1,16 @@
 """AboutView for rendering the About page."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from tdom import Node, html
 
 from storytime.components.layout import Layout
-from storytime.site.models import Site
+
+if TYPE_CHECKING:
+    from storytime.catalog.models import Catalog
 
 
 @dataclass
@@ -21,7 +26,7 @@ class AboutView:
     The view satisfies the View Protocol by implementing __call__() -> Node.
     """
 
-    site: Site
+    site: Catalog
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -35,7 +40,7 @@ class AboutView:
 <div>
   <h1>About Storytime</h1>
   <p>
-    Storytime is a static site generator for documentation and storytelling.
+    Storytime is a static catalog generator for documentation and storytelling.
     It provides a clean, hierarchical structure for organizing content into
     sections, subjects, and stories.
   </p>

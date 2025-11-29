@@ -5,15 +5,15 @@ from tdom import html, Element
 
 from storytime.components.layout.layout import Layout
 from storytime.section import Section
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 
 def test_layout_accepts_current_path_parameter() -> None:
     """Test Layout accepts current_path parameter."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     # Should not raise error with current_path parameter
     layout = Layout(
         view_title="Test Page",
-        site=site,
+        site=catalog,
         children=html(t"<p>Content</p>"),
         current_path="section/subject/story",
     )
@@ -23,11 +23,11 @@ def test_layout_accepts_current_path_parameter() -> None:
 
 def test_layout_current_path_can_be_none() -> None:
     """Test Layout current_path can be None."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     # Should work with current_path=None
     layout = Layout(
         view_title="Test Page",
-        site=site,
+        site=catalog,
         children=html(t"<p>Content</p>"),
         current_path=None,
     )
@@ -39,13 +39,13 @@ def test_layout_current_path_can_be_none() -> None:
 
 def test_layout_renders_all_four_components() -> None:
     """Test Layout renders header, aside, main, and footer components."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     section = Section(title="Test Section")
-    site.items = {"test": section}
+    catalog.items = {"test": section}
 
     layout = Layout(
         view_title="Test Page",
-        site=site,
+        site=catalog,
         children=html(t"<p>Content</p>"),
         current_path="test/page",
     )
@@ -73,12 +73,12 @@ def test_layout_renders_all_four_components() -> None:
 
 def test_layout_passes_cached_navigation_to_aside() -> None:
     """Test Layout passes cached_navigation HTML to LayoutAside."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     cached_nav = "<nav><ul><li>Cached Navigation Item</li></ul></nav>"
 
     layout = Layout(
         view_title="Page",
-        site=site,
+        site=catalog,
         children=None,
         cached_navigation=cached_nav,
     )
@@ -92,8 +92,8 @@ def test_layout_passes_cached_navigation_to_aside() -> None:
 
 def test_layout_body_has_no_grid_wrapper() -> None:
     """Test Layout body no longer has div.grid wrapper."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=None)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=None)
     result = layout()
     element = result
 
@@ -109,8 +109,8 @@ def test_layout_body_has_no_grid_wrapper() -> None:
 
 def test_layout_body_contains_four_direct_child_elements() -> None:
     """Test Layout body has exactly four direct child elements: header, aside, main, footer."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=html(t"<p>Content</p>"))
     result = layout()
     element = result
 
@@ -129,8 +129,8 @@ def test_layout_body_contains_four_direct_child_elements() -> None:
 
 def test_layout_header_is_first_child_of_body() -> None:
     """Test Layout header element is the first direct child of body."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=None)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=None)
     result = layout()
     element = result
 
@@ -148,8 +148,8 @@ def test_layout_header_is_first_child_of_body() -> None:
 
 def test_layout_footer_is_last_child_of_body() -> None:
     """Test Layout footer element is the last direct child of body."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=None)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=None)
     result = layout()
     element = result
 
@@ -164,8 +164,8 @@ def test_layout_footer_is_last_child_of_body() -> None:
 
 def test_layout_aside_and_main_are_middle_children() -> None:
     """Test Layout aside and main elements are positioned between header and footer."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=html(t"<p>Content</p>"))
     result = layout()
     element = result
 
@@ -184,11 +184,11 @@ def test_layout_aside_and_main_are_middle_children() -> None:
 
 def test_layout_aside_appears_before_main() -> None:
     """Test Layout aside element appears before main element in DOM order."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     section = Section(title="Test Section")
-    site.items = {"test": section}
+    catalog.items = {"test": section}
 
-    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    layout = Layout(view_title="Page", site=catalog, children=html(t"<p>Content</p>"))
     result = layout()
     element = result
 
@@ -212,11 +212,11 @@ def test_layout_aside_appears_before_main() -> None:
 # Task Group 4: Strategic Edge Case Tests
 
 def test_layout_with_empty_sections_dict() -> None:
-    """Test Layout renders correctly when site has no sections (empty dict)."""
-    site = Site(title="Test Site")
-    site.items = {}  # Empty sections dict
+    """Test Layout renders correctly when catalog has no sections (empty dict)."""
+    catalog = Catalog(title="Test Catalog")
+    catalog.items = {}  # Empty sections dict
 
-    layout = Layout(view_title="Page", site=site, children=html(t"<p>Content</p>"))
+    layout = Layout(view_title="Page", site=catalog, children=html(t"<p>Content</p>"))
     result = layout()
     element = result
 
@@ -230,10 +230,10 @@ def test_layout_with_empty_sections_dict() -> None:
 
 def test_layout_depth_boundary_at_depth_3() -> None:
     """Test Layout adds correct depth prefix at depth=3."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     layout = Layout(
         view_title="Nested Story",
-        site=site,
+        site=catalog,
         children=html(t"<p>Deep content</p>"),
         depth=3
     )
@@ -250,18 +250,18 @@ def test_layout_depth_boundary_at_depth_3() -> None:
             break
 
     assert ws_script is not None, "Should have ws.js script tag"
-    # depth=3 means 3 directories deep = ../../../static/ws.js
-    assert ws_script.attrs["src"] == "../../../static/ws.js"
+    # depth=3 means 3 directories deep = ../../../static/components/layout/static/ws.js
+    assert ws_script.attrs["src"] == "../../../static/components/layout/static/ws.js"
 
 def test_layout_cached_navigation_with_empty_sections() -> None:
     """Test Layout with cached_navigation and empty sections dict."""
-    site = Site(title="Test Site")
-    site.items = {}
+    catalog = Catalog(title="Test Catalog")
+    catalog.items = {}
     cached_nav = "<nav><ul><li>Cached Section</li></ul></nav>"
 
     layout = Layout(
         view_title="Page",
-        site=site,
+        site=catalog,
         children=None,
         cached_navigation=cached_nav,
     )
@@ -276,8 +276,8 @@ def test_layout_cached_navigation_with_empty_sections() -> None:
 
 def test_layout_stylesheet_paths_at_depth_2() -> None:
     """Test Layout calculates stylesheet paths with correct depth prefix."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Subject Page", site=site, children=None, depth=2)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Subject Page", site=catalog, children=None, depth=2)
     result = layout()
     element = result
 
@@ -301,8 +301,8 @@ def test_layout_stylesheet_paths_at_depth_2() -> None:
 
 def test_layout_favicon_path_at_depth_1() -> None:
     """Test Layout calculates favicon path with correct depth prefix."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Section Page", site=site, children=None, depth=1)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Section Page", site=catalog, children=None, depth=1)
     result = layout()
     element = result
 
@@ -318,13 +318,13 @@ def test_layout_favicon_path_at_depth_1() -> None:
             break
 
     assert favicon_link is not None, "Should have favicon link"
-    # depth=1 means 1 directory deep, so ../static/favicon.svg
-    assert favicon_link.attrs["href"] == "../static/favicon.svg"
+    # depth=1 means 1 directory deep, so ../static/components/layout/static/favicon.svg
+    assert favicon_link.attrs["href"] == "../static/components/layout/static/favicon.svg"
 
 def test_layout_all_static_assets_use_same_depth_prefix() -> None:
     """Test Layout uses consistent depth prefix for all static assets."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Test", site=site, children=None, depth=1)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Test", site=catalog, children=None, depth=1)
     result = layout()
     element = result
 
@@ -353,12 +353,12 @@ def test_layout_all_static_assets_use_same_depth_prefix() -> None:
 
 def test_layout_children_can_be_fragment() -> None:
     """Test Layout handles  as children (not just )."""
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
 
     # Create a  with multiple elements
     children = html(t"<div>First</div><div>Second</div>")
 
-    layout = Layout(view_title="Test", site=site, children=children)
+    layout = Layout(view_title="Test", site=catalog, children=children)
     result = layout()
     element = result
 
@@ -370,8 +370,8 @@ def test_layout_children_can_be_fragment() -> None:
 
 def test_layout_depth_affects_header_navigation_links() -> None:
     """Test Layout passes depth to LayoutHeader for correct navigation link paths."""
-    site = Site(title="Test Site")
-    layout = Layout(view_title="Page", site=site, children=None, depth=1)
+    catalog = Catalog(title="Test Catalog")
+    layout = Layout(view_title="Page", site=catalog, children=None, depth=1)
     result = layout()
     element = result
 
@@ -385,13 +385,13 @@ def test_layout_depth_affects_header_navigation_links() -> None:
     assert len(links) >= 3, "Header should contain navigation links"
 
 def test_layout_passes_site_items_to_aside() -> None:
-    """Test Layout passes site.items dict to LayoutAside component."""
-    site = Site(title="Test Site")
+    """Test Layout passes catalog.items dict to LayoutAside component."""
+    catalog = Catalog(title="Test Catalog")
     section1 = Section(title="Getting Started")
     section2 = Section(title="Advanced")
-    site.items = {"getting-started": section1, "advanced": section2}
+    catalog.items = {"getting-started": section1, "advanced": section2}
 
-    layout = Layout(view_title="Page", site=site, children=None, current_path="getting-started/intro")
+    layout = Layout(view_title="Page", site=catalog, children=None, current_path="getting-started/intro")
     result = layout()
     element = result
 

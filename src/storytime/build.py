@@ -1,4 +1,4 @@
-"""Called by the CLI main to build the site to disk."""
+"""Called by the CLI main to build the catalog to disk."""
 
 import logging
 from pathlib import Path
@@ -7,47 +7,47 @@ from time import perf_counter
 from typing import TYPE_CHECKING
 
 from storytime import PACKAGE_DIR
+from storytime.catalog.views import CatalogView
 from storytime.components.themed_story import ThemedStory
 from storytime.section.views import SectionView
-from storytime.site.views import SiteView
 from storytime.static_assets import copy_all_static_assets
-from storytime.stories import make_site
+from storytime.stories import make_catalog
 from storytime.story.views import StoryView
 from storytime.subject.views import SubjectView
 from storytime.views.about_view import AboutView
 from storytime.views.debug_view import DebugView
 
 if TYPE_CHECKING:
-    from storytime.site import Site
+    from storytime.catalog import Catalog
 
 logger = logging.getLogger(__name__)
 
 
 def _render_all_views(
-    site: "Site", with_assertions: bool
+    catalog: "Catalog", with_assertions: bool
 ) -> tuple[str, str, str, list, list, list, list]:
     """Render all views to HTML strings.
 
     Args:
-        site: The site to render
+        catalog: The catalog to render
         with_assertions: Whether to execute assertions during rendering
 
     Returns:
-        Tuple of (site_view, about_view, debug_view, rendered_sections,
+        Tuple of (catalog_view, about_view, debug_view, rendered_sections,
                  rendered_subjects, rendered_stories, rendered_themed_stories)
     """
     from storytime.components.navigation_tree import NavigationTree
 
-    cached_nav = str(NavigationTree(sections=site.items, current_path=None)())
+    cached_nav = str(NavigationTree(sections=catalog.items, current_path=None)())
 
-    # Render the site index page (root) and convert to string
-    site_view = str(SiteView(site=site, cached_navigation=cached_nav)())
+    # Render the catalog index page (root) and convert to string
+    catalog_view = str(CatalogView(catalog=catalog, cached_navigation=cached_nav)())
 
     # Render the About page and convert to string
-    about_view = str(AboutView(site=site, cached_navigation=cached_nav)())
+    about_view = str(AboutView(site=catalog, cached_navigation=cached_nav)())
 
     # Render the Debug page and convert to string
-    debug_view = str(DebugView(site=site, cached_navigation=cached_nav)())
+    debug_view = str(DebugView(site=catalog, cached_navigation=cached_nav)())
 
     # Walk the tree and render each section and subject
     rendered_sections = []
@@ -55,10 +55,10 @@ def _render_all_views(
     rendered_stories = []
     rendered_themed_stories = []
 
-    for section_key, section in site.items.items():
+    for section_key, section in catalog.items.items():
         # Render section index page and convert to string
         section_view = str(
-            SectionView(section=section, site=site, cached_navigation=cached_nav)()
+            SectionView(section=section, site=catalog, cached_navigation=cached_nav)()
         )
         rendered_sections.append((section_key, section_view))
 
@@ -66,7 +66,7 @@ def _render_all_views(
         for subject_key, subject in section.items.items():
             # Render subject index page and convert to string
             subject_view = str(
-                SubjectView(subject=subject, site=site, cached_navigation=cached_nav)()
+                SubjectView(subject=subject, site=catalog, cached_navigation=cached_nav)()
             )
             rendered_subjects.append((section_key, subject_key, subject_view))
 
@@ -77,19 +77,19 @@ def _render_all_views(
                 story_view = str(
                     StoryView(
                         story=story,
-                        site=site,
+                        site=catalog,
                         cached_navigation=cached_nav,
                         with_assertions=with_assertions,
                     )()
                 )
                 rendered_stories.append((section_key, subject_key, story_idx, story_view))
 
-                # Render themed story if site has themed_layout configured
-                if site.themed_layout is not None and story.instance is not None:
+                # Render themed story if catalog has themed_layout configured
+                if catalog.themed_layout is not None and story.instance is not None:
                     themed_story = ThemedStory(
                         story_title=story.title or "Untitled Story",
                         children=story.instance,
-                        site=site
+                        site=catalog
                     )
                     themed_story_html = str(themed_story())
                     rendered_themed_stories.append(
@@ -97,7 +97,7 @@ def _render_all_views(
                     )
 
     return (
-        site_view,
+        catalog_view,
         about_view,
         debug_view,
         rendered_sections,
@@ -109,7 +109,7 @@ def _render_all_views(
 
 def _write_all_files(
     output_dir: Path,
-    site_view: str,
+    catalog_view: str,
     about_view: str,
     debug_view: str,
     rendered_sections: list,
@@ -121,7 +121,7 @@ def _write_all_files(
 
     Args:
         output_dir: The output directory
-        site_view: Rendered site index page
+        catalog_view: Rendered catalog index page
         about_view: Rendered about page
         debug_view: Rendered debug page
         rendered_sections: List of (section_key, section_view) tuples
@@ -129,9 +129,9 @@ def _write_all_files(
         rendered_stories: List of (section_key, subject_key, story_idx, story_view) tuples
         rendered_themed_stories: List of (section_key, subject_key, story_idx, themed_story_html) tuples
     """
-    # Write site pages
+    # Write catalog pages
     (output_dir / "index.html").parent.mkdir(parents=True, exist_ok=True)
-    (output_dir / "index.html").write_text(site_view)
+    (output_dir / "index.html").write_text(catalog_view)
     (output_dir / "about.html").parent.mkdir(parents=True, exist_ok=True)
     (output_dir / "about.html").write_text(about_view)
     (output_dir / "debug.html").parent.mkdir(parents=True, exist_ok=True)
@@ -171,20 +171,20 @@ def _write_all_files(
         path.write_text(themed_story_html)
 
 
-def build_site(
+def build_catalog(
     package_location: str, output_dir: Path, with_assertions: bool = True
 ) -> None:
     """Write the static files and story info to the output directory.
 
     Args:
         package_location: The package location to build from
-        output_dir: The output directory to write the built site to
+        output_dir: The output directory to write the built catalog to
         with_assertions: Whether to execute assertions during rendering (default: True)
 
     The builder:
     1. Clears the output directory if it exists and is not empty
-    2. Creates a site from the package location
-    3. Walks the tree and renders each view (site, sections, subjects, stories) to disk as index.html
+    2. Creates a catalog from the package location
+    3. Walks the tree and renders each view (catalog, sections, subjects, stories) to disk as index.html
     4. Renders About and Debug pages
     5. Discovers and copies static assets from both src/storytime and input_dir
     """
@@ -206,7 +206,7 @@ def build_site(
 
     # Phase 1: Reading - Load content from filesystem
     start_reading = perf_counter()
-    site = make_site(package_location=package_location)
+    catalog = make_catalog(package_location=package_location)
     end_reading = perf_counter()
     reading_duration = end_reading - start_reading
     logger.info(f"Phase Reading: completed in {reading_duration:.2f}s")
@@ -215,14 +215,14 @@ def build_site(
     start_rendering = perf_counter()
 
     (
-        site_view,
+        catalog_view,
         about_view,
         debug_view,
         rendered_sections,
         rendered_subjects,
         rendered_stories,
         rendered_themed_stories,
-    ) = _render_all_views(site, with_assertions)
+    ) = _render_all_views(catalog, with_assertions)
 
     end_rendering = perf_counter()
     rendering_duration = end_rendering - start_rendering
@@ -233,7 +233,7 @@ def build_site(
 
     _write_all_files(
         output_dir,
-        site_view,
+        catalog_view,
         about_view,
         debug_view,
         rendered_sections,
@@ -280,6 +280,10 @@ def build_site(
     logger.info(f"Build completed in {total_duration:.2f}s")
 
 
+# Backward compatibility alias
+build_site = build_catalog
+
+
 if __name__ == "__main__":
     import sys
 
@@ -290,6 +294,6 @@ if __name__ == "__main__":
     input_path = sys.argv[1]
     output_path = Path(sys.argv[2])
 
-    print(f"Building site from '{input_path}' to '{output_path}'...")
-    build_site(package_location=input_path, output_dir=output_path)
+    print(f"Building catalog from '{input_path}' to '{output_path}'...")
+    build_catalog(package_location=input_path, output_dir=output_path)
     print("Build complete!")

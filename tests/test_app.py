@@ -56,7 +56,7 @@ def test_serve_index_at_root(tmp_path: Path) -> None:
 
     response = client.get("/")
     assert response.status_code == 200
-    assert "Minimal Site" in response.text
+    assert "Minimal Catalog" in response.text
     assert "<html" in response.text
 
 
@@ -262,7 +262,7 @@ def test_backward_compatibility_with_existing_tests(tmp_path: Path) -> None:
     with TestClient(app) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "Minimal Site" in response.text
+        assert "Minimal Catalog" in response.text
 
 
 def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:

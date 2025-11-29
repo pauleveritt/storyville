@@ -10,8 +10,8 @@ from types import ModuleType
 from typing import TYPE_CHECKING, Any, get_type_hints
 
 if TYPE_CHECKING:
+    from storytime.catalog import Catalog
     from storytime.section import Section
-    from storytime.site import Site
     from storytime.subject import Subject
 
 
@@ -38,8 +38,8 @@ def get_package_path(package_name: str) -> Path:
     return Path(package.__file__).parent
 
 
-def get_certain_callable(module: ModuleType) -> Site | Section | Subject | None:
-    """Return the first Site/Section/Subject in given module that returns correct type.
+def get_certain_callable(module: ModuleType) -> Catalog | Section | Subject | None:
+    """Return the first Catalog/Section/Subject in given module that returns correct type.
 
     A ``stories.py`` file should have a function that, when called,
     constructs an instance of a Section, Subject, etc. This helper
@@ -53,22 +53,22 @@ def get_certain_callable(module: ModuleType) -> Site | Section | Subject | None:
         module: A stories.py module that should have the right function.
 
     Returns:
-        The Site/Section/Story instance or ``None`` if there wasn't an
+        The Catalog/Section/Story instance or ``None`` if there wasn't an
         appropriate function.
     """
+    from storytime.catalog import Catalog
     from storytime.section import Section
-    from storytime.site import Site
     from storytime.subject import Subject
 
-    valid_returns = (Site, Section, Subject)
+    valid_returns = (Catalog, Section, Subject)
     for _name, obj in getmembers(module):
         if isfunction(obj) and obj.__module__ is module.__name__:
             th = get_type_hints(obj)
             return_type = th.get("return")
             if return_type and return_type in valid_returns:
                 # Call the obj to let it construct and return the
-                # Site/Section/Subject
-                target: Site | Section | Subject = obj()
+                # Catalog/Section/Subject
+                target: Catalog | Section | Subject = obj()
                 return target
 
     # We didn't find an appropriate callable
@@ -133,7 +133,7 @@ class TreeNode:
 
 @dataclass
 class BaseNode[T]:
-    """Shared logic for Site/Section/Subject."""
+    """Shared logic for Catalog/Section/Subject."""
 
     name: str = ""
     parent: None = None
@@ -152,7 +152,7 @@ class BaseNode[T]:
         of attributes in their stories.
 
         Args:
-            parent: The Site that is the parent in the tree.
+            parent: The Catalog that is the parent in the tree.
             tree_node: The raw data from the scanning process.
 
         Returns:

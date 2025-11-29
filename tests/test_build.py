@@ -1,4 +1,4 @@
-"""Build a Storytime site to a tmpdir and test.
+"""Build a Storytime catalog to a tmpdir and test.
 
 These tests will be testing the Storytime UI itself using
 the stories written for that UI.
@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from storytime.build import build_site
+from storytime.build import build_catalog
 from tdom import Node
 from tdom.parser import parse_html
 
@@ -18,7 +18,7 @@ from tdom.parser import parse_html
 @pytest.fixture(scope="session")
 def output_dir(tmpdir_factory) -> Path:
     output_dir = Path(tmpdir_factory.getbasetemp())
-    build_site(package_location="examples.minimal", output_dir=output_dir)
+    build_catalog(package_location="examples.minimal", output_dir=output_dir)
     return output_dir
 
 
@@ -29,12 +29,12 @@ def get_page(page_path: Path) -> Node:
 
 
 def test_index(output_dir: Path) -> None:
-    """Render the index page with site title."""
+    """Render the index page with catalog title."""
 
     page = get_page(output_dir / "index.html")
-    # SiteView renders the site title in h1
+    # CatalogView renders the catalog title in h1
     h1 = get_by_tag_name(page, "h1")
-    assert get_text_content(h1) == "Minimal Site"
+    assert get_text_content(h1) == "Minimal Catalog"
 
 
 def test_static_css(output_dir: Path) -> None:
@@ -99,8 +99,8 @@ def test_debug_page_content(output_dir: Path) -> None:
     assert get_text_content(h1) == "Debug Information"
 
 
-def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
-    """Test stylesheet path is correct at site root (depth=0)."""
+def test_stylesheet_path_at_catalog_root(output_dir: Path) -> None:
+    """Test stylesheet path is correct at catalog root (depth=0)."""
     page = get_page(output_dir / "index.html")
 
     # Get link elements
@@ -148,8 +148,8 @@ def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
     # Create a file in the output directory
     (tmp_path / "old_file.txt").write_text("old content")
 
-    # Build the site
-    build_site(package_location="examples.minimal", output_dir=tmp_path)
+    # Build the catalog
+    build_catalog(package_location="examples.minimal", output_dir=tmp_path)
 
     # Verify old file is gone
     assert not (tmp_path / "old_file.txt").exists()
@@ -190,7 +190,7 @@ def test_static_assets_phase_logs(output_dir: Path, caplog) -> None:
     tmp_output = output_dir.parent / "test_logging"
     tmp_output.mkdir(exist_ok=True)
 
-    build_site(package_location="examples.minimal", output_dir=tmp_output)
+    build_catalog(package_location="examples.minimal", output_dir=tmp_output)
 
     # Check that static assets phase is logged
     assert any("Phase Static Assets" in record.message for record in caplog.records)

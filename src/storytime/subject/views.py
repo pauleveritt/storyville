@@ -1,13 +1,17 @@
 """SubjectView for rendering Subject instances."""
 
+from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from tdom import Node, html
 
-from storytime.subject.models import Subject
-from storytime.site.models import Site
 from storytime.components.layout import Layout
+from storytime.subject.models import Subject
+
+if TYPE_CHECKING:
+    from storytime.catalog.models import Catalog
 
 
 @dataclass
@@ -26,7 +30,7 @@ class SubjectView:
     """
 
     subject: Subject
-    site: Site
+    site: Catalog
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:

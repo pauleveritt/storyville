@@ -3,7 +3,7 @@
 from aria_testing import get_text_content, query_all_by_tag_name
 from tdom import html
 
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 from storytime.story import Story
 from storytime.story.views import StoryView
 from storytime.subject import Subject
@@ -18,7 +18,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
         """Assertion that always passes."""
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -28,7 +28,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result
@@ -61,7 +61,7 @@ def test_story_view_badges_display_failing_assertion() -> None:
         """Assertion that always fails."""
         raise AssertionError("Expected condition not met")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -71,7 +71,7 @@ def test_story_view_badges_display_failing_assertion() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result
@@ -104,7 +104,7 @@ def test_story_view_no_badges_when_assertions_empty() -> None:
     def simple_component():
         return html(t"<div>Test</div>")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -114,7 +114,7 @@ def test_story_view_no_badges_when_assertions_empty() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result
@@ -142,7 +142,7 @@ def test_story_view_no_badges_when_assertions_disabled() -> None:
         """Assertion that always passes."""
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -152,7 +152,7 @@ def test_story_view_no_badges_when_assertions_disabled() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=False)
+    view = StoryView(story=story, site=catalog, with_assertions=False)
     result = view()
 
     element = result
@@ -185,7 +185,7 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     def assertion_3(element) -> None:
         raise AssertionError("This one fails")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -195,7 +195,7 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result
@@ -229,7 +229,7 @@ def test_story_view_critical_error_badge() -> None:
         """Assertion that raises a non-AssertionError exception."""
         raise ValueError("Unexpected error")
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -239,7 +239,7 @@ def test_story_view_critical_error_badge() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result
@@ -272,7 +272,7 @@ def test_story_view_badge_container_flexbox() -> None:
     def passing_assertion(element) -> None:
         assert element is not None
 
-    site = Site(title="Test Site")
+    catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Test")
     parent.package_path = ".test"
 
@@ -283,7 +283,7 @@ def test_story_view_badge_container_flexbox() -> None:
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=site, with_assertions=True)
+    view = StoryView(story=story, site=catalog, with_assertions=True)
     result = view()
 
     element = result

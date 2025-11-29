@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 from storytime.nodes import BaseNode, TreeNode, get_certain_callable, get_package_path
 from storytime.section import Section
-from storytime.site import Site
+from storytime.catalog import Catalog
 from storytime.subject import Subject
 
 
@@ -66,18 +66,18 @@ def test_get_package_path_invalid_package() -> None:
 
 
 # Test get_certain_callable
-def test_get_certain_callable_with_site(module_factory) -> None:
-    """Test get_certain_callable finds and calls Site function."""
-    def make_site() -> Site:
-        return Site(title="Test Site")
+def test_get_certain_callable_with_catalog(module_factory) -> None:
+    """Test get_certain_callable finds and calls Catalog function."""
+    def make_catalog() -> Catalog:
+        return Catalog(title="Test Catalog")
 
-    module = module_factory("test_module", make_site)
+    module = module_factory("test_module", make_catalog)
 
     result = get_certain_callable(module)
 
     assert result is not None
-    assert isinstance(result, Site)
-    assert result.title == "Test Site"
+    assert isinstance(result, Catalog)
+    assert result.title == "Test Catalog"
 
 
 def test_get_certain_callable_with_section(module_factory) -> None:
@@ -131,8 +131,8 @@ def test_get_certain_callable_empty_module(module_factory) -> None:
 
 def test_get_certain_callable_ignores_external_functions(module_factory) -> None:
     """Test get_certain_callable ignores functions from other modules."""
-    def external_function() -> Site:
-        return Site(title="External")
+    def external_function() -> Catalog:
+        return Catalog(title="External")
 
     # Create module but manually set function's __module__ to different module
     module = module_factory("test_module", external_function)
@@ -248,7 +248,7 @@ def test_treenode_repr() -> None:
         assert repr_str == node.this_package_location
 
 
-def test_tree_node_site() -> None:
+def test_tree_node_catalog() -> None:
     """Given a path to a ``stories.py``, extract the needed info."""
     from examples.minimal import stories
 
@@ -258,7 +258,7 @@ def test_tree_node_site() -> None:
         package_location="examples.minimal",
         stories_path=stories_path,
     )
-    assert isinstance(tree_node.called_instance, Site)
+    assert isinstance(tree_node.called_instance, Catalog)
     assert tree_node.name == ""
     assert tree_node.this_package_location == "."
     assert tree_node.parent_path is None

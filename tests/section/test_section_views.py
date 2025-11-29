@@ -5,13 +5,13 @@ from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_nam
 from storytime.section.models import Section
 from storytime.section.views import SectionView
 from storytime.subject import Subject
-from storytime.site.models import Site
+from storytime.catalog.models import Catalog
 
 def test_section_view_renders_title_in_h1() -> None:
     """Test SectionView renders section title in h1 element."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     section = Section(title="Components")
-    view = SectionView(section=section, site=site)
+    view = SectionView(section=section, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -23,9 +23,9 @@ def test_section_view_renders_title_in_h1() -> None:
 
 def test_section_view_renders_description() -> None:
     """Test SectionView renders description when present."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     section = Section(title="Components", description="UI component library")
-    view = SectionView(section=section, site=site)
+    view = SectionView(section=section, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -41,7 +41,7 @@ def test_section_view_renders_description() -> None:
 
 def test_section_view_renders_subject_cards() -> None:
     """Test SectionView renders subject cards as list with title and link."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     section = Section(title="Components")
     section.package_path = ".components"
 
@@ -50,7 +50,7 @@ def test_section_view_renders_subject_cards() -> None:
     subject2 = Subject(title="Input")
     section.items = {"button": subject1, "input": subject2}
 
-    view = SectionView(section=section, site=site)
+    view = SectionView(section=section, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -73,9 +73,9 @@ def test_section_view_renders_subject_cards() -> None:
 
 def test_section_view_shows_empty_state() -> None:
     """Test SectionView shows empty state message when no subjects."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     section = Section(title="Empty Section")
-    view = SectionView(section=section, site=site)
+    view = SectionView(section=section, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -91,9 +91,9 @@ def test_section_view_shows_empty_state() -> None:
 
 def test_section_view_includes_parent_link() -> None:
     """Test SectionView includes parent link."""
-    site = Site(title="My Site")
+    catalog = Catalog(title="My Catalog")
     section = Section(title="Components")
-    view = SectionView(section=section, site=site)
+    view = SectionView(section=section, site=catalog)
     result = view()
 
     # Extract  from  (Layout wraps the result)

@@ -1,4 +1,4 @@
-"""Site class for top-level catalog organization."""
+"""Catalog class for top-level catalog organization."""
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -13,10 +13,10 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class Site(BaseNode["Site"]):
+class Catalog(BaseNode["Catalog"]):
     """The top of a Storytime catalog.
 
-    The site contains the organized collections of stories, with
+    The catalog contains the organized collections of stories, with
     logic to render to disk.
     """
 

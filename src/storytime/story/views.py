@@ -1,13 +1,18 @@
 """StoryView for rendering Story instances with dual modes."""
 
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from tdom import Node, html
 
 from storytime.components.layout import Layout
-from storytime.site.models import Site
 from storytime.story.models import Story
+
+if TYPE_CHECKING:
+    from storytime.catalog.models import Catalog
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +24,14 @@ class StoryView:
     This view implements multiple rendering modes:
     - Mode A (Custom Template): When story.template is not None, uses it for ALL rendering
     - Mode B (Default Layout): When story.template is None, renders a complete default layout
-    - Mode C (Themed Iframe): When site.themed_layout is not None, wraps content in iframe
+    - Mode C (Themed Iframe): When catalog.themed_layout is not None, wraps content in iframe
 
     The view satisfies the View Protocol by implementing __call__() -> Node.
     Tests use type guards to verify the result is an Element.
     """
 
     story: Story
-    site: Site
+    site: Catalog
     cached_navigation: str | None = None
     with_assertions: bool = True
 

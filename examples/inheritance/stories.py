@@ -1,9 +1,9 @@
-"""Site for the inheritance example."""
+"""Catalog for the inheritance example."""
 
 
-from storytime import Site
+from storytime import Catalog
 
 
-def this_site() -> Site:
-    """Create the inheritance example site."""
-    return Site(title="Inheritance Example")
+def this_catalog() -> Catalog:
+    """Create the inheritance example catalog."""
+    return Catalog(title="Inheritance Example")

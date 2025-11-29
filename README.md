@@ -26,7 +26,7 @@ Storytime is a component-driven development (CDD) system for Python that helps y
 - Browse components and their variations in a live web interface
 - PicoCSS-based clean, responsive UI
 - Real-time hot reload with subinterpreter isolation
-- Hierarchical organization: Site → Section → Subject → Story
+- Hierarchical organization: Catalog → Section → Subject → Story
 
 ### 🧪 **Story Assertions**
 - Define assertions directly on stories
@@ -43,14 +43,14 @@ Storytime is a component-driven development (CDD) system for Python that helps y
 ### 🔬 **pytest Plugin**
 - Automatically discovers stories with assertions
 - Generates one test per assertion
-- Clear test naming: `test_story[site.section.subject.story::assertion]`
+- Clear test naming: `test_story[catalog.section.subject.story::assertion]`
 - Works with pytest-xdist for parallel execution
 - Fresh rendering per test for proper isolation
 
 ### 🎨 **Themed Stories**
 - Preview components within custom-themed layouts
 - Isolated iframe rendering for visual separation
-- Site-level theme configuration with automatic fallback
+- Catalog-level theme configuration with automatic fallback
 - Full HTML document control for real-world context
 - Perfect for matching your project's design system
 
@@ -143,14 +143,14 @@ class ThemedLayout:
         )
 
 # my_package/__init__.py
-from storytime import Site
+from storytime import Catalog
 from my_package.themed_layout.themed_layout import ThemedLayout
 
 def themed_layout_wrapper(story_title: str, children: Node) -> Node:
     return ThemedLayout(story_title, children)()
 
-def this_site() -> Site:
-    return Site(themed_layout=themed_layout_wrapper)
+def this_catalog() -> Catalog:
+    return Catalog(themed_layout=themed_layout_wrapper)
 ```
 
 ### 5. Run Tests
@@ -198,7 +198,7 @@ pytest my_package/
 
 ### Tree Structure
 ```
-Site
+Catalog
   ├─ Section (optional)
   │   └─ Subject
   │       └─ Story (with assertions)

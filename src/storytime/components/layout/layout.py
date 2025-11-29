@@ -1,6 +1,9 @@
 """Layout component providing HTML structure for all views."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from tdom import Element, Fragment, Node, html
 
@@ -8,8 +11,10 @@ from storytime.components.aside.aside import LayoutAside
 from storytime.components.footer.footer import LayoutFooter
 from storytime.components.header.header import LayoutHeader
 from storytime.components.main.main import LayoutMain
-from storytime.site.models import Site
 from storytime.utils import rewrite_static_paths
+
+if TYPE_CHECKING:
+    from storytime.catalog.models import Catalog
 
 
 @dataclass
@@ -21,7 +26,7 @@ class Layout:
     """
 
     view_title: str | None
-    site: Site
+    site: Catalog
     children: Element | Fragment | Node | None
     depth: int = 0
     current_path: str | None = None

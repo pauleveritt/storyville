@@ -7,9 +7,9 @@ You can then browse them in a web page, as well as use these stories in testing.
 
 from pathlib import Path
 
+from storytime.catalog import Catalog, find_path, make_catalog
 from storytime.nodes import BaseNode, TreeNode, get_certain_callable
 from storytime.section import Section
-from storytime.site import Site, find_path, make_site
 from storytime.story import Story
 from storytime.subject import Subject
 
@@ -17,13 +17,13 @@ PACKAGE_DIR = Path(__file__).resolve().parent
 
 __all__ = [
     "BaseNode",
+    "Catalog",
     "PACKAGE_DIR",
     "Section",
-    "Site",
     "Story",
     "Subject",
     "TreeNode",
     "find_path",
     "get_certain_callable",
-    "make_site",
+    "make_catalog",
 ]

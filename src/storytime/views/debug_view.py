@@ -1,11 +1,16 @@
 """DebugView for rendering the Debug page."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from tdom import Node, html
 
 from storytime.components.layout import Layout
-from storytime.site.models import Site
+
+if TYPE_CHECKING:
+    from storytime.catalog.models import Catalog
 
 
 @dataclass
@@ -21,7 +26,7 @@ class DebugView:
     The view satisfies the View Protocol by implementing __call__() -> Node.
     """
 
-    site: Site
+    site: Catalog
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -35,9 +40,9 @@ class DebugView:
 <div>
   <h1>Debug Information</h1>
   <p>
-    This page provides debug information about the site structure.
+    This page provides debug information about the catalog structure.
   </p>
-  <h2>Site Details</h2>
+  <h2>Catalog Details</h2>
   <ul>
     <li><strong>Title:</strong> {self.site.title}</li>
     <li><strong>Sections:</strong> {len(self.site.items)}</li>
