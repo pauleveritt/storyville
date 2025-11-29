@@ -165,6 +165,12 @@ footer {
     cursor: help;
 }
 
+/* Iframe reload visual feedback */
+.iframe-reloading {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
 /* Responsive layout for mobile */
 @media (max-width: 768px) {
     body {

@@ -1,23 +1,96 @@
 (function () {
     'use strict';
 
-    let ws = null;
-    let reconnectAttempt = 0;
-    let reconnectTimeout = null;
-    let reloadDebounceTimeout = null;
+    var ws = null;
+    var reconnectAttempt = 0;
+    var reconnectTimeout = null;
+    var reloadDebounceTimeout = null;
 
-    const MAX_RECONNECT_DELAY = 30000; // 30 seconds
-    const INITIAL_RECONNECT_DELAY = 1000; // 1 second
-    const RELOAD_DEBOUNCE_DELAY = 300; // 300ms
+    var MAX_RECONNECT_DELAY = 30000; // 30 seconds
+    var INITIAL_RECONNECT_DELAY = 1000; // 1 second
+    var RELOAD_DEBOUNCE_DELAY = 100; // 100ms
 
     function getWebSocketUrl() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host = window.location.host;
+        var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        var host = window.location.host;
         return protocol + '//' + host + '/ws/reload';
     }
 
+    function isModeC() {
+        var iframe = document.querySelector('iframe[src="./themed_story.html"]');
+        return iframe !== null;
+    }
+
+    function captureIframeScroll(iframe) {
+        try {
+            var scrollX = iframe.contentWindow.scrollX || 0;
+            var scrollY = iframe.contentWindow.scrollY || 0;
+            return { scrollX: scrollX, scrollY: scrollY };
+        } catch (e) {
+            console.log('[Storytime] Could not capture iframe scroll position (cross-origin):', e.message);
+            return null;
+        }
+    }
+
+    function restoreIframeScroll(iframe, scrollState) {
+        if (!scrollState) {
+            return false;
+        }
+        try {
+            iframe.contentWindow.scrollTo(scrollState.scrollX, scrollState.scrollY);
+            console.log('[Storytime] Restored iframe scroll position:', scrollState);
+            return true;
+        } catch (e) {
+            console.log('[Storytime] Could not restore iframe scroll position (cross-origin):', e.message);
+            return false;
+        }
+    }
+
+    function applyReloadEffect(iframe) {
+        iframe.classList.add('iframe-reloading');
+        setTimeout(function () {
+            iframe.classList.remove('iframe-reloading');
+        }, 200);
+    }
+
+    function reloadIframe() {
+        var iframe = document.querySelector('iframe[src="./themed_story.html"]');
+        if (!iframe) {
+            console.log('[Storytime] No iframe found for reload');
+            return false;
+        }
+
+        console.log('[Storytime] Reloading iframe content');
+
+        // Capture scroll position before reload
+        var scrollState = captureIframeScroll(iframe);
+
+        // Apply visual effect
+        applyReloadEffect(iframe);
+
+        // Set up error handler for fallback
+        iframe.onerror = function () {
+            console.error('[Storytime] Iframe failed to load, falling back to full page reload');
+            window.location.reload();
+        };
+
+        // Set up scroll restoration after load
+        iframe.onload = function () {
+            console.log('[Storytime] Iframe loaded successfully');
+            if (scrollState) {
+                restoreIframeScroll(iframe, scrollState);
+            }
+        };
+
+        // Trigger reload by updating src with timestamp
+        var currentSrc = iframe.src.split('?')[0];
+        iframe.src = currentSrc + '?t=' + Date.now();
+
+        return true;
+    }
+
     function scheduleReload() {
-        console.log('[Storytime] Scheduling page reload in ' + RELOAD_DEBOUNCE_DELAY + 'ms...');
+        console.log('[Storytime] Scheduling reload in ' + RELOAD_DEBOUNCE_DELAY + 'ms...');
         // Clear any existing debounce timeout
         if (reloadDebounceTimeout) {
             clearTimeout(reloadDebounceTimeout);
@@ -25,13 +98,18 @@
 
         // Schedule reload after debounce delay
         reloadDebounceTimeout = setTimeout(function () {
-            console.log('[Storytime] Reloading page now!');
-            window.location.reload();
+            if (isModeC()) {
+                console.log('[Storytime] Mode C detected - reloading iframe only');
+                reloadIframe();
+            } else {
+                console.log('[Storytime] Mode A/B detected - reloading full page');
+                window.location.reload();
+            }
         }, RELOAD_DEBOUNCE_DELAY);
     }
 
     function connect() {
-        const url = getWebSocketUrl();
+        var url = getWebSocketUrl();
 
         try {
             ws = new WebSocket(url);
@@ -49,7 +127,7 @@
             ws.onmessage = function (event) {
                 console.log('[Storytime] WebSocket message received:', event.data);
                 try {
-                    const message = JSON.parse(event.data);
+                    var message = JSON.parse(event.data);
                     console.log('[Storytime] Parsed message:', message);
                     if (message.type === 'reload') {
                         console.log('[Storytime] Reload message received, scheduling reload...');
@@ -81,7 +159,7 @@
         }
 
         // Calculate delay with exponential backoff: 1s, 2s, 4s, 8s, 16s, 30s (max)
-        const delay = Math.min(
+        var delay = Math.min(
             INITIAL_RECONNECT_DELAY * Math.pow(2, reconnectAttempt),
             MAX_RECONNECT_DELAY
         );

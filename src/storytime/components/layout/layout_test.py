@@ -293,10 +293,10 @@ def test_layout_stylesheet_paths_at_depth_2() -> None:
             if href:
                 stylesheet_hrefs.append(href)
 
-    # depth=2 means 2 directories deep = ../../static/
-    assert any("../../static/pico-main.css" in href for href in stylesheet_hrefs), \
+    # depth=2 means 2 directories deep = ../../static/ with full nested path
+    assert any("../../static/components/layout/static/pico-main.css" in href for href in stylesheet_hrefs), \
         "pico-main.css should have correct depth prefix"
-    assert any("../../static/storytime.css" in href for href in stylesheet_hrefs), \
+    assert any("../../static/components/layout/static/storytime.css" in href for href in stylesheet_hrefs), \
         "storytime.css should have correct depth prefix"
 
 def test_layout_favicon_path_at_depth_1() -> None:

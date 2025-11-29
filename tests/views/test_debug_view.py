@@ -55,5 +55,5 @@ def test_debug_view_uses_depth_zero():
     result = view()
     html_string = str(result)
 
-    # Assert - depth=0 means static/ (no prefix) for CSS paths at root
-    assert 'static/pico-main.css' in html_string
+    # Assert - depth=0 means static/ (no prefix) for CSS paths at root with full nested path
+    assert 'static/components/layout/static/pico-main.css' in html_string

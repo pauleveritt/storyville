@@ -40,7 +40,7 @@ class Layout:
             title_text = self.site.title
 
         # Use paths relative to this component file
-        # static/ refers to the static folder next to layout.py
+        # static/ refers to the static folder in the output, with full nested path
         result = html(t'''\
 <!DOCTYPE html>
 <html lang="EN">
@@ -48,11 +48,11 @@ class Layout:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title_text}</title>
-    <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
-    <link rel="stylesheet" href="static/pico-main.css" />
-    <link rel="stylesheet" href="static/pico-docs.css" />
-    <link rel="stylesheet" href="static/storytime.css" />
-    <script src="static/ws.js"></script>
+    <link rel="icon" type="image/svg+xml" href="static/components/layout/static/favicon.svg" />
+    <link rel="stylesheet" href="static/components/layout/static/pico-main.css" />
+    <link rel="stylesheet" href="static/components/layout/static/pico-docs.css" />
+    <link rel="stylesheet" href="static/components/layout/static/storytime.css" />
+    <script src="static/components/layout/static/ws.js"></script>
 </head>
 <body>
 <{LayoutHeader} site_title={self.site.title} depth={self.depth} />

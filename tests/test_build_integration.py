@@ -132,18 +132,18 @@ def test_layout_uses_new_static_paths(tmp_build_dir: Path) -> None:
     # Read the generated HTML
     index_html = (tmp_build_dir / "index.html").read_text()
 
-    # Verify it references single static/ directory (no ../ prefix for root pages)
-    assert "static/pico-main.css" in index_html
-    assert "static/storytime.css" in index_html
-    assert "static/ws.js" in index_html
+    # Verify it references static assets with full nested path (no ../ prefix for root pages)
+    assert "static/components/layout/static/pico-main.css" in index_html
+    assert "static/components/layout/static/storytime.css" in index_html
+    assert "static/components/layout/static/ws.js" in index_html
 
 
 @pytest.mark.parametrize(
     "page_path,expected_prefix",
     [
-        ("index.html", "static/"),  # Root level: 0 dirs deep
-        ("components/index.html", "../static/"),  # 1 dir deep
-        ("components/heading/index.html", "../../static/"),  # 2 dirs deep
+        ("index.html", "static/components/layout/static/"),  # Root level: 0 dirs deep
+        ("components/index.html", "../static/components/layout/static/"),  # 1 dir deep
+        ("components/heading/index.html", "../../static/components/layout/static/"),  # 2 dirs deep
     ],
 )
 def test_relative_paths_correct_at_different_depths(
@@ -157,5 +157,5 @@ def test_relative_paths_correct_at_different_depths(
 
     html_content = page_file.read_text()
 
-    # Verify the expected prefix is used
+    # Verify the expected prefix is used with full nested path
     assert f'href="{expected_prefix}pico-main.css"' in html_content

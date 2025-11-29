@@ -107,10 +107,10 @@ def test_stylesheet_path_at_site_root(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=0 (root level) with new single static/ structure
+    # Verify hrefs are correct for depth=0 (root level) with nested path structure
     hrefs = [link.attrs.get("href") for link in links]
-    assert "static/pico-main.css" in hrefs  # No ../ prefix for root pages
-    assert "static/storytime.css" in hrefs
+    assert "static/components/layout/static/pico-main.css" in hrefs  # No ../ prefix for root pages
+    assert "static/components/layout/static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
@@ -122,14 +122,14 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=0 (sections now at root level)
+    # Verify hrefs are correct for depth=1 (one directory deep)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../static/pico-main.css" in hrefs
-    assert "../static/storytime.css" in hrefs
+    assert "../static/components/layout/static/pico-main.css" in hrefs
+    assert "../static/components/layout/static/storytime.css" in hrefs
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
-    """Test stylesheet path is correct at subject depth (depth=1)."""
+    """Test stylesheet path is correct at subject depth (depth=2)."""
     subject_page = output_dir / "components" / "heading" / "index.html"
     page = get_page(subject_page)
 
@@ -137,10 +137,10 @@ def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
     head = get_by_tag_name(page, "head")
     links = query_all_by_tag_name(head, "link", attrs={"rel": "stylesheet"})
 
-    # Verify hrefs are correct for depth=1 (subject pages)
+    # Verify hrefs are correct for depth=2 (two directories deep)
     hrefs = [link.attrs.get("href") for link in links]
-    assert "../../static/pico-main.css" in hrefs
-    assert "../../static/storytime.css" in hrefs
+    assert "../../static/components/layout/static/pico-main.css" in hrefs
+    assert "../../static/components/layout/static/storytime.css" in hrefs
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
