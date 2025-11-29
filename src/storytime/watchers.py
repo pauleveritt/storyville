@@ -58,11 +58,13 @@ async def watch_and_rebuild(
     last_change_time: float = 0.0
 
     try:
-        async for changes in awatch(*watch_paths):
-            # Signal that watcher is ready on first iteration
+        # Use yield_on_timeout to ensure we can signal ready even without initial changes
+        async for changes in awatch(*watch_paths, yield_on_timeout=True, rust_timeout=100):
+            # Signal that watcher is ready on first iteration (even if no changes)
             if ready_event and not ready_event.is_set():
                 ready_event.set()
                 logger.debug("Watcher ready event set")
+
             # Filter changes based on path
             relevant_changes = []
             for change_type, changed_path in changes:
