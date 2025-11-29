@@ -27,11 +27,6 @@ test-parallel *ARGS:
 test-slow:
     uv run pytest -m slow -n auto -v
 
-# Benchmark parallel vs sequential execution
-test-benchmark:
-    @echo "Running benchmark..."
-    @./scripts/benchmark_parallel.sh
-
 # Format (no changes)
 fmt:
     uv run ruff check .
