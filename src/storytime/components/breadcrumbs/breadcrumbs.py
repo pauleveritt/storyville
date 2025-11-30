@@ -13,9 +13,10 @@ class Breadcrumbs:
 
     Renders breadcrumb trail from Home to current page, with all items
     as clickable links except the current (last) item. Uses " > " as separator.
+    All links use relative paths based on current depth.
     """
 
-    current_path: str | None = None
+    resource_path: str = ""
 
     def __call__(self) -> Node:
         """Render the breadcrumbs to a tdom Node.
@@ -23,42 +24,49 @@ class Breadcrumbs:
         Returns:
             A tdom Node representing the breadcrumb navigation.
         """
-        # If no current_path, render nothing
-        if not self.current_path:
+        # If no resource_path, render nothing
+        if not self.resource_path:
             return html(t"")
 
         # Parse the path to get components
-        section_name, subject_name, story_name = parse_current_path(self.current_path)
+        section_name, subject_name, story_name = parse_current_path(self.resource_path)
+
+        # Calculate depth: count non-empty path segments
+        depth = len([p for p in self.resource_path.split("/") if p])
+
+        # Calculate relative root path: "../" * depth
+        relative_root = "../" * depth
 
         # Build breadcrumb items
         breadcrumb_items = []
 
         # Always include Home as first breadcrumb (link unless we're on home)
-        # Since we have a current_path, we're never on home, so it's always a link
-        breadcrumb_items.append(html(t'<a href="/">Home</a>'))
+        # Since we have a resource_path, we're never on home, so it's always a link
+        breadcrumb_items.append(html(t'<a href="{relative_root}">Home</a>'))
 
         # Add section if present
         if section_name:
-            section_url = f"/{section_name}"
             # Section is a link unless it's the current (last) item
             if subject_name is None and story_name is None:
                 # Current page is section level (no subject or story)
                 breadcrumb_items.append(html(t"<span>{section_name}</span>"))
             else:
-                # Section is an ancestor, make it a link
+                # Section is an ancestor, make it a link using relative path
+                section_url = f"{relative_root}{section_name}/"
                 breadcrumb_items.append(
                     html(t'<a href="{section_url}">{section_name}</a>')
                 )
 
         # Add subject if present
         if subject_name:
-            subject_url = f"/{section_name}/{subject_name}"
             # Subject is a link unless it's the current (last) item
             if story_name is None:
                 # Current page is subject level (no story)
                 breadcrumb_items.append(html(t"<span>{subject_name}</span>"))
             else:
-                # Subject is an ancestor, make it a link
+                # Subject is an ancestor, make it a link using relative path
+                # From story level (depth 3), we go up one level: ../
+                subject_url = "../"
                 breadcrumb_items.append(
                     html(t'<a href="{subject_url}">{subject_name}</a>')
                 )
@@ -77,8 +85,9 @@ class Breadcrumbs:
             trail_items.append(item)
 
         # Render breadcrumbs in nav with aria-label
+        # Wrap trail_items in a span to prevent flexbox spreading
         return html(t'''
             <nav aria-label="Breadcrumb">
-              {trail_items}
+              <span style="display: inline;">{trail_items}</span>
             </nav>
         ''')

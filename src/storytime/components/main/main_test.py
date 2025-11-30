@@ -8,7 +8,7 @@ from storytime.components.main.main import LayoutMain
 def test_layout_main_renders_children() -> None:
     """Test LayoutMain renders children content."""
     test_content = html(t"<p>Test Content</p>")
-    main = LayoutMain(current_path=None, children=test_content)
+    main = LayoutMain(resource_path=None, children=test_content)
     result = main()
     element = result
 
@@ -22,7 +22,7 @@ def test_layout_main_renders_children() -> None:
 
 def test_layout_main_renders_breadcrumbs() -> None:
     """Test LayoutMain renders Breadcrumbs component."""
-    main = LayoutMain(current_path="getting-started/installation", children=None)
+    main = LayoutMain(resource_path="getting-started/installation", children=None)
     result = main()
     element = result
 
@@ -32,7 +32,7 @@ def test_layout_main_renders_breadcrumbs() -> None:
 
 def test_layout_main_handles_none_children() -> None:
     """Test LayoutMain handles None children gracefully."""
-    main = LayoutMain(current_path=None, children=None)
+    main = LayoutMain(resource_path=None, children=None)
     result = main()
     element = result
 

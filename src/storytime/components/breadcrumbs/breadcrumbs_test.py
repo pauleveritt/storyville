@@ -4,8 +4,8 @@ from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_nam
 from storytime.components.breadcrumbs import Breadcrumbs
 
 def test_breadcrumbs_renders_nothing_when_path_is_none() -> None:
-    """Test Breadcrumbs renders nothing when current_path is None."""
-    breadcrumbs = Breadcrumbs(current_path=None)
+    """Test Breadcrumbs renders nothing when resource_path is None."""
+    breadcrumbs = Breadcrumbs(resource_path=None)
     result = breadcrumbs()
 
     element = result
@@ -17,8 +17,8 @@ def test_breadcrumbs_renders_nothing_when_path_is_none() -> None:
         assert False, "Should not render a nav element"
 
 def test_breadcrumbs_renders_nothing_when_path_is_empty() -> None:
-    """Test Breadcrumbs renders nothing when current_path is empty string."""
-    breadcrumbs = Breadcrumbs(current_path="")
+    """Test Breadcrumbs renders nothing when resource_path is empty string."""
+    breadcrumbs = Breadcrumbs(resource_path="")
     result = breadcrumbs()
 
     element = result
@@ -31,7 +31,7 @@ def test_breadcrumbs_renders_nothing_when_path_is_empty() -> None:
 
 def test_breadcrumbs_renders_home_and_section_for_section_path() -> None:
     """Test Breadcrumbs renders Home link and section name for section-level path."""
-    breadcrumbs = Breadcrumbs(current_path="getting-started")
+    breadcrumbs = Breadcrumbs(resource_path="getting-started")
     result = breadcrumbs()
 
     element = result
@@ -45,9 +45,9 @@ def test_breadcrumbs_renders_home_and_section_for_section_path() -> None:
     all_links = query_all_by_tag_name(nav, "a")
     assert len(all_links) == 1
 
-    # Home should be a link
+    # Home should be a link (relative path from depth 1)
     home_link = all_links[0]
-    assert home_link.attrs.get("href") == "/"
+    assert home_link.attrs.get("href") == "../"
     assert get_text_content(home_link) == "Home"
 
     # Section should be plain text (current page)
@@ -57,7 +57,7 @@ def test_breadcrumbs_renders_home_and_section_for_section_path() -> None:
 
 def test_breadcrumbs_renders_separator_between_items() -> None:
     """Test Breadcrumbs uses ' > ' as separator between items."""
-    breadcrumbs = Breadcrumbs(current_path="getting-started/installation")
+    breadcrumbs = Breadcrumbs(resource_path="getting-started/installation")
     result = breadcrumbs()
 
     element = result
@@ -76,7 +76,7 @@ def test_breadcrumbs_renders_separator_between_items() -> None:
 
 def test_breadcrumbs_renders_all_ancestors_as_links() -> None:
     """Test Breadcrumbs renders all ancestor levels as clickable links."""
-    breadcrumbs = Breadcrumbs(current_path="getting-started/installation/quick-start")
+    breadcrumbs = Breadcrumbs(resource_path="getting-started/installation/quick-start")
     result = breadcrumbs()
 
     element = result
@@ -88,24 +88,24 @@ def test_breadcrumbs_renders_all_ancestors_as_links() -> None:
     # Should have 3 links: Home, section, subject
     assert len(all_links) == 3
 
-    # Home link
+    # Home link (relative path from depth 3)
     home_link = all_links[0]
-    assert home_link.attrs.get("href") == "/"
+    assert home_link.attrs.get("href") == "../../../"
     assert get_text_content(home_link) == "Home"
 
-    # Section link
+    # Section link (relative path from depth 3)
     section_link = all_links[1]
-    assert section_link.attrs.get("href") == "/getting-started"
+    assert section_link.attrs.get("href") == "../../../getting-started/"
     assert get_text_content(section_link) == "getting-started"
 
-    # Subject link
+    # Subject link (relative path from depth 3: one level up)
     subject_link = all_links[2]
-    assert subject_link.attrs.get("href") == "/getting-started/installation"
+    assert subject_link.attrs.get("href") == "../"
     assert get_text_content(subject_link) == "installation"
 
 def test_breadcrumbs_current_page_not_clickable() -> None:
     """Test Breadcrumbs renders current page as plain text (not a link)."""
-    breadcrumbs = Breadcrumbs(current_path="getting-started/installation/quick-start")
+    breadcrumbs = Breadcrumbs(resource_path="getting-started/installation/quick-start")
     result = breadcrumbs()
 
     element = result
@@ -126,7 +126,7 @@ def test_breadcrumbs_current_page_not_clickable() -> None:
 
 def test_breadcrumbs_subject_level_path() -> None:
     """Test Breadcrumbs renders correctly for subject-level path."""
-    breadcrumbs = Breadcrumbs(current_path="components/button")
+    breadcrumbs = Breadcrumbs(resource_path="components/button")
     result = breadcrumbs()
 
     element = result
@@ -138,11 +138,11 @@ def test_breadcrumbs_subject_level_path() -> None:
     # Should have 2 links: Home and section
     assert len(all_links) == 2
 
-    # Home link
-    assert all_links[0].attrs.get("href") == "/"
+    # Home link (relative path from depth 2)
+    assert all_links[0].attrs.get("href") == "../../"
 
-    # Section link
-    assert all_links[1].attrs.get("href") == "/components"
+    # Section link (relative path from depth 2)
+    assert all_links[1].attrs.get("href") == "../../components/"
 
     # Subject should be plain text (current page)
     text_content = get_text_content(nav)

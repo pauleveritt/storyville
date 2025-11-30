@@ -21,7 +21,6 @@ class SectionView:
     The view renders:
     - Section title in h1
     - Description in p element if present
-    - Parent navigation link
     - List of subject cards (title + link) or empty state message
 
     The view satisfies the View Protocol by implementing __call__() -> Node.
@@ -30,6 +29,7 @@ class SectionView:
 
     section: Section
     site: Catalog
+    resource_path: str = ""
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -60,12 +60,11 @@ class SectionView:
 
         # Create the main content for this view wrapped with Layout (depth=1 for section pages in subdirectories)
         view_content = html(t"""\
-<{Layout} view_title={self.section.title} site={self.site} depth={1} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.section.title} site={self.site} depth={1} resource_path={self.resource_path} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.section.title}</h1>
 {description_p}
 {content}
-<a href="..">Parent</a>
 </div>
 </{Layout}>""")
 

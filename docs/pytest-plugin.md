@@ -265,11 +265,14 @@ pytest --collect-only -v
 
 ```python
 # Bad: Generic message
-lambda el: None if condition else (_ for _ in ()).throw(AssertionError("Failed"))
+def check(el) -> None:
+    assert condition, "Failed"
 
-# Good: Specific message
-lambda el: None if "button" in str(el).lower()
-else (_ for _ in ()).throw(AssertionError(f"Expected button tag, got: {el.tag}"))
+# Good: Specific message with context
+def check_is_button_tag(el) -> None:
+    """Verify element is a button tag."""
+    tag_name = el.tag if hasattr(el, 'tag') else type(el).__name__
+    assert "button" in str(el).lower(), f"Expected button tag, got: {tag_name}"
 ```
 
 ## Examples

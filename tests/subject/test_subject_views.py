@@ -50,17 +50,13 @@ def test_subject_view_renders_story_cards() -> None:
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
 
-    # Verify story cards are rendered as links (main contains the actual content)
+    # Verify story cards are rendered as links (no parent link anymore)
     all_links = query_all_by_tag_name(main, "a")
 
-    # Should have 2 story links + 1 parent link = 3 total
-    assert len(all_links) == 3
-    # Filter out parent link
-    story_links = [link for link in all_links if link.attrs.get("href") != ".."]
-
-    assert len(story_links) == 2
-    assert get_text_content(story_links[0]) == "Primary Button"
-    assert get_text_content(story_links[1]) == "Secondary Button"
+    # Should have 2 story links (parent link has been removed and replaced by breadcrumbs)
+    assert len(all_links) == 2
+    assert get_text_content(all_links[0]) == "Primary Button"
+    assert get_text_content(all_links[1]) == "Secondary Button"
 
 def test_subject_view_shows_empty_state() -> None:
     """Test SubjectView shows empty state message when no stories."""

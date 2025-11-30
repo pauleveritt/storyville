@@ -22,15 +22,16 @@ def this_subject() -> Subject:
 ### Story with All Fields
 
 ```python
+def check_is_button(el) -> None:
+    """Assertion: element should be a button tag."""
+    assert "button" in str(el).lower(), "Should be a button tag"
+
 Story(
     title="Primary Action Button",
     description="The main call-to-action button",
     props=dict(text="Get Started", variant="primary", disabled=False),
     template=custom_template,  # Optional custom rendering template
-    assertions=[
-        lambda el: None if "button" in str(el).lower()
-        else (_ for _ in ()).throw(AssertionError("Should be a button tag")),
-    ],
+    assertions=[check_is_button],
 )
 ```
 
@@ -55,53 +56,63 @@ Assertions let you define tests directly on stories. They execute during renderi
 
 ### Writing Assertions
 
-Assertions are callables that receive the rendered element and raise `AssertionError` on failure:
+Assertions are callables that receive the rendered element and **must raise `AssertionError`** on failure:
 
 ```python
+def check_element_exists(el) -> None:
+    """Assertion: element must exist."""
+    assert el is not None, "Element required"
+
+def check_has_text(el) -> None:
+    """Assertion: element must contain 'Submit' text."""
+    assert "Submit" in str(el), "Text should appear"
+
+def check_has_primary_class(el) -> None:
+    """Assertion: element must have primary styling."""
+    assert "primary" in str(el), "Should have primary class"
+
 Story(
     props=dict(text="Submit", variant="primary"),
     assertions=[
-        # Check element exists
-        lambda el: None if el is not None
-        else (_ for _ in ()).throw(AssertionError("Element required")),
-        
-        # Check content
-        lambda el: None if "Submit" in str(el)
-        else (_ for _ in ()).throw(AssertionError("Text should appear")),
-        
-        # Check attributes
-        lambda el: None if "primary" in str(el)
-        else (_ for _ in ()).throw(AssertionError("Should have primary class")),
+        check_element_exists,
+        check_has_text,
+        check_has_primary_class,
     ],
 )
 ```
 
+> ⚠️ **Important**: Assertions must **raise `AssertionError`** to fail. Returning `False` or other falsy values will be treated as passing!
+
 ### Assertion Types
 
-**Simple Assertions:**
+**Simple Function Assertions:**
 ```python
-lambda el: None if el is not None
-else (_ for _ in ()).throw(AssertionError("Should exist"))
+def check_exists(el) -> None:
+    assert el is not None, "Should exist"
+
+Story(props={...}, assertions=[check_exists])
 ```
 
 **Using aria-testing:**
 ```python
 from aria_testing import get_by_role, get_text_content
 
-lambda el: None if get_text_content(get_by_role(el, "button")) == "Click"
-else (_ for _ in ()).throw(AssertionError("Button text mismatch"))
+def check_button_text(el) -> None:
+    """Verify button has correct text."""
+    button = get_by_role(el, "button")
+    text = get_text_content(button)
+    assert text == "Click", f"Expected 'Click', got '{text}'"
+
+Story(props={...}, assertions=[check_button_text])
 ```
 
 **Complex Assertions:**
 ```python
-def check_button_structure(el):
+def check_button_structure(el) -> None:
     """Verify button has correct structure."""
     button = get_by_tag_name(el, "button")
-    if not button:
-        raise AssertionError("No button found")
-    if "class" not in button.attrs:
-        raise AssertionError("Button missing class")
-    return None
+    assert button is not None, "No button found"
+    assert "class" in button.attrs, "Button missing class"
 
 # Use in story
 Story(props={...}, assertions=[check_button_structure])
@@ -227,13 +238,14 @@ Story(title="Story 1", props={...})
 ### 3. Meaningful Assertions
 
 ```python
-# Good: Clear error messages
-lambda el: None if "button" in str(el).lower()
-else (_ for _ in ()).throw(AssertionError("Should render as button element"))
+# Good: Clear error messages and descriptive function names
+def check_is_button_element(el) -> None:
+    """Verify element renders as a button tag."""
+    assert "button" in str(el).lower(), "Should render as button element"
 
 # Avoid: Vague messages
-lambda el: None if "button" in str(el).lower()
-else (_ for _ in ()).throw(AssertionError("Failed"))
+def check(el) -> None:
+    assert "button" in str(el).lower(), "Failed"
 ```
 
 ### 4. Group Related Stories

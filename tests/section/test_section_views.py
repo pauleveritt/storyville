@@ -59,16 +59,13 @@ def test_section_view_renders_subject_cards() -> None:
     # Get the main element (content area) to avoid sidebar sections listing
     main = get_by_tag_name(element, "main")
 
-    # Verify subject cards are rendered as links (main contains the actual content)
+    # Verify subject cards are rendered as links (no parent link anymore)
     all_links = query_all_by_tag_name(main, "a")
 
-    assert len(all_links) == 3  # 2 subject links + 1 parent link
-    # Filter out parent link
-    subject_links = [link for link in all_links if link.attrs.get("href") != ".."]
-
-    assert len(subject_links) == 2
+    # Should have 2 subject links (parent link has been removed and replaced by breadcrumbs)
+    assert len(all_links) == 2
     # Links can be in any order since dict iteration order may vary
-    link_texts = {get_text_content(link) for link in subject_links}
+    link_texts = {get_text_content(link) for link in all_links}
     assert link_texts == {"Button", "Input"}
 
 def test_section_view_shows_empty_state() -> None:
@@ -89,11 +86,12 @@ def test_section_view_shows_empty_state() -> None:
     )
     assert empty_state_found
 
-def test_section_view_includes_parent_link() -> None:
-    """Test SectionView includes parent link."""
+def test_section_view_has_breadcrumbs() -> None:
+    """Test SectionView includes breadcrumbs navigation (replaces parent link)."""
     catalog = Catalog(title="My Catalog")
     section = Section(title="Components")
-    view = SectionView(section=section, site=catalog)
+    section.resource_path = "components"
+    view = SectionView(section=section, site=catalog, resource_path="components")
     result = view()
 
     # Extract  from  (Layout wraps the result)
@@ -102,8 +100,7 @@ def test_section_view_includes_parent_link() -> None:
     # Get the main element (content area)
     main = get_by_tag_name(element, "main")
 
-    # Verify parent link exists in main content
-    all_links = query_all_by_tag_name(main, "a")
-    parent_links = [link for link in all_links if link.attrs.get("href") == ".."]
-    assert len(parent_links) == 1
-    assert get_text_content(parent_links[0]) == "Parent"
+    # Verify breadcrumbs navigation exists (replaces parent link)
+    nav = get_by_tag_name(main, "nav")
+    assert nav is not None
+    assert nav.attrs.get("aria-label") == "Breadcrumb"

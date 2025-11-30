@@ -12,13 +12,13 @@ from storytime.section.models import Section
 class LayoutAside:
     """Aside component with hierarchical navigation tree.
 
-    Renders aside element with "Sections" label and navigation.
+    Renders aside element with navigation tree.
     Handles cached navigation HTML when provided, otherwise renders
     NavigationTree component fresh.
     """
 
     sections: dict[str, Section]
-    current_path: str | None = None
+    resource_path: str = ""
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -34,12 +34,11 @@ class LayoutAside:
             navigation_html = Markup(self.cached_navigation)
         else:
             navigation_html = NavigationTree(
-                sections=self.sections, current_path=self.current_path
+                sections=self.sections, resource_path=self.resource_path
             )()
 
         return html(t'''\
 <aside>
-  <strong>Sections</strong>
   {navigation_html}
 </aside>
 ''')

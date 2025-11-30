@@ -22,7 +22,6 @@ class SubjectView:
     - Subject title in h1
     - Description in p element if present
     - Target information if present
-    - Parent navigation link
     - List of story cards (title + link) or empty state message
 
     The view satisfies the View Protocol by implementing __call__() -> Node.
@@ -31,6 +30,7 @@ class SubjectView:
 
     subject: Subject
     site: Catalog
+    resource_path: str = ""
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -55,13 +55,12 @@ class SubjectView:
         if not self.subject.items:
             # Empty state - wrapped with Layout (depth=2 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={2} resource_path={self.resource_path} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 {description_p}
 <p>Target: {target_name}</p>
 <p>No stories defined for this component</p>
-<a href="..">Parent</a>
 </div>
 </{Layout}>""")
         else:
@@ -74,7 +73,7 @@ class SubjectView:
 
             # Create the main content wrapped with Layout (depth=2 for subject pages)
             view_content = html(t"""\
-<{Layout} view_title={self.subject.title} site={self.site} depth={2} cached_navigation={self.cached_navigation}>
+<{Layout} view_title={self.subject.title} site={self.site} depth={2} resource_path={self.resource_path} cached_navigation={self.cached_navigation}>
 <div>
 <h1>{self.subject.title}</h1>
 {description_p}
@@ -82,7 +81,6 @@ class SubjectView:
 <ul>
 {story_items}
 </ul>
-<a href="..">Parent</a>
 </div>
 </{Layout}>""")
 

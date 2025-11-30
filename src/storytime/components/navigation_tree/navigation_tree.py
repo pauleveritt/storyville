@@ -8,7 +8,7 @@ from storytime.section.models import Section
 
 
 def parse_current_path(path: str | None) -> tuple[str | None, str | None, str | None]:
-    """Parse current_path into section, subject, story components.
+    """Parse resource_path into section, subject, story components.
 
     Args:
         path: Path string in format "section/subject/story" or None.
@@ -37,7 +37,7 @@ class NavigationTree:
     """
 
     sections: dict[str, Section]
-    current_path: str | None = None
+    resource_path: str = ""
 
     def __call__(self) -> Node:
         """Render the navigation tree to a tdom Node.
@@ -45,7 +45,7 @@ class NavigationTree:
         Returns:
             A tdom Node representing the navigation structure.
         """
-        section_name, subject_name, _story_name = parse_current_path(self.current_path)
+        section_name, subject_name, _story_name = parse_current_path(self.resource_path)
 
         # Build section items
         section_items = []

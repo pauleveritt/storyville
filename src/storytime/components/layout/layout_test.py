@@ -7,33 +7,33 @@ from storytime.components.layout.layout import Layout
 from storytime.section import Section
 from storytime.catalog.models import Catalog
 
-def test_layout_accepts_current_path_parameter() -> None:
-    """Test Layout accepts current_path parameter."""
+def test_layout_accepts_resource_path_parameter() -> None:
+    """Test Layout accepts resource_path parameter."""
     catalog = Catalog(title="Test Catalog")
-    # Should not raise error with current_path parameter
+    # Should not raise error with resource_path parameter
     layout = Layout(
         view_title="Test Page",
         site=catalog,
         children=html(t"<p>Content</p>"),
-        current_path="section/subject/story",
+        resource_path="section/subject/story",
     )
     result = layout()
     element = result
-    assert element is not None, "Layout should render with current_path parameter"
+    assert element is not None, "Layout should render with resource_path parameter"
 
-def test_layout_current_path_can_be_none() -> None:
-    """Test Layout current_path can be None."""
+def test_layout_resource_path_can_be_none() -> None:
+    """Test Layout resource_path can be None."""
     catalog = Catalog(title="Test Catalog")
-    # Should work with current_path=None
+    # Should work with resource_path=None
     layout = Layout(
         view_title="Test Page",
         site=catalog,
         children=html(t"<p>Content</p>"),
-        current_path=None,
+        resource_path=None,
     )
     result = layout()
     element = result
-    assert element is not None, "Layout should render with current_path=None"
+    assert element is not None, "Layout should render with resource_path=None"
 
 # Component Composition Tests
 
@@ -47,7 +47,7 @@ def test_layout_renders_all_four_components() -> None:
         view_title="Test Page",
         site=catalog,
         children=html(t"<p>Content</p>"),
-        current_path="test/page",
+        resource_path="test/page",
     )
     result = layout()
     element = result
@@ -220,13 +220,9 @@ def test_layout_with_empty_sections_dict() -> None:
     result = layout()
     element = result
 
-    # Should still render aside with "Sections" label
+    # Should still render aside even with empty sections
     aside = get_by_tag_name(element, "aside")
     assert aside is not None, "Layout should render aside even with empty sections"
-
-    # Verify "Sections" label is present
-    aside_text = get_text_content(aside)
-    assert "Sections" in aside_text
 
 def test_layout_depth_boundary_at_depth_3() -> None:
     """Test Layout adds correct depth prefix at depth=3."""
@@ -272,7 +268,6 @@ def test_layout_cached_navigation_with_empty_sections() -> None:
     aside = get_by_tag_name(element, "aside")
     aside_text = get_text_content(aside)
     assert "Cached Section" in aside_text
-    assert "Sections" in aside_text
 
 def test_layout_stylesheet_paths_at_depth_2() -> None:
     """Test Layout calculates stylesheet paths with correct depth prefix."""
@@ -391,7 +386,7 @@ def test_layout_passes_site_items_to_aside() -> None:
     section2 = Section(title="Advanced")
     catalog.items = {"getting-started": section1, "advanced": section2}
 
-    layout = Layout(view_title="Page", site=catalog, children=None, current_path="getting-started/intro")
+    layout = Layout(view_title="Page", site=catalog, children=None, resource_path="getting-started/intro")
     result = layout()
     element = result
 

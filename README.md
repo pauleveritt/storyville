@@ -15,7 +15,10 @@
 
 Storytime is a **visual, component-driven development (CDD)** system for Python that helps you build, document, and test
 components in isolation. Write stories to express component variations, browse them in a live catalog, and automatically
-generate pytest tests from assertions.
+generate tests from assertions.
+
+> 💡 **Think Storybook.js for Python** — but with native Python 3.14+ features, hot reload via subinterpreters, and
+> automatic pytest integration!
 
 ### 🌟 Perfect for:
 
@@ -134,6 +137,11 @@ from my_package.components.button.button import Button
 from storytime import Story, Subject
 
 
+def check_is_button(el) -> None:
+    """Assertion: element should be a button tag."""
+    assert "button" in str(el).lower(), "Should be a button element"
+
+
 def this_subject() -> Subject:
     return Subject(
         title="Button Component",
@@ -142,10 +150,7 @@ def this_subject() -> Subject:
             # Story with assertions
             Story(
                 props=dict(text="Click Me", variant="primary"),
-                assertions=[
-                    lambda el: None if "button" in str(el).lower()
-                    else (_ for _ in ()).throw(AssertionError("Should be a button")),
-                ],
+                assertions=[check_is_button],
             ),
             # More variations...
             Story(props=dict(text="Cancel", variant="danger")),
@@ -156,7 +161,7 @@ def this_subject() -> Subject:
 ### 3. Start the Dev Server
 
 ```bash
-$ uv run storytime serve my_package
+storytime serve my_package
 # Opens http://localhost:8080
 # Hot reload enabled by default!
 ```
@@ -237,7 +242,7 @@ testpaths = ["tests", "my_package"]
 enabled = true
 
 # Run tests
-$ uv run pytest my_package/
+pytest my_package/
 # Auto-generates tests from story assertions!
 ```
 

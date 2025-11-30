@@ -17,7 +17,7 @@ def test_renders_three_level_hierarchy():
     section.items = {"buttons": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Find the nav element (handles both Element and Fragment)
@@ -48,7 +48,7 @@ def test_details_elements_use_correct_structure():
     section.items = {"grid": subject}
     sections = {"layout": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Should have details elements (section + subject = 2)
@@ -66,7 +66,7 @@ def test_details_elements_use_correct_structure():
     link = get_by_tag_name(result, "a")
     assert get_text_content(link) == "Basic Grid"
 
-def test_current_path_controls_open_attribute():
+def test_resource_path_controls_open_attribute():
     """Only the current path's ancestors have open attribute."""
     section = Section(name="forms", title="Forms")
     subject = Subject(name="inputs", title="Inputs", parent=section)
@@ -76,8 +76,8 @@ def test_current_path_controls_open_attribute():
     section.items = {"inputs": subject}
     sections = {"forms": section}
 
-    # Test with current_path matching this section and subject
-    tree = NavigationTree(sections=sections, current_path="forms/inputs")
+    # Test with resource_path matching this section and subject
+    tree = NavigationTree(sections=sections, resource_path="forms/inputs")
     result = tree()
 
     # Section details should have 'open' attribute
@@ -89,8 +89,8 @@ def test_current_path_controls_open_attribute():
     subject_details = details_list[1]  # Second details is the subject
     assert subject_details.attrs.get("open") == "open"
 
-def test_all_details_closed_when_current_path_none():
-    """When current_path is None, all details are closed by default."""
+def test_all_details_closed_when_resource_path_none():
+    """When resource_path is None, all details are closed by default."""
     section = Section(name="typography", title="Typography")
     subject = Subject(name="headings", title="Headings", parent=section)
     story = Story(title="H1", parent=subject)
@@ -99,7 +99,7 @@ def test_all_details_closed_when_current_path_none():
     section.items = {"headings": subject}
     sections = {"typography": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # All details should NOT have 'open' attribute
@@ -118,7 +118,7 @@ def test_stories_render_as_simple_links():
     section.items = {"menus": subject}
     sections = {"navigation": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Should have exactly 2 details elements (1 section + 1 subject)
@@ -133,8 +133,8 @@ def test_stories_render_as_simple_links():
     assert "Dropdown Menu" in link_texts
     assert "Sidebar Menu" in link_texts
 
-def test_section_open_when_current_path_starts_with_section_name():
-    """Section gets open attribute if current_path starts with section name."""
+def test_section_open_when_resource_path_starts_with_section_name():
+    """Section gets open attribute if resource_path starts with section name."""
     section1 = Section(name="sec1", title="Section 1")
     section2 = Section(name="sec2", title="Section 2")
     subject1 = Subject(name="subj1", title="Subject 1", parent=section1)
@@ -144,7 +144,7 @@ def test_section_open_when_current_path_starts_with_section_name():
     section2.items = {"subj2": subject2}
     sections = {"sec1": section1, "sec2": section2}
 
-    tree = NavigationTree(sections=sections, current_path="sec1/subj1")
+    tree = NavigationTree(sections=sections, resource_path="sec1/subj1")
     result = tree()
 
     # Get all details elements
@@ -160,8 +160,8 @@ def test_section_open_when_current_path_starts_with_section_name():
     assert details_list[2].attrs.get("open") is None  # sec2
     assert details_list[3].attrs.get("open") is None  # subj2
 
-def test_subject_open_when_current_path_matches_section_subject():
-    """Subject gets open attribute if current_path matches section/subject."""
+def test_subject_open_when_resource_path_matches_section_subject():
+    """Subject gets open attribute if resource_path matches section/subject."""
     section = Section(name="components", title="Components")
     subject1 = Subject(name="buttons", title="Buttons", parent=section)
     subject2 = Subject(name="inputs", title="Inputs", parent=section)
@@ -172,7 +172,7 @@ def test_subject_open_when_current_path_matches_section_subject():
     section.items = {"buttons": subject1, "inputs": subject2}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, current_path="components/buttons")
+    tree = NavigationTree(sections=sections, resource_path="components/buttons")
     result = tree()
 
     # Get all details elements
@@ -197,7 +197,7 @@ def test_story_urls_use_index_html_format():
     section.items = {"heading": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Get the story link
@@ -220,7 +220,7 @@ def test_multiple_stories_have_correct_url_indices():
     section.items = {"button": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Get all story links
@@ -242,7 +242,7 @@ def test_story_urls_use_section_and_subject_names():
     section.items = {"inputs": subject}
     sections = {"forms": section}
 
-    tree = NavigationTree(sections=sections, current_path=None)
+    tree = NavigationTree(sections=sections, resource_path=None)
     result = tree()
 
     # Get the story link

@@ -38,7 +38,7 @@ def _render_all_views(
     """
     from storytime.components.navigation_tree import NavigationTree
 
-    cached_nav = str(NavigationTree(sections=catalog.items, current_path=None)())
+    cached_nav = str(NavigationTree(sections=catalog.items, resource_path="")())
 
     # Render the catalog index page (root) and convert to string
     catalog_view = str(CatalogView(catalog=catalog, cached_navigation=cached_nav)())
@@ -58,7 +58,12 @@ def _render_all_views(
     for section_key, section in catalog.items.items():
         # Render section index page and convert to string
         section_view = str(
-            SectionView(section=section, site=catalog, cached_navigation=cached_nav)()
+            SectionView(
+                section=section,
+                site=catalog,
+                cached_navigation=cached_nav,
+                resource_path=section.resource_path,
+            )()
         )
         rendered_sections.append((section_key, section_view))
 
@@ -66,7 +71,12 @@ def _render_all_views(
         for subject_key, subject in section.items.items():
             # Render subject index page and convert to string
             subject_view = str(
-                SubjectView(subject=subject, site=catalog, cached_navigation=cached_nav)()
+                SubjectView(
+                    subject=subject,
+                    site=catalog,
+                    cached_navigation=cached_nav,
+                    resource_path=subject.resource_path,
+                )()
             )
             rendered_subjects.append((section_key, subject_key, subject_view))
 
@@ -80,6 +90,7 @@ def _render_all_views(
                         site=catalog,
                         cached_navigation=cached_nav,
                         with_assertions=with_assertions,
+                        resource_path=story.resource_path,
                     )()
                 )
                 rendered_stories.append((section_key, subject_key, story_idx, story_view))

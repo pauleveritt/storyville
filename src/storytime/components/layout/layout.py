@@ -29,7 +29,7 @@ class Layout:
     site: Catalog
     children: Element | Fragment | Node | None
     depth: int = 0
-    current_path: str | None = None
+    resource_path: str = ""
     cached_navigation: str | None = None
 
     def __call__(self) -> Node:
@@ -61,8 +61,8 @@ class Layout:
 </head>
 <body>
 <{LayoutHeader} site_title={self.site.title} depth={self.depth} />
-<{LayoutAside} sections={self.site.items} current_path={self.current_path} cached_navigation={self.cached_navigation} />
-<{LayoutMain} current_path={self.current_path}>{self.children}</{LayoutMain}>
+<{LayoutAside} sections={self.site.items} resource_path={self.resource_path} cached_navigation={self.cached_navigation} />
+<{LayoutMain} resource_path={self.resource_path}>{self.children}</{LayoutMain}>
 <{LayoutFooter} year={2025} text={"Storytime"} />
 </body>
 </html>

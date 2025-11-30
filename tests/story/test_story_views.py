@@ -36,11 +36,12 @@ def test_story_view_with_default_layout_mode() -> None:
     catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Components")
     parent.package_path = ".components"
+    parent.resource_path = "components"
 
     story = Story(target=simple_component, props={"name": "World"})
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=catalog)
+    view = StoryView(story=story, site=catalog, resource_path=story.resource_path)
     result = view()
 
     # Extract  from result (handles Layout's  wrapper)
@@ -60,10 +61,11 @@ def test_story_view_with_default_layout_mode() -> None:
     assert len(component_p_tags) >= 1
     assert get_text_content(component_p_tags[0]) == "Hello World"
 
-    # Verify parent link is present (Layout adds navigation links, so find the specific one)
-    all_links = query_all_by_tag_name(element, "a")
-    parent_links = [link for link in all_links if link.attrs.get("href") == ".."]
-    assert len(parent_links) >= 1
+    # Verify breadcrumbs navigation is present (replaces parent link)
+    main = get_by_tag_name(element, "main")
+    nav = get_by_tag_name(main, "nav")
+    assert nav is not None
+    assert nav.attrs.get("aria-label") == "Breadcrumb"
 
 def test_story_view_default_layout_shows_props() -> None:
     """Test StoryView default layout displays props."""
@@ -170,13 +172,14 @@ def test_story_view_default_layout_complete_structure() -> None:
     catalog = Catalog(title="Test Catalog")
     parent = Subject(title="Full Test")
     parent.package_path = ".components.full"
+    parent.resource_path = "components/full"
 
     story = Story(
         target=full_component, title="Full Story", props={"message": "Complete"}
     )
     story.post_update(parent=parent)
 
-    view = StoryView(story=story, site=catalog)
+    view = StoryView(story=story, site=catalog, resource_path=story.resource_path)
     result = view()
 
     # Extract  from result
@@ -195,7 +198,8 @@ def test_story_view_default_layout_complete_structure() -> None:
     assert len(component_sections) >= 1
     assert get_text_content(component_sections[0]) == "Complete"
 
-    # Verify parent link is present (Layout adds navigation links, so find the specific one)
-    all_links = query_all_by_tag_name(element, "a")
-    parent_links = [link for link in all_links if link.attrs.get("href") == ".."]
-    assert len(parent_links) >= 1
+    # Verify breadcrumbs navigation is present (replaces parent link)
+    main = get_by_tag_name(element, "main")
+    nav = get_by_tag_name(main, "nav")
+    assert nav is not None
+    assert nav.attrs.get("aria-label") == "Breadcrumb"

@@ -434,10 +434,13 @@ tests/
 ```python
 @pytest.fixture
 def sample_story():
+    def check_element_exists(el) -> None:
+        assert el is not None, "Missing"
+
     return Story(
         props=dict(text="Test"),
         target=Button,
-        assertions=[lambda el: None if el else AssertionError("Missing")]
+        assertions=[check_element_exists]
     )
 ```
 

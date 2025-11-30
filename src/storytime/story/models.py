@@ -27,6 +27,8 @@ class Story:
     template: Template | None = None
     assertions: list[AssertionCallable] = field(default_factory=list)
     assertion_results: list[AssertionResult] = field(default_factory=list)
+    name: str = ""
+    resource_path: str = ""
 
     def post_update(self, parent: Subject):
         """The parent calls this after construction.
@@ -41,6 +43,14 @@ class Story:
             The updated Story.
         """
         self.parent = parent
+
+        # Calculate name (story index in parent's items list)
+        if self in parent.items:
+            self.name = str(parent.items.index(self))
+
+        # Calculate resource_path from parent
+        self.resource_path = f"{parent.resource_path}/{self.name}"
+
         if self.target is None and self.parent.target:
             self.target = self.parent.target
         if self.title is None:

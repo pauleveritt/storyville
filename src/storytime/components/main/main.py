@@ -15,7 +15,7 @@ class LayoutMain:
     and children content.
     """
 
-    current_path: str | None = None
+    resource_path: str = ""
     children: Element | Fragment | Node | None = None
 
     def __call__(self) -> Node:
@@ -26,7 +26,7 @@ class LayoutMain:
         """
         return html(t'''\
 <main>
-  <{Breadcrumbs} current_path={self.current_path} />
+  <{Breadcrumbs} resource_path={self.resource_path} />
   {self.children}
 </main>
 ''')
