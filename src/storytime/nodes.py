@@ -49,6 +49,10 @@ def get_certain_callable(module: ModuleType) -> Catalog | Section | Subject | No
     We do it this way instead of magically-named functions, meaning,
     we don't do convention over configuration.
 
+    Note:
+        Imports are done at function level to avoid circular imports,
+        as catalog/section/subject models all import BaseNode from this module.
+
     Args:
         module: A stories.py module that should have the right function.
 
@@ -56,6 +60,7 @@ def get_certain_callable(module: ModuleType) -> Catalog | Section | Subject | No
         The Catalog/Section/Story instance or ``None`` if there wasn't an
         appropriate function.
     """
+    # Import at function level to avoid circular dependency
     from storytime.catalog import Catalog
     from storytime.section import Section
     from storytime.subject import Subject
@@ -140,6 +145,7 @@ class BaseNode[T]:
     title: str | None = None
     context: object | None = None
     package_path: str = field(init=False, default="")
+    resource_path: str = field(init=False, default="")
 
     def post_update(
         self,
@@ -162,6 +168,18 @@ class BaseNode[T]:
         self.parent = parent  # type: ignore[assignment]
         self.name = tree_node.name  # type: ignore[attr-defined]
         self.package_path = tree_node.this_package_location  # type: ignore[attr-defined]
+
+        # Calculate resource_path based on parent and current name
+        if parent is None:
+            # Catalog (root): resource_path = ""
+            self.resource_path = ""
+        elif parent.resource_path == "":
+            # Section (parent is Catalog): resource_path = name
+            self.resource_path = self.name
+        else:
+            # Subject (parent is Section): resource_path = parent_path/name
+            self.resource_path = f"{parent.resource_path}/{self.name}"
+
         if self.title is None:
             self.title = self.package_path
         return self  # type: ignore[return-value]

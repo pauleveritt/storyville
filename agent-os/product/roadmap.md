@@ -37,15 +37,15 @@
     Provide links for each hop. Remove the `Parent` link in the template. `M`
 
 12. [] Path objects - Convert the path handling and file handling to use `pathlib` to the maximum.  `M`
- 
-12. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
+
+13. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
     right. But if I change the story description, it should reload the whole page. `M`
 
-13. [] Responsive `M`
+14. [] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. `M`
 
-14. [] Inspector `M`
+15. [] Responsive `M`
 
-15. [] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. `M`
+16. [] Inspector `M`
 
 15. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`

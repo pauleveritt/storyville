@@ -11,28 +11,28 @@ Estimated Sub-tasks: 42
 
 **Dependencies:** None
 
-- [ ] 1.0 Add resource_path attribute to BaseNode
-  - [ ] 1.1 Write 2-8 focused tests for BaseNode.resource_path
+- [x] 1.0 Add resource_path attribute to BaseNode
+  - [x] 1.1 Write 2-8 focused tests for BaseNode.resource_path
     - Test resource_path initialization with empty string default
     - Test resource_path assignment during post_update()
     - Test resource_path format for different node types (Section, Subject)
     - Test resource_path inheritance across Catalog/Section/Subject
     - File: `tests/nodes_test.py` (or create if needed)
-  - [ ] 1.2 Add resource_path field to BaseNode dataclass
+  - [x] 1.2 Add resource_path field to BaseNode dataclass
     - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`
     - Add after line 142: `resource_path: str = field(init=False, default="")`
     - Type as `str` (non-optional)
-  - [ ] 1.3 Update BaseNode.post_update() to populate resource_path
+  - [x] 1.3 Update BaseNode.post_update() to populate resource_path
     - Calculate resource_path from tree_node and parent
     - For Catalog (root): `resource_path = ""`
     - For Section: `resource_path = self.name`
     - For Subject: `resource_path = f"{parent.resource_path}/{self.name}"`
     - Add logic at line 165 in BaseNode.post_update()
-  - [ ] 1.4 Ensure data model tests pass
+  - [x] 1.4 Ensure data model tests pass
     - Run: `just test tests/nodes_test.py` (or relevant test file)
     - Verify all 2-8 tests pass
     - Run: `just typecheck` to verify type hints
-  - [ ] 1.5 Quality gates
+  - [x] 1.5 Quality gates
     - Run: `just fmt` to format code
     - Verify no type errors in nodes.py
 
