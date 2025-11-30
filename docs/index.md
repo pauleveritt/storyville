@@ -5,6 +5,13 @@
 :end-before: "---"
 ```
 
+## Features Overview
+
+```{include} ../README.md
+:start-after: "## ✨ Key Features"
+:end-before: "---"
+```
+
 ## Contents
 
 ```{toctree}
@@ -25,13 +32,6 @@ static
 
 api-reference
 architecture
-```
-
-## Features Overview
-
-```{include} ../README.md
-:start-after: "## ✨ Key Features"
-:end-before: "---"
 ```
 
 ## Quick Example
