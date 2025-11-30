@@ -36,7 +36,7 @@
 11. [x] Breadcrumbs — Put the path to the current node in a breadcrumbs-style navigation, in `<main>` above the title.
     Provide links for each hop. Remove the `Parent` link in the template. `M`
 
-12. [] Path objects - Convert the path handling and file handling to use `pathlib` to the maximum.  `M`
+12. [x] Path objects - Convert the path handling and file handling to use `pathlib` to the maximum.  `M`
 
 13. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
     right. But if I change the story description, it should reload the whole page. If an assertion fails, it should
