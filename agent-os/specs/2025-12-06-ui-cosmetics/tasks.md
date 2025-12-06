@@ -21,26 +21,26 @@ This feature enhances the visual aesthetics and user experience of Storyville by
 
 **Stack:** Frontend (npm, static assets)
 
-- [ ] 1.0 Complete FontAwesome setup
-  - [ ] 1.1 Create package.json for npm dependency management
+- [x] 1.0 Complete FontAwesome setup
+  - [x] 1.1 Create package.json for npm dependency management
     - Initialize npm with minimal configuration
     - Set package to private (not intended for publishing)
     - Add project metadata (name, version, description)
-  - [ ] 1.2 Install FontAwesome as npm dependency
+  - [x] 1.2 Install FontAwesome as npm dependency
     - Install `@fortawesome/fontawesome-free` as production dependency
     - Verify installation in `node_modules`
     - Document version in package.json
-  - [ ] 1.3 Configure static asset copying for webfonts
+  - [x] 1.3 Configure static asset copying for webfonts
     - Identify build process for static asset generation
     - Configure copying of FontAwesome CSS from `node_modules/@fortawesome/fontawesome-free/css/` to static output
     - Configure copying of FontAwesome webfonts from `node_modules/@fortawesome/fontawesome-free/webfonts/` to static output
     - Maintain existing static asset structure pattern
-  - [ ] 1.4 Add FontAwesome CSS link to Layout head
+  - [x] 1.4 Add FontAwesome CSS link to Layout head
     - Update `src/storyville/components/layout/layout.py`
     - Insert FontAwesome CSS link after Pico CSS links
     - Use consistent path format: `static/[path-to-fontawesome]/all.min.css`
     - Ensure depth-based path rewriting applies to FontAwesome CSS
-  - [ ] 1.5 Verify FontAwesome integration
+  - [x] 1.5 Verify FontAwesome integration
     - Run build process: `just build` or equivalent
     - Verify FontAwesome CSS file copied to output directory
     - Verify webfonts directory copied to output directory

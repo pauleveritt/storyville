@@ -23,6 +23,11 @@ class Layout:
 
     Provides consistent HTML boilerplate (html, head, body) for all views,
     with configurable page titles and content insertion via a main element.
+
+    FontAwesome Integration:
+    - FontAwesome Free v6.7.1 is vendored directly in src/storyville/vendor/fontawesome/static/
+    - The static asset system automatically copies these files to the output directory
+    - FontAwesome CSS is loaded after Pico CSS to ensure proper icon rendering
     """
 
     view_title: str | None
@@ -57,6 +62,7 @@ class Layout:
     <link rel="stylesheet" href="static/components/layout/static/pico-main.css" />
     <link rel="stylesheet" href="static/components/layout/static/pico-docs.css" />
     <link rel="stylesheet" href="static/components/layout/static/storyville.css" />
+    <link rel="stylesheet" href="static/vendor/fontawesome/static/all.min.css" />
     <script src="static/components/layout/static/ws.js"></script>
 </head>
 <body>

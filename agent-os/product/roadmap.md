@@ -52,6 +52,11 @@
     Remove more top/bottom padding in the LayoutAside `aside > nav > details > ul > li` which has 10 units of padding
     top/bottom. `M`
 
+16. [] Assertion helpers — Make dataclass variations of aria-testing queries that can be used in `Story.assertions`. For
+    example `GetByRole` would be passed a `role`. Later, the instance would be passed a `container` and would raise
+    `AssertionError` if not passing. Refactor all `Story` in `src` `examples` `tests` that have assertion functions to
+    instead use these helpers, where appropriate. `^M`
+
 15. [] Responsive `M`
 
 15. [] Inspector `M`
