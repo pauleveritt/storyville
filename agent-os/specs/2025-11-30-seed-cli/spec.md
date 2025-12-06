@@ -1,17 +1,17 @@
 # Specification: Seed CLI
 
 ## Goal
-Add a CLI command to generate example Storytime catalogs with configurable sizes (small/medium/large) for quick prototyping, learning, and testing.
+Add a CLI command to generate example Storyville catalogs with configurable sizes (small/medium/large) for quick prototyping, learning, and testing.
 
 ## User Stories
-- As a new Storytime user, I want to generate a working example catalog so that I can quickly learn Storytime patterns and structure
+- As a new Storyville user, I want to generate a working example catalog so that I can quickly learn Storyville patterns and structure
 - As a developer, I want to create test catalogs of different sizes so that I can validate performance and behavior at scale
 
 ## Specific Requirements
 
 **CLI Command Structure**
-- Add new `seed` subcommand to existing typer CLI in `src/storytime/__main__.py`
-- Command syntax: `storytime seed <size> <output_directory>`
+- Add new `seed` subcommand to existing typer CLI in `src/storyville/__main__.py`
+- Command syntax: `storyville seed <size> <output_directory>`
 - Size must be one of: `small`, `medium`, or `large`
 - Output directory is required and must not already exist (fail with clear error if it does)
 - Follow existing CLI patterns from `serve` and `build` commands (logging, messaging, error handling)
@@ -24,7 +24,7 @@ Add a CLI command to generate example Storytime catalogs with configurable sizes
 - Use structural pattern matching (`match size:`) to handle size selection
 
 **Template Location and Packaging**
-- Create new template content in `src/storytime/templates/seed/` directory structure
+- Create new template content in `src/storyville/templates/seed/` directory structure
 - Templates must be packaged as part of distribution using Python package data inclusion
 - Update `pyproject.toml` if needed to ensure template files are included in package distribution
 - Use `PACKAGE_DIR` constant or similar pattern from existing codebase for locating templates at runtime
@@ -84,10 +84,10 @@ No visual assets provided for this specification.
 - Subject has `target`, `description`, and `items` list of Story instances
 - Story has `props`, `title`, `description`, `assertions` list, and `template`
 
-**Storytime Package Structure**
+**Storyville Package Structure**
 - Follow existing package organization with `__init__.py` exports
 - Use `make_catalog()` helper pattern for catalog discovery
-- Generated catalogs should work with `storytime serve <output_dir>` and `storytime build <output_dir> <build_output>`
+- Generated catalogs should work with `storyville serve <output_dir>` and `storyville build <output_dir> <build_output>`
 
 **ThemedLayout Pattern**
 - Reference ThemedStory component from `components/themed_story/` for integration understanding
@@ -97,7 +97,7 @@ No visual assets provided for this specification.
 
 **Build System and Packaging**
 - Project uses uv_build backend and requires-python >= 3.14
-- CLI entry point defined in `[project.scripts]` as `storytime = "storytime.__main__:main"`
+- CLI entry point defined in `[project.scripts]` as `storyville = "storyville.__main__:main"`
 - Template packaging should follow Python package data best practices for file inclusion
 
 ## Out of Scope

@@ -1,7 +1,7 @@
 """The subject for the TypoHeading component."""
 
 from examples.huge_assertions.typography.typo_heading.typo_heading import TypoHeading
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

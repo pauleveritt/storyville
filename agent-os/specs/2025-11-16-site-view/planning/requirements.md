@@ -49,17 +49,17 @@ The SiteView should give a listing of its items, with links to visit each.
 ### Existing Code to Reference
 
 **Similar Features Identified:**
-- Component: `SectionsListing` - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/sections_listing/__init__.py`
+- Component: `SectionsListing` - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/sections_listing/__init__.py`
   - Similar pattern: dataclass with `__call__` returning Node
   - Uses tdom html and t-strings for templating
   - Lists sections with nested structure
 
-- Component: `ComponentView` - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/component_view/__init__.py`
+- Component: `ComponentView` - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/component_view/__init__.py`
   - Shows dataclass pattern with story parameter
   - Uses tdom html templating
 
 - Component: `Layout` - Referenced in ComponentView for page wrapper
-  - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/`
+  - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/`
 
 ### Follow-up Questions
 
@@ -101,21 +101,21 @@ No visual assets to analyze.
 ### Reusability Opportunities
 
 **Existing Components to Reference:**
-- `SectionsListing` (`/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/sections_listing/__init__.py`)
+- `SectionsListing` (`/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/sections_listing/__init__.py`)
   - Follow same dataclass pattern with `__call__` returning Node
   - Use similar tdom templating approach
   - Reference list rendering structure
 
-- `ComponentView` (`/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/component_view/__init__.py`)
+- `ComponentView` (`/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/component_view/__init__.py`)
   - Example of dataclass view component pattern
   - Shows tdom html usage
 
 **Data Models:**
-- `Site` class (`/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/models.py`)
+- `Site` class (`/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/models.py`)
   - Has `items: dict[str, Section]` attribute
   - Extends BaseNode
 
-- `Section` class (`/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`)
+- `Section` class (`/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/models.py`)
   - Has `title` attribute (inherited from BaseNode)
   - Has `description: str | None` attribute
   - Has `items: dict[str, Subject]` attribute (for counting subjects)
@@ -147,7 +147,7 @@ No visual assets to analyze.
 - Type hints using PEP 604 syntax (`X | Y`)
 
 **Integration Points:**
-- Works with Site model from `storytime.site.models`
+- Works with Site model from `storyville.site.models`
 - Accesses Section instances from Site.items dict
 - May integrate with Layout component for full page rendering
 

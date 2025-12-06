@@ -19,26 +19,26 @@ This refactoring extracts Site into its own package following the existing patte
     - Test Site.__post_init__() static directory detection
     - Test Site has no parent (parent is None)
     - Limit to 2-8 highly focused tests maximum
-    - Reuse pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_models.py`
+    - Reuse pattern from: `/Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_models.py`
   - [x] 1.2 Create directory structure
-    - Create `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/` directory
+    - Create `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/` directory
     - Create empty `__init__.py`
     - Create empty `models.py`
     - Create empty `views.py`
     - Create empty `helpers.py`
   - [x] 1.3 Implement Site model in models.py
-    - Move Site class from `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py` to `site/models.py`
+    - Move Site class from `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site.py` to `site/models.py`
     - Change from standalone dataclass to inherit from `BaseNode["Site"]`
     - Keep fields: `name`, `parent: None`, `title`, `context`, `package_path`, `items: dict[str, Section]`, `static_dir: Path | None`
     - Keep `__post_init__()` method for static directory detection
     - Implement `post_update()` method (override BaseNode implementation)
     - Remove `find_path()` method (will become standalone helper)
     - Add TYPE_CHECKING imports for Section
-    - Follow exact pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`
+    - Follow exact pattern from: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/models.py`
   - [x] 1.4 Export Site from __init__.py
-    - Add: `from storytime.site.models import Site`
+    - Add: `from storyville.site.models import Site`
     - Create `__all__ = ["Site"]` list (will add more exports later)
-    - Follow pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/__init__.py`
+    - Follow pattern from: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/__init__.py`
   - [x] 1.5 Ensure Site model tests pass
     - Run ONLY the 2-8 tests written in 1.1
     - Verify Site inherits from BaseNode correctly
@@ -65,7 +65,7 @@ This refactoring extracts Site into its own package following the existing patte
     - Test SiteView does NOT include parent link (Site is root)
     - Test SiteView satisfies View Protocol (__call__() -> Node)
     - Limit to 2-8 highly focused tests maximum
-    - Reuse pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py`
+    - Reuse pattern from: `/Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_views.py`
   - [x] 2.2 Create SiteView class in views.py
     - Create dataclass with `site: Site` field
     - Implement `__call__(self) -> Node` method
@@ -74,9 +74,9 @@ This refactoring extracts Site into its own package following the existing patte
     - Render empty state message if no sections: "No sections defined for this site"
     - Do NOT include parent link (Site has no parent)
     - Use tdom html() with t-strings for template interpolation
-    - Follow exact pattern from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
+    - Follow exact pattern from: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
   - [x] 2.3 Export SiteView from __init__.py
-    - Add: `from storytime.site.views import SiteView`
+    - Add: `from storyville.site.views import SiteView`
     - Update `__all__` to include "SiteView"
   - [x] 2.4 Ensure SiteView tests pass
     - Run ONLY the 2-8 tests written in 2.1
@@ -106,13 +106,13 @@ This refactoring extracts Site into its own package following the existing patte
     - Test find_path() finds Subject (".section.subject")
     - Test find_path() returns None for nonexistent paths
     - Limit to 2-8 highly focused tests maximum
-    - Reuse assertions from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py`
+    - Reuse assertions from: `/Users/pauleveritt/projects/t-strings/storyville/tests/test_site.py`
   - [x] 3.2 Extract make_site() to helpers.py
     - Move make_site() function from `site.py` (lines 75-136) to `site/helpers.py`
     - Signature: `def make_site(package_location: str) -> Site`
     - Preserve exact logic and behavior
     - Update imports within helpers.py (TreeNode, Section, Subject)
-    - Use relative imports: `from storytime.site.models import Site`
+    - Use relative imports: `from storyville.site.models import Site`
   - [x] 3.3 Extract find_path() to helpers.py
     - Convert Site.find_path() method to standalone function
     - Signature: `def find_path(site: Site, path: str) -> Site | Section | Subject | Story | None`
@@ -120,7 +120,7 @@ This refactoring extracts Site into its own package following the existing patte
     - Preserve exact traversal logic
     - Add TYPE_CHECKING imports for return types
   - [x] 3.4 Export helpers from __init__.py
-    - Add: `from storytime.site.helpers import make_site, find_path`
+    - Add: `from storyville.site.helpers import make_site, find_path`
     - Update `__all__` to: `["Site", "SiteView", "make_site", "find_path"]`
   - [x] 3.5 Ensure helper tests pass
     - Run ONLY the 2-8 tests written in 3.1
@@ -132,7 +132,7 @@ This refactoring extracts Site into its own package following the existing patte
 - The 2-8 tests written in 3.1 pass
 - make_site() function works as standalone helper
 - find_path() function works as standalone helper
-- All exports available from `storytime.site` package
+- All exports available from `storyville.site` package
 - Type checking passes (`just typecheck`)
 
 ### Consistency Refactoring
@@ -147,40 +147,40 @@ This refactoring extracts Site into its own package following the existing patte
     - Test Subject.items can be populated with Story instances
     - Test SubjectView renders Subject.items correctly
     - Limit to 2-8 highly focused tests maximum
-    - Update assertions from: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
+    - Update assertions from: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py`
   - [x] 4.2 Update Subject model
-    - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
+    - In `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/models.py`
     - Change field from `stories: list[Story]` to `items: list[Story]`
     - Line 20: `stories: list[Story]` → `items: list[Story]`
   - [x] 4.3 Update SubjectView references
-    - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+    - In `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
     - Line 38: Change `if not self.subject.stories:` → `if not self.subject.items:`
     - Line 49: Change `for idx, story in enumerate(self.subject.stories):` → `for idx, story in enumerate(self.subject.items):`
   - [x] 4.4 Update site/helpers.py reference
-    - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/helpers.py`
+    - In `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/helpers.py`
     - Find line with `for story in subject.stories:` (around line 73)
     - Change to: `for story in subject.items:`
   - [x] 4.5 Update stories.py reference
-    - In `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/stories.py`
+    - In `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/stories.py`
     - Line 18: Change `story = subject.stories[0]` → `story = subject.items[0]`
   - [x] 4.6 Update all test files
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py`
       - Change all `subject.stories` references to `subject.items`
       - Lines to update: assertions checking `.stories` field
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py`
       - Change `subject.stories = [story1, story2]` → `subject.items = [story1, story2]`
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/tests/test_site.py`
       - Line 102: Change `stories = heading.stories` → `stories = heading.items`
       - Line 103: Keep reference to `stories` variable (no change)
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/examples/minimal/components/heading/stories.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/examples/minimal/components/heading/stories.py`
       - Change `stories=[Story()]` → `items=[Story()]`
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/stories.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/index/stories.py`
       - Change `stories=[...]` → `items=[...]`
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/component_view/stories.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/component_view/stories.py`
       - Change `stories=[...]` → `items=[...]`
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/examples/minimal/stories.py`
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/examples/minimal/stories.py`
       - Change `subject.stories[0]` → `subject.items[0]`
-    - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py` (old file, to be deleted in Task 5)
+    - Update `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site.py` (old file, to be deleted in Task 5)
       - Change `subject.stories` → `subject.items` for consistency during transition
   - [x] 4.7 Ensure Subject.items tests pass
     - Run ONLY the tests written in 4.1 and updated Subject-related tests
@@ -202,15 +202,15 @@ This refactoring extracts Site into its own package following the existing patte
 
 - [x] 5.0 Complete migration and verify all tests pass
   - [x] 5.1 Update import statements throughout codebase
-    - Find all files importing from `storytime.site import Site, make_site`
+    - Find all files importing from `storyville.site import Site, make_site`
     - Verify imports still work (import path unchanged, now from package)
     - Update any `site.find_path(path)` calls to `find_path(site, path)`
     - Files to check:
-      - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/stories.py` (line 3)
-      - `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_site.py` (line 4)
+      - `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/stories.py` (line 3)
+      - `/Users/pauleveritt/projects/t-strings/storyville/tests/test_site.py` (line 4)
       - Any other files importing Site or make_site
   - [x] 5.2 Delete old site.py file
-    - Remove `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py`
+    - Remove `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site.py`
     - Verify all code has been migrated to site/ package
   - [x] 5.3 Run complete test suite
     - Run: `just test`
@@ -257,9 +257,9 @@ Recommended implementation sequence:
 - find_path return type: `Site | Section | Subject | Story | None`
 
 ### File References
-- **Pattern to follow**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/` (models.py, views.py, __init__.py)
-- **Current Site implementation**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site.py` (to be deleted)
-- **BaseNode implementation**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`
+- **Pattern to follow**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/` (models.py, views.py, __init__.py)
+- **Current Site implementation**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site.py` (to be deleted)
+- **BaseNode implementation**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py`
 
 ### Breaking Changes (Acceptable)
 - `site.find_path(path)` becomes `find_path(site, path)` - method to function

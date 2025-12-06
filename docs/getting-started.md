@@ -2,16 +2,16 @@
 
 ## Installation
 
-Storytime requires Python 3.14+ for subinterpreter support and modern type syntax.
+Storyville requires Python 3.14+ for subinterpreter support and modern type syntax.
 
 ```bash
-pip install storytime
+pip install storyville
 ```
 
 Or using uv:
 
 ```bash
-uv add storytime
+uv add storyville
 ```
 
 ## Prerequisites
@@ -54,7 +54,7 @@ def Button(text: str, variant: str = "primary"):
 ```python
 # my_project/components/button/stories.py
 from my_project.components.button.button import Button
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 def this_subject() -> Subject:
     """Define stories for the Button component."""
@@ -78,7 +78,7 @@ def this_subject() -> Subject:
 ### 4. Start the Development Server
 
 ```bash
-storytime serve my_project
+storyville serve my_project
 ```
 
 This will:
@@ -96,7 +96,7 @@ Visit http://localhost:8080 to browse your component catalog!
 Start the development server with hot reload:
 
 ```bash
-storytime serve [PACKAGE] [OPTIONS]
+storyville serve [PACKAGE] [OPTIONS]
 ```
 
 **Options:**
@@ -107,13 +107,13 @@ storytime serve [PACKAGE] [OPTIONS]
 
 ```bash
 # Serve with defaults (subinterpreters + assertions enabled)
-storytime serve my_project
+storyville serve my_project
 
 # Disable subinterpreters (faster but no module reload)
-storytime serve my_project --no-use-subinterpreters
+storyville serve my_project --no-use-subinterpreters
 
 # Disable assertions (faster rendering)
-storytime serve my_project --no-with-assertions
+storyville serve my_project --no-with-assertions
 ```
 
 ### build
@@ -121,17 +121,17 @@ storytime serve my_project --no-with-assertions
 Build the static catalog without starting a server:
 
 ```bash
-storytime build [PACKAGE] [OUTPUT_DIR]
+storyville build [PACKAGE] [OUTPUT_DIR]
 ```
 
 **Examples:**
 
 ```bash
 # Build to default output directory
-storytime build my_project
+storyville build my_project
 
 # Build to custom directory
-storytime build my_project ./dist
+storyville build my_project ./dist
 ```
 
 ## Configuration
@@ -144,7 +144,7 @@ Add to your `pyproject.toml`:
 [tool.pytest.ini_options]
 testpaths = ["tests", "my_project"]
 
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = true
 ```
 

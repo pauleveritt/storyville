@@ -141,19 +141,19 @@ All quality checks pass successfully:
 
 ### Code Implementation
 
-**SectionView (src/storytime/section/views.py)**
+**SectionView (src/storyville/section/views.py)**
 - Lines 38-42: Reference implementation pattern established
 - Conditional rendering using: `description_p = html(t"<p>{self.section.description}</p>") if self.section.description else ""`
 - Proper placement after title, before content list
 - Clean integration with Layout component
 
-**SubjectView (src/storytime/subject/views.py)**
+**SubjectView (src/storyville/subject/views.py)**
 - Lines 39-43: Follows SectionView pattern exactly
 - Conditional rendering matches reference implementation
 - Applied to BOTH rendering paths (with items and empty state)
 - Description positioned after h1, before "Target: X" line (lines 57, 76)
 
-**StoryView (src/storytime/story/views.py)**
+**StoryView (src/storyville/story/views.py)**
 - Lines 125-129: Conditional rendering pattern implemented
 - Mode A (Custom Template): Correctly returns early at line 119, no description rendered
 - Mode C (Themed Iframe): Description added at lines 150 (with badges) and 162 (without badges)

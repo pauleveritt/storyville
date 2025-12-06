@@ -1,7 +1,7 @@
 """The subject for the FormRadio component."""
 
 from examples.huge.forms.form_radio.form_radio import FormRadio
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

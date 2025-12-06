@@ -14,7 +14,7 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 
 ### Source Files
 
-1. **`src/storytime/static_assets/rewriting.py`** (374 lines)
+1. **`src/storyville/static_assets/rewriting.py`** (374 lines)
    - Main HTML path rewriting module
    - All 7 required functions implemented:
      - `calculate_relative_static_path()` - Relative path calculation based on depth
@@ -27,11 +27,11 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 
 ### Extended Files
 
-2. **`src/storytime/static_assets/paths.py`**
+2. **`src/storyville/static_assets/paths.py`**
    - Added `calculate_relative_static_path()` function
    - Extended from 42 lines to 84 lines
 
-3. **`src/storytime/static_assets/__init__.py`**
+3. **`src/storyville/static_assets/__init__.py`**
    - Added exports for `rewrite_static_paths` and `build_discovered_assets_map`
    - Added exports for `calculate_relative_static_path`
    - Updated from 70 lines to 78 lines
@@ -61,7 +61,7 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 ### Task 2.2: HTML Parsing Utilities ✅
 - Implemented `find_static_references()` using regex
 - Detects `<script src>`, `<link href>`, `<img src>`, and other tags
-- Only matches paths starting with `static/` or `storytime_static/`
+- Only matches paths starting with `static/` or `storyville_static/`
 - Handles both single and double quoted attributes
 - Returns list of (tag_name, attribute_name, attribute_value) tuples
 
@@ -87,7 +87,7 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 
 ### Task 2.6: Discovered Assets Map Builder ✅
 - Implemented `build_discovered_assets_map()`
-- Discovers from both storytime and input_dir
+- Discovers from both storyville and input_dir
 - Creates mapping of short refs to full output paths
 - Example: `{"static/nav.css": Path("static/components/nav/static/nav.css")}`
 - Integrated with existing discovery functions
@@ -104,7 +104,7 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 - **Regex-based parsing** instead of full HTML DOM
 - Lightweight, no external dependencies
 - Sufficient for detecting asset references
-- Pattern: `<(\w+)\s+[^>]*?(src|href)\s*=\s*(["\'])((?:static|storytime_static)/[^\3]*?)\3`
+- Pattern: `<(\w+)\s+[^>]*?(src|href)\s*=\s*(["\'])((?:static|storyville_static)/[^\3]*?)\3`
 
 ### Opt-In Pattern
 - Components **must explicitly call** `rewrite_static_paths()`
@@ -115,7 +115,7 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 ### Type Safety
 - Full type hints using Python 3.14+ syntax
 - `str | Node` union type for flexible input/output
-- `Literal["storytime", "input_dir"]` for source type
+- `Literal["storyville", "input_dir"]` for source type
 - `dict[str, Path]` for discovered assets mapping
 
 ### Error Handling
@@ -152,19 +152,19 @@ Task Group 2 implements the opt-in HTML processing layer for rewriting static as
 - Standard library: `re`, `typing`
 
 ### Internal Dependencies
-- `storytime.static_assets.discovery` - For folder discovery
-- `storytime.static_assets.models` - For StaticFolder dataclass
+- `storyville.static_assets.discovery` - For folder discovery
+- `storyville.static_assets.models` - For StaticFolder dataclass
 - Task Group 1 foundation layer (completed)
 
 ## Usage Example
 
 ```python
 from pathlib import Path
-from storytime.static_assets import rewrite_static_paths, build_discovered_assets_map
+from storyville.static_assets import rewrite_static_paths, build_discovered_assets_map
 
 # Build the asset mapping (typically done at build time)
 assets = build_discovered_assets_map(
-    Path("src/storytime"),
+    Path("src/storyville"),
     Path("examples/minimal"),
     Path("output")
 )

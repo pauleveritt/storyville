@@ -16,18 +16,18 @@ to render subject metadata and a list of story cards, following the established 
 
 **Refactor Subject to package structure**
 
-- Move `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject.py` to
-  `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
-- Create `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py` for SubjectView
-- Create `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py` to export Subject and
+- Move `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject.py` to
+  `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/models.py`
+- Create `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py` for SubjectView
+- Create `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py` to export Subject and
   SubjectView
-- Update all imports throughout codebase from `storytime.subject` to `storytime.subject.models`
+- Update all imports throughout codebase from `storyville.subject` to `storyville.subject.models`
 - Maintain all existing Subject attributes: parent, target, stories, title, package_path (inherited from BaseNode)
 
 **SubjectView rendering structure**
 
 - Create SubjectView class with `subject: Subject` attribute in
-  `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+  `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
 - Implement `__call__(self) -> Node` to satisfy View Protocol
 - Render subject metadata: title in h1 element
 - Display target information if present (callable name or type)
@@ -60,17 +60,17 @@ to render subject metadata and a list of story cards, following the established 
 
 **Package initialization**
 
-- Export Subject from `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py`
+- Export Subject from `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py`
 - Export SubjectView from same __init__.py
-- Enable `from storytime.subject import Subject, SubjectView` pattern
+- Enable `from storyville.subject import Subject, SubjectView` pattern
 - Maintain backward compatibility where possible
 
 **Test organization**
 
-- Move tests from `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject.py` to
-  `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
-- Create `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py` for SubjectView tests
-- Create `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/__init__.py` as empty file
+- Move tests from `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject.py` to
+  `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py`
+- Create `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py` for SubjectView tests
+- Create `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/__init__.py` as empty file
 - Follow pytest conventions with descriptive test names: `test_<functionality>_<scenario>`
 
 **SubjectView test coverage**
@@ -94,7 +94,7 @@ to render subject metadata and a list of story cards, following the established 
 **Integration with existing codebase**
 
 - Subject already uses BaseNode["Subject"] for shared tree logic
-- Subject.target uses Target type alias from storytime.models
+- Subject.target uses Target type alias from storyville.models
 - SubjectView follows same pattern as StoryView (dataclass, __call__ returns Node)
 - Maintain consistency with Story.parent relationship pattern
 - Use tdom t-string templates with html() function
@@ -111,34 +111,34 @@ No visual mockups provided. Follow the established StoryView pattern:
 
 ## Existing Code to Leverage
 
-**Story package pattern at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/`**
+**Story package pattern at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/`**
 
 - Follow exact same package structure: models.py for data, views.py for rendering
 - Use __init__.py to export both Story and StoryView classes
 - Maintain separation of concerns: models handle data, views handle rendering
 
-**StoryView implementation at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`**
+**StoryView implementation at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`**
 
 - Use dataclass pattern with single attribute (story/subject)
 - Implement __call__() -> Node to satisfy View Protocol
 - Use tdom html() with t-string templates for markup generation
 - Return Node directly, let tests verify Element type with isinstance guard
 
-**Story test patterns at `/Users/pauleveritt/projects/pauleveritt/storytime/tests/story/test_story_views.py`**
+**Story test patterns at `/Users/pauleveritt/projects/t-strings/storyville/tests/story/test_story_views.py`**
 
 - Use aria_testing helpers for DOM queries: get_by_tag_name, get_text_content
 - Type guard pattern: assert isinstance(result, Element) in tests only
 - Test structure verification (checking for specific tags and content)
 - Test with real instances, not mocks or partial data
 
-**BaseNode inheritance from `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`**
+**BaseNode inheritance from `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py`**
 
 - Subject already extends BaseNode["Subject"] for tree hierarchy
 - Provides package_path, name, parent, title, context attributes
 - Provides post_update() method for parent initialization
 - No changes needed, just maintain existing inheritance
 
-**Type aliases from `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/models.py`**
+**Type aliases from `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/models.py`**
 
 - Target type: `type | Callable` for component/view references
 - Template type: `Callable[[], Node]` for custom rendering functions

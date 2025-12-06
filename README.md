@@ -1,19 +1,19 @@
-# 📖 Storytime ✨
+# 📖 Storyville ✨
 
 **Visual, story-based component development for Python 3.14+**
 
 [![Python Version](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Development Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/pauleveritt/storytime)
+[![Development Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/pauleveritt/storyville)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type checked: basedpyright](https://img.shields.io/badge/type%20checker-basedpyright-blue.svg)](https://github.com/DetachHead/basedpyright)
 [![Built with: tdom](https://img.shields.io/badge/built%20with-tdom-purple.svg)](https://github.com/pauleveritt/t-strings)
 
 ---
 
-## 🎯 What is Storytime?
+## 🎯 What is Storyville?
 
-Storytime is a **visual, component-driven development (CDD)** system for Python that helps you build, document, and test
+Storyville is a **visual, component-driven development (CDD)** system for Python that helps you build, document, and test
 components in isolation. Write stories to express component variations, browse them in a live catalog, and automatically
 generate tests from assertions.
 
@@ -98,16 +98,16 @@ generate tests from assertions.
 
 ```bash
 # Requires Python 3.14+
-pip install storytime
+pip install storyville
 ```
 
-> ⚠️ **Note:** Storytime requires Python 3.14+ for subinterpreter support and modern type syntax.
+> ⚠️ **Note:** Storyville requires Python 3.14+ for subinterpreter support and modern type syntax.
 
 <details>
 <summary>📸 <strong>See it in action!</strong></summary>
 
 <!-- Replace with actual screenshot once available -->
-![Storytime Catalog Interface](https://via.placeholder.com/800x450.png?text=Storytime+Catalog+Browser)
+![Storyville Catalog Interface](https://via.placeholder.com/800x450.png?text=Storyville+Catalog+Browser)
 
 *Browse components, view stories, and see assertion results in real-time*
 
@@ -134,7 +134,7 @@ def Button(text: str, variant: str = "primary"):
 ```python
 # my_package/components/button/stories.py
 from my_package.components.button.button import Button
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def check_is_button(el) -> None:
@@ -160,15 +160,15 @@ def this_subject() -> Subject:
 
 ### 3. Generate an Example Catalog (Optional)
 
-New to Storytime? Generate a complete example catalog to learn from:
+New to Storyville? Generate a complete example catalog to learn from:
 
 ```bash
 # Generate a small example catalog
-storytime seed small my_catalog
+storyville seed small my_catalog
 
 # Or try medium or large catalogs
-storytime seed medium my_catalog
-storytime seed large my_catalog
+storyville seed medium my_catalog
+storyville seed large my_catalog
 ```
 
 **Catalog Sizes:**
@@ -185,7 +185,7 @@ The generated catalog is a complete Python package with:
 ### 4. Start the Dev Server
 
 ```bash
-storytime serve my_package
+storyville serve my_package
 # Opens http://localhost:8080
 # Hot reload enabled by default!
 ```
@@ -193,14 +193,14 @@ storytime serve my_package
 For generated catalogs:
 
 ```bash
-storytime serve my_catalog
+storyville serve my_catalog
 # Browse the example components and stories
 ```
 
 ### 5. Build Static Catalog
 
 ```bash
-storytime build my_catalog dist/
+storyville build my_catalog dist/
 # Generates static HTML in dist/ directory
 ```
 
@@ -255,7 +255,7 @@ class ThemedLayout:
 
 # my_package/stories.py
 from tdom import Node
-from storytime import Catalog
+from storyville import Catalog
 from my_package.themed_layout.themed_layout import ThemedLayout
 
 
@@ -276,7 +276,7 @@ def this_catalog() -> Catalog:
 [tool.pytest.ini_options]
 testpaths = ["tests", "my_package"]
 
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = true
 
 # Run tests
@@ -393,9 +393,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 | Resource            | URL                                                                                                  |
 |---------------------|------------------------------------------------------------------------------------------------------|
-| 🏠 **Repository**   | [github.com/pauleveritt/storytime](https://github.com/pauleveritt/storytime)                         |
-| 🐛 **Issues**       | [github.com/pauleveritt/storytime/issues](https://github.com/pauleveritt/storytime/issues)           |
-| 📝 **Discussions**  | [github.com/pauleveritt/storytime/discussions](https://github.com/pauleveritt/storytime/discussions) |
+| 🏠 **Repository**   | [github.com/pauleveritt/storyville](https://github.com/pauleveritt/storyville)                         |
+| 🐛 **Issues**       | [github.com/pauleveritt/storyville/issues](https://github.com/pauleveritt/storyville/issues)           |
+| 📝 **Discussions**  | [github.com/pauleveritt/storyville/discussions](https://github.com/pauleveritt/storyville/discussions) |
 | 🎯 **tdom Project** | [github.com/pauleveritt/t-strings](https://github.com/pauleveritt/t-strings)                         |
 
 ---

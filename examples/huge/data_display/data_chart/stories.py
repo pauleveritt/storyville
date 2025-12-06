@@ -1,7 +1,7 @@
 """The subject for the DataChart component."""
 
 from examples.huge.data_display.data_chart.data_chart import DataChart
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

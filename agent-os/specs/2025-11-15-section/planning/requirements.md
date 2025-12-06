@@ -37,9 +37,9 @@ A Section is a unit of organization that collects Subject instances. It's basica
 ### Existing Code to Reference
 
 **Similar Features Identified:**
-- Feature: Story package - Path: `src/storytime/story/`
-- Feature: Subject package - Path: `src/storytime/subject/`
-- Existing Section implementation - Path: `src/storytime/section.py` (to be migrated)
+- Feature: Story package - Path: `src/storyville/story/`
+- Feature: Subject package - Path: `src/storyville/subject/`
+- Existing Section implementation - Path: `src/storyville/section.py` (to be migrated)
 - Components to potentially reuse: BaseNode inheritance pattern, view rendering patterns from Story and Subject
 - Backend logic to reference: Story and Subject model structures, view templates
 
@@ -72,7 +72,7 @@ No visual assets to analyze.
 - View rendering patterns from Story and Subject packages
 - Model structure conventions from existing Story and Subject implementations
 - Test structure patterns from Story package (separate test files for models and views)
-- Existing Section implementation in `src/storytime/section.py` provides migration starting point
+- Existing Section implementation in `src/storyville/section.py` provides migration starting point
 
 ### Scope Boundaries
 
@@ -100,4 +100,4 @@ No visual assets to analyze.
 - Test structure mirrors Story: separate files for models and views
 - Description field is optional: `description: str | None = None`
 - View renders title, description, Subject cards, and parent link
-- Migration from existing `src/storytime/section.py` should be straightforward refactoring
+- Migration from existing `src/storyville/section.py` should be straightforward refactoring

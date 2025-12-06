@@ -1,7 +1,7 @@
 """The subject for the TypoEmphasis component."""
 
 from examples.huge_assertions.typography.typo_emphasis.typo_emphasis import TypoEmphasis
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -1,7 +1,7 @@
 """The subject for the NavSteps component."""
 
 from examples.huge_assertions.navigation.nav_steps.nav_steps import NavSteps
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

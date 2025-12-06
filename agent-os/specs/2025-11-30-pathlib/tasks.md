@@ -92,19 +92,19 @@ Target: Comprehensive migration from string-based paths to pathlib.Path objects
   - [x] 3.2 Update `app.py` path handling
     - Review line 27: `output_dir: Path | None` - already correct
     - Review line 68: `content_path = get_package_path(input_path)` - already returns Path
-    - Review line 72: `storytime_src = Path("src/storytime")` - already correct
+    - Review line 72: `storyville_src = Path("src/storyville")` - already correct
     - Review line 141: `path: Path` parameter - already correct
     - Confirm all path operations maintain Path objects
     - Update any `input_path: str` parameters to convert early if needed
   - [x] 3.3 Update `watchers.py` path operations
     - Review line 21: `content_path: Path` - already correct
-    - Review line 22: `storytime_path: Path | None` - already correct
+    - Review line 22: `storyville_path: Path | None` - already correct
     - Review line 26: `output_dir: Path` - already correct
     - Review lines 71-95: Path operations already using Path methods
     - Confirm all path comparisons and operations use Path methods
     - Ensure file extension checks use `.suffix` property
   - [x] 3.4 Update `static_assets/__init__.py` path handling
-    - Review line 32: `storytime_base: Path, input_dir: Path, output_dir: Path` - already correct
+    - Review line 32: `storyville_base: Path, input_dir: Path, output_dir: Path` - already correct
     - Review line 65: `static_out = output_dir / "static"` - already correct
     - Review lines 78-89: Already using Path methods (.rglob(), .is_file(), .relative_to())
     - Confirm all operations maintain Path objects
@@ -277,7 +277,7 @@ No special handling needed - pathlib abstracts these concerns.
 
 ## Implementation Summary
 
-The pathlib migration revealed that the Storytime codebase was already well-migrated to use Path objects. The implementation verified and confirmed:
+The pathlib migration revealed that the Storyville codebase was already well-migrated to use Path objects. The implementation verified and confirmed:
 
 1. **Core modules** (nodes.py, __init__.py, catalog/helpers.py) - Already using Path correctly
 2. **CLI and build** (__main__.py, build.py) - Already using Path correctly

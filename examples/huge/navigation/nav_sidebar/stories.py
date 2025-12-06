@@ -1,7 +1,7 @@
 """The subject for the NavSidebar component."""
 
 from examples.huge.navigation.nav_sidebar.nav_sidebar import NavSidebar
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

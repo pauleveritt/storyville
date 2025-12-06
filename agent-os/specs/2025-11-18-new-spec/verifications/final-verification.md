@@ -87,7 +87,7 @@ This final verification report serves as the primary verification documentation.
 
 ### Updated Roadmap Items
 
-None - After reviewing `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/product/roadmap.md`, no items directly match the Story Assertions feature. The roadmap contains items such as:
+None - After reviewing `/Users/pauleveritt/projects/t-strings/storyville/agent-os/product/roadmap.md`, no items directly match the Story Assertions feature. The roadmap contains items such as:
 - Component Rendering System
 - Story Definition API
 - Web-Based Component Browser
@@ -174,24 +174,24 @@ The implementation follows all modern Python 3.14+ standards:
 
 ### Architecture Highlights
 
-**Story Model (`src/storytime/story/models.py`):**
+**Story Model (`src/storyville/story/models.py`):**
 - Clean type aliases at module level
 - Optional fields with proper defaults using `field(default_factory=list)`
 - Modern Python 3.14+ type syntax
 
-**StoryView (`src/storytime/story/views.py`):**
+**StoryView (`src/storyville/story/views.py`):**
 - Proper separation of concerns with `_execute_assertions()` and `_render_badges()` methods
 - Robust exception handling with logging
 - Conditional badge rendering logic
 - Responsive flexbox layout for badges
 
-**CLI Integration (`src/storytime/__main__.py`):**
+**CLI Integration (`src/storyville/__main__.py`):**
 - Clean `--with-assertions/--no-with-assertions` flag
 - Proper default value (True)
 - Clear help text
 - Flag properly threaded through the app creation chain
 
-**App State (`src/storytime/app.py`):**
+**App State (`src/storyville/app.py`):**
 - Proper use of `functools.partial` to bind the `with_assertions` parameter
 - Clean integration with subinterpreter and direct build modes
 - Proper lifespan management

@@ -6,7 +6,7 @@ import pytest
 @pytest.mark.slow
 def test_items_generated_for_assertions(pytestconfig: pytest.Config):
     """Test that one pytest Item is generated per assertion."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     catalog = make_catalog("examples.huge_assertions")
 
@@ -23,7 +23,7 @@ def test_items_generated_for_assertions(pytestconfig: pytest.Config):
 
 def test_item_naming_convention(pytestconfig: pytest.Config):
     """Test that test names follow the convention."""
-    from storytime.pytest_plugin import StoryAssertionItem
+    from storyville.pytest_plugin import StoryAssertionItem
 
     # Create a mock collector to test naming
     # We can't easily test this without running pytest collection,

@@ -209,7 +209,7 @@ Verified by spot-checking `examples/huge/forms/form_button/stories.py`:
 - ✅ Each story has appropriate props matching the pattern
 
 **Build Instrumentation:**
-Verified in `src/storytime/build.py`:
+Verified in `src/storyville/build.py`:
 - ✅ Logging import: `import logging` (line 3)
 - ✅ Logger creation: `logger = logging.getLogger(__name__)` (line 18)
 - ✅ Timing import: `from time import perf_counter` (line 6)

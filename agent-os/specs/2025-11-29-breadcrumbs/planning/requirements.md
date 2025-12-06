@@ -8,7 +8,7 @@ Put the path to the current node in a breadcrumbs-style navigation, in `<main>` 
 
 ### Context
 
-The breadcrumbs component has been created at `src/storytime/components/breadcrumbs/breadcrumbs.py` and integrated into `LayoutMain`. The component shows a hierarchy like: Home → Section → Subject → Story.
+The breadcrumbs component has been created at `src/storyville/components/breadcrumbs/breadcrumbs.py` and integrated into `LayoutMain`. The component shows a hierarchy like: Home → Section → Subject → Story.
 
 However, based on the code review:
 
@@ -78,8 +78,8 @@ However, based on the code review:
 **Similar Features Identified:**
 
 No similar existing features specifically identified, but key files to reference:
-- `src/storytime/components/breadcrumbs/breadcrumbs.py` - Existing breadcrumbs component
-- `src/storytime/build.py` - View instantiation in `_render_all_views`
+- `src/storyville/components/breadcrumbs/breadcrumbs.py` - Existing breadcrumbs component
+- `src/storyville/build.py` - View instantiation in `_render_all_views`
 - Tree node models (BaseNode and subclasses) - Where `resource_path` will be added
 - All view files (SectionView, SubjectView, StoryView) - Need updates
 
@@ -134,8 +134,8 @@ Breadcrumbs component exists and is integrated but isn't showing because `resour
 
 ### Reusability Opportunities
 
-- Existing breadcrumbs component at `src/storytime/components/breadcrumbs/breadcrumbs.py` is complete and requires no changes
-- Breadcrumbs tests at `src/storytime/components/breadcrumbs/breadcrumbs_test.py` can be referenced for testing approach
+- Existing breadcrumbs component at `src/storyville/components/breadcrumbs/breadcrumbs.py` is complete and requires no changes
+- Breadcrumbs tests at `src/storyville/components/breadcrumbs/breadcrumbs_test.py` can be referenced for testing approach
 - Layout component integration is already complete
 
 ### Naming Convention Changes

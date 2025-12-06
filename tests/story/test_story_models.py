@@ -2,8 +2,8 @@
 
 from tdom import Element, html
 
-from storytime.story import Story
-from storytime.subject import Subject
+from storyville.story import Story
+from storyville.subject import Subject
 
 
 # Story.post_update Tests

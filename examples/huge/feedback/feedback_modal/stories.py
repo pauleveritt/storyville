@@ -1,7 +1,7 @@
 """The subject for the FeedbackModal component."""
 
 from examples.huge.feedback.feedback_modal.feedback_modal import FeedbackModal
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

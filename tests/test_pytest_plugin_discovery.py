@@ -8,12 +8,12 @@ def test_collect_discovers_story_files(pytestconfig: pytest.Config):
     # This is an integration test - when we run pytest it should discover
     # stories.py files in the examples/ directory
     # We verify this by checking that the plugin is loaded
-    assert pytestconfig.pluginmanager.has_plugin("storytime")
+    assert pytestconfig.pluginmanager.has_plugin("storyville")
 
 
 def test_discovery_respects_enabled_setting(pytestconfig: pytest.Config):
     """Test that discovery respects the enabled setting."""
-    enabled: bool = pytestconfig.getini("storytime_enabled")
+    enabled: bool = pytestconfig.getini("storyville_enabled")
 
     # Verify the enabled setting can be read
     assert isinstance(enabled, bool)
@@ -24,7 +24,7 @@ def test_discovery_respects_enabled_setting(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_collect_builds_story_tree(pytestconfig: pytest.Config):
     """Test that make_catalog() builds story tree correctly."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     # Build the site for the examples.huge_assertions package
     catalog = make_catalog("examples.huge_assertions")
@@ -38,7 +38,7 @@ def test_collect_builds_story_tree(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_traversal_finds_stories_with_assertions(pytestconfig: pytest.Config):
     """Test that traversal finds stories with non-empty assertions."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     # Build the site
     catalog = make_catalog("examples.huge_assertions")
@@ -58,7 +58,7 @@ def test_traversal_finds_stories_with_assertions(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_story_has_assertions_field(pytestconfig: pytest.Config):
     """Test that stories have the assertions field."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     catalog = make_catalog("examples.huge_assertions")
 

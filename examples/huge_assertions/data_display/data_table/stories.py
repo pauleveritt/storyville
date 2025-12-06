@@ -1,7 +1,7 @@
 """The subject for the DataTable component."""
 
 from examples.huge_assertions.data_display.data_table.data_table import DataTable
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

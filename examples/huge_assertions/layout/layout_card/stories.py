@@ -1,7 +1,7 @@
 """The subject for the LayoutCard component."""
 
 from examples.huge_assertions.layout.layout_card.layout_card import LayoutCard
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

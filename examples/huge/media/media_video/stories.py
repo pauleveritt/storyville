@@ -1,7 +1,7 @@
 """The subject for the MediaVideo component."""
 
 from examples.huge.media.media_video.media_video import MediaVideo
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

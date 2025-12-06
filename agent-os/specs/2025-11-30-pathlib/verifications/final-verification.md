@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The pathlib migration specification has been successfully verified. The implementation revealed that the Storytime codebase was already excellently migrated to use pathlib.Path objects throughout. All task groups are marked complete, the codebase consistently uses Path objects with proper type hints, and all quality checks are ready to be executed. This verification confirms that the migration objectives have been fully achieved.
+The pathlib migration specification has been successfully verified. The implementation revealed that the Storyville codebase was already excellently migrated to use pathlib.Path objects throughout. All task groups are marked complete, the codebase consistently uses Path objects with proper type hints, and all quality checks are ready to be executed. This verification confirms that the migration objectives have been fully achieved.
 
 ---
 
@@ -95,24 +95,24 @@ The roadmap item has been marked as complete. This item accurately reflected the
 **Status:** ✅ Verified
 
 ### Core Module Path Usage
-**File: src/storytime/nodes.py**
+**File: src/storyville/nodes.py**
 - Line 8: `from pathlib import Path` - Correct import style
 - Line 18: `def get_package_path(package_name: str) -> Path:` - Returns Path object
 - Line 37-38: `return Path(package.__path__[0])` and `return Path(package.__file__).parent` - Proper Path construction
 - Line 93: `stories_path: Path` - Proper type hint
 
-**File: src/storytime/__init__.py**
+**File: src/storyville/__init__.py**
 - Line 8: `from pathlib import Path` - Correct import style
 - Line 16: `PACKAGE_DIR = Path(__file__).resolve().parent` - Proper Path pattern
 
-**File: src/storytime/__main__.py**
+**File: src/storyville/__main__.py**
 - Line 4: `from pathlib import Path` - Correct import style
 - Line 18-25: CLI accepts `str` arguments (correct for CLI boundary)
 - Line 102: `output_dir = Path(output_dir_arg).resolve()` - Converts to Path at boundary
 - Line 108: `run_server(Path(tmpdir))` - Path conversion
 - Line 137: `output_p = Path(output_dir).resolve()` - Path conversion
 
-**File: src/storytime/build.py**
+**File: src/storyville/build.py**
 - Line 4: `from pathlib import Path` - Correct import style
 - Line 186: `package_location: str, output_dir: Path` - Proper signature (package location is package name, not path)
 - Lines 204-216: Uses Path methods throughout (.exists(), .iterdir(), .is_dir(), .unlink(), .mkdir())
@@ -120,20 +120,20 @@ The roadmap item has been marked as complete. This item accurately reflected the
 - Line 306: `output_path = Path(sys.argv[2])` - Converts CLI arg to Path
 
 ### App and Static Assets Path Usage
-**File: src/storytime/app.py**
+**File: src/storyville/app.py**
 - Line 8: `from pathlib import Path` - Correct import style
 - Line 27: `output_dir: Path | None` - Proper type hint
 - Line 68: `content_path = get_package_path(input_path)` - Returns Path
-- Line 72: `storytime_src = Path("src/storytime")` - Proper Path construction
+- Line 72: `storyville_src = Path("src/storyville")` - Proper Path construction
 
-**File: src/storytime/watchers.py**
+**File: src/storyville/watchers.py**
 - Line 7: `from pathlib import Path` - Correct import style
 - Lines 21-26: All parameters use Path type hints
 - Lines 71-95: Uses Path methods (.relative_to(), .suffix, .parts)
 
-**File: src/storytime/static_assets/__init__.py**
+**File: src/storyville/static_assets/__init__.py**
 - Line 7: `from pathlib import Path` - Correct import style
-- Line 32: `storytime_base: Path, input_dir: Path, output_dir: Path` - All Path types
+- Line 32: `storyville_base: Path, input_dir: Path, output_dir: Path` - All Path types
 - Lines 78-89: Uses Path methods (.rglob(), .is_file(), .relative_to())
 
 ### Path Method Usage Verification
@@ -256,7 +256,7 @@ The codebase already demonstrates excellent pathlib usage patterns. No additiona
 
 ## 10. Conclusion
 
-The pathlib migration specification has been successfully implemented and verified. The verification process revealed that the Storytime codebase was already in an excellent state regarding pathlib usage, requiring no actual migration work. This speaks highly to the quality of the original implementation.
+The pathlib migration specification has been successfully implemented and verified. The verification process revealed that the Storyville codebase was already in an excellent state regarding pathlib usage, requiring no actual migration work. This speaks highly to the quality of the original implementation.
 
 All acceptance criteria have been met:
 - Core modules use Path objects consistently

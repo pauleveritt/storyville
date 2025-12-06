@@ -4,13 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from storytime.subinterpreter_pool import create_pool, shutdown_pool
+from storyville.subinterpreter_pool import create_pool, shutdown_pool
 
 
 @pytest.mark.slow
 def test_build_in_subinterpreter_executes_successfully(tmp_path: Path) -> None:
     """Test that build_in_subinterpreter executes build successfully."""
-    from storytime.subinterpreter_pool import build_in_subinterpreter
+    from storyville.subinterpreter_pool import build_in_subinterpreter
 
     pool = create_pool()
     output_dir = tmp_path / "output"
@@ -35,7 +35,7 @@ def test_build_in_subinterpreter_executes_successfully(tmp_path: Path) -> None:
 @pytest.mark.slow
 def test_build_in_subinterpreter_writes_correct_files(tmp_path: Path) -> None:
     """Test that subinterpreter build writes files to disk correctly."""
-    from storytime.subinterpreter_pool import build_in_subinterpreter
+    from storyville.subinterpreter_pool import build_in_subinterpreter
 
     pool = create_pool()
     output_dir = tmp_path / "output"
@@ -87,7 +87,7 @@ def test_module_isolation_fresh_imports(tmp_path: Path) -> None:
     2. Each build gets fresh module imports (no caching between builds)
     3. User modules are properly cleared while core modules remain cached
     """
-    from storytime.subinterpreter_pool import build_in_subinterpreter
+    from storyville.subinterpreter_pool import build_in_subinterpreter
 
     pool = create_pool()
     output_dir_1 = tmp_path / "output1"
@@ -128,7 +128,7 @@ def test_module_isolation_fresh_imports(tmp_path: Path) -> None:
 @pytest.mark.slow
 def test_build_error_handling_import_error(tmp_path: Path) -> None:
     """Test that import errors are caught and logged without crashing."""
-    from storytime.subinterpreter_pool import build_in_subinterpreter
+    from storyville.subinterpreter_pool import build_in_subinterpreter
 
     pool = create_pool()
     output_dir = tmp_path / "output"
@@ -165,7 +165,7 @@ def test_build_error_handling_import_error(tmp_path: Path) -> None:
 @pytest.mark.slow
 def test_pool_handles_multiple_builds(tmp_path: Path) -> None:
     """Test that pool can handle multiple sequential builds."""
-    from storytime.subinterpreter_pool import build_in_subinterpreter
+    from storyville.subinterpreter_pool import build_in_subinterpreter
 
     pool = create_pool()
 

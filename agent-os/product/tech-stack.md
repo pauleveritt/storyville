@@ -45,7 +45,7 @@
 
 ## Project Structure
 
-- **Source:** `src/storytime/` (main package)
+- **Source:** `src/storyville/` (main package)
 - **Tests:** `tests/` (test suite mirroring source structure)
 - **Examples:** `examples/` (demonstration components and stories)
 - **Documentation:** `docs/` (project documentation)

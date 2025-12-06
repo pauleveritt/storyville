@@ -1,4 +1,4 @@
-# Task Breakdown: Better Examples for Storytime
+# Task Breakdown: Better Examples for Storyville
 
 ## Overview
 Total Task Groups: 6
@@ -18,7 +18,7 @@ This breakdown implements comprehensive examples demonstrating all Story variati
     - Change function to use `this_site()` (currently correct)
     - Verify it returns `Site(title="Minimal Site")`
   - [x] 1.2 Create `examples/minimal/README.md`
-    - Overview: "Demonstrates the most basic Storytime usage"
+    - Overview: "Demonstrates the most basic Storyville usage"
     - Structure: Describe one Section, one Subject, one Story with props only
     - Key Features: Single component (Heading), props inheritance from Subject target
     - Keep under 20 lines

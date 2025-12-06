@@ -1,7 +1,7 @@
 """The subject for the LayoutFooter component."""
 
 from examples.huge_assertions.layout.layout_footer.layout_footer import LayoutFooter
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

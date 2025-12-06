@@ -1,7 +1,7 @@
 """The subject for the TypoParagraph component."""
 
 from examples.huge_assertions.typography.typo_paragraph.typo_paragraph import TypoParagraph
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

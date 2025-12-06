@@ -51,30 +51,30 @@ No visual assets provided.
 
 ## Existing Code to Leverage
 
-**`src/storytime/components/layout/static/ws.js`**
+**`src/storyville/components/layout/static/ws.js`**
 - WebSocket connection logic with automatic reconnection and exponential backoff
 - Message parsing that extracts `{"type": "reload"}` from WebSocket events
 - Existing `scheduleReload()` function that implements 100ms debounce using `reloadDebounceTimeout`
 - Current full page reload implementation using `window.location.reload()`
 - IIFE pattern that keeps state isolated and prevents global namespace pollution
 
-**`src/storytime/story/views.py` (StoryView Mode C rendering)**
+**`src/storyville/story/views.py` (StoryView Mode C rendering)**
 - Mode C creates iframe with `src="./themed_story.html"` and inline styles
 - Iframe has default style: `width: 100%; min-height: 600px; border: 1px solid #ccc;`
 - This iframe element is the target for conditional reload logic
 - No changes needed to Python code - iframe structure remains unchanged
 
-**`src/storytime/components/layout/static/storytime.css`**
+**`src/storyville/components/layout/static/storyville.css`**
 - Existing CSS patterns for transitions (e.g., `.assertion-badge` hover effects)
 - CSS custom properties available for consistent theming
 - Alpha mask effect should follow similar pattern to existing transitions (0.2s ease)
 
-**`src/storytime/websocket.py` (WebSocket backend)**
+**`src/storyville/websocket.py` (WebSocket backend)**
 - Backend sends `{"type": "reload"}` messages via `broadcast_reload_async()`
 - No changes needed to backend - message format stays the same
 - Frontend must handle message differently based on page context
 
-**`src/storytime/watchers.py` (File watching)**
+**`src/storyville/watchers.py` (File watching)**
 - Triggers rebuild and broadcasts reload after detecting file changes
 - Uses 100ms debounce (`DEBOUNCE_DELAY = 0.1`) on the backend
 - No changes needed - continues broadcasting same message type

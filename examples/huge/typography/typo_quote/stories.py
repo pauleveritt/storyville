@@ -1,7 +1,7 @@
 """The subject for the TypoQuote component."""
 
 from examples.huge.typography.typo_quote.typo_quote import TypoQuote
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

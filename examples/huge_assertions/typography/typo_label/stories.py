@@ -1,7 +1,7 @@
 """The subject for the TypoLabel component."""
 
 from examples.huge_assertions.typography.typo_label.typo_label import TypoLabel
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

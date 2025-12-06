@@ -87,7 +87,7 @@ No visual assets provided for this specification.
 
 ## Existing Code to Leverage
 
-**Breadcrumbs component (src/storytime/components/breadcrumbs/breadcrumbs.py)**
+**Breadcrumbs component (src/storyville/components/breadcrumbs/breadcrumbs.py)**
 
 - Already implements parse_current_path to extract section/subject/story from path
 - Already renders breadcrumb trail with separators and proper HTML structure
@@ -95,13 +95,13 @@ No visual assets provided for this specification.
 - Logic for determining which items are links vs current page is complete
 - Needs only: rename current_path to resource_path and convert to relative paths
 
-**Layout component (src/storytime/components/layout/layout.py)**
+**Layout component (src/storyville/components/layout/layout.py)**
 
 - Already accepts current_path parameter and passes to LayoutMain and LayoutAside
 - Already integrated with Breadcrumbs via LayoutMain
 - Needs only: rename current_path to resource_path throughout
 
-**BaseNode class (src/storytime/nodes.py)**
+**BaseNode class (src/storyville/nodes.py)**
 
 - Already has post_update() method that receives parent and tree_node
 - Already calculates package_path and name from tree_node

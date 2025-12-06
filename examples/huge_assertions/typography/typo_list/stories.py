@@ -1,7 +1,7 @@
 """The subject for the TypoList component."""
 
 from examples.huge_assertions.typography.typo_list.typo_list import TypoList
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

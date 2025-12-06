@@ -10,12 +10,12 @@ Enable all node types (layouts, components, views, subjects, sections, stories) 
 ## Specific Requirements
 
 **Static Folder Discovery and Copying**
-- Scan all node directories during build for `static/` folders in both `src/storytime` and input_dir paths
-- Track source location (storytime vs input_dir) to determine output directory disambiguation
+- Scan all node directories during build for `static/` folders in both `src/storyville` and input_dir paths
+- Track source location (storyville vs input_dir) to determine output directory disambiguation
 - Copy all discovered static assets to output_dir preserving full directory path structure
-- Assets from `src/storytime` copy to `output_dir/storytime_static/[path/to/node]/static/[asset]`
+- Assets from `src/storyville` copy to `output_dir/storyville_static/[path/to/node]/static/[asset]`
 - Assets from input_dir copy to `output_dir/static/[path/to/node]/static/[asset]`
-- Example: `src/storytime/components/navigation_tree/static/nav.css` → `output_dir/storytime_static/components/navigation_tree/static/nav.css`
+- Example: `src/storyville/components/navigation_tree/static/nav.css` → `output_dir/storyville_static/components/navigation_tree/static/nav.css`
 - Example: `input_dir/components/button/static/icon.svg` → `output_dir/static/components/button/static/icon.svg`
 
 **Remove Existing Site-Level Static**
@@ -27,13 +27,13 @@ Enable all node types (layouts, components, views, subjects, sections, stories) 
 - Create a utility function (e.g., `rewrite_static_paths()`) that components/stories must explicitly call
 - Function accepts tdom Node as input and returns modified Node (works directly with node tree)
 - Uses tdom tree walker to traverse the node tree and identify elements with asset references
-- Only processes attribute values that start with `static/` or `storytime_static/` prefix
+- Only processes attribute values that start with `static/` or `storyville_static/` prefix
 - Rewrites found paths to include full component path and relativize based on page depth
 - Modifies attributes in place on the node tree, avoiding string conversion and regex
 - Calculates correct number of `../` segments based on page location in site hierarchy
-- Depth 0 (site root or section index): `../static/...` or `../storytime_static/...`
-- Depth 1 (subject index): `../../static/...` or `../../storytime_static/...`
-- Depth 2 (story page): `../../../static/...` or `../../../storytime_static/...`
+- Depth 0 (site root or section index): `../static/...` or `../storyville_static/...`
+- Depth 1 (subject index): `../../static/...` or `../../storyville_static/...`
+- Depth 2 (story page): `../../../static/...` or `../../../storyville_static/...`
 
 **HTML Asset Reference Detection**
 - Use tdom tree walker to traverse the node tree and find elements with asset-referencing attributes
@@ -44,19 +44,19 @@ Enable all node types (layouts, components, views, subjects, sections, stories) 
 
 **Path Construction Logic**
 - Accept component location information to determine asset source path
-- Construct full output path: `[storytime_static|static]/[component/path]/static/[asset_filename]`
+- Construct full output path: `[storyville_static|static]/[component/path]/static/[asset_filename]`
 - Accept current page depth to calculate relative path prefix
 - Combine relative prefix with full asset path for final rewritten reference
-- Preserve original path if it doesn't match `static/` or `storytime_static/` prefix (external URLs, absolute paths)
+- Preserve original path if it doesn't match `static/` or `storyville_static/` prefix (external URLs, absolute paths)
 
 **Hot Reload Support for Static Assets**
 - Extend file watching system to monitor all discovered `static/` folders
-- Include both `src/storytime/**/static/` and `input_dir/**/static/` in watch paths
+- Include both `src/storyville/**/static/` and `input_dir/**/static/` in watch paths
 - Trigger full rebuild when any static asset changes
 - Ensure browser refresh occurs after rebuild completes (existing WebSocket mechanism)
 
 **Component Integration Points**
-- Make utility function easily importable from a common location (e.g., `storytime.utils.rewrite_static_paths`)
+- Make utility function easily importable from a common location (e.g., `storyville.utils.rewrite_static_paths`)
 - Provide clear function signature with type hints for input/output
 - Document expected calling pattern in function docstring
 - Allow function to work at different stages (during render or post-render)
@@ -101,7 +101,7 @@ No visual mockups provided for this feature.
 
 **Site.static_dir lookup pattern (site/models.py lines 29-35)**
 - Shows how to check if directory exists with `sd.exists()`
-- Uses `PACKAGE_DIR` to construct paths relative to storytime installation
+- Uses `PACKAGE_DIR` to construct paths relative to storyville installation
 - Pattern can be used for discovering static folders during build process
 - Need similar logic but scanning recursively through all node directories
 

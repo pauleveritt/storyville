@@ -7,18 +7,18 @@ support and a sensible default layout. This is foundational work for the web-bas
 
 ## Key Deliverables
 
-### 1. View Protocol (`src/storytime/models.py`)
+### 1. View Protocol (`src/storyville/models.py`)
 
 - NEW file
 - Defines Protocol with `__call__(self) -> Element` signature
 - Enables structural typing for view classes
 
-### 2. Story Class Updates (`src/storytime/story/models.py`)
+### 2. Story Class Updates (`src/storyville/story/models.py`)
 
 - MODIFIED file
 - Update `instance` property to return `Element` with type guard
 
-### 3. StoryView (`src/storytime/story/views.py`)
+### 3. StoryView (`src/storyville/story/views.py`)
 
 - NEW file
 - Dataclass implementing View Protocol

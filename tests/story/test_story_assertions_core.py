@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 from tdom import Element, Fragment, Node, html
 
-from storytime.story import Story
-from storytime.story.views import StoryView
+from storyville.story import Story
+from storyville.story.views import StoryView
 
 
 def test_assertion_execution_with_passing_assertions() -> None:

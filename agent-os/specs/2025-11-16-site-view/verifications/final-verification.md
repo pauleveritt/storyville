@@ -27,11 +27,11 @@ The SiteView component has been successfully implemented and all functional requ
   - [x] 1.4 Search for imports and references to IndexView
 
 **Verification:**
-- IndexView source file removed from `/src/storytime/views/index_view.py`
-- Index component directory `/src/storytime/components/index/` removed
+- IndexView source file removed from `/src/storyville/views/index_view.py`
+- Index component directory `/src/storyville/components/index/` removed
 - No test files reference IndexView (verified by grep search)
 - No source imports or references remain (verified by grep search)
-- Views directory `/src/storytime/views/` is now empty (only `__pycache__` remains)
+- Views directory `/src/storyville/views/` is now empty (only `__pycache__` remains)
 
 #### Task Group 2: Create SiteView Component
 - [x] 2.0 Implement SiteView component
@@ -44,7 +44,7 @@ The SiteView component has been successfully implemented and all functional requ
   - [x] 2.7 Run component tests only
 
 **Verification:**
-- SiteView implemented at `/src/storytime/site/views.py` (location differs from spec but is appropriate)
+- SiteView implemented at `/src/storyville/site/views.py` (location differs from spec but is appropriate)
 - 9 comprehensive tests written in `/tests/site/test_site_views.py`
 - Tests cover all requirements:
   - Node return type verification
@@ -71,7 +71,7 @@ The SiteView component has been successfully implemented and all functional requ
 
 ### Incomplete or Issues
 
-**Minor Issue:** One cached `.pyc` file remains at `/src/storytime/views/__pycache__/index_view.cpython-314.pyc`
+**Minor Issue:** One cached `.pyc` file remains at `/src/storyville/views/__pycache__/index_view.cpython-314.pyc`
 - This is a Python bytecode cache file and does not affect functionality
 - The source file has been properly removed
 - Recommendation: Run `find . -name "*.pyc" -delete` to clean up cache files
@@ -126,7 +126,7 @@ The roadmap item for "Component Organization System" was already marked complete
 ```
 ============================= test session starts ==============================
 platform darwin -- Python 3.14.0, pytest-9.0.0, pluggy-1.6.0
-rootdir: /Users/pauleveritt/projects/pauleveritt/storytime
+rootdir: /Users/pauleveritt/projects/t-strings/storyville
 configfile: pyproject.toml
 testpaths: src, tests
 plugins: anyio-4.11.0
@@ -203,14 +203,14 @@ None - all tests passing.
 - [x] Proper escaping and safety handling
 
 **File Location**
-- [x] SiteView created (implemented at `/src/storytime/site/views.py`)
-- [x] IndexView removed from `/src/storytime/views/index_view.py`
+- [x] SiteView created (implemented at `/src/storyville/site/views.py`)
+- [x] IndexView removed from `/src/storyville/views/index_view.py`
 - [x] Index component directory removed
 
 **Type Safety**
 - [x] Type annotations on all parameters and return types
 - [x] Node type imported from tdom
-- [x] Site type imported from storytime.site.models
+- [x] Site type imported from storyville.site.models
 - [x] Proper type hints used throughout
 
 **Testing Requirements**
@@ -245,7 +245,7 @@ None - all tests passing.
 
 ### Minor Issues
 
-1. **Cached .pyc File:** One bytecode cache file remains at `/src/storytime/views/__pycache__/index_view.cpython-314.pyc`
+1. **Cached .pyc File:** One bytecode cache file remains at `/src/storyville/views/__pycache__/index_view.cpython-314.pyc`
    - Impact: None (does not affect functionality)
    - Recommendation: Clean Python cache files with `find . -name "*.pyc" -delete`
 

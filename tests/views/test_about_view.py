@@ -2,8 +2,8 @@
 
 
 from aria_testing import get_by_tag_name
-from storytime.catalog.models import Catalog
-from storytime.views.about_view import AboutView
+from storyville.catalog.models import Catalog
+from storyville.views.about_view import AboutView
 
 def test_about_view_renders_with_layout():
     """AboutView should render and wrap content in Layout."""
@@ -43,7 +43,7 @@ def test_about_view_has_about_heading():
     html_string = str(result)
 
     # Assert
-    assert "<h1>About Storytime</h1>" in html_string
+    assert "<h1>About Storyville</h1>" in html_string
 
 def test_about_view_uses_depth_zero():
     """AboutView should use depth=0 for root-level view."""

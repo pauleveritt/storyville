@@ -21,7 +21,7 @@ The "Render a Single Story" spec has been successfully implemented with all acce
 
 - [x] Task Group 1: Create View Protocol
   - [x] 1.1 Write 2-4 focused tests for View Protocol
-  - [x] 1.2 Create src/storytime/models.py with View Protocol
+  - [x] 1.2 Create src/storyville/models.py with View Protocol
   - [x] 1.3 Ensure View Protocol tests pass
 
 - [x] Task Group 2: Restructure Story Module into Package
@@ -39,12 +39,12 @@ The "Render a Single Story" spec has been successfully implemented with all acce
 
 - [x] Task Group 4: Create StoryView with Dual Rendering Modes
   - [x] 4.1 Write 4-8 focused tests for StoryView rendering
-  - [x] 4.2 Create src/storytime/story/views.py file
+  - [x] 4.2 Create src/storyville/story/views.py file
   - [x] 4.3 Implement StoryView dataclass structure
   - [x] 4.4 Implement custom template rendering mode (Mode A)
   - [x] 4.5 Implement default layout rendering mode (Mode B)
   - [x] 4.6 NO type guard in implementation
-  - [x] 4.7 Update src/storytime/story/__init__.py exports
+  - [x] 4.7 Update src/storyville/story/__init__.py exports
   - [x] 4.8 Ensure StoryView tests pass
 
 - [x] Task Group 5: Test Review & Quality Checks
@@ -88,7 +88,7 @@ This is the first and only verification document for this spec.
 
 ### Notes
 
-After reviewing the roadmap at `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/product/roadmap.md`, no items specifically match this implementation. The closest related items are:
+After reviewing the roadmap at `/Users/pauleveritt/projects/t-strings/storyville/agent-os/product/roadmap.md`, no items specifically match this implementation. The closest related items are:
 
 - Item 1: "Component Rendering System" - Still in progress, this spec is a component of it
 - Item 2: "Story Definition API" - Partially addressed but not complete
@@ -154,10 +154,10 @@ The type checker found 7 errors, but NONE are related to this spec's implementat
 1. **examples/context/stories.py** (4 errors): Site.registry and Section.registry attribute errors
    - Lines 14, 16, 17 - Unrelated to Story rendering implementation
 
-2. **src/storytime/app.py** (2 errors): asynccontextmanager decorator and lifespan return type issues
+2. **src/storyville/app.py** (2 errors): asynccontextmanager decorator and lifespan return type issues
    - Lines 41-42 - Unrelated to Story rendering implementation
 
-3. **src/storytime/components/index/stories.py** (1 error): Story template argument type mismatch
+3. **src/storyville/components/index/stories.py** (1 error): Story template argument type mismatch
    - Line 13 - This is a pre-existing issue where template expects `(() -> Node) | None` but receives `Node`
    - This should be fixed by wrapping the html() call in a lambda
 
@@ -171,7 +171,7 @@ All code formatting checks passed with the message "All checks passed!"
 
 The implementation successfully passes all tests with excellent test coverage (24 tests specifically for this feature). The type check failures are pre-existing issues in other parts of the codebase and do not affect the correctness of this implementation.
 
-The type check error in `src/storytime/components/index/stories.py` line 13 should be fixed in a separate commit by changing:
+The type check error in `src/storyville/components/index/stories.py` line 13 should be fixed in a separate commit by changing:
 ```python
 Story(template=html(t"<div>Index Page, bazinga</div>"))
 ```
@@ -196,7 +196,7 @@ PASSED
 
 PASSED
 - Story package created with proper `__init__.py`
-- Story class accessible via `from storytime.story import Story`
+- Story class accessible via `from storyville.story import Story`
 - All existing Story tests pass (14 tests)
 - Old `story.py` file removed (confirmed via git status)
 
@@ -272,7 +272,7 @@ PASSED
 - Story class successfully moved to package structure
 - All imports working correctly throughout codebase
 - No broken references after restructure
-- StoryView properly exports from `storytime.story`
+- StoryView properly exports from `storyville.story`
 
 ### View Protocol Integration
 
@@ -298,9 +298,9 @@ PASSED
 
 ### Immediate Actions
 
-1. **Fix Pre-existing Type Error**: Fix the template argument issue in `src/storytime/components/index/stories.py` line 13 by wrapping the html() call in a lambda
+1. **Fix Pre-existing Type Error**: Fix the template argument issue in `src/storyville/components/index/stories.py` line 13 by wrapping the html() call in a lambda
 
-2. **Address App Type Errors**: Fix the 2 type errors in `src/storytime/app.py` related to asynccontextmanager
+2. **Address App Type Errors**: Fix the 2 type errors in `src/storyville/app.py` related to asynccontextmanager
 
 3. **Fix Context Example**: Address the 4 type errors in `examples/context/stories.py` related to registry attributes
 

@@ -1,7 +1,7 @@
 """The subject for the MediaThumbnail component."""
 
 from examples.huge_assertions.media.media_thumbnail.media_thumbnail import MediaThumbnail
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

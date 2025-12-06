@@ -1,7 +1,7 @@
 """The subject for the MediaUploader component."""
 
 from examples.huge.media.media_uploader.media_uploader import MediaUploader
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

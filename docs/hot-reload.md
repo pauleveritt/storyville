@@ -1,6 +1,6 @@
 # Hot Reload with Subinterpreters
 
-Storytime provides true hot reload using Python 3.14+ subinterpreters. When you save a `stories.py` file, your changes appear instantly in the browser—no server restart needed.
+Storyville provides true hot reload using Python 3.14+ subinterpreters. When you save a `stories.py` file, your changes appear instantly in the browser—no server restart needed.
 
 ## Why Subinterpreters?
 
@@ -16,7 +16,7 @@ Python's import system caches modules. Simply re-importing doesn't reload change
 
 ### Interpreter Pool
 
-Storytime maintains a pool of 2 subinterpreters:
+Storyville maintains a pool of 2 subinterpreters:
 - **Active interpreter**: Running the current build
 - **Standby interpreter**: Pre-warmed and ready
 
@@ -34,7 +34,7 @@ This approach:
 ### Pre-warming Strategy
 
 New interpreters pre-import common modules:
-- `storytime` - Core framework
+- `storyville` - Core framework
 - `tdom` - Templating library
 
 This reduces first-build latency in each interpreter.
@@ -45,14 +45,14 @@ This reduces first-build latency in each interpreter.
 
 ```bash
 # Subinterpreters enabled by default
-storytime serve my_project
+storyville serve my_project
 ```
 
 ### Disable Subinterpreters
 
 ```bash
 # Use direct builds (faster but no module reload)
-storytime serve my_project --no-use-subinterpreters
+storyville serve my_project --no-use-subinterpreters
 ```
 
 **When to disable:**
@@ -62,7 +62,7 @@ storytime serve my_project --no-use-subinterpreters
 
 ## File Watching
 
-Storytime watches for changes in:
+Storyville watches for changes in:
 - `stories.py` files
 - Python source files in your package
 - Template files (if using custom templates)
@@ -130,7 +130,7 @@ Fixed at 2 interpreters:
 - C extensions with global state (rare in practice)
 - Modules that don't support multiple interpreters
 
-**Storytime's dependencies are compatible:**
+**Storyville's dependencies are compatible:**
 - tdom ✅
 - Starlette ✅  
 - PicoCSS (CSS, no Python) ✅
@@ -141,7 +141,7 @@ Fixed at 2 interpreters:
 
 ```bash
 # 1. Start server (subinterpreters enabled by default)
-storytime serve my_project
+storyville serve my_project
 
 # 2. Edit stories.py in your editor
 # 3. Save file
@@ -164,12 +164,12 @@ Story(props=dict(text="New Text"))
 
 ```bash
 # Watch console for build events
-storytime serve my_project
+storyville serve my_project
 
 # Output shows:
-INFO:     storytime.watchers - File change detected: stories.py
-INFO:     storytime.build - Building catalog...
-INFO:     storytime.build - Build complete
+INFO:     storyville.watchers - File change detected: stories.py
+INFO:     storyville.build - Building catalog...
+INFO:     storyville.build - Build complete
 ```
 
 ## CLI vs Web Server
@@ -177,14 +177,14 @@ INFO:     storytime.build - Build complete
 ### Web Server (Default)
 
 ```bash
-storytime serve my_project
+storyville serve my_project
 # Uses subinterpreters + hot reload + WebSocket
 ```
 
 ### One-time Build
 
 ```bash
-storytime build my_project ./output
+storyville build my_project ./output
 # Direct build (no subinterpreters, no watching)
 ```
 
@@ -236,7 +236,7 @@ While not configurable, understanding the warm-up can help debug issues:
 ```python
 # What gets pre-imported (internal)
 def _warmup_interpreter():
-    import storytime
+    import storyville
     import tdom
 ```
 
@@ -303,7 +303,7 @@ These are the core modules needed for every build. Pre-importing them reduces la
 **Debug:**
 ```bash
 # See watcher events
-storytime serve my_project
+storyville serve my_project
 # Watch console for "File change detected" messages
 ```
 

@@ -21,7 +21,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Test LayoutMain renders children and Breadcrumbs
     - Test LayoutFooter renders with year and optional text props
     - Skip exhaustive edge case testing at this stage
-  - [x] 1.2 Create LayoutHeader component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/header/header.py`
+  - [x] 1.2 Create LayoutHeader component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/header/header.py`
     - Use `@dataclass` decorator
     - Props: `site_title: str`, `depth: int = 0`
     - Calculate relative paths using `"../" * (depth + 1)` pattern
@@ -29,33 +29,33 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Include Home, About, Debug navigation links
     - Follow pattern from layout.py lines 74-87
     - Import necessary types: `Node`, `html` from tdom
-  - [x] 1.3 Create LayoutAside component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside.py`
+  - [x] 1.3 Create LayoutAside component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/aside/aside.py`
     - Use `@dataclass` decorator
     - Props: `sections: dict[str, Section]`, `current_path: str | None = None`, `cached_navigation: str | None = None`
     - Return `<aside>` with "Sections" label
     - If cached_navigation provided, use `Markup(cached_navigation)`
     - Otherwise render `NavigationTree(sections=sections, current_path=current_path)()`
     - Follow pattern from layout.py lines 89-92 and 50-58
-    - Import: `Node`, `html` from tdom; `Section` from storytime.section.models; `NavigationTree` from storytime.components.navigation_tree
+    - Import: `Node`, `html` from tdom; `Section` from storyville.section.models; `NavigationTree` from storyville.components.navigation_tree
     - Import `Markup` from markupsafe conditionally when needed
-  - [x] 1.4 Create LayoutMain component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main.py`
+  - [x] 1.4 Create LayoutMain component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/main/main.py`
     - Use `@dataclass` decorator
     - Props: `current_path: str | None = None`, `children: Element | Fragment | Node | None = None`
     - Return `<main>` containing Breadcrumbs component and children
     - Follow pattern from layout.py lines 93-96
-    - Import: `Element`, `Fragment`, `Node`, `html` from tdom; `Breadcrumbs` from storytime.components.breadcrumbs
-  - [x] 1.5 Create LayoutFooter component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/footer/footer.py`
+    - Import: `Element`, `Fragment`, `Node`, `html` from tdom; `Breadcrumbs` from storyville.components.breadcrumbs
+  - [x] 1.5 Create LayoutFooter component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/footer/footer.py`
     - Use `@dataclass` decorator
-    - Props: `year: str | int = 2025`, `text: str = "Storytime"`
+    - Props: `year: str | int = 2025`, `text: str = "Storyville"`
     - Return `<footer>` with centered paragraph containing `{year} {text}`
     - Follow pattern from layout.py lines 98-100
     - Import: `Node`, `html` from tdom
   - [x] 1.6 Ensure component-level tests pass
     - Run ONLY the 2-8 tests written in 1.1
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/header/header_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main_test.py`
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/footer/footer_test.py`
+    - Command: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/header/header_test.py`
+    - Command: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/aside/aside_test.py`
+    - Command: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/main/main_test.py`
+    - Command: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/footer/footer_test.py`
     - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
@@ -78,11 +78,11 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Test Layout body structure no longer has `<div class="grid">` wrapper
     - Test components are direct children of body element
     - Skip redundant testing of component internals already tested in Group 1
-  - [x] 2.2 Update Layout component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
-    - Add imports: `from storytime.components.header.header import LayoutHeader`
-    - Add imports: `from storytime.components.aside.aside import LayoutAside`
-    - Add imports: `from storytime.components.main.main import LayoutMain`
-    - Add imports: `from storytime.components.footer.footer import LayoutFooter`
+  - [x] 2.2 Update Layout component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py`
+    - Add imports: `from storyville.components.header.header import LayoutHeader`
+    - Add imports: `from storyville.components.aside.aside import LayoutAside`
+    - Add imports: `from storyville.components.main.main import LayoutMain`
+    - Add imports: `from storyville.components.footer.footer import LayoutFooter`
     - Keep existing imports for Site, Element, Fragment, Node, html
     - Remove direct imports of Breadcrumbs and NavigationTree (now used by sub-components)
     - Remove `<div class="grid">` wrapper from body
@@ -96,7 +96,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Remove navigation_html variable (moved to LayoutAside)
   - [x] 2.3 Ensure Layout integration tests pass
     - Run ONLY the 2-8 tests written in 2.1
-    - Command: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_integration_test.py`
+    - Command: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout_integration_test.py`
     - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
@@ -118,7 +118,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Test grid template areas structure is correct
     - Test responsive behavior on mobile (single column stack)
     - Skip pixel-perfect visual testing or screenshot comparison
-  - [x] 3.2 Update storytime.css at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+  - [x] 3.2 Update storyville.css at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
     - Remove existing `body > div.grid` styles (lines 11-17)
     - Add CSS Grid to body element:
       ```css
@@ -184,7 +184,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Review the 2-8 tests written for CSS Grid (Task 3.1)
     - Total existing tests: approximately 6-24 tests
   - [x] 4.2 Run existing Layout tests to verify backward compatibility
-    - Run all tests in `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py`
+    - Run all tests in `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout_test.py`
     - These tests cover the original Layout behavior and should still pass
     - Expected: All existing tests pass without modification
     - Fix any breaking changes to maintain API compatibility
@@ -201,7 +201,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - Do NOT write comprehensive coverage for all scenarios
     - Skip visual regression tests
   - [x] 4.5 Run feature-specific tests only
-    - Run all Layout component tests: `just test /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/`
+    - Run all Layout component tests: `just test /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/`
     - Expected total: approximately 16-34 tests plus existing layout_test.py tests
     - Verify all tests pass
     - Do NOT run the entire application test suite yet
@@ -212,7 +212,7 @@ This refactoring will extract 4 components from the monolithic Layout component 
     - All checks must pass
     - Fix any issues that arise
   - [x] 4.7 Verify CSS file is copied to var/static/
-    - Check that updated storytime.css exists at `/Users/pauleveritt/projects/pauleveritt/storytime/var/static/storytime.css`
+    - Check that updated storyville.css exists at `/Users/pauleveritt/projects/t-strings/storyville/var/static/storyville.css`
     - Ensure changes are reflected in the built output
     - Run build command if necessary to copy static assets
 
@@ -236,11 +236,11 @@ Recommended implementation sequence:
 ## Implementation Notes
 
 **File Locations:**
-- New components: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/{header,aside,main,footer}/`
+- New components: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/{header,aside,main,footer}/`
 - Component files: Named `header.py`, `aside.py`, `main.py`, `footer.py` within their respective directories
 - Component test files: Same directory as components, named `{component}_test.py`
-- CSS file: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
-- Built CSS: `/Users/pauleveritt/projects/pauleveritt/storytime/var/static/storytime.css`
+- CSS file: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
+- Built CSS: `/Users/pauleveritt/projects/t-strings/storyville/var/static/storyville.css`
 
 **Type Hints:**
 - Use modern Python 3.14+ syntax: `str | None` instead of `Union[str, None]`

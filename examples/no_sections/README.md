@@ -2,7 +2,7 @@
 
 ## Overview
 
-Demonstrates that Sections are optional in the Storytime hierarchy.
+Demonstrates that Sections are optional in the Storyville hierarchy.
 
 ## Structure
 
@@ -16,4 +16,4 @@ Demonstrates that Sections are optional in the Storytime hierarchy.
 - Flat structure with only a Site
 - No Section layer in the hierarchy
 - Shows that Sections are completely optional
-- Simplest possible Storytime catalog (Site only)
+- Simplest possible Storyville catalog (Site only)

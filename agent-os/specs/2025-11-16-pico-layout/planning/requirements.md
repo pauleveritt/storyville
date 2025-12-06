@@ -12,7 +12,7 @@ Using the page at https://picocss.com/docs/group as a guide, implement a layout 
 - In the middle a breadcrumbs area with the path to the current view
 - The <main> area that shows the current view
 - A footer with a copyright
-- Put custom styling in storytime.css
+- Put custom styling in storyville.css
 - We already have the CSS from that site in pico-docs.css
 - Use pytest-playwright for tests that require DOM interaction such as clicking
 - But mark these tests as slow
@@ -88,13 +88,13 @@ Do you have a preference for the separator or styling approach?
 **Answer:** Default link styling with `>` as separator.
 
 **Q5: CSS Organization - Where should custom styles go?**
-You mentioned putting custom styling in storytime.css and that pico-docs.css already exists. I'm thinking:
-- storytime.css for layout-specific overrides (grid layout, spacing, breadcrumb formatting)
+You mentioned putting custom styling in storyville.css and that pico-docs.css already exists. I'm thinking:
+- storyville.css for layout-specific overrides (grid layout, spacing, breadcrumb formatting)
 - Keep pico-docs.css as-is since it's imported from PicoCSS docs
 
-Should we create any additional CSS modules or keep everything in storytime.css?
+Should we create any additional CSS modules or keep everything in storyville.css?
 
-**Answer:** Keep everything in storytime.css.
+**Answer:** Keep everything in storyville.css.
 
 **Q6: Playwright Tests - What interactions should we test?**
 For the pytest-playwright tests marked as slow, I'm assuming we should test:
@@ -118,7 +118,7 @@ What's your preference for mobile/tablet viewports?
 
 **Q8: Footer Content - What goes in the footer?**
 You mentioned "a footer with a copyright". Should it be:
-- Simple centered text like "© 2025 Storytime"
+- Simple centered text like "© 2025 Storyville"
 - Or include additional links (Privacy, Terms, GitHub, etc.)?
 
 **Answer:** Just simple copyright text for now.
@@ -203,7 +203,7 @@ User referenced the PicoCSS documentation page at https://picocss.com/docs/group
   - Separator: " > "
   - Default link styling
 - **Main Content**: Area for rendering the current view (HomePage, AboutView, DebugView, etc.)
-- **Footer**: Simple copyright text (e.g., "© 2025 Storytime")
+- **Footer**: Simple copyright text (e.g., "© 2025 Storyville")
 
 **New Routes to Create:**
 - AboutView route at `/about`
@@ -237,7 +237,7 @@ No similar existing features identified for reference.
 - CSS-only collapse/expand using `<details>` elements
 - Auto-expansion of current node's hierarchy
 - Breadcrumb generation from current_path
-- Custom styling in storytime.css
+- Custom styling in storyville.css
 - Playwright tests for DOM interactions (marked as slow)
 - Following PicoCSS responsive defaults
 
@@ -255,7 +255,7 @@ No similar existing features identified for reference.
 
 **CSS Organization:**
 - Use existing pico-docs.css (already imported from PicoCSS docs)
-- Add custom styling to storytime.css for:
+- Add custom styling to storyville.css for:
   - Grid layout structure
   - Spacing and positioning
   - Breadcrumb formatting

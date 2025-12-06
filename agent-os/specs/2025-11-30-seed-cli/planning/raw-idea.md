@@ -2,7 +2,7 @@
 
 ## Feature Description
 
-Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require moving `examples/minimal` into `src/storytime` so that it is shipped in the package.
+Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require moving `examples/minimal` into `src/storyville` so that it is shipped in the package.
 
 ## Source
 

@@ -9,21 +9,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed - BREAKING
 
-- **Site renamed to Catalog throughout the codebase**: The main organizational concept has been renamed from "Site" to "Catalog" to better reflect its purpose as a browseable collection of components. This is a breaking change that affects all projects using Storytime.
+- **Project renamed from Storytime to Storyville**: The entire project has been renamed to "Storyville". This includes the package name, import statements, and all documentation. The PyPI package name is now `storyville` and all imports should use `from storyville` or `import storyville`.
+
+#### Migration Guide for Project Rename
+
+To update your code for this breaking change:
+
+1. **Installation**: Install the new package name:
+   ```bash
+   # Uninstall old package
+   pip uninstall storytime
+
+   # Install new package
+   pip install storyville
+   ```
+
+2. **Import statements**: Change all imports from `storytime` to `storyville`:
+   ```python
+   # Before
+   from storytime import Catalog, Story, Subject, Section
+   from storytime.catalog import make_catalog
+
+   # After
+   from storyville import Catalog, Story, Subject, Section
+   from storyville.catalog import make_catalog
+   ```
+
+3. **CLI commands**: Use the new `storyville` command:
+   ```bash
+   # Before
+   storytime serve my_package
+   storytime build my_package dist/
+
+   # After
+   storyville serve my_package
+   storyville build my_package dist/
+   ```
+
+- **Site renamed to Catalog throughout the codebase**: The main organizational concept has been renamed from "Site" to "Catalog" to better reflect its purpose as a browseable collection of components. This is a breaking change that affects all projects using Storyville.
 
 #### Migration Guide
 
 To update your code for this breaking change:
 
-1. **Import statements**: Change all imports from `storytime.site` to `storytime.catalog`:
+1. **Import statements**: Change all imports from `storyville.site` to `storyville.catalog`:
    ```python
    # Before
-   from storytime.site import Site, make_site
-   from storytime import Site
+   from storyville.site import Site, make_site
+   from storyville import Site
 
    # After
-   from storytime.catalog import Catalog, make_catalog
-   from storytime import Catalog
+   from storyville.catalog import Catalog, make_catalog
+   from storyville import Catalog
    ```
 
 2. **Class names**: Rename `Site` to `Catalog` in your code:
@@ -49,10 +86,10 @@ To update your code for this breaking change:
 4. **View classes**: Rename `SiteView` to `CatalogView`:
    ```python
    # Before
-   from storytime.site import SiteView
+   from storyville.site import SiteView
 
    # After
-   from storytime.catalog import CatalogView
+   from storyville.catalog import CatalogView
    ```
 
 5. **Type hints**: Update all type hints from `Site` to `Catalog`:
@@ -72,4 +109,4 @@ The hierarchy terminology is now: **Catalog → Section → Subject → Story**
 
 ## [0.1.0] - Previous Release
 
-Initial alpha release of Storytime.
+Initial alpha release of Storyville.

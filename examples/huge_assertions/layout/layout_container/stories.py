@@ -1,7 +1,7 @@
 """The subject for the LayoutContainer component."""
 
 from examples.huge_assertions.layout.layout_container.layout_container import LayoutContainer
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -1,13 +1,13 @@
 # Writing Stories
 
-Stories are the heart of Storytime. Each story represents one variation of a component with specific props and optional assertions for testing.
+Stories are the heart of Storyville. Each story represents one variation of a component with specific props and optional assertions for testing.
 
 ## Story Structure
 
 ### Basic Story
 
 ```python
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 def this_subject() -> Subject:
     return Subject(
@@ -156,7 +156,7 @@ Sections group related subjects:
 
 ```python
 # my_project/components/__init__.py
-from storytime import Section
+from storyville import Section
 from my_project.components.button.stories import this_subject as button_subject
 from my_project.components.card.stories import this_subject as card_subject
 
@@ -183,7 +183,7 @@ Catalog (auto-discovered from package)
 ```
 
 **Auto-discovery:**
-- Storytime scans for `stories.py` files
+- Storyville scans for `stories.py` files
 - Each `stories.py` must have `this_subject()` function
 - Optional `__init__.py` with `this_section()` for grouping
 

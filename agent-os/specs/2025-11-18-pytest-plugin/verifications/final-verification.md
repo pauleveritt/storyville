@@ -21,7 +21,7 @@ The pytest plugin implementation successfully delivers automatic test generation
 - [x] Task Group 1: Configuration Schema and Plugin Registration
   - [x] 1.1 Write 2-8 focused tests for configuration handling (5 tests)
   - [x] 1.2 Add `[project.entry-points.pytest11]` to pyproject.toml
-  - [x] 1.3 Create `/src/storytime/pytest_plugin.py` module (514 lines)
+  - [x] 1.3 Create `/src/storyville/pytest_plugin.py` module (514 lines)
   - [x] 1.4 Add configuration options to pyproject.toml
   - [x] 1.5 Ensure configuration tests pass
 
@@ -55,8 +55,8 @@ The pytest plugin implementation successfully delivers automatic test generation
 
 - [x] Task Group 6: Manual Testing Fixtures and Examples
   - [x] 6.1 Write 2-8 focused tests for fixtures (6 tests)
-  - [x] 6.2 Implement `storytime_site` fixture
-  - [x] 6.3 Implement `storytime_story` fixture factory
+  - [x] 6.2 Implement `storyville_site` fixture
+  - [x] 6.3 Implement `storyville_story` fixture factory
   - [x] 6.4 Create example tests in `/tests/`
   - [x] 6.5 Ensure fixture tests pass
 
@@ -80,7 +80,7 @@ None - all tasks are marked complete and verified.
 ### Implementation Documentation
 The pytest plugin implementation is comprehensively documented through:
 
-- **Module docstring** in `src/storytime/pytest_plugin.py`: Detailed overview of key features, configuration, and manual testing fixtures with usage examples
+- **Module docstring** in `src/storyville/pytest_plugin.py`: Detailed overview of key features, configuration, and manual testing fixtures with usage examples
 - **Function and class docstrings**: All major functions (pytest_addoption, pytest_configure, pytest_collect_file) and classes (PluginConfig, StoryFileCollector, StoryAssertionItem) have detailed docstrings
 - **Example tests**: `tests/test_pytest_plugin_examples.py` demonstrates manual testing patterns with well-commented examples
 - **Inline comments**: Strategic comments throughout complex logic (tree traversal, path resolution, test item generation)
@@ -95,7 +95,7 @@ The pytest plugin implementation is comprehensively documented through:
 - `tests/test_pytest_plugin_examples.py` - Manual testing examples (6 tests)
 
 ### Configuration Documentation
-- **pyproject.toml**: Contains `[tool.storytime.pytest]` section with `story_paths` and `enabled` settings
+- **pyproject.toml**: Contains `[tool.storyville.pytest]` section with `story_paths` and `enabled` settings
 - **Entry point**: Proper registration under `[project.entry-points.pytest11]`
 
 ### Missing Documentation
@@ -113,7 +113,7 @@ None identified. Implementation is well-documented for production use.
 ### Notes
 The pytest plugin implementation fully satisfies the roadmap item's requirements by:
 - Providing automatic test generation from story assertions
-- Creating pytest helpers (`storytime_site`, `storytime_story` fixtures)
+- Creating pytest helpers (`storyville_site`, `storyville_story` fixtures)
 - Enabling render verification through automatic assertion execution
 - Supporting behavioral assertions through manual test writing capability
 
@@ -188,7 +188,7 @@ The single test failure is in application code unrelated to this feature and doe
 
 **Modern Python Standards:**
 - Uses Python 3.14+ type statement: `type ConfigDict = dict[str, Any]`
-- Uses structural pattern matching in `storytime_story` fixture for result handling
+- Uses structural pattern matching in `storyville_story` fixture for result handling
 - Uses PEP 604 union syntax: `StoryFileCollector | None`
 - Clean type hints throughout with proper `TYPE_CHECKING` guards
 
@@ -213,11 +213,11 @@ The single test failure is in application code unrelated to this feature and doe
 ### Plugin Features Verified
 
 **Configuration (Task Group 1):**
-- ✅ Reads `[tool.storytime.pytest]` from pyproject.toml
+- ✅ Reads `[tool.storyville.pytest]` from pyproject.toml
 - ✅ Supports `story_paths` and `enabled` settings
 - ✅ Default values work: `story_paths = ["examples/"]`, `enabled = true`
 - ✅ Path validation during plugin initialization
-- ✅ Entry point registration: `storytime = "storytime.pytest_plugin"`
+- ✅ Entry point registration: `storyville = "storyville.pytest_plugin"`
 
 **Discovery and Collection (Task Group 2):**
 - ✅ `pytest_collect_file` hook discovers stories.py files
@@ -248,8 +248,8 @@ The single test failure is in application code unrelated to this feature and doe
 - ✅ Formatted for pytest terminal reporter
 
 **Fixtures (Task Group 6):**
-- ✅ `storytime_site` fixture (session scope)
-- ✅ `storytime_story` fixture factory
+- ✅ `storyville_site` fixture (session scope)
+- ✅ `storyville_story` fixture factory
 - ✅ Example tests demonstrate manual testing
 - ✅ Well-documented usage patterns
 
@@ -258,13 +258,13 @@ The single test failure is in application code unrelated to this feature and doe
 **Plugin Registration:**
 ```toml
 [project.entry-points.pytest11]
-storytime = "storytime.pytest_plugin"
+storyville = "storyville.pytest_plugin"
 ```
 ✅ Verified in pyproject.toml
 
 **Configuration:**
 ```toml
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 story_paths = ["examples/"]
 enabled = true
 ```
@@ -295,10 +295,10 @@ enabled = true
 - ✅ Uses `pytest_collect_file` hook to discover story files
 - ✅ Only scans configured `story_paths` directories
 - ✅ Defaults to `story_paths = ["examples/"]`
-- ✅ Activates automatically when storytime is installed
+- ✅ Activates automatically when storyville is installed
 
 **Configuration Schema:**
-- ✅ `[tool.storytime.pytest]` section in pyproject.toml
+- ✅ `[tool.storyville.pytest]` section in pyproject.toml
 - ✅ `story_paths` setting with list of paths (default: ["examples/"])
 - ✅ `enabled` setting (default: true)
 - ✅ Uses pytest.Config.getini() API
@@ -336,8 +336,8 @@ enabled = true
 - ✅ No shared state between tests
 
 **Manual Testing Fixtures:**
-- ✅ `storytime_site` fixture
-- ✅ `storytime_story` fixture factory
+- ✅ `storyville_site` fixture
+- ✅ `storyville_story` fixture factory
 - ✅ Session scope for performance
 - ✅ Well-documented
 

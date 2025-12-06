@@ -3,10 +3,10 @@
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import html
 
-from storytime.story import Story
-from storytime.subject import Subject
-from storytime.subject.views import SubjectView
-from storytime.catalog.models import Catalog
+from storyville.story import Story
+from storyville.subject import Subject
+from storyville.subject.views import SubjectView
+from storyville.catalog.models import Catalog
 
 def test_subject_view_renders_title_in_h1() -> None:
     """Test SubjectView renders subject title in h1 element."""

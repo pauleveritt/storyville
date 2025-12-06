@@ -11,7 +11,7 @@ tests/test_layout_structure.py which uses tdom + aria-testing for faster executi
 import pytest
 from pathlib import Path
 from playwright.sync_api import Page, expect
-from storytime.build import build_site
+from storyville.build import build_site
 
 
 @pytest.fixture

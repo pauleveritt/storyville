@@ -1,7 +1,7 @@
 # Specification: Pathlib Migration
 
 ## Goal
-Comprehensively migrate all string-based path handling to use Python's `pathlib.Path` objects throughout the Storytime codebase, improving type safety, code clarity, and leveraging modern Python path handling capabilities.
+Comprehensively migrate all string-based path handling to use Python's `pathlib.Path` objects throughout the Storyville codebase, improving type safety, code clarity, and leveraging modern Python path handling capabilities.
 
 ## User Stories
 - As a developer, I want path operations to use type-safe Path objects so that I can catch path-related errors at type-check time rather than runtime
@@ -84,7 +84,7 @@ No visual assets provided (not applicable for this refactoring task).
 
 **`app.py` Path type hints and operations**
 - Function signatures use `Path` type for path parameters: `path: Path`, `output_dir: Path | None`
-- Uses `Path("src/storytime")` for constructing paths
+- Uses `Path("src/storyville")` for constructing paths
 - Uses `.exists()` for path validation
 - This demonstrates proper type hints and validation patterns to replicate
 

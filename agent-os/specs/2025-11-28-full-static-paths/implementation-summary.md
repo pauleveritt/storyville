@@ -1,23 +1,23 @@
 # Implementation Summary: Task Group 1 - Foundation Layer
 
 ## Overview
-Successfully implemented the Foundation Layer for the Full Static Paths feature. This layer provides core utilities for discovering static folders and calculating correct output paths with disambiguation between `storytime_static/` and `static/`.
+Successfully implemented the Foundation Layer for the Full Static Paths feature. This layer provides core utilities for discovering static folders and calculating correct output paths with disambiguation between `storyville_static/` and `static/`.
 
 ## Files Created
 
-### Source Code (`src/storytime/static_assets/`)
+### Source Code (`src/storyville/static_assets/`)
 
 1. **`__init__.py`**
-   - Main integration function: `copy_all_static_assets(storytime_base, input_dir, output_dir)`
+   - Main integration function: `copy_all_static_assets(storyville_base, input_dir, output_dir)`
    - Orchestrates discovery, validation, and copying of all static assets
    - Returns list of output paths for verification
 
 2. **`models.py`**
    - `StaticFolder` dataclass with:
      - `source_path: Path` - Absolute path to static folder
-     - `source_type: Literal["storytime", "input_dir"]` - Source type for disambiguation
+     - `source_type: Literal["storyville", "input_dir"]` - Source type for disambiguation
      - `relative_path: Path` - Path relative to base directory
-     - `output_prefix` property - Returns "storytime_static" or "static" based on source_type
+     - `output_prefix` property - Returns "storyville_static" or "static" based on source_type
      - `calculate_output_path(output_dir)` method - Calculates full output path
 
 3. **`discovery.py`**
@@ -92,9 +92,9 @@ Created 37 comprehensive tests across 6 test modules:
 ## Key Design Decisions
 
 ### Path Structure
-- **Disambiguation**: Uses `storytime_static/` for core assets, `static/` for input_dir assets
+- **Disambiguation**: Uses `storyville_static/` for core assets, `static/` for input_dir assets
 - **Preservation**: Maintains full directory path including final `/static/` for clarity
-- **Example**: `src/storytime/components/nav/static/style.css` → `output_dir/storytime_static/components/nav/static/style.css`
+- **Example**: `src/storyville/components/nav/static/style.css` → `output_dir/storyville_static/components/nav/static/style.css`
 
 ### Modern Python Features Used
 - **Type hints**: Full type annotations including `Literal` for source_type

@@ -14,18 +14,18 @@ This feature enables all node types (layouts, components, views, subjects, secti
 
 - [x] 1.0 Complete static path utilities foundation
   - [x] 1.1 Write 2-8 focused tests for static utilities
-    - Test static folder discovery from both `src/storytime` and `input_dir`
-    - Test path structure generation for disambiguation (`storytime_static/` vs `static/`)
+    - Test static folder discovery from both `src/storyville` and `input_dir`
+    - Test path structure generation for disambiguation (`storyville_static/` vs `static/`)
     - Test relative path calculation based on page depth (0, 1, 2)
     - Skip exhaustive edge case testing at this stage
-  - [x] 1.2 Create `src/storytime/static_assets/` package (Note: Changed from utils/static_paths.py to follow better package structure)
+  - [x] 1.2 Create `src/storyville/static_assets/` package (Note: Changed from utils/static_paths.py to follow better package structure)
     - Create utility modules for static asset handling
     - Follow existing code patterns from `nodes.py` for path resolution
   - [x] 1.3 Implement static folder discovery function
     - Function signature: `discover_static_folders(root_dir: Path, source_type: str) -> list[StaticFolder]`
     - Scan for all `static/` folders using `rglob("static")` pattern (similar to `make_site` scanning in `site/helpers.py`)
     - Return list of discovered folders with metadata (path, source type)
-    - Track source location (storytime vs input_dir) for output disambiguation
+    - Track source location (storyville vs input_dir) for output disambiguation
   - [x] 1.4 Implement path calculation utilities
     - Created `calculate_output_path()` function in `paths.py`
     - StaticFolder dataclass has `calculate_output_path()` method
@@ -45,12 +45,12 @@ This feature enables all node types (layouts, components, views, subjects, secti
 - Data structures support needed metadata
 
 **Reference Files:**
-- `src/storytime/nodes.py` lines 98-139 for path resolution patterns
-- `src/storytime/site/helpers.py` lines 33-38 for recursive scanning pattern
-- `src/storytime/components/layout/layout.py` lines 41-50 for depth calculation
+- `src/storyville/nodes.py` lines 98-139 for path resolution patterns
+- `src/storyville/site/helpers.py` lines 33-38 for recursive scanning pattern
+- `src/storyville/components/layout/layout.py` lines 41-50 for depth calculation
 
 **Implementation Notes:**
-- Created `src/storytime/static_assets/` package with the following modules:
+- Created `src/storyville/static_assets/` package with the following modules:
   - `__init__.py` - Main integration function `copy_all_static_assets()`
   - `models.py` - `StaticFolder` dataclass with `output_prefix` property and `calculate_output_path()` method
   - `discovery.py` - `discover_static_folders()` function using `rglob("static")`
@@ -74,47 +74,47 @@ This feature enables all node types (layouts, components, views, subjects, secti
 **Dependencies:** Task Group 1
 
 - [x] 2.0 Complete opt-in path rewriting utility using tree walker
-  - [x] 2.1 Extend `src/storytime/static_assets/paths.py` with relative path calculation
-    - Function: `calculate_relative_static_path(asset_path: str, page_depth: int, source_type: Literal["storytime", "input_dir"]) -> str`
-    - Takes an asset path like "static/nav.css" or "storytime_static/nav.css"
+  - [x] 2.1 Extend `src/storyville/static_assets/paths.py` with relative path calculation
+    - Function: `calculate_relative_static_path(asset_path: str, page_depth: int, source_type: Literal["storyville", "input_dir"]) -> str`
+    - Takes an asset path like "static/nav.css" or "storyville_static/nav.css"
     - Calculates "../" prefix based on page_depth
-    - Returns relative path like "../../storytime_static/components/nav/static/nav.css"
+    - Returns relative path like "../../storyville_static/components/nav/static/nav.css"
     - Add tests covering various depths (0, 1, 2, 3+)
-  - [x] 2.2 Create tree walker utilities in `src/storytime/static_assets/rewriting.py`
+  - [x] 2.2 Create tree walker utilities in `src/storyville/static_assets/rewriting.py`
     - Function: `walk_and_rewrite_static_refs(node: Node, page_depth: int, discovered_assets: dict[str, Path]) -> Node`
     - Uses tdom tree walker to traverse node tree recursively
     - Checks each element for asset-referencing attributes (`src`, `href`)
-    - Modifies attribute values in place when they start with "static/" or "storytime_static/"
+    - Modifies attribute values in place when they start with "static/" or "storyville_static/"
     - Preserves all other node properties and structure
     - Add comprehensive tests for various node structures
-  - [x] 2.3 Implement attribute rewriting logic in `src/storytime/static_assets/rewriting.py`
+  - [x] 2.3 Implement attribute rewriting logic in `src/storyville/static_assets/rewriting.py`
     - Function: `rewrite_element_attributes(element: Node, page_depth: int, discovered_assets: dict[str, Path]) -> None`
     - Inspects element attributes for static asset references
     - Rewrites attribute values in place on the node
     - Handles `src` for `<script>`, `<img>`, `<source>` tags
     - Handles `href` for `<link>` tags
     - Add tests for edge cases (missing attributes, non-static paths)
-  - [x] 2.4 Create main opt-in utility function in `src/storytime/static_assets/rewriting.py`
+  - [x] 2.4 Create main opt-in utility function in `src/storyville/static_assets/rewriting.py`
     - Function: `rewrite_static_paths(node: Node, page_depth: int, discovered_assets: dict[str, Path]) -> Node`
     - Accepts tdom Node as input
     - Calls tree walker to find and rewrite all static references
     - Returns modified Node with rewritten paths
     - Works directly with node tree, no string conversion
     - Add tests for Node input with various structures
-  - [x] 2.5 Add asset path resolution in `src/storytime/static_assets/rewriting.py`
+  - [x] 2.5 Add asset path resolution in `src/storyville/static_assets/rewriting.py`
     - Function: `resolve_static_asset_path(asset_ref: str, discovered_assets: dict[str, Path]) -> str | None`
-    - Takes reference like "static/nav.css" or "storytime_static/components/nav/static/nav.css"
+    - Takes reference like "static/nav.css" or "storyville_static/components/nav/static/nav.css"
     - Looks up in discovered_assets dict to find full output path
     - Returns full path preserving structure, or None if not found
     - Add tests with various asset references
-  - [x] 2.6 Create helper to build discovered assets dict in `src/storytime/static_assets/__init__.py`
-    - Function: `build_discovered_assets_map(storytime_base: Path, input_dir: Path, output_dir: Path) -> dict[str, Path]`
+  - [x] 2.6 Create helper to build discovered assets dict in `src/storyville/static_assets/__init__.py`
+    - Function: `build_discovered_assets_map(storyville_base: Path, input_dir: Path, output_dir: Path) -> dict[str, Path]`
     - Discovers all static folders using existing discovery functions
     - Builds mapping from short references to full output paths
-    - Example: {"static/nav.css" → Path("output/storytime_static/components/nav/static/nav.css")}
+    - Example: {"static/nav.css" → Path("output/storyville_static/components/nav/static/nav.css")}
     - Returns dict for use with rewrite_static_paths()
     - Add integration tests
-  - [x] 2.7 Add validation and error handling in `src/storytime/static_assets/rewriting.py`
+  - [x] 2.7 Add validation and error handling in `src/storyville/static_assets/rewriting.py`
     - Function: `validate_static_reference(asset_ref: str, discovered_assets: dict[str, Path]) -> tuple[bool, str | None]`
     - Checks if a referenced asset exists in discovered_assets
     - Returns (True, full_path) if found, (False, error_message) if not
@@ -133,12 +133,12 @@ This feature enables all node types (layouts, components, views, subjects, secti
 - Quality checks pass: `just test`, `just typecheck`, `just fmt`
 
 **Reference Files:**
-- `src/storytime/story/models.py` (Layout.depth property for page depth calculation)
+- `src/storyville/story/models.py` (Layout.depth property for page depth calculation)
 - Existing HTML manipulation patterns in the codebase
 - tdom Node documentation for Node type handling
 
 **Implementation Notes:**
-- Created `src/storytime/static_assets/rewriting.py` with all required functions:
+- Created `src/storyville/static_assets/rewriting.py` with all required functions:
   - `calculate_relative_static_path()` - Calculates relative paths based on page depth
   - `find_static_references()` - Parses HTML to find static asset references
   - `rewrite_static_path()` - Rewrites a specific path in HTML
@@ -146,8 +146,8 @@ This feature enables all node types (layouts, components, views, subjects, secti
   - `resolve_static_asset_path()` - Resolves short references to full paths
   - `validate_static_reference()` - Validates asset references
   - `build_discovered_assets_map()` - Builds asset mapping dictionary
-- Extended `src/storytime/static_assets/paths.py` with `calculate_relative_static_path()`
-- Updated `src/storytime/static_assets/__init__.py` to export new functions
+- Extended `src/storyville/static_assets/paths.py` with `calculate_relative_static_path()`
+- Updated `src/storyville/static_assets/__init__.py` to export new functions
 - Created comprehensive tests in `tests/static_assets/test_rewriting.py`:
   - 7 tests for relative path calculation at various depths
   - 10 tests for HTML parsing and reference detection
@@ -178,12 +178,12 @@ This feature enables all node types (layouts, components, views, subjects, secti
     - Test preservation of directory structure
     - Skip testing hot reload at this stage
   - [x] 3.2 Remove existing site-level static handling
-    - Remove `static_dir` property from `src/storytime/site/models.py` line 26
-    - Remove `__post_init__` logic from `src/storytime/site/models.py` lines 29-35
-    - Remove static copying code from `src/storytime/build.py` lines 172-174
+    - Remove `static_dir` property from `src/storyville/site/models.py` line 26
+    - Remove `__post_init__` logic from `src/storyville/site/models.py` lines 29-35
+    - Remove static copying code from `src/storyville/build.py` lines 172-174
   - [x] 3.3 Add static discovery phase to build process
     - Add discovery before rendering phase in `build.py`
-    - Call discovery function for both `src/storytime` and `input_dir`
+    - Call discovery function for both `src/storyville` and `input_dir`
     - Store discovered static folders in data structure
     - Log discovered folders for debugging
   - [x] 3.4 Implement static asset copying phase
@@ -191,14 +191,14 @@ This feature enables all node types (layouts, components, views, subjects, secti
     - Loop through discovered static folders
     - Use `shutil.copytree` with `dirs_exist_ok=True` (reuse pattern from lines 172-174)
     - Copy from source static folder to appropriate output path:
-      - `src/storytime` assets → `output_dir/storytime_static/[path]/static/`
+      - `src/storyville` assets → `output_dir/storyville_static/[path]/static/`
       - `input_dir` assets → `output_dir/static/[path]/static/`
   - [x] 3.5 Add build logging
     - Log static folder discovery phase duration
     - Log static asset copying phase duration
     - Log number of static folders discovered and copied
   - [x] 3.6 Update Layout component to remove site.static_dir references
-    - Review `src/storytime/components/layout/layout.py` for any references
+    - Review `src/storyville/components/layout/layout.py` for any references
     - If found, update to use new path structure or remove if no longer needed
     - Layout already uses relative paths, so likely no changes needed
   - [x] 3.7 Ensure build integration tests pass
@@ -215,33 +215,33 @@ This feature enables all node types (layouts, components, views, subjects, secti
 - Build logging shows static processing phases
 
 **Reference Files:**
-- `src/storytime/build.py` lines 172-174 for copytree pattern
-- `src/storytime/site/models.py` lines 29-35 for removal
-- `src/storytime/site/helpers.py` lines 33-38 for discovery pattern integration
+- `src/storyville/build.py` lines 172-174 for copytree pattern
+- `src/storyville/site/models.py` lines 29-35 for removal
+- `src/storyville/site/helpers.py` lines 33-38 for discovery pattern integration
 
 **Implementation Notes:**
 - Removed `static_dir` property and `__post_init__` method from `Site` model
 - Updated `build.py` to:
-  - Import `copy_all_static_assets` from `storytime.static_assets`
-  - Import `PACKAGE_DIR` from `storytime` for storytime base path
+  - Import `copy_all_static_assets` from `storyville.static_assets`
+  - Import `PACKAGE_DIR` from `storyville` for storyville base path
   - Removed old static copying code (lines 172-174)
   - Added Phase 4: Static Assets discovery and copying
   - Determine input_dir from package_location using `importlib.util.find_spec`
-  - Call `copy_all_static_assets()` with storytime_base, input_dir, and output_dir
+  - Call `copy_all_static_assets()` with storyville_base, input_dir, and output_dir
   - Log static assets phase with folder count and duration
-- Updated `Layout` component to use new `storytime_static/components/layout/static/` path structure
+- Updated `Layout` component to use new `storyville_static/components/layout/static/` path structure
 - Updated `watchers.py` to:
   - Monitor all files in content_path (accept all)
-  - Monitor static files and folders in storytime_path (files with STATIC_EXTENSIONS or in "static" directory)
+  - Monitor static files and folders in storyville_path (files with STATIC_EXTENSIONS or in "static" directory)
   - Updated docstring to document static folder monitoring
 - Updated `tests/test_build.py` to:
-  - Expect assets in `storytime_static/` instead of `static/`
+  - Expect assets in `storyville_static/` instead of `static/`
   - Updated all stylesheet path assertions to use new structure
-  - Added test for storytime_static directory structure
+  - Added test for storyville_static directory structure
   - Added test to verify old static/ directory doesn't contain layout assets
   - Added test to verify static assets phase is logged
 - Created `tests/test_build_integration.py` with 14 comprehensive integration tests:
-  - Test build discovers storytime static folders
+  - Test build discovers storyville static folders
   - Test static assets copied to correct output paths
   - Test directory structure preservation
   - Test build succeeds without static folders
@@ -267,7 +267,7 @@ This feature enables all node types (layouts, components, views, subjects, secti
     - Total existing tests: 79 comprehensive tests covering all core functionality
   - [x] 4.2 Analyze test coverage gaps for full static paths feature
     - Identified critical workflows:
-      - End-to-end with both storytime and input_dir sources
+      - End-to-end with both storyville and input_dir sources
       - Opt-in utility function behavior (components that don't call it)
       - Error handling for missing/invalid static references
       - Performance with multiple assets
@@ -289,7 +289,7 @@ This feature enables all node types (layouts, components, views, subjects, secti
     - All tests address critical gaps identified in 4.2
   - [x] 4.4 Update existing build tests
     - Updated in Task Group 3 (test_build.py already modified)
-    - All assertions use new `storytime_static/` structure
+    - All assertions use new `storyville_static/` structure
     - Verified stylesheet paths work at all depths
   - [x] 4.5 Add integration test for opt-in utility function
     - Covered by test_opt_in_behavior_without_calling_rewrite
@@ -311,7 +311,7 @@ This feature enables all node types (layouts, components, views, subjects, secti
     - Type hints complete for all public APIs
   - [x] 4.9 Create example component using static assets
     - Layout component already demonstrates the feature
-    - Uses storytime_static/ path structure
+    - Uses storyville_static/ path structure
     - Shows relative path calculation at various depths
     - examples/minimal provides working integration
   - [x] 4.10 Run complete feature test suite
@@ -323,7 +323,7 @@ This feature enables all node types (layouts, components, views, subjects, secti
 - All feature-specific tests pass (89 tests total)
 - End-to-end workflows are validated
 - Collision prevention is verified
-- Both source types (storytime/input_dir) work correctly
+- Both source types (storyville/input_dir) work correctly
 - Relative paths are correct at all depths
 - Opt-in utility function works as expected
 - Hot reload support is implemented and tested
@@ -350,7 +350,7 @@ Recommended implementation sequence:
 
 ### Path Structure
 - **Two output directories for disambiguation:**
-  - `output_dir/storytime_static/` for assets from `src/storytime`
+  - `output_dir/storyville_static/` for assets from `src/storyville`
   - `output_dir/static/` for assets from `input_dir`
 - **Full path preservation:** `static/components/navigation_tree/static/nav.css`
 - **Collision prevention:** Different components with same filename won't conflict

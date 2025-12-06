@@ -15,7 +15,7 @@ configurable page titles and content insertion via a main element.
 
 **Layout Component Signature**
 
-- Create Layout as a dataclass in `src/storytime/components/layout/layout.py` (move from
+- Create Layout as a dataclass in `src/storyville/components/layout/layout.py` (move from
   `components/layout/__init__.py`)
 - Create a component test (aria-testing) in `components/layout/layout_test.py`
 - Accept three parameters: `view_title: str | None`, `site: Site`, `children: Element | Fragment | None`
@@ -40,7 +40,7 @@ configurable page titles and content insertion via a main element.
 
 **Static Assets Organization**
 
-- Move `src/storytime/static/` directory to `src/storytime/components/layout/static/`
+- Move `src/storyville/static/` directory to `src/storyville/components/layout/static/`
 - Move `bulma.css` file from old static location to new layout static location
 - Update Layout's CSS link href to reference new static directory location
 - Update Site model's `__post_init__` to look for static dir at new location (
@@ -83,7 +83,7 @@ configurable page titles and content insertion via a main element.
 
 **Navigation and Links**
 
-- Layout contains navbar with "Storytime" branding linking to "/"
+- Layout contains navbar with "Storyville" branding linking to "/"
 - Navbar includes "Home" and "Components" navigation items
 - Sidebar menu shows sections using existing SectionsListing component
 - Views maintain their existing internal links (parent links, section links, etc.)
@@ -100,7 +100,7 @@ No visual mockups provided.
 
 ## Existing Code to Leverage
 
-**Current Layout Component (src/storytime/components/layout/__init__.py)**
+**Current Layout Component (src/storyville/components/layout/__init__.py)**
 
 - Already defines dataclass with title, children, site parameters
 - Contains complete HTML structure with navbar, sidebar, and main content area

@@ -4,7 +4,7 @@ from pathlib import Path
 
 from tdom import html
 
-from storytime.static_assets.rewriting import (
+from storyville.static_assets.rewriting import (
     build_discovered_assets_map,
     calculate_relative_static_path,
     resolve_static_asset_path,
@@ -45,26 +45,26 @@ class TestCalculateRelativeStaticPath:
         )
         assert result == "../../../../static/components/nav/static/nav.css"
 
-    def test_depth_0_storytime_source(self) -> None:
-        """Test relative path calculation at depth 0 for storytime source."""
+    def test_depth_0_storyville_source(self) -> None:
+        """Test relative path calculation at depth 0 for storyville source."""
         result = calculate_relative_static_path(
-            "storytime_static/layout/static/style.css", 0, "storytime"
+            "storyville_static/layout/static/style.css", 0, "storyville"
         )
-        assert result == "../storytime_static/layout/static/style.css"
+        assert result == "../storyville_static/layout/static/style.css"
 
-    def test_depth_1_storytime_source(self) -> None:
-        """Test relative path calculation at depth 1 for storytime source."""
+    def test_depth_1_storyville_source(self) -> None:
+        """Test relative path calculation at depth 1 for storyville source."""
         result = calculate_relative_static_path(
-            "storytime_static/layout/static/style.css", 1, "storytime"
+            "storyville_static/layout/static/style.css", 1, "storyville"
         )
-        assert result == "../../storytime_static/layout/static/style.css"
+        assert result == "../../storyville_static/layout/static/style.css"
 
-    def test_depth_2_storytime_source(self) -> None:
-        """Test relative path calculation at depth 2 for storytime source."""
+    def test_depth_2_storyville_source(self) -> None:
+        """Test relative path calculation at depth 2 for storyville source."""
         result = calculate_relative_static_path(
-            "storytime_static/layout/static/style.css", 2, "storytime"
+            "storyville_static/layout/static/style.css", 2, "storyville"
         )
-        assert result == "../../../storytime_static/layout/static/style.css"
+        assert result == "../../../storyville_static/layout/static/style.css"
 
 
 # Task 2.2-2.4: Tests for tree walker-based path rewriting
@@ -92,37 +92,37 @@ class TestRewriteStaticPaths:
         result = rewrite_static_paths(node, page_depth=0, discovered_assets=assets)
         assert "../static/components/brand/static/logo.png" in str(result)
 
-    def test_rewrite_storytime_static(self) -> None:
-        """Test rewriting storytime_static prefixed paths."""
-        node = html(t'<div><script src="storytime_static/app.js"></script></div>')
+    def test_rewrite_storyville_static(self) -> None:
+        """Test rewriting storyville_static prefixed paths."""
+        node = html(t'<div><script src="storyville_static/app.js"></script></div>')
         assets = {
-            "storytime_static/app.js": Path(
-                "storytime_static/components/app/static/app.js"
+            "storyville_static/app.js": Path(
+                "storyville_static/components/app/static/app.js"
             )
         }
         result = rewrite_static_paths(node, page_depth=2, discovered_assets=assets)
-        assert "../../../storytime_static/components/app/static/app.js" in str(result)
+        assert "../../../storyville_static/components/app/static/app.js" in str(result)
 
     def test_rewrite_multiple_references(self) -> None:
         """Test rewriting multiple static references."""
         node = html(t'''
         <div>
             <link href="static/style.css" />
-            <script src="storytime_static/app.js"></script>
+            <script src="storyville_static/app.js"></script>
             <img src="static/logo.png" />
         </div>
         ''')
         assets = {
             "static/style.css": Path("static/components/nav/static/style.css"),
-            "storytime_static/app.js": Path(
-                "storytime_static/components/app/static/app.js"
+            "storyville_static/app.js": Path(
+                "storyville_static/components/app/static/app.js"
             ),
             "static/logo.png": Path("static/components/brand/static/logo.png"),
         }
         result = rewrite_static_paths(node, page_depth=2, discovered_assets=assets)
         result_str = str(result)
         assert "../../../static/components/nav/static/style.css" in result_str
-        assert "../../../storytime_static/components/app/static/app.js" in result_str
+        assert "../../../storyville_static/components/app/static/app.js" in result_str
         assert "../../../static/components/brand/static/logo.png" in result_str
 
     def test_ignore_external_urls(self) -> None:
@@ -194,15 +194,15 @@ class TestResolveStaticAssetPath:
         result = resolve_static_asset_path("static/nav.css", assets)
         assert result == "output/static/components/nav/static/nav.css"
 
-    def test_resolve_storytime_static(self) -> None:
-        """Test resolving storytime_static prefixed assets."""
+    def test_resolve_storyville_static(self) -> None:
+        """Test resolving storyville_static prefixed assets."""
         assets = {
-            "storytime_static/app.js": Path(
-                "output/storytime_static/components/app/static/app.js"
+            "storyville_static/app.js": Path(
+                "output/storyville_static/components/app/static/app.js"
             )
         }
-        result = resolve_static_asset_path("storytime_static/app.js", assets)
-        assert result == "output/storytime_static/components/app/static/app.js"
+        result = resolve_static_asset_path("storyville_static/app.js", assets)
+        assert result == "output/storyville_static/components/app/static/app.js"
 
     def test_resolve_not_found(self) -> None:
         """Test resolving when asset is not found."""
@@ -239,12 +239,12 @@ class TestBuildDiscoveredAssetsMap:
     def test_build_assets_map_from_discovery(self, tmp_path: Path) -> None:
         """Test building assets map from discovered static folders."""
         # Create test directory structure
-        storytime_base = tmp_path / "src" / "storytime"
+        storyville_base = tmp_path / "src" / "storyville"
         input_dir = tmp_path / "input"
         output_dir = tmp_path / "output"
 
-        # Create a storytime static folder with a file
-        st_static = storytime_base / "components" / "nav" / "static"
+        # Create a storyville static folder with a file
+        st_static = storyville_base / "components" / "nav" / "static"
         st_static.mkdir(parents=True)
         (st_static / "nav.css").write_text("/* nav styles */")
 
@@ -254,38 +254,38 @@ class TestBuildDiscoveredAssetsMap:
         (input_static / "button.css").write_text("/* button styles */")
 
         # Build the assets map
-        assets = build_discovered_assets_map(storytime_base, input_dir, output_dir)
+        assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
-        # Verify storytime asset is in map
-        assert "storytime_static/nav.css" in assets
+        # Verify storyville asset is in map
+        assert "storyville_static/nav.css" in assets
 
         # Verify input_dir asset is in map
         assert "static/button.css" in assets
 
     def test_empty_directories(self, tmp_path: Path) -> None:
         """Test building assets map with no static folders."""
-        storytime_base = tmp_path / "src" / "storytime"
+        storyville_base = tmp_path / "src" / "storyville"
         input_dir = tmp_path / "input"
         output_dir = tmp_path / "output"
 
         # Create empty directories
-        storytime_base.mkdir(parents=True)
+        storyville_base.mkdir(parents=True)
         input_dir.mkdir(parents=True)
 
         # Build the assets map
-        assets = build_discovered_assets_map(storytime_base, input_dir, output_dir)
+        assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
         # Should return empty dict
         assert len(assets) == 0
 
     def test_nonexistent_directories(self, tmp_path: Path) -> None:
         """Test building assets map with nonexistent directories."""
-        storytime_base = tmp_path / "nonexistent_storytime"
+        storyville_base = tmp_path / "nonexistent_storyville"
         input_dir = tmp_path / "nonexistent_input"
         output_dir = tmp_path / "output"
 
         # Build the assets map (should not crash)
-        assets = build_discovered_assets_map(storytime_base, input_dir, output_dir)
+        assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
         # Should return empty dict
         assert len(assets) == 0
@@ -298,36 +298,36 @@ class TestRewritingIntegration:
     def test_end_to_end_rewriting(self, tmp_path: Path) -> None:
         """Test complete workflow from discovery to rewriting."""
         # Setup: Create test directory structure
-        storytime_base = tmp_path / "src" / "storytime"
+        storyville_base = tmp_path / "src" / "storyville"
         input_dir = tmp_path / "input"
         output_dir = tmp_path / "output"
 
         # Create static folders with files
-        st_static = storytime_base / "components" / "nav" / "static"
+        st_static = storyville_base / "components" / "nav" / "static"
         st_static.mkdir(parents=True)
         (st_static / "nav.css").write_text("/* nav */")
 
         # Build assets map
-        assets = build_discovered_assets_map(storytime_base, input_dir, output_dir)
+        assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
         # Create HTML referencing the asset (using tdom node)
-        node = html(t'<div><link rel="stylesheet" href="storytime_static/nav.css" /></div>')
+        node = html(t'<div><link rel="stylesheet" href="storyville_static/nav.css" /></div>')
 
         # Rewrite paths
         result = rewrite_static_paths(node, 2, assets)
 
         # Verify the path was rewritten correctly
-        assert "../../../storytime_static/components/nav/static/nav.css" in str(result)
+        assert "../../../storyville_static/components/nav/static/nav.css" in str(result)
 
     def test_complex_html_document(self, tmp_path: Path) -> None:
         """Test rewriting in a complex HTML document."""
         # Setup
-        storytime_base = tmp_path / "src" / "storytime"
+        storyville_base = tmp_path / "src" / "storyville"
         input_dir = tmp_path / "input"
         output_dir = tmp_path / "output"
 
         # Create multiple static files
-        st_static = storytime_base / "layout" / "static"
+        st_static = storyville_base / "layout" / "static"
         st_static.mkdir(parents=True)
         (st_static / "style.css").write_text("/* style */")
         (st_static / "app.js").write_text("// app")
@@ -337,15 +337,15 @@ class TestRewritingIntegration:
         (in_static / "button.css").write_text("/* button */")
 
         # Build assets map
-        assets = build_discovered_assets_map(storytime_base, input_dir, output_dir)
+        assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
         # Complex HTML (using tdom node)
         node = html(t"""
         <html>
         <head>
-            <link rel="stylesheet" href="storytime_static/style.css" />
+            <link rel="stylesheet" href="storyville_static/style.css" />
             <link rel="stylesheet" href="static/button.css" />
-            <script src="storytime_static/app.js"></script>
+            <script src="storyville_static/app.js"></script>
         </head>
         <body>
             <h1>Test</h1>
@@ -358,6 +358,6 @@ class TestRewritingIntegration:
 
         # Verify all paths were rewritten
         result_str = str(result)
-        assert "../../storytime_static/layout/static/style.css" in result_str
+        assert "../../storyville_static/layout/static/style.css" in result_str
         assert "../../static/components/button/static/button.css" in result_str
-        assert "../../storytime_static/layout/static/app.js" in result_str
+        assert "../../storyville_static/layout/static/app.js" in result_str

@@ -42,27 +42,27 @@ section.
 
 **File Location**
 
-- Create new file at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/site_view.py`
+- Create new file at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/views/site_view.py`
 - Place in views directory alongside index_view.py (which will be removed)
 
 **Remove IndexView**
 
-- Delete `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/index_view.py`
-- Delete `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/__init__.py`
-- Delete `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/stories.py`
-- Remove entire `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/index/` directory
+- Delete `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/views/index_view.py`
+- Delete `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/index/__init__.py`
+- Delete `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/index/stories.py`
+- Remove entire `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/index/` directory
 - Remove any test files that reference IndexView (search needed to identify)
 
 **Type Safety**
 
 - Add type annotations to all parameters and return types
 - Import Node type from tdom
-- Import Site type from storytime.site
+- Import Site type from storyville.site
 - Use proper type hints for the site parameter and __call__ return value
 
 **Testing Requirements**
 
-- Create test file at `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_site_view.py`
+- Create test file at `/Users/pauleveritt/projects/t-strings/storyville/tests/views/test_site_view.py`
 - Test that SiteView returns a Node when called
 - Test rendering with empty Site (no sections)
 - Test rendering with single section
@@ -75,14 +75,14 @@ section.
 
 - Import dataclass from dataclasses
 - Import html and Node from tdom
-- Import Site from storytime.site (or appropriate location based on codebase structure)
+- Import Site from storyville.site (or appropriate location based on codebase structure)
 - Follow existing import patterns from ComponentView and SectionsListing
 
 ## Existing Code to Leverage
 
 **SectionsListing Component**
 
-- Located at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/sections_listing/__init__.py`
+- Located at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/sections_listing/__init__.py`
 - Shows dataclass pattern with list parameter and `__call__` returning Node
 - Demonstrates list comprehension inside t-string:
   `{[html(t"<{SectionListing} section={section} />") for section in self.sections]}`
@@ -91,21 +91,21 @@ section.
 
 **ComponentView Component**
 
-- Located at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/component_view/__init__.py`
+- Located at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/component_view/__init__.py`
 - Clean example of dataclass component with single parameter and `__call__` method
 - Shows proper type annotation pattern for parameters and return value
 - Demonstrates embedding variables in t-string templates: `{self.story.title}`
 
 **Site Model**
 
-- Located at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/models.py`
+- Located at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/models.py`
 - Has `items: dict[str, Section]` attribute to iterate over
 - Extends BaseNode with name and title fields
 - Access sections via `site.items.values()` or `site.items.items()` for name/section pairs
 
 **Section Model**
 
-- Located at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`
+- Located at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/models.py`
 - Has `title: str | None` inherited from BaseNode
 - Has `description: str | None` attribute for optional descriptions
 - Has `items: dict[str, Subject]` attribute where len() gives subject count
@@ -113,7 +113,7 @@ section.
 
 **BaseNode Pattern**
 
-- Located at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`
+- Located at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py`
 - Provides name and title fields to Site and Section
 - Site and Section both extend BaseNode and have consistent attribute access
 

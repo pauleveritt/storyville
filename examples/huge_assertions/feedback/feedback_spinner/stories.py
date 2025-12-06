@@ -1,7 +1,7 @@
 """The subject for the FeedbackSpinner component."""
 
 from examples.huge_assertions.feedback.feedback_spinner.feedback_spinner import FeedbackSpinner
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

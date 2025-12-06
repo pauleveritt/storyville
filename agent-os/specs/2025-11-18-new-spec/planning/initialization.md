@@ -5,7 +5,7 @@
 
 ## Initial Description
 
-Add assertion capabilities to Storytime stories that run in the **StoryView UI** during development, displaying **pass/fail badges** in the rendered HTML page.
+Add assertion capabilities to Storyville stories that run in the **StoryView UI** during development, displaying **pass/fail badges** in the rendered HTML page.
 
 ### Key Design Decision
 
@@ -30,7 +30,7 @@ Earlier conversation mentioned:
 
 ## Context
 
-This spec is being created for Storytime, a component-driven development platform for Python 3.14+.
+This spec is being created for Storyville, a component-driven development platform for Python 3.14+.
 
 **Product Context:**
 - Framework-independent component development system

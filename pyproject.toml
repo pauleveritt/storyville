@@ -1,10 +1,10 @@
 [project]
-name = "storytime"
+name = "storyville"
 version = "0.1.0"
 description = "Story-based component development for Python."
 authors = [{ name = "Paul Everitt", email = "pauleveritt@me.com" }]
 license = "MIT"
-repository = "https://github.com/pauleveritt/storytime"
+repository = "https://github.com/pauleveritt/storyville"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.14",
@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.entry-points.pytest11]
-storytime = "storytime.pytest_plugin"
+storyville = "storyville.pytest_plugin"
 
 [tool.pytest.ini_options]
 testpaths = ["src", "tests", "examples/complete"]
@@ -30,7 +30,7 @@ markers = [
     "playwright: marks tests that use playwright (conflicts with anyio tests)",
 ]
 
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = true
 
 [tool.anyio]
@@ -60,4 +60,4 @@ dev = [
 ]
 
 [project.scripts]
-storytime = "storytime.__main__:main"
+storyville = "storyville.__main__:main"

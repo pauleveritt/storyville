@@ -1,7 +1,7 @@
 """The subject for the LayoutGrid component."""
 
 from examples.huge.layout.layout_grid.layout_grid import LayoutGrid
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

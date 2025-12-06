@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from storytime.subinterpreter_pool import create_pool, shutdown_pool
-from storytime.watchers import watch_and_rebuild
+from storyville.subinterpreter_pool import create_pool, shutdown_pool
+from storyville.watchers import watch_and_rebuild
 
 
 @pytest.mark.slow
@@ -28,7 +28,7 @@ async def test_end_to_end_watcher_rebuild_flow(tmp_path: Path) -> None:
         stories_file = content_path / "stories.py"
         stories_file.write_text(
             '''
-from storytime import Story
+from storyville import Story
 
 def home() -> Story:
     return Story(title="Test")
@@ -43,7 +43,7 @@ def home() -> Story:
         # Create async rebuild callback that uses subinterpreter
         from functools import partial
 
-        from storytime.subinterpreter_pool import rebuild_callback_subinterpreter
+        from storyville.subinterpreter_pool import rebuild_callback_subinterpreter
 
         rebuild_callback = partial(
             rebuild_callback_subinterpreter,
@@ -54,7 +54,7 @@ def home() -> Story:
         watcher_task = asyncio.create_task(
             watch_and_rebuild(
                 content_path=content_path,
-                storytime_path=None,  # Not testing static files here
+                storyville_path=None,  # Not testing static files here
                 rebuild_callback=rebuild_callback,
                 broadcast_callback=broadcast_mock,
                 package_location="examples.minimal",
@@ -68,7 +68,7 @@ def home() -> Story:
         # Modify the stories.py file to trigger rebuild
         stories_file.write_text(
             '''
-from storytime import Story
+from storyville import Story
 
 def home() -> Story:
     return Story(title="Test Modified")

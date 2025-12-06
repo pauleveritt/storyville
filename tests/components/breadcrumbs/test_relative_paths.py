@@ -3,7 +3,7 @@
 Tests for Task Group 7: Relative Path Conversion
 """
 
-from storytime.components.breadcrumbs.breadcrumbs import Breadcrumbs
+from storyville.components.breadcrumbs.breadcrumbs import Breadcrumbs
 
 
 def test_breadcrumbs_section_depth_1() -> None:

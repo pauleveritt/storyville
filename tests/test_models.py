@@ -2,7 +2,7 @@
 
 from tdom import Element
 
-from storytime.models import View
+from storyville.models import View
 
 
 def test_view_protocol_with_simple_dataclass(simple_view) -> None:

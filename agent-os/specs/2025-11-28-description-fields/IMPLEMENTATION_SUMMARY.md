@@ -30,14 +30,14 @@ description_p = (
 )
 ```
 
-**Tests Created:** 4 tests in `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject_view.py`
+**Tests Created:** 4 tests in `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject_view.py`
 1. `test_subject_view_description_renders()` - Verifies description renders after title, before Target line
 2. `test_subject_view_description_skipped_when_none()` - Verifies None descriptions are skipped
 3. `test_subject_view_description_skipped_when_empty()` - Verifies empty string descriptions are skipped
 4. `test_subject_view_description_html_escaped()` - Verifies HTML escaping works automatically
 
 **Files Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
 
 ### Task Group 3: StoryView Description Rendering
 **Status:** COMPLETE
@@ -60,7 +60,7 @@ description_p = (
 )
 ```
 
-**Tests Created:** 6 tests in `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_story_view.py`
+**Tests Created:** 6 tests in `/Users/pauleveritt/projects/t-strings/storyville/tests/test_story_view.py`
 1. `test_story_view_description_renders_mode_b()` - Verifies Mode B description rendering
 2. `test_story_view_description_renders_mode_c()` - Verifies Mode C description rendering
 3. `test_story_view_description_not_rendered_mode_a()` - Verifies Mode A does NOT render description
@@ -69,7 +69,7 @@ description_p = (
 6. (Implicitly tests both with-badges and without-badges paths through Mode B and Mode C tests)
 
 **Files Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`
 
 ### Task Group 4: Quality Checks and Integration Testing
 **Status:** PENDING
@@ -124,13 +124,13 @@ This pattern:
 ## Files Created
 
 ### Test Files
-1. `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject_view.py` (4 tests)
-2. `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_story_view.py` (6 tests)
+1. `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject_view.py` (4 tests)
+2. `/Users/pauleveritt/projects/t-strings/storyville/tests/test_story_view.py` (6 tests)
 
 ### Modified Files
-1. `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py` (updated conditional check)
-2. `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py` (added description rendering)
-3. `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py` (added description rendering to Modes B & C)
+1. `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py` (updated conditional check)
+2. `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py` (added description rendering)
+3. `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py` (added description rendering to Modes B & C)
 
 ## Testing Coverage
 
@@ -196,37 +196,37 @@ This pattern:
 
 ### 4.1 Run Focused Feature Tests
 ```bash
-cd /Users/pauleveritt/projects/pauleveritt/storytime
+cd /Users/pauleveritt/projects/t-strings/storyville
 uv run pytest tests/test_subject_view.py -v
 uv run pytest tests/test_story_view.py -v
 ```
 
 ### 4.2 Run Full Test Suite
 ```bash
-cd /Users/pauleveritt/projects/pauleveritt/storytime
+cd /Users/pauleveritt/projects/t-strings/storyville
 just test
 ```
 
 ### 4.3 Run Type Checking
 ```bash
-cd /Users/pauleveritt/projects/pauleveritt/storytime
+cd /Users/pauleveritt/projects/t-strings/storyville
 just typecheck
 ```
 
 ### 4.4 Run Code Formatting
 ```bash
-cd /Users/pauleveritt/projects/pauleveritt/storytime
+cd /Users/pauleveritt/projects/t-strings/storyville
 just fmt
 ```
 
 ### 4.5 Manual Browser Verification
 ```bash
 # Build the site
-cd /Users/pauleveritt/projects/pauleveritt/storytime
-uv run python -m storytime.cli build --package examples.minimal --output /tmp/storytime-test
+cd /Users/pauleveritt/projects/t-strings/storyville
+uv run python -m storyville.cli build --package examples.minimal --output /tmp/storyville-test
 
 # Open in browser
-open /tmp/storytime-test/index.html
+open /tmp/storyville-test/index.html
 ```
 
 **Verification Checklist:**

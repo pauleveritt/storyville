@@ -78,14 +78,14 @@ None - all tasks complete.
 
 ### Implementation Documentation
 
-The implementation followed the task breakdown documented in `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-16-new-feature/tasks.md`. All tasks are marked complete with detailed acceptance criteria verification.
+The implementation followed the task breakdown documented in `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-16-new-feature/tasks.md`. All tasks are marked complete with detailed acceptance criteria verification.
 
 ### Specification Adherence
 
-Implementation verified against `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-16-new-feature/spec.md`:
+Implementation verified against `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-16-new-feature/spec.md`:
 
 - Dual watch system architecture implemented correctly
-- INPUT watcher monitors both content directory and `src/storytime/` static assets
+- INPUT watcher monitors both content directory and `src/storyville/` static assets
 - OUTPUT watcher monitors build output directory
 - WebSocket server at `/ws/reload` endpoint integrated
 - WebSocket client JavaScript with reconnection and debouncing
@@ -108,7 +108,7 @@ None - no individual task implementation reports were created, but the comprehen
 
 ### Notes
 
-Roadmap item 4 marked complete in `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/product/roadmap.md`. This feature provides the foundation for developer productivity during component development.
+Roadmap item 4 marked complete in `/Users/pauleveritt/projects/t-strings/storyville/agent-os/product/roadmap.md`. This feature provides the foundation for developer productivity during component development.
 
 ---
 
@@ -138,7 +138,7 @@ Roadmap item 4 marked complete in `/Users/pauleveritt/projects/pauleveritt/story
 2. **File Watcher Tests** (7 tests in `tests/test_watchers.py`, marked `@pytest.mark.slow`):
    - test_input_watcher_detects_content_changes
    - test_input_watcher_detects_static_asset_changes
-   - test_input_watcher_ignores_python_files_in_storytime
+   - test_input_watcher_ignores_python_files_in_storyville
    - test_output_watcher_detects_build_changes
    - test_watcher_can_be_started_and_stopped
    - test_input_watcher_handles_rebuild_errors
@@ -213,21 +213,21 @@ Result: 186 tests passed in 11.11 seconds.
 ### Key Files Created/Modified
 
 **New Files:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js` - WebSocket client JavaScript (93 lines)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/websocket.py` - WebSocket server endpoint and broadcast functionality
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/watchers.py` - INPUT and OUTPUT file watchers
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_websocket.py` - 6 WebSocket tests
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_watchers.py` - 7 watcher tests
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_hotreload_integration.py` - 9 integration tests
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js` - WebSocket client JavaScript (93 lines)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/websocket.py` - WebSocket server endpoint and broadcast functionality
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/watchers.py` - INPUT and OUTPUT file watchers
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_websocket.py` - 6 WebSocket tests
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_watchers.py` - 7 watcher tests
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_hotreload_integration.py` - 9 integration tests
 
 **Modified Files:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/app.py` - Added WebSocketRoute and lifespan integration
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__main__.py` - Updated serve command
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py` - Added script injection
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/components/test_layout.py` - Added 6 script injection tests
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_app.py` - Added lifespan tests
-- `/Users/pauleveritt/projects/pauleveritt/storytime/pyproject.toml` - Added slow marker configuration
-- `/Users/pauleveritt/projects/pauleveritt/storytime/conftest.py` - Added anyio configuration
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/app.py` - Added WebSocketRoute and lifespan integration
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__main__.py` - Updated serve command
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py` - Added script injection
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/components/test_layout.py` - Added 6 script injection tests
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_app.py` - Added lifespan tests
+- `/Users/pauleveritt/projects/t-strings/storyville/pyproject.toml` - Added slow marker configuration
+- `/Users/pauleveritt/projects/t-strings/storyville/conftest.py` - Added anyio configuration
 
 ### Acceptance Criteria Verification
 
@@ -253,7 +253,7 @@ Result: 186 tests passed in 11.11 seconds.
 - 6 tests pass
 
 **Task Group 4: File Watchers and Rebuild Logic**
-- INPUT watcher monitors both content directory and `src/storytime/` static assets
+- INPUT watcher monitors both content directory and `src/storyville/` static assets
 - File changes trigger rebuild via `build_site()`
 - OUTPUT watcher monitors build output directory
 - Output changes trigger WebSocket broadcast
@@ -286,7 +286,7 @@ Result: 186 tests passed in 11.11 seconds.
 
 **INPUT Watcher:**
 - Monitors content directory (user files)
-- Monitors `src/storytime/` for static assets only (.css, .js, .png, .jpg, .svg, .ico)
+- Monitors `src/storyville/` for static assets only (.css, .js, .png, .jpg, .svg, .ico)
 - Ignores Python cache files
 - Triggers `build_site()` on changes
 - Server-side debouncing implemented
@@ -336,7 +336,7 @@ The feature is ready for development use. Consider future enhancements:
 
 Manual end-to-end testing should be performed to verify browser behavior:
 
-1. Start development server: `uv run storytime serve`
+1. Start development server: `uv run storyville serve`
 2. Open browser at http://localhost:8080
 3. Verify WebSocket connection in browser DevTools
 4. Modify a content file and verify automatic reload

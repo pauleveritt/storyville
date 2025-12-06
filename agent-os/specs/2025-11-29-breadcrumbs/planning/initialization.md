@@ -8,7 +8,7 @@ Put the path to the current node in a breadcrumbs-style navigation, in `<main>` 
 
 ## Context
 
-The breadcrumbs component has been created at `src/storytime/components/breadcrumbs/breadcrumbs.py` and integrated into `LayoutMain`. The component shows a hierarchy like: Home → Section → Subject → Story.
+The breadcrumbs component has been created at `src/storyville/components/breadcrumbs/breadcrumbs.py` and integrated into `LayoutMain`. The component shows a hierarchy like: Home → Section → Subject → Story.
 
 However, based on the code review:
 

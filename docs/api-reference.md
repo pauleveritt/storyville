@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API documentation for Storytime.
+Complete API documentation for Storyville.
 
 ## Core Classes
 
@@ -44,7 +44,7 @@ Returns the rendered component (Element or Fragment), or None if no target.
 **Example:**
 
 ```python
-from storytime import Story
+from storyville import Story
 
 story = Story(
     title="Primary Button",
@@ -78,7 +78,7 @@ class Subject(TreeNode):
 **Example:**
 
 ```python
-from storytime import Subject, Story
+from storyville import Subject, Story
 
 def this_subject() -> Subject:
     return Subject(
@@ -112,7 +112,7 @@ class Section(TreeNode):
 **Example:**
 
 ```python
-from storytime import Section
+from storyville import Section
 
 def this_section() -> Section:
     return Section(
@@ -143,7 +143,7 @@ class Catalog(TreeNode):
 **Created automatically by:**
 
 ```python
-from storytime import make_catalog
+from storyville import make_catalog
 
 catalog = make_catalog("my_package")
 ```
@@ -257,7 +257,7 @@ def make_catalog(package_location: str) -> Catalog:
 **Example:**
 
 ```python
-from storytime import make_catalog
+from storyville import make_catalog
 
 catalog = make_catalog("my_package")
 print(catalog.title)
@@ -284,7 +284,7 @@ def find_path(catalog: Catalog, path: str) -> TreeNode | Story | None:
 **Example:**
 
 ```python
-from storytime import make_catalog, find_path
+from storyville import make_catalog, find_path
 
 catalog = make_catalog("my_package")
 subject = find_path(catalog, ".components.button")
@@ -316,7 +316,7 @@ def build_catalog(
 
 ```python
 from pathlib import Path
-from storytime.build import build_site
+from storyville.build import build_site
 
 build_site(
     package_location="my_package",
@@ -359,7 +359,7 @@ def create_app(
 
 ```python
 from pathlib import Path
-from storytime.app import create_app
+from storyville.app import create_app
 
 app = create_app(
     path=Path("./dist"),
@@ -378,7 +378,7 @@ app = create_app(
 Start development server:
 
 ```bash
-storytime serve [PACKAGE] [OPTIONS]
+storyville serve [PACKAGE] [OPTIONS]
 ```
 
 **Options:**
@@ -390,7 +390,7 @@ storytime serve [PACKAGE] [OPTIONS]
 Build static catalog:
 
 ```bash
-storytime build [PACKAGE] [OUTPUT_DIR]
+storyville build [PACKAGE] [OUTPUT_DIR]
 ```
 
 **Arguments:**
@@ -407,7 +407,7 @@ The plugin is automatically registered and requires minimal configuration.
 [tool.pytest.ini_options]
 testpaths = ["tests", "examples/"]
 
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = true
 ```
 
@@ -448,7 +448,7 @@ class TreeNode(BaseNode):
 
 ## Exceptions
 
-Storytime uses standard Python exceptions:
+Storyville uses standard Python exceptions:
 
 - `AssertionError` - Raised by failing assertions
 - `ImportError` - Package/module import failures
@@ -456,6 +456,6 @@ Storytime uses standard Python exceptions:
 
 ## Next Steps
 
-- [Getting Started](getting-started.md) - Begin using Storytime
+- [Getting Started](getting-started.md) - Begin using Storyville
 - [Writing Stories](writing-stories.md) - Create your stories
 - [pytest Plugin](pytest-plugin.md) - Testing integration

@@ -1,9 +1,9 @@
 """Tests for BaseNode resource_path functionality."""
 
 
-from storytime.catalog import Catalog
-from storytime.section import Section
-from storytime.subject import Subject
+from storyville.catalog import Catalog
+from storyville.section import Section
+from storyville.subject import Subject
 
 
 def test_base_node_resource_path_initialization():

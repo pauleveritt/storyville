@@ -6,7 +6,7 @@ import pytest
 @pytest.mark.slow
 def test_story_renders_fresh(pytestconfig: pytest.Config):
     """Test that story is rendered fresh for each test execution."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     catalog = make_catalog("examples.huge_assertions")
 
@@ -30,7 +30,7 @@ def test_story_renders_fresh(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_assertion_executed_against_fresh_instance(pytestconfig: pytest.Config):
     """Test that assertion is executed against freshly rendered instance."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     catalog = make_catalog("examples.huge_assertions")
 
@@ -60,7 +60,7 @@ def test_assertion_executed_against_fresh_instance(pytestconfig: pytest.Config):
 @pytest.mark.slow
 def test_no_cached_results_used(pytestconfig: pytest.Config):
     """Test that cached assertion_results are not used."""
-    from storytime.catalog.helpers import make_catalog
+    from storyville.catalog.helpers import make_catalog
 
     catalog = make_catalog("examples.huge_assertions")
 

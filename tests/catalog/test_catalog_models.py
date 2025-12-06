@@ -2,7 +2,7 @@
 
 
 
-from storytime.catalog.models import Catalog
+from storyville.catalog.models import Catalog
 
 
 def test_catalog_post_update(mock_tree_node) -> None:

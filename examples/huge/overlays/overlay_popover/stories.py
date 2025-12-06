@@ -1,7 +1,7 @@
 """The subject for the OverlayPopover component."""
 
 from examples.huge.overlays.overlay_popover.overlay_popover import OverlayPopover
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

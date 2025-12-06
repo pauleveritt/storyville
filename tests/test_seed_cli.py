@@ -2,12 +2,10 @@
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from unittest.mock import patch
 
-import pytest
 from typer.testing import CliRunner
 
-from storytime.__main__ import app
+from storyville.__main__ import app
 
 runner = CliRunner()
 

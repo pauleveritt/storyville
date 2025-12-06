@@ -7,8 +7,8 @@ from unittest.mock import patch
 from starlette.applications import Starlette
 from starlette.testclient import TestClient
 
-from storytime.app import create_app
-from storytime.build import build_site
+from storyville.app import create_app
+from storyville.build import build_site
 
 
 # Task Group 1 Tests: Application Factory
@@ -147,7 +147,7 @@ def test_app_starts_with_watchers_when_all_params_provided(tmp_path: Path) -> No
     """Test that app starts with unified watcher when all required params provided."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_and_rebuild") as mock_watcher:
+    with patch("storyville.app.watch_and_rebuild") as mock_watcher:
         # Make the mock watcher run forever until cancelled
         async def mock_watcher_fn(*args, **kwargs):
             try:
@@ -180,9 +180,9 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
 
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_and_rebuild") as mock_watcher, \
-         patch("storytime.app.build_site") as mock_build, \
-         patch("storytime.app.broadcast_reload_async") as mock_broadcast:
+    with patch("storyville.app.watch_and_rebuild") as mock_watcher, \
+         patch("storyville.app.build_site") as mock_build, \
+         patch("storyville.app.broadcast_reload_async") as mock_broadcast:
 
         # Make the mock watcher run forever until cancelled
         async def mock_watcher_fn(*args, **kwargs):
@@ -234,7 +234,7 @@ def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
             watcher_cancelled = True
             raise
 
-    with patch("storytime.app.watch_and_rebuild", side_effect=mock_unified_watcher):
+    with patch("storyville.app.watch_and_rebuild", side_effect=mock_unified_watcher):
 
         app = create_app(
             path=tmp_path,
@@ -269,7 +269,7 @@ def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
     """Test that app doesn't start watcher if only some params are provided."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storytime.app.watch_and_rebuild") as mock_watcher:
+    with patch("storyville.app.watch_and_rebuild") as mock_watcher:
 
         # Only provide some params (not all required)
         app = create_app(

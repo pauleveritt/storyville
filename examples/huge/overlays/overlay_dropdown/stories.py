@@ -1,7 +1,7 @@
 """The subject for the OverlayDropdown component."""
 
 from examples.huge.overlays.overlay_dropdown.overlay_dropdown import OverlayDropdown
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -1,11 +1,13 @@
-# Storytime Documentation
+# Storyville Documentation
+
+## Overview
 
 ```{include} ../README.md
-:start-after: "## 🎯 What is Storytime?"
+:start-after: "## 🎯 What is Storyville?"
 :end-before: "---"
 ```
 
-## Features Overview
+## Features
 
 ```{include} ../README.md
 :start-after: "## ✨ Key Features"
@@ -31,6 +33,7 @@ static
 :caption: Reference
 
 api-reference
+cli-reference
 architecture
 ```
 

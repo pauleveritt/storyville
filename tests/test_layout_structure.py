@@ -9,7 +9,7 @@ import pytest
 from pathlib import Path
 from tdom.parser import parse_html
 from aria_testing import get_by_role, get_by_tag_name, query_all_by_tag_name, get_text_content
-from storytime.build import build_site
+from storyville.build import build_site
 
 
 @pytest.fixture
@@ -102,7 +102,7 @@ def test_footer_displays_copyright(built_site: Path) -> None:
     footer = get_by_tag_name(doc, "footer")
     assert footer is not None
     footer_text = get_text_content(footer)
-    assert "2025 Storytime" in footer_text
+    assert "2025 Storyville" in footer_text
 
 
 @pytest.mark.slow

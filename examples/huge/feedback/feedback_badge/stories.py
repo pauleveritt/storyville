@@ -1,7 +1,7 @@
 """The subject for the FeedbackBadge component."""
 
 from examples.huge.feedback.feedback_badge.feedback_badge import FeedbackBadge
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

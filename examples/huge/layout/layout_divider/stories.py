@@ -1,7 +1,7 @@
 """The subject for the LayoutDivider component."""
 
 from examples.huge.layout.layout_divider.layout_divider import LayoutDivider
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

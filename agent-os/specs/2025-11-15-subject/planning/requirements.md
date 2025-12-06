@@ -15,9 +15,9 @@ a Story does not have a component, and the Subject does, it can pass in the Subj
 **Q1:** I assume the parent-child hierarchy is: Site → Section → Subject → Story. Is that correct?
 **Answer:** YES
 
-**Q2:** I'm thinking the package should be located at `src/storytime/subject/` with `models.py` and `views.py` inside.
+**Q2:** I'm thinking the package should be located at `src/storyville/subject/` with `models.py` and `views.py` inside.
 Should we follow this structure?
-**Answer:** YES - follow the `src/storytime/story/` pattern with models.py and views.py
+**Answer:** YES - follow the `src/storyville/story/` pattern with models.py and views.py
 
 **Q3:** For the `target` attribute (the callable component/view), should both Subject and Story have this field, with
 Story optionally inheriting from Subject if not specified?
@@ -47,7 +47,7 @@ inline editing, reordering)?
 
 **Similar Features Identified:**
 
-- Feature: Story package - Path: `src/storytime/story/`
+- Feature: Story package - Path: `src/storyville/story/`
 - Components to potentially reuse: Follow the same package structure pattern (models.py, views.py)
 - Backend logic to reference: Story.post_update() protocol for inheritance
 
@@ -79,7 +79,7 @@ No visual assets provided.
     - Has a parent relationship to Section (hierarchy: Site → Section → Subject → Story)
     - Has a `target` attribute (renamed from `component`) for the component/view/callable
     - Contains a list of Story instances
-    - Follows the same package structure as Story (`src/storytime/subject/` with `models.py` and `views.py`)
+    - Follows the same package structure as Story (`src/storyville/subject/` with `models.py` and `views.py`)
 
 - Create SubjectView that:
     - Renders subject metadata/title
@@ -97,7 +97,7 @@ No visual assets provided.
 
 ### Reusability Opportunities
 
-- Package structure: Follow `src/storytime/story/` pattern (models.py and views.py split)
+- Package structure: Follow `src/storyville/story/` pattern (models.py and views.py split)
 - Inheritance protocol: Keep Story.post_update() pattern for target inheritance
 - Empty state pattern: Similar approach to other views in the application
 
@@ -123,10 +123,10 @@ No visual assets provided.
 
 ### Technical Considerations
 
-- Package location: `src/storytime/subject/` with `models.py` and `views.py`
+- Package location: `src/storyville/subject/` with `models.py` and `views.py`
 - Test location: `tests/subject/`
 - Parent-child hierarchy: Site → Section → Subject → Story
 - Attribute naming: Use `target` (not `component`) for both Subject and Story
 - Inheritance protocol: Story.post_update() checks `self.parent.target`
 - Rendering approach: Simple cards with metadata, no StoryView nesting
-- Similar code patterns to follow: `src/storytime/story/` package structure
+- Similar code patterns to follow: `src/storyville/story/` package structure

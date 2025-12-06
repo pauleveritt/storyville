@@ -1,6 +1,6 @@
-"""Build a Storytime catalog to a tmpdir and test.
+"""Build a Storyville catalog to a tmpdir and test.
 
-These tests will be testing the Storytime UI itself using
+These tests will be testing the Storyville UI itself using
 the stories written for that UI.
 """
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
-from storytime.build import build_catalog
+from storyville.build import build_catalog
 from tdom import Node
 from tdom.parser import parse_html
 
@@ -40,7 +40,7 @@ def test_index(output_dir: Path) -> None:
 def test_static_css(output_dir: Path) -> None:
     """Confirm that the chosen CSS file made it to the build dir."""
 
-    # Static assets from storytime core should be in single static/ directory with paths preserved
+    # Static assets from storyville core should be in single static/ directory with paths preserved
     assert (output_dir / "static").exists()
     pico_file = output_dir / "static" / "components" / "layout" / "static" / "pico-main.css"
     assert pico_file.exists()
@@ -83,7 +83,7 @@ def test_about_page_content(output_dir: Path) -> None:
     """Test that about page has correct content."""
     page = get_page(output_dir / "about.html")
     h1 = get_by_tag_name(page, "h1")
-    assert get_text_content(h1) == "About Storytime"
+    assert get_text_content(h1) == "About Storyville"
 
 
 def test_debug_page_created(output_dir: Path) -> None:
@@ -110,7 +110,7 @@ def test_stylesheet_path_at_catalog_root(output_dir: Path) -> None:
     # Verify hrefs are correct for depth=0 (root level) with nested path structure
     hrefs = [link.attrs.get("href") for link in links]
     assert "static/components/layout/static/pico-main.css" in hrefs  # No ../ prefix for root pages
-    assert "static/components/layout/static/storytime.css" in hrefs
+    assert "static/components/layout/static/storyville.css" in hrefs
 
 
 def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
@@ -125,7 +125,7 @@ def test_stylesheet_path_at_section_depth(output_dir: Path) -> None:
     # Verify hrefs are correct for depth=1 (one directory deep)
     hrefs = [link.attrs.get("href") for link in links]
     assert "../static/components/layout/static/pico-main.css" in hrefs
-    assert "../static/components/layout/static/storytime.css" in hrefs
+    assert "../static/components/layout/static/storyville.css" in hrefs
 
 
 def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
@@ -140,7 +140,7 @@ def test_stylesheet_path_at_subject_depth(output_dir: Path) -> None:
     # Verify hrefs are correct for depth=2 (two directories deep)
     hrefs = [link.attrs.get("href") for link in links]
     assert "../../static/components/layout/static/pico-main.css" in hrefs
-    assert "../../static/components/layout/static/storytime.css" in hrefs
+    assert "../../static/components/layout/static/storyville.css" in hrefs
 
 
 def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
@@ -159,15 +159,15 @@ def test_output_dir_cleared_before_build(tmp_path: Path) -> None:
     assert (tmp_path / "static").exists()
 
 
-def test_storytime_static_directory_structure(output_dir: Path) -> None:
-    """Test that storytime static assets are in single static/ directory with path preservation."""
+def test_storyville_static_directory_structure(output_dir: Path) -> None:
+    """Test that storyville static assets are in single static/ directory with path preservation."""
     # Check that static/ directory exists
     static_dir = output_dir / "static"
     assert static_dir.exists()
 
     # Verify specific assets exist with preserved path structure
     assert (static_dir / "components" / "layout" / "static" / "pico-main.css").exists()
-    assert (static_dir / "components" / "layout" / "static" / "storytime.css").exists()
+    assert (static_dir / "components" / "layout" / "static" / "storyville.css").exists()
 
 
 def test_static_directory_contains_layout_assets(output_dir: Path) -> None:
@@ -178,7 +178,7 @@ def test_static_directory_contains_layout_assets(output_dir: Path) -> None:
 
     # Verify it contains layout assets with preserved paths
     assert (static_dir / "components" / "layout" / "static" / "pico-main.css").exists()
-    assert (static_dir / "components" / "layout" / "static" / "storytime.css").exists()
+    assert (static_dir / "components" / "layout" / "static" / "storyville.css").exists()
 
 
 def test_static_assets_phase_logs(output_dir: Path, caplog) -> None:

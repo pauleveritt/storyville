@@ -1,7 +1,7 @@
 """The subject for the FormButton component."""
 
 from examples.huge.forms.form_button.form_button import FormButton
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

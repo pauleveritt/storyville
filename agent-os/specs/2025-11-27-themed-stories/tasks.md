@@ -44,7 +44,7 @@ Total Tasks: 4 task groups with 22 sub-tasks
     - Test ThemedStory passes story_title and children props correctly
     - Test ThemedStory returns full HTML structure (DOCTYPE, html, head, body)
     - Skip exhaustive testing of all component states
-  - [x] 2.2 Create ThemedStory component file at src/storytime/components/themed_story/themed_story.py
+  - [x] 2.2 Create ThemedStory component file at src/storyville/components/themed_story/themed_story.py
     - Implement as dataclass with fields: story_title (str), children (Node), site (Site)
     - Add __call__() -> Node method following Layout pattern
     - Check if site.themed_layout exists, use it if present

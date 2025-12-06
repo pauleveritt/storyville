@@ -3,12 +3,12 @@
 Tests for Task Group 3: Component Renaming (current_path → resource_path)
 """
 
-from storytime.catalog.models import Catalog
-from storytime.components.aside.aside import LayoutAside
-from storytime.components.breadcrumbs.breadcrumbs import Breadcrumbs
-from storytime.components.layout.layout import Layout
-from storytime.components.main.main import LayoutMain
-from storytime.components.navigation_tree.navigation_tree import NavigationTree
+from storyville.catalog.models import Catalog
+from storyville.components.aside.aside import LayoutAside
+from storyville.components.breadcrumbs.breadcrumbs import Breadcrumbs
+from storyville.components.layout.layout import Layout
+from storyville.components.main.main import LayoutMain
+from storyville.components.navigation_tree.navigation_tree import NavigationTree
 
 
 def test_layout_accepts_resource_path() -> None:

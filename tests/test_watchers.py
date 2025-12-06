@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from storytime.watchers import watch_and_rebuild
+from storyville.watchers import watch_and_rebuild
 
 
 @pytest.mark.slow
@@ -38,7 +38,7 @@ async def test_input_watcher_detects_content_changes(tmp_path: Path) -> None:
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=None,
+            storyville_path=None,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",
@@ -77,12 +77,12 @@ async def test_input_watcher_detects_content_changes(tmp_path: Path) -> None:
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> None:
-    """Test unified watcher detects static asset changes in src/storytime/."""
+    """Test unified watcher detects static asset changes in src/storyville/."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
-    storytime_dir = tmp_path / "storytime"
-    storytime_dir.mkdir()
+    storyville_dir = tmp_path / "storyville"
+    storyville_dir.mkdir()
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
@@ -100,7 +100,7 @@ async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> Non
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=storytime_dir,
+            storyville_path=storyville_dir,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",
@@ -113,8 +113,8 @@ async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> Non
         # Wait for watcher to be ready
         await asyncio.wait_for(watcher_ready.wait(), timeout=2.0)
 
-        # Create a CSS file in storytime directory
-        static_dir = storytime_dir / "static"
+        # Create a CSS file in storyville directory
+        static_dir = storyville_dir / "static"
         static_dir.mkdir()
         css_file = static_dir / "style.css"
         css_file.write_text("body { color: red; }")
@@ -136,18 +136,18 @@ async def test_input_watcher_detects_static_asset_changes(tmp_path: Path) -> Non
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -> None:
-    """Test unified watcher ignores Python files in src/storytime/."""
+async def test_input_watcher_ignores_python_files_in_storyville(tmp_path: Path) -> None:
+    """Test unified watcher ignores Python files in src/storyville/."""
     # Setup
     content_dir = tmp_path / "content"
     content_dir.mkdir()
     # Create dummy file to stabilize content directory
     (content_dir / ".gitkeep").write_text("")
 
-    storytime_dir = tmp_path / "storytime"
-    storytime_dir.mkdir()
-    # Create dummy file to stabilize storytime directory
-    (storytime_dir / ".gitkeep").write_text("")
+    storyville_dir = tmp_path / "storyville"
+    storyville_dir.mkdir()
+    # Create dummy file to stabilize storyville directory
+    (storyville_dir / ".gitkeep").write_text("")
 
     output_dir = tmp_path / "output"
     output_dir.mkdir()
@@ -166,7 +166,7 @@ async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=storytime_dir,
+            storyville_path=storyville_dir,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",
@@ -182,8 +182,8 @@ async def test_input_watcher_ignores_python_files_in_storytime(tmp_path: Path) -
         # Clear any initial events
         rebuild_called.clear()
 
-        # Create a Python file in storytime directory (should be ignored)
-        py_file = storytime_dir / "test.py"
+        # Create a Python file in storyville directory (should be ignored)
+        py_file = storyville_dir / "test.py"
         py_file.write_text("print('hello')")
 
         # Wait a bit to ensure watcher doesn't trigger
@@ -225,7 +225,7 @@ async def test_watcher_can_be_started_and_stopped(tmp_path: Path) -> None:
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=None,
+            storyville_path=None,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test",
@@ -282,7 +282,7 @@ async def test_input_watcher_handles_rebuild_errors(tmp_path: Path) -> None:
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=None,
+            storyville_path=None,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",
@@ -357,7 +357,7 @@ async def test_unified_watcher_triggers_rebuild_and_broadcast(tmp_path: Path) ->
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=None,
+            storyville_path=None,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",
@@ -425,7 +425,7 @@ async def test_unified_watcher_does_not_broadcast_on_build_failure(tmp_path: Pat
     watcher_task = asyncio.create_task(
         watch_and_rebuild(
             content_path=content_dir,
-            storytime_path=None,
+            storyville_path=None,
             rebuild_callback=rebuild_callback,
             broadcast_callback=broadcast_callback,
             package_location="test_package",

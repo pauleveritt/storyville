@@ -4,7 +4,7 @@
 Total Tasks: 12
 Estimated Duration: 2-3 hours
 
-This task breakdown refactors the existing Section class from a single-file module (`src/storytime/section.py`) into a package structure with models.py and views.py, following the established patterns from Subject and Story packages. The Section will gain an optional description field and a SectionView for rendering.
+This task breakdown refactors the existing Section class from a single-file module (`src/storyville/section.py`) into a package structure with models.py and views.py, following the established patterns from Subject and Story packages. The Section will gain an optional description field and a SectionView for rendering.
 
 ## Task List
 
@@ -22,11 +22,11 @@ This task breakdown refactors the existing Section class from a single-file modu
     - Test Section with items dict[str, Subject]
     - Pattern: Follow `tests/subject/test_subject_models.py` structure
   - [x] 1.2 Create section package directory structure
-    - Create directory: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/`
+    - Create directory: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/`
     - Create empty `__init__.py` (will populate after model and view are ready)
   - [x] 1.3 Create Section model in models.py
-    - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`
-    - Move Section class from `src/storytime/section.py`
+    - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/models.py`
+    - Move Section class from `src/storyville/section.py`
     - Add `description: str | None = None` field
     - Keep existing: `parent: Site | None = None`
     - Keep existing: `items: dict[str, Subject] = field(default_factory=dict)`
@@ -62,7 +62,7 @@ This task breakdown refactors the existing Section class from a single-file modu
     - Use aria-testing utilities: `get_by_tag_name`, `get_text_content`, `query_all_by_tag_name`
     - Use type guard: `assert isinstance(result, Element)` in tests
   - [x] 2.2 Create SectionView in views.py
-    - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
+    - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
     - Create dataclass with `section: Section` field
     - Implement `__call__(self) -> Node` method (View Protocol)
     - Use tdom `html(t"""...""")` template syntax
@@ -73,7 +73,7 @@ This task breakdown refactors the existing Section class from a single-file modu
     - Use URL pattern: `subject-{idx}` or key-based from dict
     - Empty state: Show "No subjects defined for this section" when items is empty
     - Include parent link: `<a href="..">Parent</a>`
-    - Pattern: Follow SubjectView structure from `src/storytime/subject/views.py`
+    - Pattern: Follow SubjectView structure from `src/storyville/subject/views.py`
     - Add docstring explaining rendering behavior
   - [x] 2.3 Run focused view tests
     - Command: `pytest tests/section/test_section_views.py -v`
@@ -93,19 +93,19 @@ This task breakdown refactors the existing Section class from a single-file modu
 
 - [x] 3.0 Complete package integration
   - [x] 3.1 Create package exports in __init__.py
-    - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/__init__.py`
+    - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/__init__.py`
     - Export Section from models
     - Export SectionView from views
-    - Pattern: Follow `src/storytime/subject/__init__.py` structure
+    - Pattern: Follow `src/storyville/subject/__init__.py` structure
     - Add `__all__ = ["Section", "SectionView"]`
   - [x] 3.2 Update imports in dependent files
-    - Update `src/storytime/site.py` if needed
-    - Change from `from storytime.section import Section`
-    - To: `from storytime.section.models import Section` (or use package import)
+    - Update `src/storyville/site.py` if needed
+    - Change from `from storyville.section import Section`
+    - To: `from storyville.section.models import Section` (or use package import)
     - Verify Site.items dict[str, Section] continues working
     - Check make_site() function compatibility
   - [x] 3.3 Remove old section.py file
-    - Delete: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section.py`
+    - Delete: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section.py`
     - Only after verifying package structure works
   - [x] 3.4 Run section-specific tests
     - Command: `pytest tests/section/ -v`
@@ -195,12 +195,12 @@ Recommended implementation sequence:
 - **Modern Python**: Use PEP 604 union syntax (`X | None`), built-in generics (`dict[str, Subject]`)
 
 ### Key Files
-- Existing: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section.py` (to migrate)
-- New: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/models.py`
-- New: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
-- New: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/__init__.py`
-- New: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_models.py`
-- New: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py`
+- Existing: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section.py` (to migrate)
+- New: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/models.py`
+- New: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
+- New: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/__init__.py`
+- New: `/Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_models.py`
+- New: `/Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_views.py`
 
 ### Technical Constraints
 - Section.items remains `dict[str, Subject]` (do NOT convert to list)

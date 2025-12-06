@@ -3,10 +3,10 @@
 from aria_testing import get_text_content, query_all_by_tag_name
 from tdom import html
 
-from storytime.catalog.models import Catalog
-from storytime.story import Story
-from storytime.story.views import StoryView
-from storytime.subject import Subject
+from storyville.catalog.models import Catalog
+from storyville.story import Story
+from storyville.story.views import StoryView
+from storyville.subject import Subject
 
 def test_complete_workflow_story_with_assertions_to_badges() -> None:
     """Test complete flow: Story with assertions -> execution -> badge display."""

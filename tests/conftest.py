@@ -27,7 +27,7 @@ def cleanup_websocket_loop():
     yield
 
     # After test completes, clear any stale websocket globals only
-    from storytime import websocket
+    from storyville import websocket
     websocket._websocket_loop = None
     websocket._active_connections.clear()
 

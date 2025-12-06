@@ -5,14 +5,14 @@ from pathlib import Path
 import pytest
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom.parser import parse_html
-from storytime import make_catalog
-from storytime.build import build_catalog
-from storytime.section import Section
-from storytime.section.views import SectionView
-from storytime.story import Story
-from storytime.story.views import StoryView
-from storytime.subject import Subject
-from storytime.subject.views import SubjectView
+from storyville import make_catalog
+from storyville.build import build_catalog
+from storyville.section import Section
+from storyville.section.views import SectionView
+from storyville.story import Story
+from storyville.story.views import StoryView
+from storyville.subject import Subject
+from storyville.subject.views import SubjectView
 
 def test_complete_example_structure() -> None:
     """Test the complete example Catalog/Section/Subject hierarchy."""

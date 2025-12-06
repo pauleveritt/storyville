@@ -1,7 +1,7 @@
 """The Catalog for the complete example package."""
 
 
-from storytime import Catalog
+from storyville import Catalog
 
 
 def this_catalog() -> Catalog:

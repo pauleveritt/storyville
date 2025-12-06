@@ -2,7 +2,7 @@
 
 ## Initial Description
 
-Add hot reload capability to Storytime's development server. When source files change, the browser should automatically refresh to show the latest changes. This should work by watching for file changes and triggering a browser reload via WebSocket connection.
+Add hot reload capability to Storyville's development server. When source files change, the browser should automatically refresh to show the latest changes. This should work by watching for file changes and triggering a browser reload via WebSocket connection.
 
 ## Requirements Discussion
 
@@ -14,7 +14,7 @@ Add hot reload capability to Storytime's development server. When source files c
 **Q2:** I'm thinking we should use Starlette's built-in WebSocket support to send reload messages to the browser. Should we use this, or would you prefer a different WebSocket implementation?
 **Answer:** Yes, use Starlette's WebSocket support.
 
-**Q3:** For the watch process, should it monitor the INPUT directory (`src/storytime`) or the OUTPUT directory (where rendered HTML is generated), or both? I'm assuming we watch the INPUT since that's where source files change, but let me know if we should also watch the OUTPUT.
+**Q3:** For the watch process, should it monitor the INPUT directory (`src/storyville`) or the OUTPUT directory (where rendered HTML is generated), or both? I'm assuming we watch the INPUT since that's where source files change, but let me know if we should also watch the OUTPUT.
 **Answer:** Watch both directories independently.
 
 **Q4:** Should we implement any debouncing to avoid rapid-fire reloads if multiple files change at once (like during a git checkout)? If yes, what delay would you prefer?
@@ -35,7 +35,7 @@ Add hot reload capability to Storytime's development server. When source files c
 ### Existing Code to Reference
 
 **Similar Features Identified:**
-- None identified - this is a new capability for Storytime
+- None identified - this is a new capability for Storyville
 
 ### Follow-up Questions
 
@@ -45,8 +45,8 @@ Add hot reload capability to Storytime's development server. When source files c
 **Follow-up 2:** For the debouncing in the browser JavaScript - should there also be server-side debouncing for the file watcher, or only client-side debouncing?
 **Answer:** Debounce only in the browser JavaScript (not server-side), in case the server sends a bunch of messages.
 
-**Follow-up 3:** For filtering file types in the INPUT directory - since this is `src/storytime`, should we watch for changes to Python files (`.py`), or also static assets like CSS/JS if they exist there?
-**Answer:** Static assets live in `src/storytime` (the INPUT directory) - watch for changes to files ending in `.css`, `.js`, `.png`, etc.
+**Follow-up 3:** For filtering file types in the INPUT directory - since this is `src/storyville`, should we watch for changes to Python files (`.py`), or also static assets like CSS/JS if they exist there?
+**Answer:** Static assets live in `src/storyville` (the INPUT directory) - watch for changes to files ending in `.css`, `.js`, `.png`, etc.
 
 **Follow-up 4:** For the WebSocket message format - what should the simple reload message look like? Just `{"type": "reload"}` or something else?
 **Answer:** Simple reload message like `{"type": "reload"}` - this should cause the page to reload in the browser.
@@ -64,7 +64,7 @@ No visual assets to analyze.
 ### Functional Requirements
 
 **Dual Watch Architecture:**
-- INPUT watcher monitors `src/storytime/` directory for file changes
+- INPUT watcher monitors `src/storyville/` directory for file changes
 - When INPUT files change, trigger a rebuild of the component catalog
 - OUTPUT watcher monitors the generated/rendered HTML output directory
 - When OUTPUT files change (either from rebuild or manual edits), send WebSocket reload message
@@ -105,7 +105,7 @@ No visual assets to analyze.
 ### Scope Boundaries
 
 **In Scope:**
-- File watching for INPUT directory (`src/storytime/`)
+- File watching for INPUT directory (`src/storyville/`)
 - File watching for OUTPUT directory (rendered HTML)
 - Rebuild triggering when INPUT files change
 - WebSocket server endpoint using Starlette
@@ -140,7 +140,7 @@ No visual assets to analyze.
 - JSON for message serialization
 
 **File Locations:**
-- INPUT directory: `src/storytime/`
+- INPUT directory: `src/storyville/`
 - OUTPUT directory: To be determined (wherever rendered HTML is generated)
 - WebSocket endpoint: To be added to Starlette application
 - Client JavaScript: Injected into HTML or served as static file

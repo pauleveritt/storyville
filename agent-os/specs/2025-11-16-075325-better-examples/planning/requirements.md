@@ -10,7 +10,7 @@ render each part of the Site tree (each Section/Subject/Story) and use aria-test
 the components etc. being rendered.
 
 **Context:**
-This is for the Storytime project - a Python library for organizing component stories/documentation similar to
+This is for the Storyville project - a Python library for organizing component stories/documentation similar to
 Storybook.
 
 Key models in the codebase:
@@ -293,7 +293,7 @@ No similar existing features identified for reference. This work will be created
 - Follow modern Python 3.14+ standards including structural pattern matching, type statement, and PEP 604 union syntax
 
 **Model Fields to Exercise:**
-Based on Storytime models, examples should demonstrate optional field combinations for:
+Based on Storyville models, examples should demonstrate optional field combinations for:
 
 - Site: title, description, template variations
 - Section: title, description, template variations

@@ -62,7 +62,7 @@ output and triggers browser reloads.
         - Test script works at different depths (depth=0, 1, 2)
         - Use existing test patterns from `layout_test.py`
         - Limit to critical injection behaviors only
-    - [x] 2.2 Modify Layout component in `src/storytime/components/layout/layout.py`
+    - [x] 2.2 Modify Layout component in `src/storyville/components/layout/layout.py`
         - Inject `<script src="{ws_script_path}"></script>` tag before closing `</body>`
         - Reference WebSocket client JavaScript from static/ws.js
         - Use tdom t-string syntax for clean HTML interpolation
@@ -111,7 +111,7 @@ output and triggers browser reloads.
         - Clean up disconnected clients from connection list
         - Use async iteration and error handling
     - [x] 3.4 Integrate WebSocket route into app
-        - Modify `src/storytime/app.py` to add WebSocketRoute
+        - Modify `src/storyville/app.py` to add WebSocketRoute
         - Add route: `WebSocketRoute("/ws/reload", websocket_endpoint)`
         - Maintain existing StaticFiles mount and debug=True
         - Follow existing routing patterns
@@ -138,7 +138,7 @@ output and triggers browser reloads.
         - Add pytest marker to `pyproject.toml`:
           `markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]`
         - Test INPUT watcher detects content directory changes
-        - Test INPUT watcher detects static asset changes in `src/storytime/`
+        - Test INPUT watcher detects static asset changes in `src/storyville/`
         - Test OUTPUT watcher detects build output changes
         - Test watchers can be started and stopped cleanly
         - Use temporary directories and simulate file changes
@@ -148,7 +148,7 @@ output and triggers browser reloads.
         - Use `watchfiles` package for async file watching
         - Monitor TWO directories:
             1. Content directory (input_path argument) - watch all file types
-            2. `src/storytime/` - watch ONLY static files (`.css`, `.js`, `.png`, `.jpg`, `.svg`, `.ico`)
+            2. `src/storyville/` - watch ONLY static files (`.css`, `.js`, `.png`, `.jpg`, `.svg`, `.ico`)
         - Ignore Python cache files (`.pyc`, `__pycache__`)
         - Implement server-side debouncing to avoid multiple rebuilds
         - When changes detected, call `build_site()` function
@@ -211,7 +211,7 @@ output and triggers browser reloads.
         - Start INPUT and OUTPUT watcher tasks on startup
         - Stop watcher tasks on shutdown
         - Follow Starlette lifespan patterns
-        - Integrate into `create_app()` in `src/storytime/app.py`
+        - Integrate into `create_app()` in `src/storyville/app.py`
     - [x] 5.3 Manage Site instance lifecycle
         - Keep Site instance around for server duration
         - Pass Site or necessary paths to watcher functions
@@ -229,7 +229,7 @@ output and triggers browser reloads.
         - Clean up resources (file handles, WebSocket connections)
         - Log shutdown events
         - Handle Ctrl+C (SIGINT) gracefully
-    - [x] 5.6 Modify serve command in `src/storytime/__main__.py`
+    - [x] 5.6 Modify serve command in `src/storyville/__main__.py`
         - Integrate watchers via Starlette lifespan (not direct uvicorn changes)
         - Maintain TemporaryDirectory context manager
         - Keep existing uvicorn.run() call
@@ -333,7 +333,7 @@ output and triggers browser reloads.
 2. **File Watcher Tests** (7 tests in `tests/test_watchers.py` - marked `@pytest.mark.slow`):
    - INPUT watcher detecting content changes
    - INPUT watcher detecting static asset changes
-   - INPUT watcher ignoring Python files in storytime directory
+   - INPUT watcher ignoring Python files in storyville directory
    - OUTPUT watcher detecting build changes
    - Watcher lifecycle (start/stop)
    - Error handling (rebuild and broadcast errors)
@@ -368,14 +368,14 @@ output and triggers browser reloads.
 To manually verify the hot reload feature works correctly, follow these steps:
 
 ### Prerequisites
-- Ensure the application is built: `uv run storytime build`
+- Ensure the application is built: `uv run storyville build`
 - Ensure all tests pass: `just test`
 
 ### Test Procedure
 
 1. **Start the development server:**
    ```bash
-   uv run storytime serve
+   uv run storyville serve
    ```
    Expected: Server starts on http://localhost:8080, watchers are initialized
 
@@ -397,9 +397,9 @@ To manually verify the hot reload feature works correctly, follow these steps:
      - Updated content is visible
 
 4. **Test static asset change:**
-   - Modify `src/storytime/components/layout/static/pico-main.css` (change a color)
+   - Modify `src/storyville/components/layout/static/pico-main.css` (change a color)
    - Expected behavior:
-     - Server logs show file change in storytime static directory
+     - Server logs show file change in storyville static directory
      - Rebuild is triggered
      - Browser reloads
      - Updated styles are visible
@@ -414,7 +414,7 @@ To manually verify the hot reload feature works correctly, follow these steps:
    - Stop server (Ctrl+C)
    - Expected: Server shuts down gracefully, watchers stop
    - In browser console, you should see WebSocket connection closed
-   - Restart server: `uv run storytime serve`
+   - Restart server: `uv run storyville serve`
    - Expected behavior:
      - Browser WebSocket client automatically reconnects
      - Verify in browser console (no errors)
@@ -485,7 +485,7 @@ Recommended implementation sequence:
 - **Python 3.14+ standards**: Use modern async/await, type hints (PEP 604, 695), pattern matching
 - **No uvicorn reload flag**: Custom file watching instead of uvicorn's built-in reload
 - **Starlette lifespan**: Watchers integrated via lifespan context manager, not standalone processes
-- **Dual-directory monitoring**: INPUT watcher monitors both content and Storytime static directories
+- **Dual-directory monitoring**: INPUT watcher monitors both content and Storyville static directories
 - **Debouncing**: Both server-side (watcher) and client-side (JavaScript) debouncing
 - **Graceful error handling**: Build failures and WebSocket errors don't crash server
 

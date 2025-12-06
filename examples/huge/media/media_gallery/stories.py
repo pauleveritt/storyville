@@ -1,7 +1,7 @@
 """The subject for the MediaGallery component."""
 
 from examples.huge.media.media_gallery.media_gallery import MediaGallery
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

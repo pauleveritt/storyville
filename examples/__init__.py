@@ -1,1 +1,1 @@
-"""Example storytime collections used in docs and tests."""
+"""Example storyville collections used in docs and tests."""

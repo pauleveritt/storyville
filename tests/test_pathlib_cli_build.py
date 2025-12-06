@@ -7,7 +7,7 @@ correctly as part of the pathlib migration.
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from storytime.build import build_catalog
+from storyville.build import build_catalog
 
 
 def test_build_catalog_accepts_path_object() -> None:

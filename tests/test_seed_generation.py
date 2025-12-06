@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from storytime.__main__ import SizeConfig, seed
+from storyville.__main__ import SizeConfig
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def test_small_catalog_structure(temp_output_dir: Path) -> None:
     - 2 subjects within that section
     - Root stories.py and themed_layout subdirectory
     """
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -68,7 +68,7 @@ def test_section_subject_story_hierarchy(temp_output_dir: Path) -> None:
     - 4 subjects total distributed across sections
     - Each subject has stories.py and component file
     """
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=2, subjects=4, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -96,7 +96,7 @@ def test_section_subject_story_hierarchy(temp_output_dir: Path) -> None:
 
 def test_all_init_files_created(temp_output_dir: Path) -> None:
     """Test that all __init__.py files are created throughout the hierarchy."""
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=2, subjects=4, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -120,7 +120,7 @@ def test_all_init_files_created(temp_output_dir: Path) -> None:
 
 def test_themed_layout_component_copied(temp_output_dir: Path) -> None:
     """Test that ThemedLayout component is copied to correct location."""
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -138,7 +138,7 @@ def test_themed_layout_component_copied(temp_output_dir: Path) -> None:
 
 def test_root_stories_file_generated(temp_output_dir: Path) -> None:
     """Test that root stories.py file is created with Catalog definition."""
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -147,14 +147,14 @@ def test_root_stories_file_generated(temp_output_dir: Path) -> None:
     assert stories_file.exists()
 
     content = stories_file.read_text()
-    assert "from storytime import Catalog" in content
+    assert "from storyville import Catalog" in content
     assert "def this_catalog()" in content
     assert "themed_layout_wrapper" in content
 
 
 def test_component_files_in_subjects(temp_output_dir: Path) -> None:
     """Test that component files are generated in subject directories."""
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -180,7 +180,7 @@ def test_component_files_in_subjects(temp_output_dir: Path) -> None:
 
 def test_subject_stories_file_content(temp_output_dir: Path) -> None:
     """Test that subject stories.py files contain Subject definition and Story instances."""
-    from storytime.__main__ import generate_catalog
+    from storyville.__main__ import generate_catalog
 
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
@@ -195,7 +195,7 @@ def test_subject_stories_file_content(temp_output_dir: Path) -> None:
     assert stories_file.exists()
 
     content = stories_file.read_text()
-    assert "from storytime import Subject, Story" in content
+    assert "from storyville import Subject, Story" in content
     assert "def this_subject()" in content
     assert "Subject(" in content
     # Should have Story instances based on stories_per_subject

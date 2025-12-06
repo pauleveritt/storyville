@@ -3,7 +3,7 @@
 from pathlib import Path
 
 
-from storytime.static_assets.discovery import discover_static_folders
+from storyville.static_assets.discovery import discover_static_folders
 
 
 def test_discover_static_folders_finds_single_folder(tmp_path: Path) -> None:
@@ -17,12 +17,12 @@ def test_discover_static_folders_finds_single_folder(tmp_path: Path) -> None:
     (static_dir / "style.css").write_text("body { }")
 
     # Discover static folders
-    folders = discover_static_folders(tmp_path, "storytime")
+    folders = discover_static_folders(tmp_path, "storyville")
 
     # Verify results
     assert len(folders) == 1
     assert folders[0].source_path == static_dir
-    assert folders[0].source_type == "storytime"
+    assert folders[0].source_type == "storyville"
     assert folders[0].relative_path == Path("components/nav")
 
 
@@ -60,7 +60,7 @@ def test_discover_static_folders_empty_directory(tmp_path: Path) -> None:
     component_dir.mkdir(parents=True)
 
     # Discover static folders
-    folders = discover_static_folders(tmp_path, "storytime")
+    folders = discover_static_folders(tmp_path, "storyville")
 
     # Verify no folders found
     assert len(folders) == 0
@@ -71,7 +71,7 @@ def test_discover_static_folders_nonexistent_directory() -> None:
     nonexistent = Path("/nonexistent/path")
 
     # Discover static folders
-    folders = discover_static_folders(nonexistent, "storytime")
+    folders = discover_static_folders(nonexistent, "storyville")
 
     # Verify empty list returned
     assert len(folders) == 0
@@ -89,7 +89,7 @@ def test_discover_static_folders_ignores_static_files(tmp_path: Path) -> None:
     real_static.mkdir(parents=True)
 
     # Discover static folders
-    folders = discover_static_folders(tmp_path, "storytime")
+    folders = discover_static_folders(tmp_path, "storyville")
 
     # Verify only directory found
     assert len(folders) == 1
@@ -103,7 +103,7 @@ def test_discover_static_folders_nested_structure(tmp_path: Path) -> None:
     deep_static.mkdir(parents=True)
 
     # Discover static folders
-    folders = discover_static_folders(tmp_path, "storytime")
+    folders = discover_static_folders(tmp_path, "storyville")
 
     # Verify correct relative path
     assert len(folders) == 1
@@ -121,7 +121,7 @@ def test_discover_static_folders_preserves_full_path(tmp_path: Path) -> None:
     nav2_static.mkdir(parents=True)
 
     # Discover static folders
-    folders = discover_static_folders(tmp_path, "storytime")
+    folders = discover_static_folders(tmp_path, "storyville")
 
     # Verify full paths preserved
     assert len(folders) == 2

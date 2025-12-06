@@ -1,7 +1,7 @@
 """The subject for the FormTextarea component."""
 
 from examples.huge.forms.form_textarea.form_textarea import FormTextarea
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

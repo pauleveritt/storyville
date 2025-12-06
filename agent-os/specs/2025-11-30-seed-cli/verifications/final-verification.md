@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The Seed CLI feature has been successfully implemented with comprehensive functionality for generating example Storytime catalogs in three sizes (small, medium, large). The implementation includes CLI command integration, template-based catalog generation, diverse component examples, and complete documentation. However, verification reveals missing integration test files for end-to-end workflows (Task Group 4), though the core functionality appears complete and operational based on code inspection.
+The Seed CLI feature has been successfully implemented with comprehensive functionality for generating example Storyville catalogs in three sizes (small, medium, large). The implementation includes CLI command integration, template-based catalog generation, diverse component examples, and complete documentation. However, verification reveals missing integration test files for end-to-end workflows (Task Group 4), though the core functionality appears complete and operational based on code inspection.
 
 ---
 
@@ -21,7 +21,7 @@ The Seed CLI feature has been successfully implemented with comprehensive functi
 
 - [x] Task Group 1: CLI Command and Size Configuration
   - [x] 1.1 Write 2-8 focused tests for seed command
-  - [x] 1.2 Add `seed` command to `src/storytime/__main__.py`
+  - [x] 1.2 Add `seed` command to `src/storyville/__main__.py`
   - [x] 1.3 Implement directory existence check
   - [x] 1.4 Implement size validation using structural pattern matching
   - [x] 1.5 Add user feedback with `typer.echo()`
@@ -60,11 +60,11 @@ The Seed CLI feature has been successfully implemented with comprehensive functi
 - ⚠️ 4.0 Complete integration testing
   - ⚠️ 4.1 Write 2-8 focused tests for end-to-end workflows
     - **Issue:** No dedicated integration test file found for end-to-end workflows
-    - **Expected location:** Tests validating generated catalogs work with `storytime serve` and `storytime build`
+    - **Expected location:** Tests validating generated catalogs work with `storyville serve` and `storyville build`
     - **Impact:** Medium - Core functionality appears implemented but lacks explicit integration test coverage
-  - ⚠️ 4.2 Validate generated catalog with storytime serve
+  - ⚠️ 4.2 Validate generated catalog with storyville serve
     - **Issue:** No test found explicitly validating serve command with generated catalog
-  - ⚠️ 4.3 Validate generated catalog with storytime build
+  - ⚠️ 4.3 Validate generated catalog with storyville build
     - **Issue:** No test found explicitly validating build command with generated catalog
   - ⚠️ 4.4 Validate generated catalog as importable package
     - **Issue:** No test found explicitly validating catalog imports with `make_catalog()`
@@ -85,8 +85,8 @@ The Seed CLI feature has been successfully implemented with comprehensive functi
 
 Implementation reports were not found in the `/agent-os/specs/2025-11-30-seed-cli/implementations/` directory. However, all implementation work is evident in the codebase:
 
-- CLI command implementation in `src/storytime/__main__.py` (lines 158-555)
-- Template files in `src/storytime/templates/seed/`
+- CLI command implementation in `src/storyville/__main__.py` (lines 158-555)
+- Template files in `src/storyville/templates/seed/`
 - Test files:
   - `tests/test_seed_cli.py` (6 tests)
   - `tests/test_seed_templates.py` (8 tests)
@@ -117,11 +117,11 @@ None - All user-facing documentation is complete and comprehensive.
 
 ### Updated Roadmap Items
 
-- [x] Item 13: Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require moving `examples/minimal` into `src/storytime` so that it is shipped in the package. `M`
+- [x] Item 13: Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require moving `examples/minimal` into `src/storyville` so that it is shipped in the package. `M`
 
 ### Notes
 
-Roadmap item successfully marked as complete. The implementation created new template content in `src/storytime/templates/seed/` rather than moving `examples/minimal`, which aligns with the refined requirements.
+Roadmap item successfully marked as complete. The implementation created new template content in `src/storyville/templates/seed/` rather than moving `examples/minimal`, which aligns with the refined requirements.
 
 ---
 
@@ -150,8 +150,8 @@ Roadmap item successfully marked as complete. The implementation created new tem
 **Task Group 4 Integration Tests** (2-8 tests expected)
 - No dedicated integration test file found
 - Expected tests:
-  - Generated catalog works with `storytime serve`
-  - Generated catalog works with `storytime build`
+  - Generated catalog works with `storyville serve`
+  - Generated catalog works with `storyville build`
   - Generated catalog is importable as Python package
   - ThemedLayout renders correctly
   - All three sizes generate and work correctly
@@ -209,8 +209,8 @@ Roadmap item successfully marked as complete. The implementation created new tem
 1. **Missing Integration Tests:** Task Group 4 integration tests not found in codebase
    - **Impact:** Medium - While core functionality appears complete, lacking explicit end-to-end verification
    - **Recommendation:** Create integration tests to verify:
-     - Generated catalogs can be served with `storytime serve`
-     - Generated catalogs can be built with `storytime build`
+     - Generated catalogs can be served with `storyville serve`
+     - Generated catalogs can be built with `storyville build`
      - Generated catalogs are importable and work with `make_catalog()`
      - All three sizes work correctly in real usage
 
@@ -220,19 +220,19 @@ Roadmap item successfully marked as complete. The implementation created new tem
 
 ### Code Review Highlights
 
-**File: `src/storytime/__main__.py`**
+**File: `src/storyville/__main__.py`**
 - Lines 20-27: Clean `SizeConfig` dataclass definition
 - Lines 158-496: Comprehensive `generate_catalog()` implementation with helper functions
 - Lines 498-555: Well-documented `seed` command with proper argument validation and user feedback
 - Lines 235-254: Elegant subject distribution algorithm `_distribute_subjects()`
 - Lines 280-358: Smart `_generate_subject_stories()` with component-specific configurations
 
-**File: `src/storytime/templates/seed/stories.py`**
+**File: `src/storyville/templates/seed/stories.py`**
 - Clean root catalog configuration
 - Proper themed_layout wrapper pattern
 - Modern Python imports and type hints
 
-**File: `src/storytime/templates/seed/components/button.py`**
+**File: `src/storyville/templates/seed/components/button.py`**
 - Excellent component example with dataclass
 - Educational assertion functions
 - Proper tdom usage with t-string syntax
@@ -256,7 +256,7 @@ Roadmap item successfully marked as complete. The implementation created new tem
 - [x] CLI command exists in `__main__.py`
 - [x] Size validation uses structural pattern matching
 - [x] Directory existence check implemented
-- [x] Template directory exists: `src/storytime/templates/seed/`
+- [x] Template directory exists: `src/storyville/templates/seed/`
 - [x] Root stories.py template exists
 - [x] ThemedLayout template exists
 - [x] Component templates exist (Button, Card, Form, Badge)
@@ -269,17 +269,17 @@ Roadmap item successfully marked as complete. The implementation created new tem
 
 **Not Performed - Should Be Executed:**
 
-1. ⬜ Generate small catalog: `storytime seed small /tmp/test_small`
-2. ⬜ Serve small catalog: `storytime serve /tmp/test_small`
-3. ⬜ Build small catalog: `storytime build /tmp/test_small /tmp/test_small_dist`
-4. ⬜ Generate medium catalog: `storytime seed medium /tmp/test_medium`
-5. ⬜ Serve medium catalog: `storytime serve /tmp/test_medium`
-6. ⬜ Build medium catalog: `storytime build /tmp/test_medium /tmp/test_medium_dist`
-7. ⬜ Generate large catalog: `storytime seed large /tmp/test_large`
-8. ⬜ Serve large catalog: `storytime serve /tmp/test_large`
-9. ⬜ Build large catalog: `storytime build /tmp/test_large /tmp/test_large_dist`
-10. ⬜ Test directory existence error: `storytime seed small /tmp/test_small` (when already exists)
-11. ⬜ Test invalid size error: `storytime seed invalid /tmp/test_invalid`
+1. ⬜ Generate small catalog: `storyville seed small /tmp/test_small`
+2. ⬜ Serve small catalog: `storyville serve /tmp/test_small`
+3. ⬜ Build small catalog: `storyville build /tmp/test_small /tmp/test_small_dist`
+4. ⬜ Generate medium catalog: `storyville seed medium /tmp/test_medium`
+5. ⬜ Serve medium catalog: `storyville serve /tmp/test_medium`
+6. ⬜ Build medium catalog: `storyville build /tmp/test_medium /tmp/test_medium_dist`
+7. ⬜ Generate large catalog: `storyville seed large /tmp/test_large`
+8. ⬜ Serve large catalog: `storyville serve /tmp/test_large`
+9. ⬜ Build large catalog: `storyville build /tmp/test_large /tmp/test_large_dist`
+10. ⬜ Test directory existence error: `storyville seed small /tmp/test_small` (when already exists)
+11. ⬜ Test invalid size error: `storyville seed invalid /tmp/test_invalid`
 
 ---
 
@@ -421,21 +421,21 @@ The Seed CLI feature has been verified and is approved for production use. The i
 ## Appendix B: Implementation File Locations
 
 ### Core Implementation
-- `src/storytime/__main__.py` (lines 20-27, 158-555)
+- `src/storyville/__main__.py` (lines 20-27, 158-555)
   - `SizeConfig` dataclass
   - `generate_catalog()` function
   - Helper functions
   - `seed` command
 
 ### Template Files
-- `src/storytime/templates/seed/stories.py`
-- `src/storytime/templates/seed/themed_layout/themed_layout.py`
-- `src/storytime/templates/seed/themed_layout/__init__.py`
-- `src/storytime/templates/seed/components/button.py`
-- `src/storytime/templates/seed/components/card.py`
-- `src/storytime/templates/seed/components/form.py`
-- `src/storytime/templates/seed/components/badge.py`
-- `src/storytime/templates/seed/components/list_comp.py`
+- `src/storyville/templates/seed/stories.py`
+- `src/storyville/templates/seed/themed_layout/themed_layout.py`
+- `src/storyville/templates/seed/themed_layout/__init__.py`
+- `src/storyville/templates/seed/components/button.py`
+- `src/storyville/templates/seed/components/card.py`
+- `src/storyville/templates/seed/components/form.py`
+- `src/storyville/templates/seed/components/badge.py`
+- `src/storyville/templates/seed/components/list_comp.py`
 
 ### Documentation
 - `README.md` (lines 161-205)

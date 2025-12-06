@@ -1,7 +1,7 @@
 """The subject for the LayoutStack component."""
 
 from examples.huge_assertions.layout.layout_stack.layout_stack import LayoutStack
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -3,10 +3,10 @@
 Tests for Task Group 5: Build System Integration
 """
 
-from storytime.catalog.models import Catalog
-from storytime.section.models import Section
-from storytime.story.models import Story
-from storytime.subject.models import Subject
+from storyville.catalog.models import Catalog
+from storyville.section.models import Section
+from storyville.story.models import Story
+from storyville.subject.models import Subject
 
 
 def test_section_has_resource_path_for_build() -> None:

@@ -17,7 +17,7 @@ site-configurable ThemedLayout component.
 **Site ThemedLayout Configuration**
 
 - Add optional `themed_layout` property to Site dataclass accepting a callable component (with `__call__()` method)
-- If `themed_layout` is None, fall back to standard Storytime Layout component
+- If `themed_layout` is None, fall back to standard Storyville Layout component
 - ThemedLayout must render full HTML structure (DOCTYPE, html, head, body tags)
 - Property type should be `Callable[..., Node] | None` following existing callable patterns
 
@@ -56,14 +56,14 @@ site-configurable ThemedLayout component.
 
 ## Existing Code to Leverage
 
-**Site Dataclass (`src/storytime/site/models.py`)**
+**Site Dataclass (`src/storyville/site/models.py`)**
 
 - Use existing Site dataclass structure with `parent`, `items`, `static_dir` fields
 - Add new optional field `themed_layout: Callable[..., Node] | None = None`
 - Follow existing `__post_init__` pattern for initialization logic
 - Maintain compatibility with existing Site construction
 
-**Layout Component (`src/storytime/components/layout/layout.py`)**
+**Layout Component (`src/storyville/components/layout/layout.py`)**
 
 - Reference dataclass structure with `view_title`, `site`, `children`, `depth` parameters
 - Follow `__call__() -> Node` rendering pattern
@@ -71,21 +71,21 @@ site-configurable ThemedLayout component.
 - Replicate full HTML document structure (DOCTYPE, html, head, body)
 - Apply similar static asset path calculation if needed in themed layouts
 
-**StoryView (`src/storytime/story/views.py`)**
+**StoryView (`src/storyville/story/views.py`)**
 
 - Leverage existing dual-mode rendering pattern (custom template vs default layout)
 - Add third mode for iframe rendering when themed_layout is configured
 - Wrap iframe in existing StoryView layout structure with breadcrumbs
 - Maintain assertion badge rendering in parent StoryView (not in iframe)
 
-**Build Process (`src/storytime/build.py`)**
+**Build Process (`src/storyville/build.py`)**
 
 - Extend `_write_html()` helper for writing both story files
 - Add themed story rendering after existing story rendering in Phase 2
 - Write themed_story.html files in same loop as story index.html files in Phase 3
 - Maintain three-phase architecture (Reading, Rendering, Writing)
 
-**Story Model (`src/storytime/story/models.py`)**
+**Story Model (`src/storyville/story/models.py`)**
 
 - Use existing `story.title` property for ThemedStory title prop
 - Use existing `story.instance` property for ThemedStory children content

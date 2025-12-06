@@ -20,7 +20,7 @@
 - `test_integration.py` (6 tests) - End-to-end integration
 
 **Implementation:**
-- Created `src/storytime/static_assets/` package with modular structure:
+- Created `src/storyville/static_assets/` package with modular structure:
   - `__init__.py` - Main integration API
   - `models.py` - StaticFolder dataclass
   - `discovery.py` - Folder discovery utilities
@@ -40,7 +40,7 @@
 - 2 integration tests
 
 **Implementation:**
-- Extended `src/storytime/static_assets/rewriting.py`:
+- Extended `src/storyville/static_assets/rewriting.py`:
   - `calculate_relative_static_path()` - Depth-based path calculation
   - `_walk_and_rewrite_element()` - tdom tree walker
   - `resolve_static_asset_path()` - Asset path resolution
@@ -50,7 +50,7 @@
 
 ### Task Group 3: Build Integration Layer ✅ COMPLETED
 **Tests Written:** 14 tests in `tests/test_build_integration.py`
-- Build discovers storytime static folders
+- Build discovers storyville static folders
 - Static assets copied to correct output paths
 - Directory structure preservation
 - Build succeeds without static folders
@@ -61,7 +61,7 @@
 - Relative paths correct at different depths (parameterized)
 
 **Tests Updated:** `tests/test_build.py`
-- Updated to expect `storytime_static/` structure
+- Updated to expect `storyville_static/` structure
 - Updated stylesheet path assertions
 - Added test for directory structure
 - Added test for static assets phase logging
@@ -72,10 +72,10 @@
   - Added Phase 4: Static Assets discovery and copying
   - Integrated `copy_all_static_assets()`
   - Added logging for static assets phase
-- Updated `Layout` component to use `storytime_static/` paths
+- Updated `Layout` component to use `storyville_static/` paths
 - Updated `watchers.py`:
   - Monitor all files in content_path
-  - Monitor static files and folders in storytime_path
+  - Monitor static files and folders in storyville_path
   - Added STATIC_EXTENSIONS filtering
 
 ### Task Group 4: Testing & Validation Layer ✅ COMPLETED
@@ -102,9 +102,9 @@
 ## Feature Requirements Validation
 
 ### Functional Requirements ✅
-- [x] Static folder discovery from both `src/storytime` and `input_dir`
+- [x] Static folder discovery from both `src/storyville` and `input_dir`
 - [x] Path-preserving asset copying to output directory
-- [x] Disambiguation between storytime and input_dir assets
+- [x] Disambiguation between storyville and input_dir assets
 - [x] Opt-in path rewriting utility function
 - [x] Relative path calculation based on page depth
 - [x] Hot reload support for static asset changes
@@ -138,7 +138,7 @@
 
 ### Type Checking (`just typecheck`) - READY TO RUN
 - Modern Python 3.14+ type hints used throughout
-- Literal types for source_type ("storytime" | "input_dir")
+- Literal types for source_type ("storyville" | "input_dir")
 - All function signatures have complete type annotations
 - Return types specified for all public APIs
 
@@ -153,7 +153,7 @@
 ## Implementation Statistics
 
 **Total Files Created:**
-- 6 modules in `src/storytime/static_assets/`
+- 6 modules in `src/storyville/static_assets/`
 - 7 test modules (6 in `static_assets/` + 1 final)
 - 1 integration test module
 - Updates to 4 existing files
@@ -174,11 +174,11 @@
 
 ### 1. Path Structure
 - Two output directories for source disambiguation:
-  - `output_dir/storytime_static/` for `src/storytime` assets
+  - `output_dir/storyville_static/` for `src/storyville` assets
   - `output_dir/static/` for `input_dir` assets
 - Full path preservation prevents filename collisions
-- Example: `src/storytime/components/layout/static/style.css` →
-  `output_dir/storytime_static/components/layout/static/style.css`
+- Example: `src/storyville/components/layout/static/style.css` →
+  `output_dir/storyville_static/components/layout/static/style.css`
 
 ### 2. Opt-In Utility Function
 - `rewrite_static_paths()` must be explicitly called by components
@@ -188,9 +188,9 @@
 
 ### 3. Relative Path Calculation
 - Depth-based using same logic as Layout component:
-  - Depth 0 (site root): `../storytime_static/...`
-  - Depth 1 (subject index): `../../storytime_static/...`
-  - Depth 2 (story page): `../../../storytime_static/...`
+  - Depth 0 (site root): `../storyville_static/...`
+  - Depth 1 (subject index): `../../storyville_static/...`
+  - Depth 2 (story page): `../../../storyville_static/...`
 - Extracted into reusable utility function
 
 ### 4. Hot Reload Support
@@ -240,13 +240,13 @@
 
 4. **Test Hot Reload (Manual):**
    ```bash
-   storytime serve
-   # Modify a static asset in src/storytime/components/layout/static/
+   storyville serve
+   # Modify a static asset in src/storyville/components/layout/static/
    # Verify browser refreshes automatically
    ```
 
 5. **Review Implementation:**
-   - Check `src/storytime/static_assets/` package
+   - Check `src/storyville/static_assets/` package
    - Review test coverage in `tests/static_assets/`
    - Verify `build.py` integration
    - Confirm `watchers.py` monitors static folders

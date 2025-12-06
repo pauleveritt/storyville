@@ -3,8 +3,8 @@
 from aria_testing import get_by_tag_name, get_text_content
 from tdom import Node, html
 
-from storytime.components.themed_story import ThemedStory
-from storytime.catalog.models import Catalog
+from storyville.components.themed_story import ThemedStory
+from storyville.catalog.models import Catalog
 
 
 def test_themed_story_renders_with_custom_themed_layout() -> None:

@@ -1,7 +1,7 @@
 """The subject for the OverlayModal component."""
 
 from examples.huge_assertions.overlays.overlay_modal.overlay_modal import OverlayModal
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

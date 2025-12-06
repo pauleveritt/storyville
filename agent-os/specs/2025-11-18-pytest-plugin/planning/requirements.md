@@ -12,8 +12,8 @@ I also want some control in a config settings. Would be great if you didn't have
 **Q1: Test Discovery Mechanism** - I'm assuming the plugin should scan for all story files in common directories (like `examples/`, `stories/`, `tests/`). Should it auto-discover stories everywhere, or only in locations you explicitly point it to via config?
 **Answer:** Only locations that you point at via config option (not scan everywhere)
 
-**Q2: Config Settings** - For configuration, I'm thinking we could use `[tool.storytime.pytest]` in pyproject.toml with settings like `story_paths`, `enabled`, `run_assertions_on_collect`. Does that match your expectations?
-**Answer:** Good (approved the proposed `[tool.storytime.pytest]` settings)
+**Q2: Config Settings** - For configuration, I'm thinking we could use `[tool.storyville.pytest]` in pyproject.toml with settings like `story_paths`, `enabled`, `run_assertions_on_collect`. Does that match your expectations?
+**Answer:** Good (approved the proposed `[tool.storyville.pytest]` settings)
 
 **Q3: Automatic Test Generation** - When you say "wouldn't have to write any tests manually", I assume you want the plugin to use pytest's collection hooks to automatically generate test items for each story that has assertions. Is that correct?
 **Answer:** Yes (use pytest collection hooks)
@@ -60,8 +60,8 @@ No similar existing features identified for reference.
 **Follow-up 5:** For the manual test examples you requested - where should these example tests live? In the main `tests/` directory, or in a separate location like `examples/pytest_examples/`?
 **Answer:** `tests/` - Example tests should live in the main tests directory alongside other tests
 
-**Follow-up 6:** Should this be distributed as a separate pytest plugin package (like `pytest-storytime`), or built directly into the storytime core package?
-**Answer:** Built directly into storytime core as an optional pytest plugin (not a separate package)
+**Follow-up 6:** Should this be distributed as a separate pytest plugin package (like `pytest-storyville`), or built directly into the storyville core package?
+**Answer:** Built directly into storyville core as an optional pytest plugin (not a separate package)
 
 **Follow-up 7:** Are there any specific pytest version requirements we should target? (I see pytest 9.0.0+ is currently used)
 **Answer:** Current (maintain pytest 9.0.0+ as minimum)
@@ -78,7 +78,7 @@ No visual assets to analyze.
 
 ### Functional Requirements
 - **Automatic test discovery**: Plugin discovers stories with assertions from configured paths only
-- **Configuration-based discovery**: Use `[tool.storytime.pytest]` in pyproject.toml with `story_paths` setting
+- **Configuration-based discovery**: Use `[tool.storyville.pytest]` in pyproject.toml with `story_paths` setting
 - **Default story paths**: `["examples/"]` as the default search location
 - **Test generation**: One pytest test item per assertion in each discovered story
 - **Test naming**: `test_story[site.section.subject.story_name::assertion_name]` format
@@ -88,10 +88,10 @@ No visual assets to analyze.
 - **Parallel execution**: Integration with pytest-xdist (users run `pytest -n auto`)
 - **Dual testing modes**: Support both automatic test generation AND manual test writing via fixtures
 - **Example tests**: Provide example tests in `tests/` directory demonstrating manual fixture usage
-- **Core integration**: Built directly into storytime package as optional pytest plugin
+- **Core integration**: Built directly into storyville package as optional pytest plugin
 
 ### Reusability Opportunities
-- Existing Story model with assertions and assertion_results fields (`/src/storytime/story/models.py`)
+- Existing Story model with assertions and assertion_results fields (`/src/storyville/story/models.py`)
 - Current pytest infrastructure and test directory structure (`/tests/`)
 - Existing CLI flag `--with-assertions` pattern for enabling/disabling features
 - Type definitions: `AssertionCallable`, `AssertionResult` already defined
@@ -100,7 +100,7 @@ No visual assets to analyze.
 
 **In Scope:**
 - Pytest plugin using collection hooks for automatic test generation
-- Configuration system via `[tool.storytime.pytest]` in pyproject.toml
+- Configuration system via `[tool.storyville.pytest]` in pyproject.toml
 - Config-based story path discovery (default: `["examples/"]`)
 - Test naming conventions: `test_story[site.section.subject.story_name::assertion_name]`
 - Fresh story rendering per test for isolation
@@ -109,7 +109,7 @@ No visual assets to analyze.
 - pytest-xdist integration for parallel execution
 - Fixtures for manual test writing
 - Example tests demonstrating manual testing approach
-- Integration as optional plugin within storytime core package
+- Integration as optional plugin within storyville core package
 
 **Out of Scope:**
 - Visual regression testing (screenshot comparison)
@@ -124,7 +124,7 @@ No visual assets to analyze.
 - **pytest integration**: Use pytest 9.0.0+ collection hooks (`pytest_collect_file`, `pytest_generate_tests`, or custom Item/Collector classes)
 - **Python compatibility**: Must work with Python 3.14+ type hints and modern syntax (structural pattern matching, PEP 695 generics, etc.)
 - **Story rendering**: Leverage existing Story model but ensure fresh rendering for each test (don't use cached `assertion_results`)
-- **Configuration**: Follow existing pyproject.toml patterns with `[tool.storytime.pytest]` section
+- **Configuration**: Follow existing pyproject.toml patterns with `[tool.storyville.pytest]` section
 - **Parallel safety**: Ensure compatibility with pytest-xdist for parallel test execution
 - **Failure output**: Generate unified text diffs using Python's difflib for rendered HTML comparison
 - **Plugin registration**: Use pytest entry points to register as optional plugin within core package
@@ -133,13 +133,13 @@ No visual assets to analyze.
 
 ### Key Design Decisions
 
-1. **Config-based discovery**: Only scan paths specified in `[tool.storytime.pytest]` config, defaulting to `["examples/"]`
+1. **Config-based discovery**: Only scan paths specified in `[tool.storyville.pytest]` config, defaulting to `["examples/"]`
 2. **Automatic test generation**: Use pytest collection hooks to generate test items automatically
 3. **Flat structure**: Tests organized flatly for better pytest output compatibility
 4. **Fresh rendering**: Always render stories fresh during tests (ignore cached results)
 5. **pytest-xdist integration**: Leverage standard pytest parallel plugin rather than custom implementation
 6. **Unified text diff**: Use simple text diff format for failure reporting (not HTML/visual diffs)
-7. **Core integration**: Built into storytime package as optional plugin (not separate `pytest-storytime` package)
+7. **Core integration**: Built into storyville package as optional plugin (not separate `pytest-storyville` package)
 8. **Dual modes**: Support both automatic generation and manual fixture-based testing
 9. **Example location**: Example tests in main `tests/` directory alongside other tests
 10. **Version requirements**: Maintain pytest 9.0.0+ as minimum supported version

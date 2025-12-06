@@ -2,7 +2,7 @@
 
 ## Overview
 
-Demonstrates the most basic Storytime usage with a simple component hierarchy.
+Demonstrates the most basic Storyville usage with a simple component hierarchy.
 
 ## Structure
 

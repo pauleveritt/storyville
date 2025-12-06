@@ -2,7 +2,7 @@
 
 ## Goal
 
-Add assertion capabilities to Storytime stories that execute server-side during StoryView rendering and display
+Add assertion capabilities to Storyville stories that execute server-side during StoryView rendering and display
 pass/fail badges in the rendered HTML page, providing immediate visual feedback during hot-reload development.
 
 ## User Stories
@@ -34,7 +34,7 @@ pass/fail badges in the rendered HTML page, providing immediate visual feedback 
 - Pass flag value to StoryView rendering context
 - When disabled, skip all assertion execution logic entirely
 - Flag controls whether assertions run, not whether they're defined
-- Follow existing CLI argument patterns in storytime dev server
+- Follow existing CLI argument patterns in storyville dev server
 
 **Assertion Execution: Server-side during rendering**
 
@@ -132,7 +132,7 @@ No visual assets provided. Implementation should follow PicoCSS conventions for 
 
 ## Existing Code to Leverage
 
-**Story model pattern (src/storytime/story/models.py)**
+**Story model pattern (src/storyville/story/models.py)**
 
 - Use dataclass decorator for Story class
 - Use field(default_factory=dict) pattern for mutable defaults
@@ -140,7 +140,7 @@ No visual assets provided. Implementation should follow PicoCSS conventions for 
 - Import types from typing and tdom modules
 - Use type hints aggressively throughout
 
-**StoryView rendering pattern (src/storytime/story/views.py)**
+**StoryView rendering pattern (src/storyville/story/views.py)**
 
 - Follow dual-mode rendering (custom template vs default layout)
 - Use tdom html() with t-string for template rendering
@@ -148,7 +148,7 @@ No visual assets provided. Implementation should follow PicoCSS conventions for 
 - Render story.instance for component output
 - Wrap with Layout component in Mode B
 
-**Layout component pattern (src/storytime/components/layout/layout.py)**
+**Layout component pattern (src/storyville/components/layout/layout.py)**
 
 - Follow tdom Element/Fragment/Node type hierarchy
 - Use html(t'''...) for multi-line templates

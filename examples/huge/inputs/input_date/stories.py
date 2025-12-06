@@ -1,7 +1,7 @@
 """The subject for the InputDate component."""
 
 from examples.huge.inputs.input_date.input_date import InputDate
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -9,7 +9,7 @@
   - In Python, we'd like Path expressions where PyCharm can squiggle
   - This means relative
   - But that means rewriting relative paths later
-- The Storytime UI itself needs to copy static assets to the output_dir, but so might:
+- The Storyville UI itself needs to copy static assets to the output_dir, but so might:
   - An alternate UI
   - UI extensions
   - The component system being developed

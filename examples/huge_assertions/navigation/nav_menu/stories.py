@@ -1,7 +1,7 @@
 """The subject for the NavMenu component."""
 
 from examples.huge_assertions.navigation.nav_menu.nav_menu import NavMenu
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

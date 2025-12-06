@@ -11,7 +11,7 @@ Full static paths. I would like any layout/component/view to define its own `sta
 **Answer:** All node types.
 
 **Q2: Path preservation structure - How should the path be preserved in the output directory?**
-**Answer:** Keep the extra static at the end. (So `src/storytime/components/navigation_tree/static/nav.css` → `output_dir/static/components/navigation_tree/static/nav.css`)
+**Answer:** Keep the extra static at the end. (So `src/storyville/components/navigation_tree/static/nav.css` → `output_dir/static/components/navigation_tree/static/nav.css`)
 
 **Q3: Path resolution in components - How should components reference their static assets in templates?**
 **Answer:** I want the path in the template to point to the actual path on disk. But have a helper that runs on the result node, before returning it. It would find the `<script src>` and `<link href>` and `<img src>` etc. that started with `static` and rewrote to point to (a) the full path and (b) relativized to the depth.
@@ -29,7 +29,7 @@ Full static paths. I would like any layout/component/view to define its own `sta
 **Answer:** Both (behavior should be identical).
 
 **Q8: Additional requirement**
-**Answer:** Make sure this works for both static assets in `src/storytime` as well as `static` in the input_dir.
+**Answer:** Make sure this works for both static assets in `src/storyville` as well as `static` in the input_dir.
 
 ### Follow-up Questions
 
@@ -39,9 +39,9 @@ Can you clarify what "relativized to the depth" means? For example, if a page is
 **Answer:** Yes, if a page at `/sections/components/button.html` references a static asset, the path should be `../../static/components/navigation_tree/static/nav.css`
 
 **Follow-up 2: Two static sources - precedence and disambiguation**
-You mentioned support for both `src/storytime` and `input_dir` static folders. Should these be merged into the same `static/` output directory, or should they be separated? What happens if both have the same path structure?
+You mentioned support for both `src/storyville` and `input_dir` static folders. Should these be merged into the same `static/` output directory, or should they be separated? What happens if both have the same path structure?
 
-**Answer:** Use `storytime_static` and `static` as directory names to disambiguate. (So `src/storytime` static assets go to `storytime_static/` and `input_dir` static assets go to `static/`)
+**Answer:** Use `storyville_static` and `static` as directory names to disambiguate. (So `src/storyville` static assets go to `storyville_static/` and `input_dir` static assets go to `static/`)
 
 **Follow-up 3: Path rewriting helper - location and integration**
 Where should the path-rewriting helper live? Should it be:
@@ -79,31 +79,31 @@ N/A - No visual files found.
 
 **Path Structure in Output:**
 - Two output directories for disambiguation:
-  - `output_dir/storytime_static/[path/to/component]/static/[asset]` for `src/storytime` assets
+  - `output_dir/storyville_static/[path/to/component]/static/[asset]` for `src/storyville` assets
   - `output_dir/static/[path/to/component]/static/[asset]` for `input_dir` assets
 - Original path structure is preserved to prevent collisions
-- Example: `src/storytime/components/navigation_tree/static/nav.css` → `output_dir/storytime_static/components/navigation_tree/static/nav.css`
+- Example: `src/storyville/components/navigation_tree/static/nav.css` → `output_dir/storyville_static/components/navigation_tree/static/nav.css`
 - Example: `input_dir/components/button/static/icon.svg` → `output_dir/static/components/button/static/icon.svg`
 
 **Path Resolution - Opt-In Utility Function:**
-- Components reference static assets with simple prefix in templates (e.g., `static/nav.css` or `storytime_static/nav.css`)
+- Components reference static assets with simple prefix in templates (e.g., `static/nav.css` or `storyville_static/nav.css`)
 - A utility function is provided that components/stories must explicitly call
 - **NOT automatically applied** - developers must opt-in by calling the utility
 - Utility function processes HTML content (as a string or node) and finds asset references: `<script src>`, `<link href>`, `<img src>`, etc.
-- Only processes paths that start with `static` or `storytime_static`
+- Only processes paths that start with `static` or `storyville_static`
 - Rewrites paths to:
-  1. Full path: `[storytime_static|static]/[path/to/component]/static/[asset]`
+  1. Full path: `[storyville_static|static]/[path/to/component]/static/[asset]`
   2. Relativized to page depth: Uses `../` segments based on page location
 
 **Example Path Rewriting:**
-- Template: `<link href="storytime_static/nav.css">`
-- Component location: `src/storytime/components/navigation_tree/`
+- Template: `<link href="storyville_static/nav.css">`
+- Component location: `src/storyville/components/navigation_tree/`
 - Page location: `/sections/components/button.html` (depth 2)
-- After calling utility: `<link href="../../storytime_static/components/navigation_tree/static/nav.css">`
+- After calling utility: `<link href="../../storyville_static/components/navigation_tree/static/nav.css">`
 
 **Hot Reload:**
 - Changes to any static asset trigger a rebuild
-- File watching includes all `static/` folders in both `src/storytime` and `input_dir`
+- File watching includes all `static/` folders in both `src/storyville` and `input_dir`
 - Browser refreshes automatically after rebuild
 
 **Environment Consistency:**
@@ -123,7 +123,7 @@ N/A - No visual files found.
 - Path-preserving copy to output_dir with disambiguation between sources
 - **Opt-in utility function** for path rewriting (must be explicitly called by components/stories)
 - Hot reload support for static asset changes
-- Support for both src/storytime and input_dir static folders
+- Support for both src/storyville and input_dir static folders
 - Relative path calculation based on page depth
 
 **Out of Scope:**
@@ -151,12 +151,12 @@ N/A - No visual files found.
 
 **File Discovery:**
 - Need to scan for `static/` folders in node directories
-- Must track source location (storytime vs input_dir)
+- Must track source location (storyville vs input_dir)
 - Should be efficient for large component catalogs
 
 **Collision Prevention:**
 - Path preservation ensures no filename collisions
-- Different source directories (`storytime_static` vs `static`) prevent conflicts
+- Different source directories (`storyville_static` vs `static`) prevent conflicts
 - Full path structure makes asset origin clear
 
 **Hot Reload Integration:**
@@ -174,6 +174,6 @@ N/A - No visual files found.
 - Verify correct relative path calculation
 - Test collision prevention with identical filenames
 - Test hot reload with static asset changes
-- Test both storytime and input_dir static sources
+- Test both storyville and input_dir static sources
 - Test utility function can be called from different contexts
 - Test when utility is NOT called, paths remain unchanged

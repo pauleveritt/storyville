@@ -11,7 +11,7 @@ Solution: Run the build process in a subinterpreter using InterpreterPoolExecuto
 Key requirements:
 - Use InterpreterPoolExecutor to run builds in isolated subinterpreters
 - Consider having a pool so the next interpreter is ready to go
-- Warm up the pending interpreter by having it do some common imports such as `import storytime`
+- Warm up the pending interpreter by having it do some common imports such as `import storyville`
 - When it is time to build, it can import everything in the input_dir package
 - Have good integration in Starlette
 - Reference: https://blog.changs.co.uk/subinterpreters-and-asyncio.html
@@ -26,8 +26,8 @@ Key requirements:
 **Q2:** What should the pool size be? I'm thinking a pool of 2 interpreters (one active, one warming up) would be good.
 **Answer:** Pool size of 2 is good.
 
-**Q3:** For warm-up imports, should we import storytime and tdom? Are there other modules that should be pre-imported?
-**Answer:** Warm up should import storytime and tdom. Need to find a place to easily specify these imports in a way that is callable by the InterpreterPoolExecutor.
+**Q3:** For warm-up imports, should we import storyville and tdom? Are there other modules that should be pre-imported?
+**Answer:** Warm up should import storyville and tdom. Need to find a place to easily specify these imports in a way that is callable by the InterpreterPoolExecutor.
 
 **Q4:** Should the build_site function be wrapped to run in a subinterpreter, or should we create a new API specifically for subinterpreter-based builds?
 **Answer:** Use current API, not a new API. But make sure running from the CLI (outside of Starlette) works correctly.
@@ -53,27 +53,27 @@ Key requirements:
 
 The following existing code provides context for the implementation:
 
-1. **Build Pipeline**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/build.py`
+1. **Build Pipeline**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/build.py`
    - `build_site(package_location: str, output_dir: Path)` function handles the full build process
    - Calls `make_site(package_location)` which imports all stories.py modules via `import_module()`
    - This is the function that needs to run in a subinterpreter when in web app mode
 
-2. **File Watching**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/watchers.py`
+2. **File Watching**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/watchers.py`
    - `watch_and_rebuild()` async function detects file changes and calls rebuild_callback
    - Currently passes `build_site` as the rebuild_callback
    - Will need to be updated to call subinterpreter-wrapped version when in web app mode
 
-3. **Starlette Integration**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/app.py`
+3. **Starlette Integration**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/app.py`
    - `lifespan()` context manager starts watcher on app startup
    - `create_app()` creates Starlette application with hot reload support
    - Integration point for subinterpreter pool initialization and shutdown
 
-4. **CLI**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__main__.py`
+4. **CLI**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__main__.py`
    - `serve()` command runs build_site then starts Starlette server
    - `build()` command runs build_site once
    - CLI should continue using direct build_site (no subinterpreters) for simplicity
 
-5. **Module Import Mechanism**: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/helpers.py` and `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`
+5. **Module Import Mechanism**: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/helpers.py` and `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py`
    - `make_site()` finds all stories.py files and creates TreeNode instances
    - TreeNode calls `import_module(module_path)` to import each stories.py
    - This is where module caching becomes problematic - modules stay imported across rebuilds
@@ -93,14 +93,14 @@ User has not identified similar features to reference for this new functionality
 
 **Answer:** Use option A - Add a boolean flag parameter to `create_app()` like `use_subinterpreters=True` AND add a command-line flag.
 
-**Follow-up 2:** For specifying warm-up imports (storytime and tdom), what's the best approach? Options:
+**Follow-up 2:** For specifying warm-up imports (storyville and tdom), what's the best approach? Options:
 - A. Hard-code the imports in the warm-up function
 - B. Accept a list of module names as a parameter to the pool/warm-up function
 - C. Read from a configuration file
 - D. Use an environment variable
 - E. Different approach?
 
-**Answer:** Use option A - Hard-code the imports (storytime and tdom) in the warm-up function (simplest, works for now).
+**Answer:** Use option A - Hard-code the imports (storyville and tdom) in the warm-up function (simplest, works for now).
 
 **Follow-up 3:** Where should the InterpreterPoolExecutor be created and managed?
 - A. Created in `app.py`'s lifespan context manager (starts with app, stops with app)
@@ -135,14 +135,14 @@ N/A - This is a backend/infrastructure feature.
 **Core Functionality:**
 - Use Python 3.13+ subinterpreters via InterpreterPoolExecutor to run builds in isolated environments
 - Maintain a pool of 2 subinterpreters (one active for building, one warming up as standby)
-- Warm up interpreters by pre-importing storytime and tdom modules (hard-coded in warm-up function)
+- Warm up interpreters by pre-importing storyville and tdom modules (hard-coded in warm-up function)
 - After each build, discard the used subinterpreter and pull fresh from pool
 - Immediately warm up a replacement interpreter to maintain pool size
 - Subinterpreters write directly to disk (no result passing needed)
 - Module imports happen fresh in each build (solving the module caching problem)
 
 **Dual-Mode Operation:**
-- **CLI Mode** (storytime build, storytime serve): Use direct build_site() without subinterpreters for simplicity
+- **CLI Mode** (storyville build, storyville serve): Use direct build_site() without subinterpreters for simplicity
 - **Web App Mode** (hot-reload server): Use subinterpreter-wrapped build_site() for proper module isolation
 - Configuration via `use_subinterpreters` boolean flag parameter in `create_app()`
 - Command-line flag to control subinterpreter usage
@@ -185,7 +185,7 @@ N/A - This is a backend/infrastructure feature.
 - InterpreterPoolExecutor-based subinterpreter management
 - Pool of 2 interpreters with warm-up capability
 - Dual-mode operation (CLI vs web app) configured via boolean flag and command-line flag
-- Hard-coded warm-up imports (storytime and tdom)
+- Hard-coded warm-up imports (storyville and tdom)
 - Pool creation in app.py's lifespan context manager
 - Two different callback signatures for dual-mode support
 - Integration with existing build and watch infrastructure
@@ -214,7 +214,7 @@ N/A - This is a backend/infrastructure feature.
 
 **Implementation Decisions:**
 - Configuration: Boolean flag parameter `use_subinterpreters` in `create_app()` + command-line flag
-- Warm-up imports: Hard-coded (storytime and tdom) in warm-up function
+- Warm-up imports: Hard-coded (storyville and tdom) in warm-up function
 - Pool management: Created in `app.py`'s lifespan context manager
 - Callback signatures: Two different signatures (one for CLI, one for web app)
 

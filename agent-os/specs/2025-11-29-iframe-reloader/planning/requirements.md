@@ -37,11 +37,11 @@ Instead of triggering a full page reload, the JS event handler should only reloa
 ### Existing Code to Reference
 
 **Similar Features Identified:**
-- Feature: Current full-page reload system - Path: `src/storytime/components/layout/static/ws.js`
-- WebSocket infrastructure: `src/storytime/websocket.py`
-- File watching and rebuild: `src/storytime/watchers.py`
-- Story view rendering: `src/storytime/story/views.py`
-- Layout component with script injection: `src/storytime/components/layout/layout.py`
+- Feature: Current full-page reload system - Path: `src/storyville/components/layout/static/ws.js`
+- WebSocket infrastructure: `src/storyville/websocket.py`
+- File watching and rebuild: `src/storyville/watchers.py`
+- Story view rendering: `src/storyville/story/views.py`
+- Layout component with script injection: `src/storyville/components/layout/layout.py`
 
 **Backend logic to reference:**
 - WebSocket endpoint at `/ws/reload` (in `app.py`)
@@ -124,7 +124,7 @@ Not applicable - no visual files to analyze.
 - Modify `ws.js` to add iframe detection and conditional reload logic
 - No changes to Python backend (`websocket.py`, `watchers.py`, `app.py`, `build.py`)
 - No changes to HTML generation in `StoryView` or `Layout`
-- CSS for alpha mask effect should be inline or in existing `storytime.css`
+- CSS for alpha mask effect should be inline or in existing `storyville.css`
 
 **Existing System Constraints:**
 - Must maintain compatibility with existing WebSocket infrastructure

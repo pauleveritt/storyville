@@ -1,7 +1,7 @@
 """The subject for the LayoutSpacer component."""
 
 from examples.huge.layout.layout_spacer.layout_spacer import LayoutSpacer
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

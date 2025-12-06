@@ -3,13 +3,13 @@
 Tests for Task Group 4: View Signature Updates
 """
 
-from storytime.catalog.models import Catalog
-from storytime.section.models import Section
-from storytime.section.views import SectionView
-from storytime.story.models import Story
-from storytime.story.views import StoryView
-from storytime.subject.models import Subject
-from storytime.subject.views import SubjectView
+from storyville.catalog.models import Catalog
+from storyville.section.models import Section
+from storyville.section.views import SectionView
+from storyville.story.models import Story
+from storyville.story.views import StoryView
+from storyville.subject.models import Subject
+from storyville.subject.views import SubjectView
 
 
 def test_section_view_accepts_resource_path() -> None:

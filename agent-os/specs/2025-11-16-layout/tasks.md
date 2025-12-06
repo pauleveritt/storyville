@@ -26,15 +26,15 @@ with configurable page titles and content insertion via a main element.
         - Test: Layout includes sidebar with SectionsListing component
         - Test: Layout satisfies View Protocol (__call__() -> Node)
         - Create tests in:
-          `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py`
+          `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout_test.py`
         - Use aria-testing library pattern from
-          `/Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py`
+          `/Users/pauleveritt/projects/t-strings/storyville/tests/site/test_site_views.py`
         - Import: `from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name`
         - Use type guard pattern: `assert isinstance(result, Element)`
     - [x] 1.2 Move Layout from `__init__.py` to `layout.py`
         - Move existing Layout class from
-          `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
-        - Create new file: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
+          `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/__init__.py`
+        - Create new file: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py`
         - Keep existing HTML structure (navbar, sidebar, main content area) from current implementation
     - [x] 1.3 Update Layout component signature
         - Change from: `Layout(title: str, children: list[Node], site: Site)`
@@ -47,24 +47,24 @@ with configurable page titles and content insertion via a main element.
         - When view_title is not None: `title_text = f"{view_title} - {self.site.title}"`
         - When view_title is None: `title_text = self.site.title`
         - Reference line 21 in current
-          `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
+          `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/__init__.py`
     - [x] 1.5 Update CSS link path for new static directory location
         - Change href from: `../static/bulma.css`
         - Change to: `../static/bulma.css` (path remains same, but static dir will move)
         - Reference line 22 in current
-          `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
+          `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/__init__.py`
     - [x] 1.6 Ensure children content placement in main element
         - Verify children interpolation at line 56: `{self.children}`
         - Ensure main element is inside Bulma columns layout (existing pattern is correct)
         - Children go in main column, not sidebar column (already correct in existing code)
     - [x] 1.7 Update `__init__.py` to export Layout from new location
-        - Update `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/__init__.py`
-        - Change to: `from storytime.components.layout.layout import Layout`
+        - Update `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/__init__.py`
+        - Change to: `from storyville.components.layout.layout import Layout`
         - Add: `__all__ = ["Layout"]`
     - [x] 1.8 Ensure Layout component tests pass
         - Run ONLY the 2-8 tests written in 1.1
         - Command:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout_test.py -v`
         - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
@@ -84,23 +84,23 @@ with configurable page titles and content insertion via a main element.
 
 - [x] 2.0 Complete static assets reorganization
     - [x] 2.1 Create new static directory structure
-        - Create directory: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/`
+        - Create directory: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/`
         - Use `mkdir -p` to create directory structure
     - [x] 2.2 Move bulma.css to new location
-        - Move from: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/static/bulma.css`
-        - Move to: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/bulma.css`
+        - Move from: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/static/bulma.css`
+        - Move to: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/bulma.css`
         - Use `mv` command or `shutil.move` in Python
     - [x] 2.3 Remove old static directory
-        - Remove: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/static/`
+        - Remove: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/static/`
         - Only after confirming bulma.css was successfully moved
     - [x] 2.4 Update Site model's __post_init__ method
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/models.py`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/models.py`
         - Update line 31: Change `sd = PACKAGE_DIR / "static"`
         - Change to: `sd = PACKAGE_DIR / "components" / "layout" / "static"`
         - Keep rest of logic unchanged (lines 32-33)
     - [x] 2.5 Verify static assets are discovered correctly
         - Run existing tests to ensure Site.static_dir is set correctly
-        - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/site/ -v -k static`
+        - Command: `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/site/ -v -k static`
         - Verify build.py can still copy static directory (line 25-26 in build.py)
 
 **Acceptance Criteria:**
@@ -119,8 +119,8 @@ with configurable page titles and content insertion via a main element.
 
 - [x] 3.0 Complete view integration with Layout
     - [x] 3.1 Update SiteView to use Layout component
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/views.py`
-        - Import Layout: `from storytime.components.layout import Layout`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/views.py`
+        - Import Layout: `from storyville.components.layout import Layout`
         - Wrap existing content (lines 69-72) as children parameter
         - Update `__call__()` method to:
           ```python
@@ -137,9 +137,9 @@ with configurable page titles and content insertion via a main element.
           ```
         - Use view_title="Home" for site index page
     - [x] 3.2 Update SectionView to use Layout component
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
-        - Import Layout: `from storytime.components.layout import Layout`
-        - Import Site type: `from storytime.site import Site`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
+        - Import Layout: `from storyville.components.layout import Layout`
+        - Import Site type: `from storyville.site import Site`
         - Add site parameter to SectionView: `site: Site`
         - Wrap existing content (lines 53-58) as children parameter
         - Update `__call__()` method to:
@@ -159,9 +159,9 @@ with configurable page titles and content insertion via a main element.
           ```
         - Use section.title as view_title
     - [x] 3.3 Update SubjectView to use Layout component
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
-        - Import Layout: `from storytime.components.layout import Layout`
-        - Import Site type: `from storytime.site import Site`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
+        - Import Layout: `from storyville.components.layout import Layout`
+        - Import Site type: `from storyville.site import Site`
         - Add site parameter to SubjectView: `site: Site`
         - Wrap existing content (lines 41-46 and 56-63) as children parameter
         - Update `__call__()` method to:
@@ -196,11 +196,11 @@ with configurable page titles and content insertion via a main element.
         - Check files: `build.py`, `app.py`, any other files that create view instances
         - Note: Section and Subject models may need parent chain access to get site
     - [x] 3.5 Verify all view tests still pass
-        - Run view tests: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py -v`
+        - Run view tests: `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/site/test_site_views.py -v`
         - Run view tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_views.py -v`
         - Run view tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py -v`
         - Tests may need updates to pass site parameter to views
         - Tests should verify full HTML structure now includes html, head, body tags
 
@@ -248,13 +248,13 @@ with configurable page titles and content insertion via a main element.
         - IMPORTANT: Include test verifying static asset paths point to valid destinations
     - [x] 4.4 Run feature-specific tests only
         - Run Layout component tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout_test.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout_test.py -v`
         - Run SiteView tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/site/test_site_views.py -v`
         - Run SectionView tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/section/test_section_views.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/section/test_section_views.py -v`
         - Run SubjectView tests:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py -v`
         - Expected total: approximately 14-18 tests maximum
         - Do NOT run the entire application test suite
         - Verify critical workflows pass
@@ -263,11 +263,11 @@ with configurable page titles and content insertion via a main element.
         - Formatting: `just fmt` (ensure code formatting is consistent)
         - All quality checks must pass
     - [x] 4.6 Manual verification
-        - Build the site: `python -m storytime build . output`
+        - Build the site: `python -m storyville build . output`
         - Open `output/index.html` in browser
         - Verify:
             - Page has proper HTML structure
-            - Browser tab shows correct title (e.g., "Home - Storytime")
+            - Browser tab shows correct title (e.g., "Home - Storyville")
             - Navigation bar appears with site branding
             - Sidebar shows sections
             - Main content area shows site content
@@ -318,7 +318,7 @@ Recommended implementation sequence:
 - Use type guards: `assert isinstance(result, Element)`
 - Query elements: `h1 = get_by_tag_name(result, "h1")`
 - Get text: `get_text_content(h1)`
-- See example: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/site/test_site_views.py`
+- See example: `/Users/pauleveritt/projects/t-strings/storyville/tests/site/test_site_views.py`
 
 ### Type Safety Requirements
 
@@ -342,7 +342,7 @@ Recommended implementation sequence:
 **Component Structure:**
 
 ```
-src/storytime/components/layout/
+src/storyville/components/layout/
 ├── __init__.py          # Export Layout class
 ├── layout.py            # Layout component implementation
 ├── layout_test.py       # Layout component tests
@@ -353,7 +353,7 @@ src/storytime/components/layout/
 **View Structure:**
 
 ```
-src/storytime/
+src/storyville/
 ├── site/
 │   └── views.py         # SiteView (needs update)
 ├── section/

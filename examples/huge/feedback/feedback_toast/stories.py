@@ -1,7 +1,7 @@
 """The subject for the FeedbackToast component."""
 
 from examples.huge.feedback.feedback_toast.feedback_toast import FeedbackToast
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

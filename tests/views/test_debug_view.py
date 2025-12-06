@@ -2,8 +2,8 @@
 
 
 from aria_testing import get_by_tag_name
-from storytime.catalog.models import Catalog
-from storytime.views.debug_view import DebugView
+from storyville.catalog.models import Catalog
+from storyville.views.debug_view import DebugView
 
 def test_debug_view_renders_with_layout():
     """DebugView should render and wrap content in Layout."""

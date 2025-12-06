@@ -1,7 +1,7 @@
 """The subject for the FormSwitch component."""
 
 from examples.huge.forms.form_switch.form_switch import FormSwitch
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -2,10 +2,10 @@
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 
-from storytime.section.models import Section
-from storytime.catalog.models import Catalog
-from storytime.subject.models import Subject
-from storytime.subject.views import SubjectView
+from storyville.section.models import Section
+from storyville.catalog.models import Catalog
+from storyville.subject.models import Subject
+from storyville.subject.views import SubjectView
 
 
 def test_subject_view_description_renders() -> None:

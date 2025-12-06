@@ -1,7 +1,7 @@
 """The subject for the FeedbackBanner component."""
 
 from examples.huge_assertions.feedback.feedback_banner.feedback_banner import FeedbackBanner
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

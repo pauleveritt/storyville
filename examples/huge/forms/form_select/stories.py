@@ -1,7 +1,7 @@
 """The subject for the FormSelect component."""
 
 from examples.huge.forms.form_select.form_select import FormSelect
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

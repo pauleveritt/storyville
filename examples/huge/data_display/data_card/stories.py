@@ -1,7 +1,7 @@
 """The subject for the DataCard component."""
 
 from examples.huge.data_display.data_card.data_card import DataCard
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

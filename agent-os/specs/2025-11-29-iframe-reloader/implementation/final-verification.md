@@ -61,11 +61,11 @@ None - all tasks verified as complete.
 ### Implementation Documentation
 
 No implementation reports were found in the expected location:
-- `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-29-iframe-reloader/implementations/`
+- `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-29-iframe-reloader/implementations/`
 
 However, all implementation work is complete and verified through:
 - Code inspection of `ws.js` (177 lines)
-- Code inspection of `storytime.css` (200 lines)
+- Code inspection of `storyville.css` (200 lines)
 - Test file inspection of `ws_test.html` (371 lines)
 - All tasks marked complete in `tasks.md`
 
@@ -140,7 +140,7 @@ The iframe reloader is an enhancement to the existing hot reload system (item 4)
 
 **Integration Tests (3 tests):**
 - Full reload cycle structure
-- Console logging with [Storytime] prefix
+- Console logging with [Storyville] prefix
 - Rapid successive reload debouncing
 
 ### Failed Tests
@@ -158,7 +158,7 @@ The test suite consists of browser-based JavaScript tests in `ws_test.html`. The
 
 The tests use a simple test runner with synchronous and asynchronous test support. Tests are designed to run in a browser environment with a mock WebSocket to prevent actual connections.
 
-**Test Execution:** To run these tests manually, open `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html` in a web browser and check the console for results.
+**Test Execution:** To run these tests manually, open `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html` in a web browser and check the console for results.
 
 ---
 
@@ -166,7 +166,7 @@ The tests use a simple test runner with synchronous and asynchronous test suppor
 
 ### 5.1 JavaScript Implementation (ws.js)
 
-**File:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
+**File:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
 
 **Verified Implementation:**
 
@@ -186,7 +186,7 @@ function captureIframeScroll(iframe) {
         var scrollY = iframe.contentWindow.scrollY || 0;
         return { scrollX: scrollX, scrollY: scrollY };
     } catch (e) {
-        console.log('[Storytime] Could not capture iframe scroll position (cross-origin):', e.message);
+        console.log('[Storyville] Could not capture iframe scroll position (cross-origin):', e.message);
         return null;
     }
 }
@@ -200,10 +200,10 @@ function restoreIframeScroll(iframe, scrollState) {
     }
     try {
         iframe.contentWindow.scrollTo(scrollState.scrollX, scrollState.scrollY);
-        console.log('[Storytime] Restored iframe scroll position:', scrollState);
+        console.log('[Storyville] Restored iframe scroll position:', scrollState);
         return true;
     } catch (e) {
-        console.log('[Storytime] Could not restore iframe scroll position (cross-origin):', e.message);
+        console.log('[Storyville] Could not restore iframe scroll position (cross-origin):', e.message);
         return false;
     }
 }
@@ -224,11 +224,11 @@ function applyReloadEffect(iframe) {
 function reloadIframe() {
     var iframe = document.querySelector('iframe[src="./themed_story.html"]');
     if (!iframe) {
-        console.log('[Storytime] No iframe found for reload');
+        console.log('[Storyville] No iframe found for reload');
         return false;
     }
 
-    console.log('[Storytime] Reloading iframe content');
+    console.log('[Storyville] Reloading iframe content');
 
     // Capture scroll position before reload
     var scrollState = captureIframeScroll(iframe);
@@ -238,13 +238,13 @@ function reloadIframe() {
 
     // Set up error handler for fallback
     iframe.onerror = function () {
-        console.error('[Storytime] Iframe failed to load, falling back to full page reload');
+        console.error('[Storyville] Iframe failed to load, falling back to full page reload');
         window.location.reload();
     };
 
     // Set up scroll restoration after load
     iframe.onload = function () {
-        console.log('[Storytime] Iframe loaded successfully');
+        console.log('[Storyville] Iframe loaded successfully');
         if (scrollState) {
             restoreIframeScroll(iframe, scrollState);
         }
@@ -261,7 +261,7 @@ function reloadIframe() {
 ✅ **Conditional Reload Logic** (Lines 92-109)
 ```javascript
 function scheduleReload() {
-    console.log('[Storytime] Scheduling reload in ' + RELOAD_DEBOUNCE_DELAY + 'ms...');
+    console.log('[Storyville] Scheduling reload in ' + RELOAD_DEBOUNCE_DELAY + 'ms...');
     // Clear any existing debounce timeout
     if (reloadDebounceTimeout) {
         clearTimeout(reloadDebounceTimeout);
@@ -270,10 +270,10 @@ function scheduleReload() {
     // Schedule reload after debounce delay
     reloadDebounceTimeout = setTimeout(function () {
         if (isModeC()) {
-            console.log('[Storytime] Mode C detected - reloading iframe only');
+            console.log('[Storyville] Mode C detected - reloading iframe only');
             reloadIframe();
         } else {
-            console.log('[Storytime] Mode A/B detected - reloading full page');
+            console.log('[Storyville] Mode A/B detected - reloading full page');
             window.location.reload();
         }
     }, RELOAD_DEBOUNCE_DELAY);
@@ -285,9 +285,9 @@ function scheduleReload() {
 var RELOAD_DEBOUNCE_DELAY = 100; // 100ms
 ```
 
-### 5.2 CSS Implementation (storytime.css)
+### 5.2 CSS Implementation (storyville.css)
 
-**File:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+**File:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
 
 **Verified Implementation:**
 
@@ -301,7 +301,7 @@ var RELOAD_DEBOUNCE_DELAY = 100; // 100ms
 
 ### 5.3 Test Implementation (ws_test.html)
 
-**File:** `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+**File:** `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
 
 **Verified Implementation:**
 
@@ -343,13 +343,13 @@ var RELOAD_DEBOUNCE_DELAY = 100; // 100ms
 ### 6.3 Console Logging Standards ✅
 
 **Verified:**
-- All log messages use `[Storytime]` prefix
+- All log messages use `[Storyville]` prefix
 - Consistent logging pattern:
   - `console.log()` for info messages
   - `console.error()` for error messages
 - Examples:
-  - `'[Storytime] Mode C detected - reloading iframe only'`
-  - `'[Storytime] Iframe failed to load, falling back to full page reload'`
+  - `'[Storyville] Mode C detected - reloading iframe only'`
+  - `'[Storyville] Iframe failed to load, falling back to full page reload'`
 
 ### 6.4 No Breaking Changes ✅
 
@@ -432,7 +432,7 @@ var RELOAD_DEBOUNCE_DELAY = 100; // 100ms
 - Historical reference
 
 **Suggested Location:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-29-iframe-reloader/implementations/`
+- `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-29-iframe-reloader/implementations/`
 
 ### 9.2 Automated Test Execution
 

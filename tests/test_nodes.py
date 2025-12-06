@@ -3,10 +3,10 @@
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from storytime.nodes import BaseNode, TreeNode, get_certain_callable, get_package_path
-from storytime.section import Section
-from storytime.catalog import Catalog
-from storytime.subject import Subject
+from storyville.nodes import BaseNode, TreeNode, get_certain_callable, get_package_path
+from storyville.section import Section
+from storyville.catalog import Catalog
+from storyville.subject import Subject
 
 
 # Test get_package_path
@@ -29,7 +29,7 @@ def test_get_package_path_without_init() -> None:
 
 def test_get_package_path_with_mock_namespace_package() -> None:
     """Test get_package_path handles namespace packages correctly."""
-    with patch("storytime.nodes.import_module") as mock_import:
+    with patch("storyville.nodes.import_module") as mock_import:
         mock_package = Mock()
         mock_package.__file__ = None  # Namespace package
         mock_package.__path__ = ["/fake/path/to/package"]
@@ -41,7 +41,7 @@ def test_get_package_path_with_mock_namespace_package() -> None:
 
 def test_get_package_path_with_mock_regular_package() -> None:
     """Test get_package_path handles regular packages correctly."""
-    with patch("storytime.nodes.import_module") as mock_import:
+    with patch("storyville.nodes.import_module") as mock_import:
         mock_package = Mock()
         mock_package.__file__ = "/fake/path/to/package/__init__.py"
         mock_import.return_value = mock_package
@@ -52,7 +52,7 @@ def test_get_package_path_with_mock_regular_package() -> None:
 
 def test_get_package_path_invalid_package() -> None:
     """Test get_package_path raises ValueError for invalid package."""
-    with patch("storytime.nodes.import_module") as mock_import:
+    with patch("storyville.nodes.import_module") as mock_import:
         mock_package = Mock()
         mock_package.__file__ = None
         del mock_package.__path__  # No __path__ attribute
@@ -230,8 +230,8 @@ def test_treenode_repr() -> None:
 
     # Mock the import_module and get_certain_callable to avoid needing real files
     with (
-        patch("storytime.nodes.import_module") as mock_import,
-        patch("storytime.get_certain_callable") as mock_get_callable,
+        patch("storyville.nodes.import_module") as mock_import,
+        patch("storyville.get_certain_callable") as mock_get_callable,
     ):
         # Setup mocks
         mock_module = Mock()

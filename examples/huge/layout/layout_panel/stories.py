@@ -1,7 +1,7 @@
 """The subject for the LayoutPanel component."""
 
 from examples.huge.layout.layout_panel.layout_panel import LayoutPanel
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

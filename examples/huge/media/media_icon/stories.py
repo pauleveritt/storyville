@@ -1,7 +1,7 @@
 """The subject for the MediaIcon component."""
 
 from examples.huge.media.media_icon.media_icon import MediaIcon
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

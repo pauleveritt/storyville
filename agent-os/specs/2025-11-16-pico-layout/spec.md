@@ -53,7 +53,7 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 - Structure: `<main><aside>...</aside><div role="document">...</div></main>`
 
 **Footer**
-- Add `<footer>` element with simple copyright text: "2025 Storytime"
+- Add `<footer>` element with simple copyright text: "2025 Storyville"
 - Place footer at bottom of page layout
 - Use centered text alignment with default styling
 
@@ -70,7 +70,7 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 - Use depth=0 for root-level view
 
 **CSS Organization**
-- Add all custom layout styling to existing storytime.css file
+- Add all custom layout styling to existing storyville.css file
 - Use CSS Grid on `body > main` element with specific dimensions:
   - `grid-template-columns: 11rem 1fr` (sidebar 11rem, content flexible)
   - `column-gap: 3rem` (spacing between columns)
@@ -100,14 +100,14 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 
 ## Existing Code to Leverage
 
-**Layout Component (`src/storytime/components/layout/layout.py`)**
+**Layout Component (`src/storyville/components/layout/layout.py`)**
 - Reuse existing Layout dataclass structure with view_title, site, children, depth parameters
 - Keep title concatenation logic: "{view_title} - {site.title}"
 - Preserve static asset path calculation using depth (e.g., "../static/" at depth 0)
-- Maintain existing CSS file imports: pico-main.css, pico-docs.css, storytime.css
+- Maintain existing CSS file imports: pico-main.css, pico-docs.css, storyville.css
 - Follow pattern where views self-wrap in Layout component
 
-**SectionsListing Component (`src/storytime/components/sections_listing/__init__.py`)**
+**SectionsListing Component (`src/storyville/components/sections_listing/__init__.py`)**
 - Reference existing pattern of rendering sections as list items
 - Adapt list comprehension approach for nested details/summary structure
 - Use similar dataclass structure for new sidebar navigation component
@@ -126,8 +126,8 @@ Redesign the Layout component to match PicoCSS documentation structure with hier
 - Pass depth parameter based on view level (Site=0, Section=1, Subject=2)
 - Use existing URL pattern: sections as /section/{key}, subjects as relative {key}
 
-**CSS Files (`src/storytime/components/layout/static/`)**
-- storytime.css currently empty, ready for custom layout styles
+**CSS Files (`src/storyville/components/layout/static/`)**
+- storyville.css currently empty, ready for custom layout styles
 - pico-docs.css already imported with PicoCSS documentation styles
 - pico-main.css provides base framework styling
 

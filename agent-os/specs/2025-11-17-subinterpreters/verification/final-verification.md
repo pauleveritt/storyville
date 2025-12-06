@@ -76,9 +76,9 @@ All 23 tasks across 5 task groups have been verified as complete. The implementa
 
 The implementation is documented through:
 - **Source code docstrings**: All new functions and modules have comprehensive docstrings
-  - `src/storytime/subinterpreter_pool.py`: Module documentation and function docstrings
-  - `src/storytime/app.py`: Updated lifespan and create_app docstrings
-  - `src/storytime/__main__.py`: CLI command help text and docstrings
+  - `src/storyville/subinterpreter_pool.py`: Module documentation and function docstrings
+  - `src/storyville/app.py`: Updated lifespan and create_app docstrings
+  - `src/storyville/__main__.py`: CLI command help text and docstrings
 
 ### Verification Documentation
 
@@ -219,16 +219,16 @@ Full test suite passes with no failures or errors.
 - ✅ Graceful shutdown on app teardown
 - ✅ Uses asyncio.to_thread for async context integration
 
-**Implementation:** `src/storytime/subinterpreter_pool.py` - `create_pool()` and `shutdown_pool()`
+**Implementation:** `src/storyville/subinterpreter_pool.py` - `create_pool()` and `shutdown_pool()`
 
 #### Interpreter Warm-Up Strategy ✅
-- ✅ Pre-imports storytime and tdom modules
+- ✅ Pre-imports storyville and tdom modules
 - ✅ Hard-coded imports in warm-up function
 - ✅ Warm-up happens on pool creation
 - ✅ Warm-up happens after each interpreter is used
 - ✅ Module-level callable compatible with InterpreterPoolExecutor
 
-**Implementation:** `src/storytime/subinterpreter_pool.py` - `warmup_interpreter()`
+**Implementation:** `src/storyville/subinterpreter_pool.py` - `warmup_interpreter()`
 
 #### Build Execution in Subinterpreters ✅
 - ✅ Wraps build_site to run in subinterpreter
@@ -237,7 +237,7 @@ Full test suite passes with no failures or errors.
 - ✅ Discards interpreter after each build
 - ✅ Warms up replacement to maintain pool size of 2
 
-**Implementation:** `src/storytime/subinterpreter_pool.py` - `build_in_subinterpreter()` and `_build_site_in_interpreter()`
+**Implementation:** `src/storyville/subinterpreter_pool.py` - `build_in_subinterpreter()` and `_build_site_in_interpreter()`
 
 #### Dual-Mode Operation ✅
 - ✅ `use_subinterpreters` boolean parameter in create_app (default: False)
@@ -246,7 +246,7 @@ Full test suite passes with no failures or errors.
 - ✅ Web app mode can use subinterpreters when enabled
 - ✅ Sync callback for CLI, async-compatible for web app
 
-**Implementation:** `src/storytime/app.py` - `create_app()` and `lifespan()`; `src/storytime/__main__.py` - `serve()` and `build()`
+**Implementation:** `src/storyville/app.py` - `create_app()` and `lifespan()`; `src/storyville/__main__.py` - `serve()` and `build()`
 
 #### Integration with File Watcher ✅
 - ✅ Watcher accepts async-compatible callback
@@ -254,7 +254,7 @@ Full test suite passes with no failures or errors.
 - ✅ Existing error handling maintained
 - ✅ Broadcast only after successful build
 
-**Implementation:** `src/storytime/app.py` - `lifespan()` with conditional callback selection
+**Implementation:** `src/storyville/app.py` - `lifespan()` with conditional callback selection
 
 #### Error Handling and Logging ✅
 - ✅ Logs pool creation and shutdown events
@@ -263,7 +263,7 @@ Full test suite passes with no failures or errors.
 - ✅ Continues watching on build failure
 - ✅ Graceful exception handling without crashes
 
-**Implementation:** Comprehensive logging throughout `src/storytime/subinterpreter_pool.py`
+**Implementation:** Comprehensive logging throughout `src/storyville/subinterpreter_pool.py`
 
 ### User Stories Verification
 
@@ -292,7 +292,7 @@ Full test suite passes with no failures or errors.
 ### Code Organization
 
 The implementation is well-organized:
-- **New module:** `src/storytime/subinterpreter_pool.py` contains all subinterpreter logic
+- **New module:** `src/storyville/subinterpreter_pool.py` contains all subinterpreter logic
 - **Minimal changes:** Existing modules only updated where necessary
 - **Clear separation:** Pool management, build execution, and integration cleanly separated
 - **No breaking changes:** All modifications maintain backward compatibility

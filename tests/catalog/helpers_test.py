@@ -1,6 +1,6 @@
 """Tests for make_catalog resource_path population."""
 
-from storytime.catalog.helpers import make_catalog
+from storyville.catalog.helpers import make_catalog
 
 
 def test_catalog_has_empty_resource_path_after_construction():

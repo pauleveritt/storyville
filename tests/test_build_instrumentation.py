@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from storytime.build import build_site
+from storyville.build import build_site
 
 
 def test_build_logging_contains_phase_timings(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:

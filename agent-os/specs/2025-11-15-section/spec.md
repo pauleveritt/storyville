@@ -10,11 +10,11 @@ Refactor the existing Section class from a single-file module into a package str
 ## Specific Requirements
 
 **Package structure migration**
-- Create `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/` directory
-- Move Section class from `src/storytime/section.py` to `src/storytime/section/models.py`
-- Create `src/storytime/section/views.py` for SectionView class
-- Create `src/storytime/section/__init__.py` exporting Section and SectionView
-- Remove old `src/storytime/section.py` file after migration
+- Create `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/` directory
+- Move Section class from `src/storyville/section.py` to `src/storyville/section/models.py`
+- Create `src/storyville/section/views.py` for SectionView class
+- Create `src/storyville/section/__init__.py` exporting Section and SectionView
+- Remove old `src/storyville/section.py` file after migration
 
 **Section model structure**
 - Inherit from `BaseNode["Section"]` following Subject pattern (not Story pattern)
@@ -64,7 +64,7 @@ Refactor the existing Section class from a single-file module into a package str
 - Import tdom Node for view return type
 
 **Integration with existing code**
-- Update `src/storytime/site.py` import if needed (from `storytime.section import Section` to `storytime.section.models import Section`)
+- Update `src/storyville/site.py` import if needed (from `storyville.section import Section` to `storyville.section.models import Section`)
 - Ensure make_site() function continues to work with refactored Section package
 - Verify Site.items dict[str, Section] continues to work correctly
 - No changes needed to Section's role in hierarchy (Site → Section → Subject → Story)
@@ -79,20 +79,20 @@ Refactor the existing Section class from a single-file module into a package str
 
 ## Existing Code to Leverage
 
-**Subject package structure (src/storytime/subject/)**
+**Subject package structure (src/storyville/subject/)**
 - Use same three-file structure: models.py, views.py, __init__.py
 - Follow same import/export pattern in __init__.py: export model class and view class
 - Replicate dataclass structure from Subject model for Section model
 - Mirror SubjectView's __call__ implementation pattern for SectionView
 
-**SubjectView rendering pattern (src/storytime/subject/views.py)**
+**SubjectView rendering pattern (src/storyville/subject/views.py)**
 - Copy the overall structure: dataclass with subject field, __call__ returns Node
 - Replicate the conditional rendering for empty vs populated states
 - Use same tdom html(t"""...""") template approach
 - Follow same pattern for building list items in a loop and interpolating into template
 - Use same parent link pattern: `<a href="..">Parent</a>`
 
-**BaseNode inheritance (src/storytime/nodes.py)**
+**BaseNode inheritance (src/storyville/nodes.py)**
 - Section inherits from BaseNode["Section"] like Subject does
 - Use inherited post_update() method without override (like Subject, unlike Story)
 - BaseNode provides: name, parent, title, context, package_path fields
@@ -105,7 +105,7 @@ Refactor the existing Section class from a single-file module into a package str
 - Use get_text_content to extract text from elements
 - Test empty state separately from populated state
 
-**Site.items pattern (src/storytime/site.py)**
+**Site.items pattern (src/storyville/site.py)**
 - Site uses `items: dict[str, Section]` same as Section uses `items: dict[str, Subject]`
 - Site.find_path() traverses items dict using get() method
 - In make_site(), sections are added to site.items using section.name as key

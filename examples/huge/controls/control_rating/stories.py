@@ -1,7 +1,7 @@
 """The subject for the ControlRating component."""
 
 from examples.huge.controls.control_rating.control_rating import ControlRating
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

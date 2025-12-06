@@ -1,17 +1,17 @@
 # Specification: Site to Catalog Rename
 
 ## Goal
-Comprehensively rename "Site" to "Catalog" throughout the Storytime codebase to better reflect the visual browseable collection nature of the component hierarchy.
+Comprehensively rename "Site" to "Catalog" throughout the Storyville codebase to better reflect the visual browseable collection nature of the component hierarchy.
 
 ## User Stories
 - As a developer, I want consistent terminology throughout the codebase so that the hierarchy "Catalog → Section → Subject → Story" is clear
-- As a user of Storytime, I want documentation and messages to refer to "catalog" so that I understand I'm building a browseable component collection
+- As a user of Storyville, I want documentation and messages to refer to "catalog" so that I understand I'm building a browseable component collection
 
 ## Specific Requirements
 
 **Directory and Module Structure Rename**
-- Rename `storytime/site` directory to `storytime/catalog`
-- Update `storytime/catalog/__init__.py` to export Catalog-related symbols
+- Rename `storyville/site` directory to `storyville/catalog`
+- Update `storyville/catalog/__init__.py` to export Catalog-related symbols
 - Ensure all internal imports within the catalog package are updated
 - Maintain the same module structure (models.py, helpers.py, views.py)
 
@@ -23,14 +23,14 @@ Comprehensively rename "Site" to "Catalog" throughout the Storytime codebase to 
 - Update all type hints that reference Site to use Catalog
 
 **Public API Updates**
-- Update `storytime/__init__.py` to export `Catalog` instead of `Site`
+- Update `storyville/__init__.py` to export `Catalog` instead of `Site`
 - Rename `this_site()` function references to `this_catalog()` in documentation
 - Update `__all__` lists in affected modules to use new naming
 - Maintain same function signatures (only names change)
 
 **Import Statement Updates**
-- Change `from storytime.site import` to `from storytime.catalog import` throughout codebase
-- Update Section model's TYPE_CHECKING import from `storytime.site` to `storytime.catalog`
+- Change `from storyville.site import` to `from storyville.catalog import` throughout codebase
+- Update Section model's TYPE_CHECKING import from `storyville.site` to `storyville.catalog`
 - Update all cross-module references that import Site-related components
 - Verify no broken imports remain in src/ and tests/ directories
 
@@ -58,7 +58,7 @@ Comprehensively rename "Site" to "Catalog" throughout the Storytime codebase to 
 - Update CLI output messages from "Building site..." to "Building catalog..."
 - Update progress indicators to reference catalog
 - Update error messages that mention site to use catalog
-- Keep CLI command names unchanged (`storytime serve`, `storytime build`)
+- Keep CLI command names unchanged (`storyville serve`, `storyville build`)
 
 **Test File Updates**
 - Update all test files that reference Site to use Catalog
@@ -109,7 +109,7 @@ No visual assets provided - this is a code refactoring task.
 - Preserve the tdom Node return type and html template structure
 
 ## Out of Scope
-- Changing CLI command names (`storytime serve` and `storytime build` remain unchanged)
+- Changing CLI command names (`storyville serve` and `storyville build` remain unchanged)
 - Providing backward compatibility or deprecation warnings
 - Creating aliases for old "Site" naming
 - Adding migration guides or transition documentation

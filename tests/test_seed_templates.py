@@ -1,12 +1,8 @@
 """Tests for seed command template content generation."""
 
-from pathlib import Path
-import sys
-import tempfile
 
-import pytest
 
-from storytime import PACKAGE_DIR
+from storyville import PACKAGE_DIR
 
 
 def test_template_directory_exists():
@@ -56,7 +52,7 @@ def test_root_stories_template_has_valid_python():
     content = template_file.read_text()
 
     # Verify it imports Catalog
-    assert "from storytime import Catalog" in content or "from storytime.catalog import Catalog" in content
+    assert "from storyville import Catalog" in content or "from storyville.catalog import Catalog" in content
 
     # Verify it defines this_catalog function
     assert "def this_catalog()" in content

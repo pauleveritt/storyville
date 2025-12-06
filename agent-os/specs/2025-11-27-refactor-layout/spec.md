@@ -33,7 +33,7 @@ Refactor the Layout component to use modern CSS Grid layout with template areas 
 - Create `components/footer/footer.py` with a `LayoutFooter` dataclass component
 - Accept props: `year` (str or int), optional `text` (str) for copyright message
 - Return footer element with centered paragraph containing copyright text
-- Default text should be "2025 Storytime" if not provided
+- Default text should be "2025 Storyville" if not provided
 - Match current structure from lines 98-100 of layout.py
 
 **Update Layout Component Structure**
@@ -44,7 +44,7 @@ Refactor the Layout component to use modern CSS Grid layout with template areas 
 - Keep existing head section unchanged (meta tags, title, stylesheets, script)
 
 **Implement CSS Grid with Template Areas**
-- Update `storytime.css` to apply CSS Grid to body element
+- Update `storyville.css` to apply CSS Grid to body element
 - Define grid-template-areas: "header header", "aside main", "footer footer"
 - Set grid-template-columns: 250px 1fr (aside fixed width, main flexible)
 - Set grid-template-rows: auto 1fr auto (header auto, content fills, footer auto)
@@ -104,7 +104,7 @@ No visual mockups provided. The refactored layout should maintain the current vi
 - Already exists and works correctly
 - Uses dataclass pattern with `__call__` returning Node
 - Accepts current_path as optional parameter
-- Import from storytime.components.breadcrumbs
+- Import from storyville.components.breadcrumbs
 
 ## Out of Scope
 - Changing the content or visual appearance of header, aside, main, or footer elements

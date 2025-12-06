@@ -4,7 +4,7 @@
 Create a large-scale example (examples.huge) with 300 stories and build performance instrumentation to enable performance testing and provide visibility into build process characteristics.
 
 ## User Stories
-- As a developer, I want to test Storytime performance at scale so that I can identify bottlenecks before production use
+- As a developer, I want to test Storyville performance at scale so that I can identify bottlenecks before production use
 - As a maintainer, I want to track build phase timing so that I can detect performance regressions
 
 ## Specific Requirements
@@ -48,10 +48,10 @@ Create a large-scale example (examples.huge) with 300 stories and build performa
 - Keep tests fast by running smoke test once per session, performance test tracks baseline without exhaustive validation
 
 **Integration with Existing Build System**
-- Instrumentation code added to existing build_site() function in src/storytime/build.py
+- Instrumentation code added to existing build_site() function in src/storyville/build.py
 - No changes to build_site() function signature or return type
 - No changes to existing examples or their tests
-- Logging output should appear when running storytime build or storytime serve commands
+- Logging output should appear when running storyville build or storyville serve commands
 
 ## Existing Code to Leverage
 
@@ -67,7 +67,7 @@ Create a large-scale example (examples.huge) with 300 stories and build performa
 - Keep component implementations minimal like Button example (simple div/button/span rendering)
 
 **build.py structure**
-- Extend build_site() function from src/storytime/build.py without changing signature
+- Extend build_site() function from src/storyville/build.py without changing signature
 - Use existing _write_html() helper for file writing operations
 - Follow existing pattern of walking site.items tree for sections/subjects/stories
 
@@ -78,8 +78,8 @@ Create a large-scale example (examples.huge) with 300 stories and build performa
 - Use structural pattern matching (match/case) for traversing tree as seen in test_complete_example_structure()
 
 **Logging configuration from __main__.py**
-- Use logging.basicConfig() pattern from src/storytime/__main__.py serve command
-- Logger instance uses logging.getLogger(__name__) pattern seen in existing storytime modules
+- Use logging.basicConfig() pattern from src/storyville/__main__.py serve command
+- Logger instance uses logging.getLogger(__name__) pattern seen in existing storyville modules
 - INFO level logging with format string pattern from __main__.py
 
 ## Out of Scope

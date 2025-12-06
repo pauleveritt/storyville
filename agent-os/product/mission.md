@@ -2,7 +2,7 @@
 
 ## Pitch
 
-Storytime is a component-driven development (CDD) platform that helps Python developers create, visualize, and test UI
+Storyville is a component-driven development (CDD) platform that helps Python developers create, visualize, and test UI
 components by providing a Storybook-like experience that is framework-independent and fully integrated with Python's
 modern testing ecosystem.
 
@@ -55,7 +55,7 @@ JavaScript ecosystems with Storybook, Python developers must run entire applicat
 and refresh browsers repeatedly just to see component changes. This creates a slow, frustrating development experience
 that prevents teams from adopting modern component-driven practices.
 
-**Our Solution:** Storytime brings the Storybook experience to Python. Developers write "stories" that showcase
+**Our Solution:** Storyville brings the Storybook experience to Python. Developers write "stories" that showcase
 component variations, browse them in a visual catalog, and use those same stories in automated tests. Components are
 developed in isolation, independent of any web framework, accelerating development and improving code quality.
 
@@ -65,30 +65,30 @@ Python UI components are typically tightly coupled to specific web frameworks (D
 difficult to test, reuse across projects, or share between teams. Testing these components requires complex setup with
 full application contexts, making test suites slow and brittle.
 
-**Our Solution:** Storytime components are framework-independent at their core, built with modern Python templating (
+**Our Solution:** Storyville components are framework-independent at their core, built with modern Python templating (
 tdom). The same stories used for visual development become the foundation for fast, focused unit tests. Teams can
-integrate Storytime components into any framework while maintaining a clean separation between presentation and
+integrate Storyville components into any framework while maintaining a clean separation between presentation and
 application logic.
 
 ## Differentiators
 
 ### Python-Native Component Development
 
-Unlike JavaScript-based tools that require context switching or Storybook adaptations that feel bolted-on, Storytime is
+Unlike JavaScript-based tools that require context switching or Storybook adaptations that feel bolted-on, Storyville is
 built from the ground up for Python. It uses Python 3.14+ features, modern type hints, and integrates seamlessly with
 pytest. This results in a natural development experience that Python developers can adopt immediately without learning
 new languages or build tools.
 
 ### Stories as Tests, Tests as Stories
 
-Unlike traditional approaches where visual development and testing are separate workflows, Storytime unifies them.
+Unlike traditional approaches where visual development and testing are separate workflows, Storyville unifies them.
 Stories written for visual browsing automatically become test fixtures. This results in better test coverage (every
 visual variation is testable), reduced code duplication, and faster test execution since components are tested in
 isolation.
 
 ### Framework Independence with Easy Integration
 
-Unlike template systems tied to specific frameworks, Storytime components are developed independently but integrate
+Unlike template systems tied to specific frameworks, Storyville components are developed independently but integrate
 easily with Django, Flask, FastAPI, or any Python web framework. This results in reusable components that can be shared
 across projects, tested without framework overhead, and evolved without migration headaches.
 
@@ -116,6 +116,6 @@ across projects, tested without framework overhead, and evolved without migratio
 - **Hot Reload Development**: See component changes instantly with automatic reloading during development
 - **Modern Python Standards**: Built with Python 3.14+ features including structural pattern matching, PEP 695 generics,
   and modern type hints
-- **CLI Integration**: Run Storytime from the command line with simple, intuitive commands
+- **CLI Integration**: Run Storyville from the command line with simple, intuitive commands
 - **Organized Component Structure**: Logical organization with Sites, Sections, Subjects, and Stories for scalable
   component catalogs

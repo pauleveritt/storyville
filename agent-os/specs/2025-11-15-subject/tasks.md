@@ -14,46 +14,46 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 - [x] 1.0 Refactor Subject to package structure
     - [x] 1.1 Write 2-4 focused tests for Subject model functionality
-        - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py`
+        - Location: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py`
         - Tests to write:
             - `test_subject_initialization()` - Basic instantiation
             - `test_subject_with_parent()` - Parent relationship
             - `test_subject_with_target()` - Target attribute
             - `test_subject_with_stories()` - Stories list
-        - Migrate existing tests from `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject.py`
+        - Migrate existing tests from `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject.py`
         - Pattern: Use real instances, not mocks (follow `tests/story/test_story_models.py`)
     - [x] 1.2 Create package directory structure
-        - Create directory: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/`
-        - Create empty file: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py`
+        - Create directory: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/`
+        - Create empty file: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py`
     - [x] 1.3 Move Subject class to models.py
-        - Move `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject.py` to
-          `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
+        - Move `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject.py` to
+          `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/models.py`
         - Keep all existing attributes: parent, target, stories, title, package_path (from BaseNode)
         - Maintain BaseNode["Subject"] inheritance
-        - Keep Target type import from storytime.models
+        - Keep Target type import from storyville.models
         - Update TYPE_CHECKING imports: Section, Story
     - [x] 1.4 Create __init__.py exports
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py`
-        - Export: `from storytime.subject.models import Subject`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py`
+        - Export: `from storyville.subject.models import Subject`
         - Export: `__all__ = ["Subject", "SubjectView"]` (SubjectView added in Task Group 2)
-        - Pattern: Follow `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/__init__.py`
+        - Pattern: Follow `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/__init__.py`
     - [x] 1.5 Update all imports throughout codebase
-        - Find files importing `from storytime.subject import Subject`
-        - Keep imports as `from storytime.subject import Subject` (package __init__.py handles this)
-        - Verify no direct imports of `storytime.subject` module exist
-        - Command: `grep -r "from storytime.subject import" /Users/pauleveritt/projects/pauleveritt/storytime/src/`
+        - Find files importing `from storyville.subject import Subject`
+        - Keep imports as `from storyville.subject import Subject` (package __init__.py handles this)
+        - Verify no direct imports of `storyville.subject` module exist
+        - Command: `grep -r "from storyville.subject import" /Users/pauleveritt/projects/t-strings/storyville/src/`
     - [x] 1.6 Create tests directory structure
-        - Create directory: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/`
-        - Create empty file: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/__init__.py`
-        - Delete old test file: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject.py`
+        - Create directory: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/`
+        - Create empty file: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/__init__.py`
+        - Delete old test file: `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject.py`
     - [x] 1.7 Run focused tests for models only
-        - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py -v`
+        - Command: `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py -v`
         - Verify: 2-4 tests written in 1.1 pass
         - Do NOT run full test suite yet
 
 **Acceptance Criteria:**
 
-- Subject class moved to `src/storytime/subject/models.py`
+- Subject class moved to `src/storyville/subject/models.py`
 - Package exports Subject from `__init__.py`
 - All existing Subject attributes preserved
 - 2-4 focused model tests pass
@@ -65,17 +65,17 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 - [x] 2.0 Create SubjectView for rendering subjects
     - [x] 2.1 Write 2-4 focused tests for SubjectView functionality
-        - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py`
+        - Location: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py`
         - Tests to write:
             - `test_subject_view_renders_title_in_h1()` - Title rendering
             - `test_subject_view_renders_story_cards()` - Story list with links
             - `test_subject_view_shows_empty_state()` - Empty state message
             - `test_subject_view_returns_element_type()` - Type verification with isinstance guard
         - Use aria_testing helpers: `get_by_tag_name`, `get_text_content`, `query_all_by_tag_name`
-        - Pattern: Follow `/Users/pauleveritt/projects/pauleveritt/storytime/tests/story/test_story_views.py`
+        - Pattern: Follow `/Users/pauleveritt/projects/t-strings/storyville/tests/story/test_story_views.py`
         - Type guards: `assert isinstance(result, Element)` in tests only
     - [x] 2.2 Create SubjectView class
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
         - Class structure:
           ```python
           @dataclass
@@ -85,8 +85,8 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
               def __call__(self) -> Node:
                   # Render subject metadata and stories
           ```
-        - Pattern: Follow `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
-        - Satisfies View Protocol from `storytime.models`
+        - Pattern: Follow `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`
+        - Satisfies View Protocol from `storyville.models`
     - [x] 2.3 Implement subject metadata rendering
         - Render title in h1 element: `<h1>{self.subject.title}</h1>`
         - Display target info if present:
@@ -102,17 +102,17 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
         - Do NOT render story.instance or call story components
         - Keep cards minimal: title and link only
     - [x] 2.5 Update __init__.py to export SubjectView
-        - File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py`
-        - Add: `from storytime.subject.views import SubjectView`
+        - File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py`
+        - Add: `from storyville.subject.views import SubjectView`
         - Update __all__: `__all__ = ["Subject", "SubjectView"]`
     - [x] 2.6 Run focused tests for views only
-        - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py -v`
+        - Command: `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py -v`
         - Verify: 2-4 tests written in 2.1 pass
         - Do NOT run full test suite yet
 
 **Acceptance Criteria:**
 
-- SubjectView class created in `src/storytime/subject/views.py`
+- SubjectView class created in `src/storyville/subject/views.py`
 - SubjectView satisfies View Protocol (__call__ returns Node)
 - Renders subject title, target info, parent link
 - Renders story cards as simple list with links
@@ -126,25 +126,25 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 - [x] 3.0 Verify Story.post_update() compatibility with Subject.target
     - [x] 3.1 Write 2 focused integration tests
-        - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py`
+        - Location: `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_story_integration.py`
         - Tests to write:
             - `test_story_inherits_target_from_subject()` - Story gets Subject.target when Story.target is None
             - `test_story_generates_title_from_subject()` - Story generates title from Subject via post_update()
         - Use real Subject and Story instances
         - Verify Story.post_update() works without modification
     - [x] 3.2 Verify Story.post_update() uses self.parent.target
-        - Review: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/models.py`
+        - Review: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/models.py`
         - Line 37: `if self.target is None and self.parent.target:`
         - Confirm: Already uses self.parent.target (correct after terminology change)
         - No changes needed to Story class
     - [x] 3.3 Test Subject properly exposes target attribute
-        - Review: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py`
+        - Review: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/models.py`
         - Line 19: `target: Target | None = None`
         - Confirm: Subject has target attribute with correct type
         - No changes needed to Subject class
     - [x] 3.4 Run focused integration tests
         - Command:
-          `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py -v`
+          `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_story_integration.py -v`
         - Verify: 2 integration tests pass
         - Do NOT run full test suite yet
 
@@ -161,7 +161,7 @@ Pattern: Follow Story package structure (models.py, views.py, __init__.py)
 
 - [x] 4.0 Run comprehensive quality checks
     - [x] 4.1 Run all Subject-related tests
-        - Command: `pytest /Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/ -v`
+        - Command: `pytest /Users/pauleveritt/projects/t-strings/storyville/tests/subject/ -v`
         - Expected: All tests pass (approximately 8-10 tests total from groups 1-3)
         - Tests should cover: models, views, integration
     - [x] 4.2 Run full test suite
@@ -227,7 +227,7 @@ Recommended implementation sequence:
 - Use Python 3.14+ modern type hints (X | Y syntax)
 - Use built-in generics (list[Story] not List[Story])
 - Type guards (isinstance) only in tests, not implementation
-- Subject already uses Target type alias from storytime.models
+- Subject already uses Target type alias from storyville.models
 
 **Testing Approach:**
 
@@ -255,22 +255,22 @@ Recommended implementation sequence:
 
 **Created:**
 
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/models.py` (moved from subject.py)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/__init__.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_models.py` (moved from test_subject.py)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_views.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/test_subject_story_integration.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/subject/__init__.py` (new, empty)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/models.py` (moved from subject.py)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/__init__.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_models.py` (moved from test_subject.py)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_views.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/test_subject_story_integration.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/subject/__init__.py` (new, empty)
 
 **Deleted:**
 
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject.py` (moved to subject/models.py)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject.py` (moved to tests/subject/)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject.py` (moved to subject/models.py)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject.py` (moved to tests/subject/)
 
 **Modified:**
 
-- Any files importing `from storytime.subject import Subject` (verify imports still work via package __init__.py)
+- Any files importing `from storyville.subject import Subject` (verify imports still work via package __init__.py)
 
 ## Notes
 

@@ -231,7 +231,7 @@ All code follows project formatting standards with:
 ✅ **Clean Refactoring**:
 - Old site.py successfully deleted
 - All imports updated to use new package structure
-- Import paths remain compatible (`from storytime.site import Site`)
+- Import paths remain compatible (`from storyville.site import Site`)
 - No breaking changes for external consumers
 - find_path() successfully converted from method to standalone function
 
@@ -243,7 +243,7 @@ All code follows project formatting standards with:
 All specific requirements from the spec have been met:
 
 ✅ **Create site package structure**
-- Directory created at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/`
+- Directory created at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/`
 - All four modules present: models.py, views.py, helpers.py, __init__.py
 - Follows exact pattern from section/, subject/, story/ packages
 
@@ -273,7 +273,7 @@ All specific requirements from the spec have been met:
 ✅ **Export public API from __init__.py**
 - All exports present: Site, SiteView, make_site, find_path
 - __all__ list defined correctly
-- Clean imports work: `from storytime.site import Site, SiteView, make_site, find_path`
+- Clean imports work: `from storyville.site import Site, SiteView, make_site, find_path`
 
 ✅ **Refactor Subject.stories to Subject.items**
 - Field renamed in subject/models.py: `items: list[Story]`

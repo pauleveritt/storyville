@@ -10,7 +10,7 @@ Using the page at https://picocss.com/docs/group as a guide, implement a layout 
 - In the middle a breadcrumbs area with the path to the current view
 - The <main> area that shows the current view
 - A footer with a copyright
-- Put custom styling in storytime.css
+- Put custom styling in storyville.css
 - We already have the CSS from that site in pico-docs.css
 - Use pytest-playwright for tests that require DOM interaction such as clicking
 - But mark these tests as slow

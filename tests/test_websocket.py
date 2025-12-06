@@ -4,9 +4,9 @@ from pathlib import Path
 
 from starlette.testclient import TestClient
 
-from storytime.app import create_app
-from storytime.build import build_site
-from storytime.websocket import broadcast_reload
+from storyville.app import create_app
+from storyville.build import build_site
+from storyville.websocket import broadcast_reload
 
 
 def test_websocket_accepts_connection(tmp_path: Path) -> None:

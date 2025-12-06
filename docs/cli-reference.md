@@ -1,25 +1,25 @@
 # CLI Reference
 
-Storytime provides a command-line interface (CLI) for generating example catalogs, serving catalogs with hot reload, and building static HTML output.
+Storyville provides a command-line interface (CLI) for generating example catalogs, serving catalogs with hot reload, and building static HTML output.
 
 ## Commands Overview
 
 | Command | Purpose | Typical Use |
 |---------|---------|-------------|
-| `seed` | Generate example catalog | Learning Storytime patterns |
+| `seed` | Generate example catalog | Learning Storyville patterns |
 | `serve` | Start development server | Component development with hot reload |
 | `build` | Build static HTML catalog | Deployment and documentation |
 
 ---
 
-## `storytime seed`
+## `storyville seed`
 
-Generate an example Storytime catalog with configurable sizes for quick prototyping, learning, and testing.
+Generate an example Storyville catalog with configurable sizes for quick prototyping, learning, and testing.
 
 ### Syntax
 
 ```bash
-storytime seed <size> <output_directory>
+storyville seed <size> <output_directory>
 ```
 
 ### Arguments
@@ -57,33 +57,33 @@ The `seed` command generates a complete, ready-to-use Python package containing:
 
 **Generate a small catalog for learning:**
 ```bash
-storytime seed small my_first_catalog
+storyville seed small my_first_catalog
 cd my_first_catalog
 ```
 
 **Generate a medium catalog for prototyping:**
 ```bash
-storytime seed medium prototype_catalog
+storyville seed medium prototype_catalog
 ```
 
 **Generate a large catalog for testing:**
 ```bash
-storytime seed large test_catalog
+storyville seed large test_catalog
 ```
 
 ### Working with Generated Catalogs
 
-Once generated, you can immediately use the catalog with other Storytime commands:
+Once generated, you can immediately use the catalog with other Storyville commands:
 
 **Serve the catalog:**
 ```bash
-storytime serve my_first_catalog
+storyville serve my_first_catalog
 # Opens http://localhost:8080
 ```
 
 **Build static HTML:**
 ```bash
-storytime build my_first_catalog dist/
+storyville build my_first_catalog dist/
 ```
 
 **Run tests (if assertions are present):**
@@ -95,14 +95,14 @@ pytest my_first_catalog/
 
 **Directory already exists:**
 ```bash
-$ storytime seed small my_catalog
+$ storyville seed small my_catalog
 Output directory already exists: /path/to/my_catalog
 ```
 Solution: Choose a different directory name or remove the existing directory.
 
 **Invalid size:**
 ```bash
-$ storytime seed tiny my_catalog
+$ storyville seed tiny my_catalog
 Invalid size: tiny. Must be one of: small, medium, large
 ```
 Solution: Use one of the valid sizes: `small`, `medium`, or `large`.
@@ -116,25 +116,25 @@ A: Yes! The generated catalog is a regular Python package. Edit the files to cus
 A: No. The command explicitly fails if the output directory already exists to prevent accidental data loss.
 
 **Q: Are the generated catalogs production-ready?**
-A: The generated catalogs are educational examples. They demonstrate Storytime patterns but should be customized for production use.
+A: The generated catalogs are educational examples. They demonstrate Storyville patterns but should be customized for production use.
 
 ---
 
-## `storytime serve`
+## `storyville serve`
 
-Start a development server for the Storytime catalog with hot reload functionality.
+Start a development server for the Storyville catalog with hot reload functionality.
 
 ### Syntax
 
 ```bash
-storytime serve [input_path] [output_dir] [options]
+storyville serve [input_path] [output_dir] [options]
 ```
 
 ### Arguments
 
 **`input_path`** (optional)
 - Type: String
-- Default: `"storytime"`
+- Default: `"storyville"`
 - Description: Path to the package to serve
 - Can be a package name or directory path
 
@@ -160,29 +160,29 @@ storytime serve [input_path] [output_dir] [options]
 
 ### Examples
 
-**Serve default storytime package:**
+**Serve default storyville package:**
 ```bash
-storytime serve
+storyville serve
 ```
 
 **Serve a specific package:**
 ```bash
-storytime serve my_catalog
+storyville serve my_catalog
 ```
 
 **Serve with output to specific directory:**
 ```bash
-storytime serve my_catalog build_output/
+storyville serve my_catalog build_output/
 ```
 
 **Serve without subinterpreters (faster startup, no module reload):**
 ```bash
-storytime serve my_catalog --no-use-subinterpreters
+storyville serve my_catalog --no-use-subinterpreters
 ```
 
 **Serve without running assertions:**
 ```bash
-storytime serve my_catalog --no-with-assertions
+storyville serve my_catalog --no-with-assertions
 ```
 
 ### Hot Reload Behavior
@@ -202,14 +202,14 @@ The serve command watches for file changes and automatically rebuilds the catalo
 
 ---
 
-## `storytime build`
+## `storyville build`
 
-Build the Storytime catalog to static HTML files for deployment.
+Build the Storyville catalog to static HTML files for deployment.
 
 ### Syntax
 
 ```bash
-storytime build <input_path> <output_dir>
+storyville build <input_path> <output_dir>
 ```
 
 ### Arguments
@@ -217,7 +217,7 @@ storytime build <input_path> <output_dir>
 **`input_path`** (required)
 - Type: String
 - Description: Package location to build
-- Can be a package name (e.g., `'storytime'`) or a dotted package path
+- Can be a package name (e.g., `'storyville'`) or a dotted package path
 
 **`output_dir`** (required)
 - Type: Path
@@ -241,18 +241,18 @@ The build command generates a complete static HTML catalog:
 
 **Build to output directory:**
 ```bash
-storytime build my_catalog dist/
+storyville build my_catalog dist/
 ```
 
 **Build generated seed catalog:**
 ```bash
-storytime seed medium my_catalog
-storytime build my_catalog dist/
+storyville seed medium my_catalog
+storyville build my_catalog dist/
 ```
 
 **Build and deploy:**
 ```bash
-storytime build my_catalog dist/
+storyville build my_catalog dist/
 # Upload dist/ to your web server or CDN
 ```
 
@@ -270,30 +270,30 @@ All commands support standard CLI conventions:
 
 **Help:**
 ```bash
-storytime --help
-storytime seed --help
-storytime serve --help
-storytime build --help
+storyville --help
+storyville seed --help
+storyville serve --help
+storyville build --help
 ```
 
 **Version:**
 ```bash
-storytime --version
+storyville --version
 ```
 
 ---
 
 ## Common Workflows
 
-### Learning Storytime
+### Learning Storyville
 
 1. Generate an example catalog
 2. Serve it to explore the UI
 3. Edit files to see hot reload in action
 
 ```bash
-storytime seed small learn_catalog
-storytime serve learn_catalog
+storyville seed small learn_catalog
+storyville serve learn_catalog
 # Edit learn_catalog/section_0/subject_0/stories.py
 # Watch browser auto-refresh!
 ```
@@ -306,7 +306,7 @@ storytime serve learn_catalog
 
 ```bash
 # Start with your own package
-storytime serve my_components
+storyville serve my_components
 # Edit components and stories
 # See changes immediately in browser
 ```
@@ -317,7 +317,7 @@ storytime serve my_components
 2. Deploy to web server or CDN
 
 ```bash
-storytime build my_components docs/catalog/
+storyville build my_components docs/catalog/
 # Upload docs/catalog/ to your hosting
 ```
 
@@ -328,7 +328,7 @@ storytime build my_components docs/catalog/
 3. Run automated tests with pytest
 
 ```bash
-storytime serve my_components --with-assertions
+storyville serve my_components --with-assertions
 # Verify assertions pass in browser
 pytest my_components/
 ```
@@ -337,7 +337,7 @@ pytest my_components/
 
 ## Environment Variables
 
-Storytime does not currently use environment variables for configuration. All options are provided via command-line arguments.
+Storyville does not currently use environment variables for configuration. All options are provided via command-line arguments.
 
 ---
 
@@ -352,7 +352,7 @@ Storytime does not currently use environment variables for configuration. All op
 
 ## Logging
 
-Storytime uses Python's standard logging module:
+Storyville uses Python's standard logging module:
 
 - **Log Level**: INFO (configured automatically)
 - **Format**: `%(levelname)s:     %(name)s - %(message)s`

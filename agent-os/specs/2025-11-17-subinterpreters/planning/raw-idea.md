@@ -9,7 +9,7 @@ Solution: Run the build process in a subinterpreter using InterpreterPoolExecuto
 Key requirements:
 - Use InterpreterPoolExecutor to run builds in isolated subinterpreters
 - Consider having a pool so the next interpreter is ready to go
-- Warm up the pending interpreter by having it do some common imports such as `import storytime`
+- Warm up the pending interpreter by having it do some common imports such as `import storyville`
 - When it is time to build, it can import everything in the input_dir package
 - Have good integration in Starlette
 - Reference: https://blog.changs.co.uk/subinterpreters-and-asyncio.html

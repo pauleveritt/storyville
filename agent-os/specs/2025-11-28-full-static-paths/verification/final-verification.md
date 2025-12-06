@@ -22,14 +22,14 @@ The Full Static Paths feature has been successfully implemented and verified. Al
 #### Task Group 1: Foundation Layer ✅
 - [x] 1.0 Complete static path utilities foundation
   - [x] 1.1 Write 2-8 focused tests for static utilities (37 tests written)
-  - [x] 1.2 Create `src/storytime/static_assets/` package
+  - [x] 1.2 Create `src/storyville/static_assets/` package
   - [x] 1.3 Implement static folder discovery function
   - [x] 1.4 Implement path calculation utilities
   - [x] 1.5 Create data structures for tracking static folders
   - [x] 1.6 Ensure foundation tests pass
 
 **Implementation Evidence:**
-- Package structure created at `src/storytime/static_assets/` with 6 modules
+- Package structure created at `src/storyville/static_assets/` with 6 modules
 - 37 comprehensive tests in `tests/static_assets/` covering:
   - Discovery (8 tests)
   - Models (6 tests)
@@ -49,7 +49,7 @@ The Full Static Paths feature has been successfully implemented and verified. Al
   - [x] 2.7 Add validation and error handling
 
 **Implementation Evidence:**
-- Created `src/storytime/static_assets/rewriting.py` with all required functions
+- Created `src/storyville/static_assets/rewriting.py` with all required functions
 - 28 tests in `tests/static_assets/test_rewriting.py` covering:
   - Relative path calculation (7 tests)
   - HTML parsing and reference detection (10 tests)
@@ -69,9 +69,9 @@ The Full Static Paths feature has been successfully implemented and verified. Al
   - [x] 3.7 Ensure build integration tests pass
 
 **Implementation Evidence:**
-- Removed `static_dir` property from `Site` model (verified in `src/storytime/site/models.py`)
+- Removed `static_dir` property from `Site` model (verified in `src/storyville/site/models.py`)
 - Updated `build.py` with Phase 4: Static Assets (lines 178-205)
-- Updated `Layout` component to use `storytime_static/` paths (lines 42-51)
+- Updated `Layout` component to use `storyville_static/` paths (lines 42-51)
 - Updated `watchers.py` to monitor static folders (lines 13-14, 84-85)
 - 14 integration tests in `tests/test_build_integration.py`
 - Updated existing tests in `tests/test_build.py`
@@ -107,13 +107,13 @@ None - All tasks marked complete and verified through code review.
 ### Implementation Documentation
 - [x] IMPLEMENTATION_SUMMARY.md in `verification/` folder - Comprehensive summary of all task groups
 - [x] Complete docstrings in all modules with examples:
-  - `src/storytime/static_assets/__init__.py` - Main API documentation
-  - `src/storytime/static_assets/models.py` - StaticFolder dataclass
-  - `src/storytime/static_assets/discovery.py` - Discovery functions
-  - `src/storytime/static_assets/paths.py` - Path calculation utilities
-  - `src/storytime/static_assets/copying.py` - Copy operations
-  - `src/storytime/static_assets/validation.py` - Collision detection
-  - `src/storytime/static_assets/rewriting.py` - Opt-in path rewriting
+  - `src/storyville/static_assets/__init__.py` - Main API documentation
+  - `src/storyville/static_assets/models.py` - StaticFolder dataclass
+  - `src/storyville/static_assets/discovery.py` - Discovery functions
+  - `src/storyville/static_assets/paths.py` - Path calculation utilities
+  - `src/storyville/static_assets/copying.py` - Copy operations
+  - `src/storyville/static_assets/validation.py` - Collision detection
+  - `src/storyville/static_assets/rewriting.py` - Opt-in path rewriting
 
 ### Verification Documentation
 - [x] tasks.md - All tasks marked complete with detailed implementation notes
@@ -165,14 +165,14 @@ Based on implementation review and test file analysis:
 **Total New Tests:** 89 comprehensive tests
 
 **Updated Existing Tests:**
-- `tests/test_build.py` - Updated to expect `storytime_static/` structure
+- `tests/test_build.py` - Updated to expect `storyville_static/` structure
 
 ### Test Execution Plan
 The following commands should be run to validate the implementation:
 
 ```bash
 # Run all tests
-cd /Users/pauleveritt/projects/pauleveritt/storytime
+cd /Users/pauleveritt/projects/t-strings/storyville
 just test
 
 # Run type checking
@@ -211,12 +211,12 @@ Tests are well-organized following the project's testing standards:
 
 **Modern Python 3.14+ Standards:** ✅
 - Type hints throughout all modules using PEP 604 union syntax (`X | Y`)
-- Literal types for constrained values: `Literal["storytime", "input_dir"]`
+- Literal types for constrained values: `Literal["storyville", "input_dir"]`
 - Dataclasses with proper field definitions
 - Complete type annotations on all functions
 
 **Code Organization:** ✅
-- Modular package structure in `src/storytime/static_assets/`
+- Modular package structure in `src/storyville/static_assets/`
 - Clear separation of concerns:
   - `models.py` - Data structures
   - `discovery.py` - Static folder discovery
@@ -247,7 +247,7 @@ Tests are well-organized following the project's testing standards:
 **Static Folder Discovery and Copying:** ✅
 - [x] Scans all node directories for `static/` folders in both sources
 - [x] Tracks source location for disambiguation
-- [x] Copies to `output_dir/storytime_static/` for src/storytime assets
+- [x] Copies to `output_dir/storyville_static/` for src/storyville assets
 - [x] Copies to `output_dir/static/` for input_dir assets
 - [x] Preserves full directory path structure
 - [x] Example paths verified in implementation
@@ -262,7 +262,7 @@ Tests are well-organized following the project's testing standards:
 - [x] Created `rewrite_static_paths()` utility function
 - [x] Accepts tdom Node as input, returns modified Node
 - [x] Uses tdom tree walker (no regex, no string conversion)
-- [x] Only processes paths starting with `static/` or `storytime_static/`
+- [x] Only processes paths starting with `static/` or `storyville_static/`
 - [x] Calculates relative paths based on page depth
 - [x] Modifies attributes in place on node tree
 
@@ -281,13 +281,13 @@ Tests are well-organized following the project's testing standards:
 
 **Hot Reload Support:** ✅
 - [x] Extended file watching in `watchers.py`
-- [x] Monitors `src/storytime/**/static/` folders
+- [x] Monitors `src/storyville/**/static/` folders
 - [x] Monitors `input_dir/**/static/` folders
 - [x] Triggers full rebuild on static asset changes
 - [x] Uses STATIC_EXTENSIONS for filtering
 
 **Component Integration Points:** ✅
-- [x] Utility function importable from `storytime.static_assets`
+- [x] Utility function importable from `storyville.static_assets`
 - [x] Clear function signature with complete type hints
 - [x] Documented calling pattern in docstrings
 - [x] Works at different stages (during or post-render)
@@ -326,10 +326,10 @@ Tests are well-organized following the project's testing standards:
 ### Architecture Decisions
 
 1. **Two-Prefix Path Structure**
-   - `storytime_static/` prefix for core component assets
+   - `storyville_static/` prefix for core component assets
    - `static/` prefix for user input_dir assets
    - Prevents collisions, enables clear source identification
-   - Full path preservation: `storytime_static/components/layout/static/style.css`
+   - Full path preservation: `storyville_static/components/layout/static/style.css`
 
 2. **Opt-In Design Pattern**
    - Components must explicitly call `rewrite_static_paths()`
@@ -345,9 +345,9 @@ Tests are well-organized following the project's testing standards:
 
 4. **Depth-Based Relative Paths**
    - Reuses existing Layout depth calculation logic
-   - Depth 0 (site root): `../storytime_static/...`
-   - Depth 1 (subject index): `../../storytime_static/...`
-   - Depth 2 (story page): `../../../storytime_static/...`
+   - Depth 0 (site root): `../storyville_static/...`
+   - Depth 1 (subject index): `../../storyville_static/...`
+   - Depth 2 (story page): `../../../storyville_static/...`
    - Consistent with existing patterns
 
 5. **Build Process Integration**

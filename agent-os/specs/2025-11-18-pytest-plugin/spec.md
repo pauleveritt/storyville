@@ -12,12 +12,12 @@ Provide automatic pytest test generation from story assertions with zero manual 
 **Plugin Registration and Discovery**
 - Register as pytest plugin via entry point in pyproject.toml under `[project.entry-points.pytest11]`
 - Use pytest collection hooks (`pytest_collect_file`) to discover story files
-- Only scan directories specified in `[tool.storytime.pytest]` config section
+- Only scan directories specified in `[tool.storyville.pytest]` config section
 - Default to `story_paths = ["examples/"]` if not configured
-- Plugin activates automatically when storytime is installed (no `-p` flag needed)
+- Plugin activates automatically when storyville is installed (no `-p` flag needed)
 
 **Configuration Schema**
-- Add `[tool.storytime.pytest]` section to pyproject.toml
+- Add `[tool.storyville.pytest]` section to pyproject.toml
 - Support `story_paths` setting: list of directory paths to scan (default: `["examples/"]`)
 - Support `enabled` setting: boolean to enable/disable plugin (default: true)
 - Read config using `pytest.Config.getini()` or similar pytest config API
@@ -25,7 +25,7 @@ Provide automatic pytest test generation from story assertions with zero manual 
 
 **Test Collection and Generation**
 - Scan configured paths for `stories.py` files using Path.rglob() pattern
-- Use `make_site()` helper from `storytime.site.helpers` to build story tree
+- Use `make_site()` helper from `storyville.site.helpers` to build story tree
 - Traverse tree to find all Story instances with non-empty `assertions` list
 - Generate one pytest test item per assertion in each story
 - Use flat structure (not hierarchical) for test organization
@@ -62,8 +62,8 @@ Provide automatic pytest test generation from story assertions with zero manual 
 - Test with xdist during plugin development to ensure compatibility
 
 **Manual Testing Fixtures**
-- Provide `storytime_site` fixture that returns loaded Site instance
-- Provide `storytime_story` fixture factory for accessing specific stories by path
+- Provide `storyville_site` fixture that returns loaded Site instance
+- Provide `storyville_story` fixture factory for accessing specific stories by path
 - Allow developers to write custom tests using these fixtures
 - Document fixture usage in plugin docstrings and comments
 - Fixtures should use session scope where appropriate for performance
@@ -85,7 +85,7 @@ Provide automatic pytest test generation from story assertions with zero manual 
 - Fresh rendering approach: ignore `assertion_results` cache and render story.instance anew
 
 **Site Building and Traversal**
-- `make_site(package_location)` from `storytime.site.helpers`: builds complete story tree
+- `make_site(package_location)` from `storyville.site.helpers`: builds complete story tree
 - `find_path(site, path)` helper: traverses tree using dotted notation
 - TreeNode discovery: uses Path.rglob("stories.py") to find story files
 - Story tree hierarchy: Site -> Section -> Subject -> Story
@@ -113,7 +113,7 @@ Provide automatic pytest test generation from story assertions with zero manual 
 - Accessibility testing beyond what's explicitly defined in story assertions
 - Mutation testing of story components
 - Coverage reporting specific to stories (use standard pytest-cov)
-- Separate package distribution (pytest-storytime) - built into core instead
+- Separate package distribution (pytest-storyville) - built into core instead
 - Hierarchical test tree organization (use flat structure for simplicity)
 - Auto-discovery of all Python files (only scan configured story_paths)
 - Custom parallel execution implementation (use pytest-xdist instead)

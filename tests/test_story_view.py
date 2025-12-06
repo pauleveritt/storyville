@@ -5,11 +5,11 @@ from dataclasses import dataclass
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom import Node, html
 
-from storytime.section.models import Section
-from storytime.catalog.models import Catalog
-from storytime.story.models import Story
-from storytime.story.views import StoryView
-from storytime.subject.models import Subject
+from storyville.section.models import Section
+from storyville.catalog.models import Catalog
+from storyville.story.models import Story
+from storyville.story.views import StoryView
+from storyville.subject.models import Subject
 
 
 @dataclass

@@ -61,7 +61,7 @@ None - all tasks completed successfully.
 ### Implementation Documentation
 
 The implementation was completed in a single comprehensive session, as evidenced by:
-- All task checkboxes marked complete in `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-15-subject/tasks.md`
+- All task checkboxes marked complete in `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-15-subject/tasks.md`
 - Complete package structure in place
 - Comprehensive test coverage (10 tests across 3 test files)
 - Full integration with existing codebase
@@ -86,7 +86,7 @@ None - implementation is self-documenting through:
 
 ### Updated Roadmap Items
 
-After reviewing `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/product/roadmap.md`, no items directly correspond to the Subject package refactoring. This work is an internal code organization improvement that supports multiple roadmap items:
+After reviewing `/Users/pauleveritt/projects/t-strings/storyville/agent-os/product/roadmap.md`, no items directly correspond to the Subject package refactoring. This work is an internal code organization improvement that supports multiple roadmap items:
 
 - Item 2: Story Definition API (includes Subject class)
 - Item 6: Component Organization System (hierarchical structure)
@@ -166,9 +166,9 @@ The test suite demonstrates excellent coverage with no regressions. All Subject-
 2. `examples/context/stories.py:16` - Section.registry attribute (unrelated to Subject)
 3. `examples/context/stories.py:16` - Site.registry attribute (unrelated to Subject)
 4. `examples/context/stories.py:17` - Section.registry attribute (unrelated to Subject)
-5. `src/storytime/app.py:41` - asynccontextmanager decorator type (unrelated to Subject)
-6. `src/storytime/app.py:42` - lifespan return type (unrelated to Subject)
-7. `src/storytime/components/index/stories.py:13` - Story template argument (unrelated to Subject)
+5. `src/storyville/app.py:41` - asynccontextmanager decorator type (unrelated to Subject)
+6. `src/storyville/app.py:42` - lifespan return type (unrelated to Subject)
+7. `src/storyville/components/index/stories.py:13` - Story template argument (unrelated to Subject)
 
 ### Subject Package Type Safety
 
@@ -212,9 +212,9 @@ The Subject package code follows project formatting standards:
 The Subject package follows the established Story package pattern precisely:
 
 **Package Structure:**
-- `/src/storytime/subject/models.py` - Subject data model
-- `/src/storytime/subject/views.py` - SubjectView rendering
-- `/src/storytime/subject/__init__.py` - Package exports
+- `/src/storyville/subject/models.py` - Subject data model
+- `/src/storyville/subject/views.py` - SubjectView rendering
+- `/src/storyville/subject/__init__.py` - Package exports
 
 **Test Structure:**
 - `/tests/subject/test_subject_models.py` - Model tests (4 tests)
@@ -261,9 +261,9 @@ The Subject package follows the established Story package pattern precisely:
 
 All expected files exist and contain proper implementations:
 
-- `/src/storytime/subject/models.py` - Subject class with parent, target, stories attributes
-- `/src/storytime/subject/views.py` - SubjectView with rendering logic
-- `/src/storytime/subject/__init__.py` - Exports Subject and SubjectView
+- `/src/storyville/subject/models.py` - Subject class with parent, target, stories attributes
+- `/src/storyville/subject/views.py` - SubjectView with rendering logic
+- `/src/storyville/subject/__init__.py` - Exports Subject and SubjectView
 - `/tests/subject/test_subject_models.py` - 4 model tests
 - `/tests/subject/test_subject_views.py` - 4 view tests
 - `/tests/subject/test_subject_story_integration.py` - 2 integration tests
@@ -272,19 +272,19 @@ All expected files exist and contain proper implementations:
 ### Deleted Files
 
 Old files properly removed:
-- `/src/storytime/subject.py` - Removed (moved to subject/models.py)
+- `/src/storyville/subject.py` - Removed (moved to subject/models.py)
 - `/tests/test_subject.py` - Removed (moved to tests/subject/)
 
 ### Import Updates
 
 Imports throughout codebase verified working:
-- `src/storytime/__init__.py` - Imports Subject
-- `src/storytime/section.py` - Imports Subject (TYPE_CHECKING)
-- `src/storytime/site.py` - Imports Subject (TYPE_CHECKING, 2 instances)
-- `src/storytime/utils.py` - Imports Subject (TYPE_CHECKING, 2 instances)
-- `src/storytime/story/models.py` - Imports Subject (TYPE_CHECKING)
+- `src/storyville/__init__.py` - Imports Subject
+- `src/storyville/section.py` - Imports Subject (TYPE_CHECKING)
+- `src/storyville/site.py` - Imports Subject (TYPE_CHECKING, 2 instances)
+- `src/storyville/utils.py` - Imports Subject (TYPE_CHECKING, 2 instances)
+- `src/storyville/story/models.py` - Imports Subject (TYPE_CHECKING)
 
-All imports use `from storytime.subject import Subject` which works via package __init__.py.
+All imports use `from storyville.subject import Subject` which works via package __init__.py.
 
 ---
 
@@ -292,7 +292,7 @@ All imports use `from storytime.subject import Subject` which works via package 
 
 ### Task Group 1: Package Structure and Models
 
-- Subject class moved to `src/storytime/subject/models.py`
+- Subject class moved to `src/storyville/subject/models.py`
 - Package exports Subject from `__init__.py`
 - All existing Subject attributes preserved (parent, target, stories, title, package_path)
 - 4 focused model tests pass
@@ -300,7 +300,7 @@ All imports use `from storytime.subject import Subject` which works via package 
 
 ### Task Group 2: SubjectView Implementation
 
-- SubjectView class created in `src/storytime/subject/views.py`
+- SubjectView class created in `src/storyville/subject/views.py`
 - SubjectView satisfies View Protocol (__call__ returns Node)
 - Renders subject title, target info, parent link
 - Renders story cards as simple list with links
@@ -339,7 +339,7 @@ All 76 tests pass with no failures or errors, confirming:
 ### Import Compatibility
 
 All existing imports continue to work through package __init__.py:
-- Storytime main package imports Subject correctly
+- Storyville main package imports Subject correctly
 - Section imports Subject in TYPE_CHECKING
 - Site imports Subject in TYPE_CHECKING (2 instances)
 - Utils imports Subject in TYPE_CHECKING (2 instances)
@@ -407,13 +407,13 @@ just fmt
 
 ```bash
 # Verify old files removed
-test -f src/storytime/subject.py
+test -f src/storyville/subject.py
 # Result: File not found (properly removed)
 
 test -f tests/test_subject.py
 # Result: File not found (properly removed)
 
 # Verify imports work
-grep -r "from storytime.subject import" src/
+grep -r "from storyville.subject import" src/
 # Result: 7 import statements found, all working correctly via package __init__.py
 ```

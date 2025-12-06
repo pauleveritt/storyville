@@ -2,7 +2,7 @@
 
 ## Goal
 
-Add automatic browser refresh capability to Storytime's development server by watching source files for changes and
+Add automatic browser refresh capability to Storyville's development server by watching source files for changes and
 notifying connected browsers via WebSocket to reload when files are modified.
 
 ## User Stories
@@ -17,7 +17,7 @@ notifying connected browsers via WebSocket to reload when files are modified.
 **Dual Watch System Architecture**
 
 - Create two independent file watchers using the `watchfiles` package
-- INPUT watcher monitors `src/storytime/` directory and triggers rebuild on changes
+- INPUT watcher monitors `src/storyville/` directory and triggers rebuild on changes
 - OUTPUT watcher monitors the rendered HTML output directory (e.g., temp build directory) and sends WebSocket reload
   messages
 - Integrate watchers into Starlette app lifecycle using Starlette's lifespan context manager
@@ -29,11 +29,11 @@ notifying connected browsers via WebSocket to reload when files are modified.
 - Monitor TWO directories for changes:
     1. **Content directory**: Monitor the `input_path` argument (where user content is located) recursively for any file
        changes
-    2. **Storytime static assets**: Monitor `src/storytime/` (if it exists) but ONLY for static file changes (`.css`,
+    2. **Storyville static assets**: Monitor `src/storyville/` (if it exists) but ONLY for static file changes (`.css`,
        `.js`, `.png`, `.jpg`, `.svg`, `.ico`, etc.)
 - If anything in either watched location changes, trigger a full rebuild
 - For content directory: watch all file types
-- For Storytime directory: only watch static assets (not `.py` files)
+- For Storyville directory: only watch static assets (not `.py` files)
 - Ignore Python cache files (`.pyc`, `__pycache__`) and other temporary/build artifacts in both locations
 - When changes detected in either location, invoke the existing `build_site()` function to regenerate the output
 - Implement simple server-side debouncing to avoid multiple rebuilds when many files change at once
@@ -88,7 +88,7 @@ notifying connected browsers via WebSocket to reload when files are modified.
 
 **File Path Configuration**
 
-- INPUT path: Use existing `input_path` argument from serve command (defaults to "storytime")
+- INPUT path: Use existing `input_path` argument from serve command (defaults to "storyville")
 - OUTPUT path: Use existing temporary directory from serve command's `TemporaryDirectory()` context
 - WebSocket endpoint: Fixed at `/ws/reload` relative to server root
 - No configuration file or environment variables needed
@@ -115,7 +115,7 @@ notifying connected browsers via WebSocket to reload when files are modified.
 - Mark these watcher integration tests with `@pytest.mark.slow` decorator
 - Tests should verify:
     - File changes in content directory trigger rebuild
-    - Static asset changes in `src/storytime/` trigger rebuild
+    - Static asset changes in `src/storyville/` trigger rebuild
     - Output directory is updated with new content
     - Watcher can be started and stopped cleanly
 

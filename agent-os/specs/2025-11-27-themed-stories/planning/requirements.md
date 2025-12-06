@@ -23,8 +23,8 @@ be in a file like `story-0/themed_story.html` that the iframe points to with a r
 **Answer:** Change the path to `examples/minimal/themed_layout/themed_layout.py`
 
 **Q4:** Should the ThemedLayout be configurable at the site level (e.g., `Site.themed_layout`), and if so, should it be
-optional with a default fallback to the standard Storytime Layout?
-**Answer:** Yes, `Site.themed_layout`. It is optional; if None, defaults to Storytime `Layout`.
+optional with a default fallback to the standard Storyville Layout?
+**Answer:** Yes, `Site.themed_layout`. It is optional; if None, defaults to Storyville `Layout`.
 
 **Q5:** Are there any exclusions or features we should explicitly NOT include in this initial implementation?
 **Answer:** No multiple themes for now (roadmap item #20 is out of scope).
@@ -33,8 +33,8 @@ optional with a default fallback to the standard Storytime Layout?
 
 **Similar Features Identified:**
 
-- Feature: Current Layout component - Path: `src/storytime/layout.py`
-- Feature: Story rendering logic - Path: `src/storytime/writer.py`
+- Feature: Current Layout component - Path: `src/storyville/layout.py`
+- Feature: Story rendering logic - Path: `src/storyville/writer.py`
 - Components to potentially reuse: The existing Layout component structure and rendering patterns
 - Backend logic to reference: The current story writing logic in writer.py
 
@@ -68,13 +68,13 @@ No visual assets provided.
     - `story-X/themed_story.html`: Contains the themed story rendering
 - iframe uses relative path: `./themed_story.html`
 - Add `themed_layout` property to Site dataclass (optional, defaults to None)
-- If `Site.themed_layout` is None, fall back to standard Storytime Layout component
+- If `Site.themed_layout` is None, fall back to standard Storyville Layout component
 - Create example ThemedLayout at `examples/minimal/themed_layout/themed_layout.py`
 
 ### Reusability Opportunities
 
-- Reference existing Layout component structure: `src/storytime/layout.py`
-- Follow patterns from current story writing logic: `src/storytime/writer.py`
+- Reference existing Layout component structure: `src/storyville/layout.py`
+- Follow patterns from current story writing logic: `src/storyville/writer.py`
 - Reuse component rendering patterns and callable component structure
 - Model ThemedLayout after existing Layout component design
 

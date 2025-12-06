@@ -31,7 +31,7 @@ The Layout Component specification has been successfully implemented with all re
   - [x] 1.8 Ensure Layout component tests pass
 
 **Verification Notes:**
-- Layout component created at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
+- Layout component created at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py`
 - Signature correctly updated to: `Layout(view_title: str | None, site: Site, children: Element | Fragment | Node | None)`
 - Uses modern PEP 604 union syntax throughout
 - Title concatenation logic properly handles None case (no hyphen when view_title is None)
@@ -46,9 +46,9 @@ The Layout Component specification has been successfully implemented with all re
   - [x] 2.5 Verify static assets are discovered correctly
 
 **Verification Notes:**
-- Static directory successfully moved to `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/`
+- Static directory successfully moved to `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/`
 - bulma.css file (225KB) exists at new location
-- Old static directory at `src/storytime/static/` has been removed
+- Old static directory at `src/storyville/static/` has been removed
 - Site model's `__post_init__` correctly updated to: `sd = PACKAGE_DIR / "components" / "layout" / "static"`
 - Static directory discovery verified via tests
 
@@ -203,9 +203,9 @@ class Layout:
 
 ### Static Assets Organization
 ✅ **Verified:** Static directory reorganization complete:
-- Directory exists: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/`
+- Directory exists: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/`
 - File exists: `bulma.css` (225,289 bytes)
-- Old directory removed: `src/storytime/static/` no longer exists
+- Old directory removed: `src/storyville/static/` no longer exists
 - Site model updated to discover static dir at new path
 - Build process compatible (verified via build.py analysis)
 

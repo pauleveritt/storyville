@@ -137,7 +137,7 @@ Target: Create examples.huge with 300 stories and comprehensive build performanc
     - Log: logger.info(f"Build completed in {total_duration:.2f}s")
   - [x] 3.8 Integrate with existing logging configuration
     - Verify logging works with logging.basicConfig() from __main__.py
-    - Test logging output appears in storytime build and storytime serve commands
+    - Test logging output appears in storyville build and storyville serve commands
     - Use INFO level for all timing logs
   - [x] 3.9 Ensure instrumentation tests pass
     - Run ONLY the 2-4 tests written in 3.1
@@ -189,7 +189,7 @@ Target: Create examples.huge with 300 stories and comprehensive build performanc
     - Ensure no regressions in other examples
     - Verify examples.huge doesn't break existing functionality
   - [x] 4.8 Test CLI integration
-    - Run: storytime build examples.huge /tmp/test-huge
+    - Run: storyville build examples.huge /tmp/test-huge
     - Verify logging output shows phase timings
     - Verify build completes successfully
     - Check output directory structure

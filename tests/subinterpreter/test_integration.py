@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from starlette.testclient import TestClient
 
-from storytime.app import create_app
-from storytime.subinterpreter_pool import create_pool, shutdown_pool
+from storyville.app import create_app
+from storyville.subinterpreter_pool import create_pool, shutdown_pool
 
 
 def test_create_app_with_subinterpreters_disabled(tmp_path: Path) -> None:
@@ -100,7 +100,7 @@ async def test_lifespan_skips_pool_when_disabled(tmp_path: Path) -> None:
 @pytest.mark.slow
 async def test_async_callback_for_subinterpreter_builds(tmp_path: Path) -> None:
     """Test that async callback for subinterpreter builds works correctly."""
-    from storytime.subinterpreter_pool import rebuild_callback_subinterpreter
+    from storyville.subinterpreter_pool import rebuild_callback_subinterpreter
 
     pool = create_pool()
     output_dir = tmp_path / "output"
@@ -124,7 +124,7 @@ async def test_async_callback_for_subinterpreter_builds(tmp_path: Path) -> None:
 @pytest.mark.slow
 async def test_watcher_with_subinterpreter_callback(tmp_path: Path) -> None:
     """Test that watcher integration works with subinterpreter callback."""
-    from storytime.subinterpreter_pool import rebuild_callback_subinterpreter
+    from storyville.subinterpreter_pool import rebuild_callback_subinterpreter
 
     pool = create_pool()
     output_dir = tmp_path / "output"

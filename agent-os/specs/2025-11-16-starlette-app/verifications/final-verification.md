@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The Starlette App specification has been successfully implemented and verified. All 10 tasks across 3 task groups are complete and marked as such. The implementation delivers a minimal, focused application factory function that serves pre-built Storytime sites using a single StaticFiles mount. Code quality is excellent with 28 lines replacing 109 lines of complex reload infrastructure. All 10 new tests pass, and quality checks (typecheck, fmt) pass. There are 7 pre-existing test errors in test_build.py unrelated to this implementation.
+The Starlette App specification has been successfully implemented and verified. All 10 tasks across 3 task groups are complete and marked as such. The implementation delivers a minimal, focused application factory function that serves pre-built Storyville sites using a single StaticFiles mount. Code quality is excellent with 28 lines replacing 109 lines of complex reload infrastructure. All 10 new tests pass, and quality checks (typecheck, fmt) pass. There are 7 pre-existing test errors in test_build.py unrelated to this implementation.
 
 ---
 
@@ -50,7 +50,7 @@ None - all tasks verified as complete.
 **Status:** ⚠️ No Implementation Reports
 
 ### Implementation Documentation
-The implementation directory `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-16-starlette-app/implementation/` exists but contains no implementation reports. However, this is acceptable as:
+The implementation directory `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-16-starlette-app/implementation/` exists but contains no implementation reports. However, this is acceptable as:
 - All tasks are clearly marked complete in tasks.md
 - The implementation is straightforward and verifiable through code inspection
 - The final verification report serves as comprehensive documentation
@@ -71,7 +71,7 @@ The implementation directory `/Users/pauleveritt/projects/pauleveritt/storytime/
 **Status:** ⚠️ No Updates Needed
 
 ### Analysis
-Reviewed `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/product/roadmap.md` and found:
+Reviewed `/Users/pauleveritt/projects/t-strings/storyville/agent-os/product/roadmap.md` and found:
 - Item #3: "Web-Based Component Browser" - This relates to future browser UI work, not the basic static serving
 - Item #4: "Hot Reload Development Server" - Explicitly OUT of scope for this spec
 - Item #7: "CLI and Development Workflow" - The __main__.py updates support this, but it remains incomplete as a full feature
@@ -144,7 +144,7 @@ This is a test infrastructure issue in test_build.py, NOT related to the Starlet
 **Status:** ✅ Excellent
 
 ### Implementation Quality
-**File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/app.py`**
+**File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/app.py`**
 - **Lines of code:** 28 (down from 137)
 - **Reduction:** 109 lines removed (80% reduction)
 - **Modern Python standards:** ✅
@@ -155,14 +155,14 @@ This is a test infrastructure issue in test_build.py, NOT related to the Starlet
 - **Clarity:** Excellent - single-purpose function with clear docstring
 - **Maintainability:** High - minimal surface area for bugs
 
-**File: `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_app.py`**
+**File: `/Users/pauleveritt/projects/t-strings/storyville/tests/test_app.py`**
 - **Test count:** 10 tests
 - **Test isolation:** ✅ All tests use `tmp_path` fixture
 - **Test clarity:** ✅ Descriptive names and clear assertions
 - **Coverage:** Appropriate - covers critical paths without exhaustive edge cases
 - **Pattern consistency:** ✅ All tests follow build_site() → create_app() → TestClient pattern
 
-**File: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__main__.py`**
+**File: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__main__.py`**
 - **Bonus update:** ✅ Updated to work with new create_app signature
 - **Integration:** ✅ Properly uses build_site() + create_app() pattern
 - **CLI quality:** Good - uses typer, clear help text, proper error handling
@@ -192,7 +192,7 @@ The following were successfully removed:
 **Status:** ✅ Verified
 
 ### Integration with build_site
-- ✅ All test_app.py tests successfully call `build_site(package_location="storytime", output_dir=tmp_path)`
+- ✅ All test_app.py tests successfully call `build_site(package_location="storyville", output_dir=tmp_path)`
 - ✅ Built site structure correctly served (index.html, section/*, static/*)
 - ✅ StaticFiles with `html=True` properly resolves directory requests to index.html
 - ✅ Relative paths in HTML work correctly (verified by section page tests)

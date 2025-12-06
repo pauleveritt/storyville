@@ -7,9 +7,9 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-from storytime import make_catalog
-from storytime.__main__ import SizeConfig, generate_catalog
-from storytime.build import build_catalog
+from storyville import make_catalog
+from storyville.__main__ import SizeConfig, generate_catalog
+from storyville.build import build_catalog
 
 
 @contextmanager
@@ -45,7 +45,7 @@ def test_generated_small_catalog_can_be_imported() -> None:
             catalog = make_catalog("test_small_catalog_001")
 
             # Verify catalog structure
-            assert catalog.title == "Storytime Seed Catalog"
+            assert catalog.title == "Storyville Seed Catalog"
             assert len(catalog.items) == 1  # 1 section
 
             # Count total stories across all subjects
@@ -75,7 +75,7 @@ def test_generated_medium_catalog_can_be_imported() -> None:
             catalog = make_catalog("test_medium_catalog_002")
 
             # Verify catalog structure
-            assert catalog.title == "Storytime Seed Catalog"
+            assert catalog.title == "Storyville Seed Catalog"
             assert len(catalog.items) == 2  # 2 sections
 
             # Count total subjects
@@ -109,7 +109,7 @@ def test_generated_large_catalog_can_be_imported() -> None:
             catalog = make_catalog("test_large_catalog_003")
 
             # Verify catalog structure
-            assert catalog.title == "Storytime Seed Catalog"
+            assert catalog.title == "Storyville Seed Catalog"
             assert len(catalog.items) == 4  # 4 sections
 
             # Count total subjects
@@ -149,10 +149,10 @@ def test_generated_catalog_has_themed_layout() -> None:
 
 @pytest.mark.xfail(
     reason="Python stdlib html module shadows tdom.html in test environment with multiple imports. "
-    "Feature works correctly outside tests - verified manually with 'storytime seed' command."
+    "Feature works correctly outside tests - verified manually with 'storyville seed' command."
 )
 def test_generated_catalog_can_be_built() -> None:
-    """Test that a generated catalog can be built with storytime build command."""
+    """Test that a generated catalog can be built with storyville build command."""
     with TemporaryDirectory() as tmpdir:
         catalog_path = Path(tmpdir) / "test_build_catalog_005"
         build_output_path = Path(tmpdir) / "build_output"
@@ -192,7 +192,7 @@ def test_generated_catalog_can_be_built() -> None:
 
 @pytest.mark.xfail(
     reason="Python stdlib html module shadows tdom.html in test environment with multiple imports. "
-    "Feature works correctly outside tests - verified manually with 'storytime seed' command."
+    "Feature works correctly outside tests - verified manually with 'storyville seed' command."
 )
 def test_generated_catalog_builds_with_themed_stories() -> None:
     """Test that building a generated catalog creates themed_story.html files."""
@@ -327,7 +327,7 @@ def test_generated_catalog_code_is_syntactically_valid() -> None:
 
 @pytest.mark.xfail(
     reason="Python stdlib html module shadows tdom.html in test environment with multiple imports. "
-    "Feature works correctly outside tests - verified manually with 'storytime seed' command."
+    "Feature works correctly outside tests - verified manually with 'storyville seed' command."
 )
 def test_generated_catalog_assertions_are_executable() -> None:
     """Test that generated story assertions can actually be executed."""

@@ -3,7 +3,7 @@
 ## File Structure
 
 ```
-src/storytime/
+src/storyville/
 ├── models.py                    # NEW - Protocol definitions
 └── story/
     ├── __init__.py             # NEW - Package initialization
@@ -113,20 +113,20 @@ Satisfies View Protocol contract
 ## Implementation Phases
 
 ### Phase 1: Protocol Definition
-1. Create `src/storytime/models.py`
+1. Create `src/storyville/models.py`
 2. Define `View` Protocol with `__call__(self) -> Element`
 3. Add necessary imports from tdom
 
 ### Phase 2: Story Modifications
-1. Move Story class to `src/storytime/story/models.py` (if not already there)
+1. Move Story class to `src/storyville/story/models.py` (if not already there)
 2. Remove the `vdom` method from Story class
 3. Update `instance` property:
    - Change return type to `Element`
    - Add type guard: `assert isinstance(result, Element)`
 
 ### Phase 3: StoryView Implementation
-1. Create `src/storytime/story/__init__.py` (package initialization)
-2. Create `src/storytime/story/views.py`
+1. Create `src/storyville/story/__init__.py` (package initialization)
+2. Create `src/storyville/story/views.py`
 3. Import necessary types: Element, Story, View Protocol
 4. Implement StoryView as dataclass with:
    - `story: Story` field

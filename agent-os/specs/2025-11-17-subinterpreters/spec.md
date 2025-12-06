@@ -25,7 +25,7 @@ server workflows.
 
 **Interpreter Warm-Up Strategy**
 
-- Pre-import storytime and tdom modules in warm-up phase to reduce build latency
+- Pre-import storyville and tdom modules in warm-up phase to reduce build latency
 - Hard-code these imports in a warm-up function (no dynamic configuration needed)
 - Warm-up happens immediately after pool creation and after each interpreter is pulled
 - Warm-up function must be a module-level callable compatible with InterpreterPoolExecutor
@@ -108,7 +108,7 @@ No visual assets provided - this is a backend infrastructure feature.
 
 - Showing build errors in the browser WebSocket interface
 - Configurable pool size (fixed at 2)
-- Dynamic warm-up module configuration (hard-coded storytime and tdom)
+- Dynamic warm-up module configuration (hard-coded storyville and tdom)
 - Performance monitoring or metrics for subinterpreter overhead
 - Parallel builds across multiple subinterpreters
 - Support for Python versions below 3.14

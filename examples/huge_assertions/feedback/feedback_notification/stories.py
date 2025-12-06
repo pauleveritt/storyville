@@ -1,7 +1,7 @@
 """The subject for the FeedbackNotification component."""
 
 from examples.huge_assertions.feedback.feedback_notification.feedback_notification import FeedbackNotification
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -1,6 +1,6 @@
 # pytest Plugin
 
-Storytime includes a built-in pytest plugin that automatically generates tests from story assertions. Zero manual test writing required!
+Storyville includes a built-in pytest plugin that automatically generates tests from story assertions. Zero manual test writing required!
 
 ## Features
 
@@ -19,12 +19,12 @@ Add to `pyproject.toml`:
 
 ```toml
 [project.entry-points.pytest11]
-storytime = "storytime.pytest_plugin"
+storyville = "storyville.pytest_plugin"
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "examples/"]
 
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = true  # Optional: enable/disable plugin (default: true)
 ```
 
@@ -36,14 +36,14 @@ enabled = true  # Optional: enable/disable plugin (default: true)
 ### Disable the Plugin
 
 ```toml
-[tool.storytime.pytest]
+[tool.storyville.pytest]
 enabled = false
 ```
 
 Or use pytest's `-p` flag:
 
 ```bash
-pytest -p no:storytime
+pytest -p no:storyville
 ```
 
 ## Writing Story Assertions
@@ -51,7 +51,7 @@ pytest -p no:storytime
 ### Basic Assertions
 
 ```python
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 def this_subject() -> Subject:
     return Subject(
@@ -244,7 +244,7 @@ The plugin integrates seamlessly with pytest fixtures, hooks, and plugins.
 
 **Check:**
 1. Is `stories.py` in a path listed in `testpaths`?
-2. Is the plugin enabled in `[tool.storytime.pytest]`?
+2. Is the plugin enabled in `[tool.storyville.pytest]`?
 3. Do stories have non-empty `assertions` list?
 
 ```bash
@@ -281,7 +281,7 @@ def check_is_button_tag(el) -> None:
 
 ```python
 from aria_testing import get_by_role, get_text_content
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 def this_subject() -> Subject:
     return Subject(

@@ -10,7 +10,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 
 #### Task Group 1: Mode Detection and Conditional Reload
 **Dependencies:** None
-**Files to modify:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
+**Files to modify:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
 
 - [x] 1.0 Implement iframe reload logic in ws.js
   - [x] 1.1 Write 2-8 focused tests for iframe reload functionality
@@ -19,7 +19,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
     - Test debounce behavior applies to iframe reloads
     - Test error fallback to full page reload
     - Skip: Exhaustive cross-origin tests, performance tests
-    - Location: Create `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html` (browser-based test file)
+    - Location: Create `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html` (browser-based test file)
   - [x] 1.2 Add Mode C detection function
     - Create `isModeC()` function that checks for `iframe[src="./themed_story.html"]` in DOM
     - Return boolean: true if iframe exists, false otherwise
@@ -55,7 +55,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 **Implementation Notes:**
 - Keep IIFE pattern: All new functions inside existing `(function() { ... })()` scope
 - Maintain ES5 compatibility: Use `function` keyword, not arrow functions
-- Console logging: Follow existing `[Storytime]` prefix pattern
+- Console logging: Follow existing `[Storyville]` prefix pattern
 - No external dependencies: Use only browser-native APIs
 
 ---
@@ -64,7 +64,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 
 #### Task Group 2: Capture and Restore Scroll State
 **Dependencies:** Task Group 1
-**Files to modify:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
+**Files to modify:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
 
 - [x] 2.0 Implement scroll position preservation
   - [x] 2.1 Write 2-8 focused tests for scroll preservation
@@ -72,7 +72,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
     - Test scroll position restored after reload
     - Test cross-origin errors handled gracefully
     - Skip: Edge cases for scrollX, exact timing tests
-    - Location: Add to existing `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+    - Location: Add to existing `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
   - [x] 2.2 Add scroll capture function
     - Create `captureIframeScroll(iframe)` function that:
       - Accepts iframe element as parameter
@@ -116,8 +116,8 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 #### Task Group 3: Alpha Mask Effect During Reload
 **Dependencies:** Task Group 1
 **Files to modify:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
 
 - [x] 3.0 Implement visual feedback during reload
   - [x] 3.1 Write 2-8 focused tests for visual feedback
@@ -125,9 +125,9 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
     - Test opacity transition effect triggers
     - Test class removed after fixed duration
     - Skip: Exact timing measurements, animation performance tests
-    - Location: Add to existing `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+    - Location: Add to existing `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
   - [x] 3.2 Add CSS for iframe reload effect
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
     - Add new CSS class: `.iframe-reloading { opacity: 0.6; transition: opacity 0.2s ease; }`
     - Follow existing pattern: Match transition style from `.assertion-badge:hover` (0.2s ease)
     - Place near end of file, before `@media` queries
@@ -160,7 +160,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 
 **Implementation Notes:**
 - CSS class name: Use `.iframe-reloading` for semantic clarity
-- Transition timing: Match existing transitions in storytime.css (0.2s ease)
+- Transition timing: Match existing transitions in storyville.css (0.2s ease)
 - Fixed duration: 200ms removal via setTimeout, independent of iframe load event
 - Browser compatibility: CSS opacity and transitions are widely supported
 
@@ -170,7 +170,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 
 #### Task Group 4: Error Fallback and Test Coverage Review
 **Dependencies:** Task Groups 1, 2, 3
-**Files to modify:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
+**Files to modify:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
 
 - [x] 4.0 Implement error handling and review test gaps
   - [x] 4.1 Review tests from Task Groups 1-3
@@ -180,7 +180,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
     - Total existing tests: approximately 6-24 tests
   - [x] 4.2 Add iframe error fallback handler
     - Update `reloadIframe()` to set error handler:
-      - `iframe.onerror = function() { console.error('[Storytime] Iframe failed to load, falling back to full page reload'); window.location.reload(); };`
+      - `iframe.onerror = function() { console.error('[Storyville] Iframe failed to load, falling back to full page reload'); window.location.reload(); };`
     - Error handler triggers on 404, network errors, CORS failures
     - Provides graceful degradation to full page reload
   - [x] 4.3 Analyze test coverage gaps for iframe reload feature
@@ -196,7 +196,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
       - Edge cases: iframe removed from DOM during reload, rapid successive reloads
     - Do NOT write comprehensive coverage for all scenarios
     - Skip: Performance tests, accessibility tests, cross-browser compatibility tests
-    - Location: Add to `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+    - Location: Add to `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
   - [x] 4.5 Run feature-specific tests only
     - Run ONLY tests related to iframe reload feature
     - Expected total: approximately 16-34 tests maximum (6-24 from tasks 1-3, plus up to 10 new tests)
@@ -214,7 +214,7 @@ Focus: Enable fast, smooth hot reloading for Mode C story views by reloading onl
 - Testing focused exclusively on iframe reload feature
 
 **Implementation Notes:**
-- Error logging: Use `console.error()` with `[Storytime]` prefix
+- Error logging: Use `console.error()` with `[Storyville]` prefix
 - Fallback behavior: `window.location.reload()` is the universal fallback
 - Test execution: Use browser-based testing (manual or automated with Playwright/Puppeteer)
 - Test file format: HTML file with inline JavaScript tests (no pytest for browser JS)
@@ -244,7 +244,7 @@ Recommended implementation sequence:
 ### Browser-Based Testing
 Since this feature is pure client-side JavaScript, tests should run in a browser environment:
 
-**Test file location:** `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+**Test file location:** `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
 
 **Test structure:**
 ```html
@@ -257,7 +257,7 @@ Since this feature is pure client-side JavaScript, tests should run in a browser
     <div id="test-results"></div>
     <iframe src="./themed_story.html" style="width: 100%; min-height: 600px;"></iframe>
 
-    <script src="../../src/storytime/components/layout/static/ws.js"></script>
+    <script src="../../src/storyville/components/layout/static/ws.js"></script>
     <script>
         // Simple test runner
         function test(name, fn) {
@@ -304,17 +304,17 @@ Since this is JavaScript in the browser:
 After each task group, ensure:
 - **ES5 compatibility:** Use `function` keyword, no arrow functions, no `const`/`let` in production code
 - **IIFE pattern:** Keep all code inside existing `(function() { 'use strict'; ... })()` wrapper
-- **Console logging:** Use `[Storytime]` prefix for all log messages
+- **Console logging:** Use `[Storyville]` prefix for all log messages
 - **Error handling:** Wrap cross-origin iframe access in try-catch blocks
 - **No dependencies:** Use only browser-native APIs (WebSocket, DOM, setTimeout, etc.)
 
 ### File Paths Reference
-- **Primary file to modify:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/ws.js`
-- **CSS file to modify:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css`
-- **Test file to create:** `/Users/pauleveritt/projects/pauleveritt/storytime/tests/static/ws_test.html`
+- **Primary file to modify:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/ws.js`
+- **CSS file to modify:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css`
+- **Test file to create:** `/Users/pauleveritt/projects/t-strings/storyville/tests/static/ws_test.html`
 - **Reference files (no changes needed):**
-  - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py` (Mode C iframe structure)
-  - `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/websocket.py` (backend message format)
+  - `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py` (Mode C iframe structure)
+  - `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/websocket.py` (backend message format)
 
 ### Backward Compatibility
 - **No breaking changes:** All existing functionality (Mode A/B full reload) must continue working

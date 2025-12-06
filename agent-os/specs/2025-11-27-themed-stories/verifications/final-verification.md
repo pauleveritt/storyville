@@ -158,7 +158,7 @@ The Themed Stories feature implementation has NOT introduced any regressions. Th
 - [x] Backward compatibility maintained (themed_layout defaults to None)
 
 **Verification:**
-- Site model at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/site/models.py` shows:
+- Site model at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/site/models.py` shows:
   - `themed_layout: Callable[..., Node] | None = None` using modern union syntax
   - Field placed after static_dir field as specified
   - Defaults to None for backward compatibility
@@ -171,7 +171,7 @@ The Themed Stories feature implementation has NOT introduced any regressions. Th
 - [x] Type hints use modern Python 3.14+ syntax
 
 **Verification:**
-- Component at `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/themed_story/themed_story.py` shows:
+- Component at `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/themed_story/themed_story.py` shows:
   - Dataclass with fields: story_title (str), children (Node | None), site (Site)
   - __call__() -> Node method implemented
   - Conditional logic: uses site.themed_layout if present, else falls back to Layout
@@ -199,7 +199,7 @@ The Themed Stories feature implementation has NOT introduced any regressions. Th
 - [x] Build generates themed_story.html files for example stories
 
 **Verification:**
-- ThemedLayout at `/Users/pauleveritt/projects/pauleveritt/storytime/examples/minimal/themed_layout/themed_layout.py` shows:
+- ThemedLayout at `/Users/pauleveritt/projects/t-strings/storyville/examples/minimal/themed_layout/themed_layout.py` shows:
   - Full HTML document structure with DOCTYPE, html, head, body
   - Custom CSS with gradient background and glassmorphism effects
   - Dataclass pattern with story_title and children fields

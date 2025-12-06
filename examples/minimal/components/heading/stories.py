@@ -1,11 +1,11 @@
 """The subject for this Heading component."""
 
 from examples.minimal.components.heading.heading import Heading
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:
-    """Let's make a Storytime subject for this Heading component."""
+    """Let's make a Storyville subject for this Heading component."""
 
     def failing_assertion(el):
         """This assertion will fail."""

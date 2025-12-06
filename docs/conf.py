@@ -1,7 +1,7 @@
 # Configuration file for the Sphinx documentation builder.
 
 # -- Project information
-project = "Storytime"
+project = "Storyville"
 copyright = "2025, Paul Everitt"
 author = "Paul Everitt"
 release = "0.1.0"

@@ -1,7 +1,7 @@
 """The subject for the ControlToggle component."""
 
 from examples.huge_assertions.controls.control_toggle.control_toggle import ControlToggle
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

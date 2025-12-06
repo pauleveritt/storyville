@@ -2,7 +2,7 @@
 
 from concurrent.futures import InterpreterPoolExecutor
 
-from storytime.subinterpreter_pool import create_pool, shutdown_pool
+from storyville.subinterpreter_pool import create_pool, shutdown_pool
 
 
 def test_pool_creation_with_size_2() -> None:

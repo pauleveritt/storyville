@@ -1,7 +1,7 @@
 """The subject for the DataTag component."""
 
 from examples.huge.data_display.data_tag.data_tag import DataTag
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

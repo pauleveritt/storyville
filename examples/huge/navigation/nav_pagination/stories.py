@@ -1,7 +1,7 @@
 """The subject for the NavPagination component."""
 
 from examples.huge.navigation.nav_pagination.nav_pagination import NavPagination
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

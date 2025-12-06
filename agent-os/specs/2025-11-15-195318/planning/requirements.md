@@ -1,7 +1,7 @@
 # Spec Requirements: Site refactoring
 
 ## Initial Description
-"Make a Site in storytime/site with models.py and views.py. Extract make_site and find_path to helpers. The Site should be a tree of nodes, similar to the existing implementation."
+"Make a Site in storyville/site with models.py and views.py. Extract make_site and find_path to helpers. The Site should be a tree of nodes, similar to the existing implementation."
 
 ## Requirements Discussion
 
@@ -37,9 +37,9 @@
 ### Existing Code to Reference
 
 **Similar Features Identified:**
-- Feature: Story package - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/`
-- Feature: Section package - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/`
-- Feature: Subject package - Path: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/`
+- Feature: Story package - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/`
+- Feature: Section package - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/`
+- Feature: Subject package - Path: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/`
 - Pattern to follow: All three packages have models.py, views.py, and __init__.py with consistent structure
 - Note: These packages provide the exact pattern to follow for the Site implementation
 
@@ -76,7 +76,7 @@ Not applicable.
 ## Requirements Summary
 
 ### Functional Requirements
-- Create new `src/storytime/site/` package with three modules: models.py, views.py, helpers.py, and __init__.py
+- Create new `src/storyville/site/` package with three modules: models.py, views.py, helpers.py, and __init__.py
 - Site dataclass in models.py should inherit from BaseNode["Site"] with same structure as Section/Subject
 - Site should have __post_init__() logic for building its item collections (following Section/Subject pattern)
 - SiteView in views.py should follow SectionView/SubjectView pattern with view() and render() methods

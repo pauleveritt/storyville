@@ -1,7 +1,7 @@
 """The subject for the InputURL component."""
 
 from examples.huge.inputs.input_u_r_l.input_u_r_l import InputURL
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

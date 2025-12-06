@@ -1,7 +1,7 @@
 """The subject for the TypoMark component."""
 
 from examples.huge_assertions.typography.typo_mark.typo_mark import TypoMark
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

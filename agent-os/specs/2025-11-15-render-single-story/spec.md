@@ -16,27 +16,27 @@ a default layout that displays story metadata and component output.
 
 **View Protocol Definition**
 
-- Create new file `src/storytime/models.py` with a `View` Protocol
+- Create new file `src/storyville/models.py` with a `View` Protocol
 - Protocol defines single method signature: `__call__(self) -> Element`
 - Enables type-safe structural typing for all view implementations
 - Protocol allows future view classes to satisfy the contract without inheritance
 
 **Story Class Instance Property Update**
 
-- Modify `Story.instance` property in `src/storytime/story/models.py` to return `Element` instead of `object | None`
+- Modify `Story.instance` property in `src/storyville/story/models.py` to return `Element` instead of `object | None`
 - Add type guard inside property: `assert isinstance(result, Element)` to ensure Node to Element conversion
 - Keep component instantiation logic: `self.component(**self.props)`
 - This property provides the rendered component instance for StoryView to embed
 
 **Story Class VDOM Method Removal**
 
-- Remove the `vdom` method entirely from `src/storytime/story/models.py` (if it exists)
+- Remove the `vdom` method entirely from `src/storyville/story/models.py` (if it exists)
 - All rendering should flow through StoryView's `__call__` method instead
 - Ensures separation of concerns between data model (Story) and presentation (StoryView)
 
 **StoryView Dataclass Structure**
 
-- Create new file `src/storytime/story/views.py`
+- Create new file `src/storyville/story/views.py`
 - Implement StoryView as a `@dataclass` with field `story: Story`
 - Implement `__call__(self) -> Element` method satisfying View Protocol
 - Use tdom t-string templates for all HTML generation
@@ -94,14 +94,14 @@ No visual assets provided.
 
 ## Existing Code to Leverage
 
-**IndexView Pattern (`src/storytime/views/index_view.py`)**
+**IndexView Pattern (`src/storyville/views/index_view.py`)**
 
 - Dataclass-based view with `__call__(self) -> Node` signature
 - Uses tdom t-string templates: `html(t"""...""")`
 - Shows established pattern for view classes in this codebase
 - StoryView should follow this exact structure but return Element instead of Node
 
-**Layout Component (`src/storytime/components/layout/__init__.py`)**
+**Layout Component (`src/storyville/components/layout/__init__.py`)**
 
 - Demonstrates complex tdom template with embedded components
 - Shows how to interpolate values: `{self.title}`, `{self.children}`
@@ -123,7 +123,7 @@ No visual assets provided.
 - Calls `get_by_tag_name(element, "p")` to find elements
 - Calls `get_text_content(p)` to extract text for assertions
 
-**Story Instance Property (`src/storytime/story/models.py`)**
+**Story Instance Property (`src/storyville/story/models.py`)**
 
 - Current implementation returns `object | None`
 - Instantiates component: `self.component(**self.props)`

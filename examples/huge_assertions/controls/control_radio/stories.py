@@ -1,7 +1,7 @@
 """The subject for the ControlRadio component."""
 
 from examples.huge_assertions.controls.control_radio.control_radio import ControlRadio
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

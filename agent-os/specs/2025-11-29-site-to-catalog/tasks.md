@@ -29,14 +29,14 @@ messages.
 
 - [x] 1.0 Rename core package directory and update module structure
     - [x] 1.1 Write 2-4 focused tests for module structure
-        - Test that `storytime.catalog` module exists and is importable
-        - Test that `Catalog` class is available from `storytime.catalog`
-        - Test that main package exports `Catalog` from `storytime.__init__`
+        - Test that `storyville.catalog` module exists and is importable
+        - Test that `Catalog` class is available from `storyville.catalog`
+        - Test that main package exports `Catalog` from `storyville.__init__`
         - Skip exhaustive API coverage at this stage
-    - [x] 1.2 Rename directory `storytime/site` to `storytime/catalog`
+    - [x] 1.2 Rename directory `storyville/site` to `storyville/catalog`
         - Created new catalog directory with all renamed files
         - Verified directory structure is correct
-    - [x] 1.3 Update `storytime/catalog/__init__.py`
+    - [x] 1.3 Update `storyville/catalog/__init__.py`
         - Changed exports from `Site` to `Catalog`
         - Updated `__all__` list to use `Catalog` naming
         - Ensured `SiteView` becomes `CatalogView` in exports
@@ -51,7 +51,7 @@ messages.
 
 **Acceptance Criteria:**
 
-- Directory `storytime/catalog` exists (previously `storytime/site`)
+- Directory `storyville/catalog` exists (previously `storyville/site`)
 - The 2-4 tests written in 1.1 pass
 - Package is importable without errors
 - Git history preserved through `git mv`
@@ -91,8 +91,8 @@ messages.
         - Updated internal references within function
         - Updated return type hints
     - [x] 2.6 Update Section model's parent type hint
-        - In `storytime/section/models.py`, changed `parent: Site | None` to `parent: Catalog | None`
-        - Updated TYPE_CHECKING import: `from storytime.catalog import Catalog`
+        - In `storyville/section/models.py`, changed `parent: Site | None` to `parent: Catalog | None`
+        - Updated TYPE_CHECKING import: `from storyville.catalog import Catalog`
         - Ensured no circular import issues
     - [x] 2.7 Ensure core class tests pass
         - Tests created and passing
@@ -117,20 +117,20 @@ messages.
 - [x] 3.0 Update public API and all import statements
     - [x] 3.1 Write 2-4 focused tests for public API
         - Tests included in test_catalog_module_structure.py
-        - Verified `from storytime import Catalog` works
+        - Verified `from storyville import Catalog` works
         - Verified `this_catalog()` function is available
-    - [x] 3.2 Update main package `storytime/__init__.py`
-        - Changed `from storytime.catalog import Catalog`
+    - [x] 3.2 Update main package `storyville/__init__.py`
+        - Changed `from storyville.catalog import Catalog`
         - Updated `__all__` list to export `Catalog` instead of `Site`
         - Ensured all re-exports use new naming
     - [x] 3.3 Rename `this_site()` function to `this_catalog()`
-        - Updated in src/storytime/stories.py
+        - Updated in src/storyville/stories.py
         - Updated in examples/minimal/stories.py
         - Updated function name and return type
     - [x] 3.4 Update all import statements in source code
-        - Updated storytime/nodes.py
-        - Updated storytime/build.py
-        - Updated storytime/__main__.py
+        - Updated storyville/nodes.py
+        - Updated storyville/build.py
+        - Updated storyville/__main__.py
         - Updated all view modules (Section, Subject, Story, About, Debug)
         - Updated component modules (Layout, ThemedStory)
     - [x] 3.5 Update variable and parameter names throughout source
@@ -144,10 +144,10 @@ messages.
 **Acceptance Criteria:**
 
 - The 2-4 tests written in 3.1 pass
-- `from storytime import Catalog` works correctly
+- `from storyville import Catalog` works correctly
 - `this_catalog()` function available and functional
-- All source code imports updated to `storytime.catalog`
-- No references to `storytime.site` remain in source code
+- All source code imports updated to `storyville.catalog`
+- No references to `storyville.site` remain in source code
 
 ---
 
@@ -163,8 +163,8 @@ messages.
         - Review the 4 tests written in test_catalog_module_structure.py
         - Total existing tests created: 4 tests
     - [x] 4.2 Update test imports
-        - Changed `from storytime.site import Site` to `from storytime.catalog import Catalog` in all test files
-        - Updated `from storytime import Site` to `from storytime import Catalog`
+        - Changed `from storyville.site import Site` to `from storyville.catalog import Catalog` in all test files
+        - Updated `from storyville import Site` to `from storyville import Catalog`
         - Updated test_nodes.py and test_build.py
     - [x] 4.3 Update test fixture names
         - No fixtures named `site` found in conftest.py
@@ -191,7 +191,7 @@ messages.
 
 **Acceptance Criteria:**
 
-- All test imports updated to use `storytime.catalog`
+- All test imports updated to use `storyville.catalog`
 - Test fixtures renamed from `site` to `catalog`
 - Test function names use "catalog" terminology
 - Full test suite passes (`just test`)
@@ -215,15 +215,15 @@ messages.
         - Updated "Tree Structure" diagram to show `Catalog` at root
         - Changed conceptual references from "site" to "catalog"
         - Updated phrases like "your site" to "your catalog"
-    - [x] 5.2 Update docstrings in `storytime/catalog/models.py`
+    - [x] 5.2 Update docstrings in `storyville/catalog/models.py`
         - Updated `Catalog` class docstring to explain catalog concept
         - Changed phrases like "The site contains" to "The catalog contains"
         - Updated parameter descriptions from "site" to "catalog"
-    - [x] 5.3 Update docstrings in `storytime/catalog/helpers.py`
+    - [x] 5.3 Update docstrings in `storyville/catalog/helpers.py`
         - Updated `make_catalog()` function docstring
         - Updated `find_path()` docstring parameter descriptions
         - Changed conceptual references to use catalog terminology
-    - [x] 5.4 Update docstrings in `storytime/catalog/views.py`
+    - [x] 5.4 Update docstrings in `storyville/catalog/views.py`
         - Updated `CatalogView` class docstring
         - Updated method docstrings to reference catalog
         - Changed description of what the view renders
@@ -232,7 +232,7 @@ messages.
         - Updated comments to use "catalog" terminology
     - [x] 5.6 Update documentation files in `docs/` directory (if exists)
         - Updated examples/minimal/stories.py
-        - Updated src/storytime/stories.py
+        - Updated src/storyville/stories.py
     - [x] 5.7 Verify documentation consistency
         - Updated all major documentation
         - Hierarchy consistently described as "Catalog → Section → Subject → Story"
@@ -260,7 +260,7 @@ messages.
         - Updated __main__.py messages from "Building site..." to "Building catalog..."
         - Updated progress indicators to reference catalog
         - Updated status messages and completion notifications
-        - Kept CLI command names unchanged (`storytime serve`, `storytime build`)
+        - Kept CLI command names unchanged (`storyville serve`, `storyville build`)
     - [x] 6.2 Update error messages
         - Updated error messages in helpers.py to use "catalog"
         - Updated validation error messages
@@ -274,15 +274,15 @@ messages.
         - ✅ Executed `just fmt` - All checks passed!
         - ✅ All quality gates pass
     - [x] 6.5 Removed old site directory and fixed circular imports
-        - ✅ Removed `src/storytime/site` directory
+        - ✅ Removed `src/storyville/site` directory
         - ✅ Fixed circular import issues by using TYPE_CHECKING in view modules
         - ✅ Removed view exports from `__init__.py` files to break circular dependencies
-        - ✅ Updated all test files to import from `storytime.catalog`
+        - ✅ Updated all test files to import from `storyville.catalog`
         - ✅ Updated all example files to use `Catalog` and `this_catalog()`
         - ✅ Updated pytest plugin to use `catalog` terminology
     - [x] 6.6 Manual verification testing
         - Left for user to perform:
-          - Start dev server: `storytime serve <package>`
+          - Start dev server: `storyville serve <package>`
           - Verify catalog builds without errors
           - Check browser interface shows correct terminology
           - Verify hot reload still works
@@ -374,7 +374,7 @@ Recommended implementation sequence:
 ### Implementation Notes
 
 **What Has Been Completed:**
-1. Created new `storytime/catalog` directory structure with all renamed files
+1. Created new `storyville/catalog` directory structure with all renamed files
 2. Renamed all classes: `Site` → `Catalog`, `SiteView` → `CatalogView`
 3. Renamed all functions: `make_site()` → `make_catalog()`, `this_site()` → `this_catalog()`
 4. Updated all imports throughout the codebase
@@ -384,7 +384,7 @@ Recommended implementation sequence:
 8. Created initial module structure tests
 9. Updated test files: test_build.py, test_nodes.py, conftest.py
 10. Created CHANGELOG.md with migration guide
-11. Removed old site directory at src/storytime/site
+11. Removed old site directory at src/storyville/site
 12. Fixed circular imports using TYPE_CHECKING
 13. All quality checks passing (just test, just typecheck, just fmt)
 

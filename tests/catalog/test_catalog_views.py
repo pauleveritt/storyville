@@ -2,10 +2,10 @@
 
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 
-from storytime.section import Section
-from storytime.catalog.models import Catalog
-from storytime.catalog.views import CatalogView
-from storytime.subject import Subject
+from storyville.section import Section
+from storyville.catalog.models import Catalog
+from storyville.catalog.views import CatalogView
+from storyville.subject import Subject
 
 def test_catalog_view_renders_title_in_h1() -> None:
     """Test CatalogView renders catalog title in h1 element."""

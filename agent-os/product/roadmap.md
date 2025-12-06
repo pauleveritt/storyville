@@ -19,7 +19,7 @@
    automatic discovery, navigation, and clear separation of concerns. `S`
 
 7. [x] CLI and Development Workflow — Build the command-line interface for starting the development server, running
-   builds, and managing the Storytime development experience. `S`
+   builds, and managing the Storyville development experience. `S`
 
 8. [x] Themed Stories — Show a rendering of the story as a full HTML file, shown in an
    `<iframe>` in the story view. This `ThemedStory` should use a `ThemedLayout` that is
@@ -39,7 +39,7 @@
 12. [x] Path objects - Convert the path handling and file handling to use `pathlib` to the maximum.  `M`
 
 13. [x] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require
-    moving `examples/minimal` into `src/storytime` so that it is shipped in the package. `M`
+    moving `examples/minimal` into `src/storyville` so that it is shipped in the package. `M`
 
 14. [] Responsive `M`
 
@@ -50,13 +50,13 @@
     update the badge outside the iframe. Investigate a new approach to change detection, where the output_dir watcher
     and watchfiles changeset can be analyzed to know what was the change and what reload signal to send. `M`
 
-17. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
+17. [ ] Django Integration — Create helpers and adapters for seamlessly using Storyville components within Django
     templates and views. `M`
 
-16. [ ] FastAPI Integration — Build integration layer for using Storytime components with FastAPI's templating and
+16. [ ] FastAPI Integration — Build integration layer for using Storyville components with FastAPI's templating and
     response system. `M`
 
-17. [ ] Flask Integration — Develop adapters for Flask templates and rendering context to work with Storytime
+17. [ ] Flask Integration — Develop adapters for Flask templates and rendering context to work with Storyville
     components. `M`
 
 18. [ ] Accessibility Testing Integration — Add aria-testing integration to verify component accessibility directly from

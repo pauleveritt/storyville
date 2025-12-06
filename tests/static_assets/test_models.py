@@ -2,18 +2,18 @@
 
 from pathlib import Path
 
-from storytime.static_assets.models import StaticFolder
+from storyville.static_assets.models import StaticFolder
 
 
-def test_static_folder_output_prefix_storytime() -> None:
-    """Test output_prefix returns 'storytime_static' for storytime source."""
+def test_static_folder_output_prefix_storyville() -> None:
+    """Test output_prefix returns 'storyville_static' for storyville source."""
     folder = StaticFolder(
-        source_path=Path("src/storytime/components/nav/static"),
-        source_type="storytime",
+        source_path=Path("src/storyville/components/nav/static"),
+        source_type="storyville",
         relative_path=Path("components/nav"),
     )
 
-    assert folder.output_prefix == "storytime_static"
+    assert folder.output_prefix == "storyville_static"
 
 
 def test_static_folder_output_prefix_input_dir() -> None:
@@ -27,17 +27,17 @@ def test_static_folder_output_prefix_input_dir() -> None:
     assert folder.output_prefix == "static"
 
 
-def test_static_folder_calculate_output_path_storytime() -> None:
-    """Test calculate_output_path for storytime source."""
+def test_static_folder_calculate_output_path_storyville() -> None:
+    """Test calculate_output_path for storyville source."""
     folder = StaticFolder(
-        source_path=Path("src/storytime/components/nav/static"),
-        source_type="storytime",
+        source_path=Path("src/storyville/components/nav/static"),
+        source_type="storyville",
         relative_path=Path("components/nav"),
     )
 
     output_path = folder.calculate_output_path(Path("output"))
 
-    assert output_path == Path("output/storytime_static/components/nav/static")
+    assert output_path == Path("output/storyville_static/components/nav/static")
 
 
 def test_static_folder_calculate_output_path_input_dir() -> None:
@@ -56,11 +56,11 @@ def test_static_folder_calculate_output_path_input_dir() -> None:
 def test_static_folder_calculate_output_path_preserves_full_structure() -> None:
     """Test calculate_output_path preserves full directory structure."""
     folder = StaticFolder(
-        source_path=Path("src/storytime/components/navigation/tree/static"),
-        source_type="storytime",
+        source_path=Path("src/storyville/components/navigation/tree/static"),
+        source_type="storyville",
         relative_path=Path("components/navigation/tree"),
     )
 
     output_path = folder.calculate_output_path(Path("build"))
 
-    assert output_path == Path("build/storytime_static/components/navigation/tree/static")
+    assert output_path == Path("build/storyville_static/components/navigation/tree/static")

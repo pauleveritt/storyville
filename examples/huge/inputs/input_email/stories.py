@@ -1,7 +1,7 @@
 """The subject for the InputEmail component."""
 
 from examples.huge.inputs.input_email.input_email import InputEmail
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

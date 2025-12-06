@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from storytime.static_assets.copying import copy_static_folder
-from storytime.static_assets.models import StaticFolder
+from storyville.static_assets.copying import copy_static_folder
+from storyville.static_assets.models import StaticFolder
 
 
 def test_copy_static_folder_copies_contents(tmp_path: Path) -> None:
@@ -24,7 +24,7 @@ def test_copy_static_folder_copies_contents(tmp_path: Path) -> None:
     # Create StaticFolder instance
     folder = StaticFolder(
         source_path=source_dir,
-        source_type="storytime",
+        source_type="storyville",
         relative_path=Path("components/nav"),
     )
 
@@ -33,7 +33,7 @@ def test_copy_static_folder_copies_contents(tmp_path: Path) -> None:
     copy_static_folder(folder, output_dir)
 
     # Verify files copied
-    output_static = output_dir / "storytime_static" / "components" / "nav" / "static"
+    output_static = output_dir / "storyville_static" / "components" / "nav" / "static"
     assert output_static.exists()
     assert (output_static / "style.css").exists()
     assert (output_static / "script.js").exists()
@@ -102,7 +102,7 @@ def test_copy_static_folder_raises_on_nonexistent_source(tmp_path: Path) -> None
     # Create StaticFolder with nonexistent source
     folder = StaticFolder(
         source_path=Path("/nonexistent/static"),
-        source_type="storytime",
+        source_type="storyville",
         relative_path=Path("test"),
     )
 
@@ -120,7 +120,7 @@ def test_copy_static_folder_empty_directory(tmp_path: Path) -> None:
     # Create StaticFolder instance
     folder = StaticFolder(
         source_path=source_dir,
-        source_type="storytime",
+        source_type="storyville",
         relative_path=Path("component"),
     )
 
@@ -129,6 +129,6 @@ def test_copy_static_folder_empty_directory(tmp_path: Path) -> None:
     copy_static_folder(folder, output_dir)
 
     # Verify directory created even if empty
-    output_static = output_dir / "storytime_static" / "component" / "static"
+    output_static = output_dir / "storyville_static" / "component" / "static"
     assert output_static.exists()
     assert output_static.is_dir()

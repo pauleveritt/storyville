@@ -19,8 +19,8 @@ Layouts will also have an `assets` directory. This asset directory should be cop
 **Answer:** Option B: `Element | Fragment | None`
 
 **Q3:** Where should the Layout component live?
-- Option A: `storytime/components/layout/__init__.py` (as a module)
-- Option B: `storytime/components/layout.py` (as a single file)
+- Option A: `storyville/components/layout/__init__.py` (as a module)
+- Option B: `storyville/components/layout.py` (as a single file)
 **Answer:** Move from current location at `components/layout/__init__.py` to `components/layout.py`
 
 **Q4:** The layout will need access to the Site object to get `site.title`. Should Layout accept a `site` prop explicitly?
@@ -30,9 +30,9 @@ Layouts will also have an `assets` directory. This asset directory should be cop
 **Answer:** Handle None sensibly (implementation detail for spec-writer to determine best practice)
 
 **Q6:** For the static assets directory, should we:
-- Option A: Keep using `storytime.static` as currently exists
-- Option B: Move to `storytime.components.layout.static` for better organization
-**Answer:** Option B - move from `storytime.static` to `storytime.components.layout.static` and move `bulma.css` there
+- Option A: Keep using `storyville.static` as currently exists
+- Option B: Move to `storyville.components.layout.static` for better organization
+**Answer:** Option B - move from `storyville.static` to `storyville.components.layout.static` and move `bulma.css` there
 
 **Q7:** Should we implement the build-time copying of static assets to output directory in this spec?
 **Answer:** No, OUT OF SCOPE for this spec. Only create the static directory structure. The build-time copying logic comes in the next feature.
@@ -62,7 +62,7 @@ No visual assets provided.
 ## Requirements Summary
 
 ### Functional Requirements
-- Create a Layout component at `storytime/components/layout.py`
+- Create a Layout component at `storyville/components/layout.py`
 - Layout provides full `<html>`, `<head>`, and `<body>` structure
 - Layout accepts two props:
   - `view_title: str | None` - the view-specific title
@@ -72,7 +72,7 @@ No visual assets provided.
 - Layout inserts children content into `<main>` element
 - Update SiteView, SectionView, and SubjectView to use Layout component
 - Views pass their content as `children` to Layout
-- Move static directory from `storytime.static` to `storytime.components.layout.static`
+- Move static directory from `storyville.static` to `storyville.components.layout.static`
 - Move `bulma.css` file to new static directory location
 - Create proper static directory structure for layouts
 
@@ -98,7 +98,7 @@ No reusability opportunities identified. This is a foundational component that o
 ### Technical Considerations
 - Use modern Python type hints: `Element | Fragment | None` (PEP 604 union syntax)
 - Leverage tdom templating for component structure
-- Follow existing Storytime component patterns
+- Follow existing Storyville component patterns
 - Maintain type safety throughout component and view updates
 - Static assets organization supports future build-time copying feature
 - Component signature: `Layout(view_title: str | None, site: Site, children: Element | Fragment | None)`
@@ -106,7 +106,7 @@ No reusability opportunities identified. This is a foundational component that o
 ## Product Context
 
 ### Alignment with Product Mission
-This Layout component aligns with Storytime's mission of component-driven development by:
+This Layout component aligns with Storyville's mission of component-driven development by:
 - Establishing a reusable, framework-independent layout component
 - Following the pattern of building composable UI components
 - Demonstrating tdom-based component composition
@@ -120,4 +120,4 @@ This feature supports roadmap item #3 (Web-Based Component Browser) by providing
 - Follows Python 3.14+ standards with modern type hints
 - Uses PEP 604 union syntax (`Element | Fragment | None`)
 - Maintains framework-independent core architecture
-- Organizes code following `src/storytime/` structure
+- Organizes code following `src/storyville/` structure

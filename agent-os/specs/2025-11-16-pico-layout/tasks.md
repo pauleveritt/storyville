@@ -25,7 +25,7 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
   - [x] 1.3 Implement header navigation
     - Replace existing header nav structure
     - Wrap header content in `.container` div
-    - Use `<hgroup>` for "Storytime" branding
+    - Use `<hgroup>` for "Storyville" branding
     - Add Home, About, Debug links in `<nav><ul>` with `class="contrast"`
     - Add Home link (href="/")
     - Add About link (href="/about")
@@ -33,7 +33,7 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
     - Structure: `<header><div class="container"><hgroup>...</hgroup><nav>...</nav></div></header>`
   - [x] 1.4 Implement footer element
     - Add `<footer>` element at bottom of layout
-    - Include centered copyright text: "2025 Storytime"
+    - Include centered copyright text: "2025 Storyville"
     - Use default PicoCSS footer styling (no custom CSS)
   - [x] 1.5 Update main grid structure
     - Use CSS Grid on `<main>` element (not separate div.grid)
@@ -68,7 +68,7 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
     - Test stories render as simple `<li><a>` elements (not collapsible)
     - Skip exhaustive testing of all navigation scenarios
   - [x] 2.2 Create NavigationTree component
-    - New component: src/storytime/components/navigation_tree/__init__.py
+    - New component: src/storyville/components/navigation_tree/__init__.py
     - Accept parameters: sections (dict[str, Section]), current_path (str | None)
     - Return type: Node
     - Use dataclass pattern matching existing components
@@ -127,7 +127,7 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
     - Test all ancestor levels render as clickable links
     - Skip exhaustive testing of all path combinations
   - [x] 3.2 Create Breadcrumbs component
-    - New component: src/storytime/components/breadcrumbs/__init__.py
+    - New component: src/storyville/components/breadcrumbs/__init__.py
     - Accept parameter: current_path (str | None)
     - Return type: Node
     - Use dataclass pattern
@@ -174,14 +174,14 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
     - Test both views use depth=0
     - Skip exhaustive content testing (static placeholder content)
   - [x] 4.2 Create AboutView component
-    - New file: src/storytime/views/about_view.py
+    - New file: src/storyville/views/about_view.py
     - Use dataclass with site parameter
     - Implement __call__() -> Node pattern
     - Wrap content in Layout with view_title="About"
     - Set depth=0 for root-level view
     - Include static HTML placeholder content (project description)
   - [x] 4.3 Create DebugView component
-    - New file: src/storytime/views/debug_view.py
+    - New file: src/storyville/views/debug_view.py
     - Use dataclass with site parameter
     - Implement __call__() -> Node pattern
     - Wrap content in Layout with view_title="Debug"
@@ -216,8 +216,8 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
 **Dependencies:** Task Groups 1-4
 
 - [x] 5.0 Complete CSS styling
-  - [x] 5.1 Add custom layout styles to storytime.css
-    - File: src/storytime/components/layout/static/storytime.css
+  - [x] 5.1 Add custom layout styles to storyville.css
+    - File: src/storyville/components/layout/static/storyville.css
     - Add CSS Grid to `body > main`: `grid-template-columns: 11rem 1fr`
     - Set column-gap: 3rem, row-gap: 2rem
     - Add aside navigation spacing/indentation for hierarchy
@@ -247,7 +247,7 @@ Total Tasks: 46+ sub-tasks across 7 major task groups
     - Ensure color contrast meets standards (trust PicoCSS defaults)
 
 **Acceptance Criteria:**
-- storytime.css contains minimal custom styles
+- storyville.css contains minimal custom styles
 - Visual hierarchy is clear in sidebar navigation
 - Breadcrumbs display inline with readable separators
 - Footer is centered and positioned at bottom
@@ -395,23 +395,23 @@ Recommended implementation sequence:
 ## Component File Structure
 
 New files to create:
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/navigation_tree/__init__.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/breadcrumbs/__init__.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/about_view.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/views/debug_view.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/navigation_tree/__init__.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/breadcrumbs/__init__.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/views/about_view.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/views/debug_view.py`
 
 Modified files:
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py` - Updated with PicoCSS-style header and grid on main element
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/static/storytime.css` - Added CSS Grid (11rem + 1fr with 3rem gap)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py` - Updated with PicoCSS-style header and grid on main element
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/static/storyville.css` - Added CSS Grid (11rem + 1fr with 3rem gap)
 - Application routing file (location TBD based on existing route registration pattern)
 
 Test files to create/modify:
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/components/test_layout.py` (modify existing)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/components/test_navigation_tree.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/components/test_breadcrumbs.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_about_view.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/views/test_debug_view.py` (new)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_playwright_integration.py` (new, for playwright tests)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/components/test_layout.py` (modify existing)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/components/test_navigation_tree.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/components/test_breadcrumbs.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/views/test_about_view.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/views/test_debug_view.py` (new)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_playwright_integration.py` (new, for playwright tests)
 
 ## Technical Notes
 
@@ -436,7 +436,7 @@ Test files to create/modify:
 - Test core user flows only
 
 **CSS Philosophy:**
-- Minimal custom styles in storytime.css
+- Minimal custom styles in storyville.css
 - Trust PicoCSS framework for responsive behavior
 - Use CSS Grid on main element: 11rem sidebar + 1fr content with 3rem gap
 - Single responsive media query for mobile layout (max-width: 768px)

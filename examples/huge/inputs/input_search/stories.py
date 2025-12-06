@@ -1,7 +1,7 @@
 """The subject for the InputSearch component."""
 
 from examples.huge.inputs.input_search.input_search import InputSearch
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

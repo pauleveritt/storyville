@@ -22,8 +22,8 @@ The Site to Catalog rename has been successfully implemented across all 6 phases
 #### Phase 1: Core Package Structure (Task Group 1)
 - [x] Task Group 1: Directory and Module Rename
   - [x] 1.1 Write 2-4 focused tests for module structure
-  - [x] 1.2 Rename directory `storytime/site` to `storytime/catalog`
-  - [x] 1.3 Update `storytime/catalog/__init__.py`
+  - [x] 1.2 Rename directory `storyville/site` to `storyville/catalog`
+  - [x] 1.3 Update `storyville/catalog/__init__.py`
   - [x] 1.4 Update internal imports within catalog package
   - [x] 1.5 Ensure module structure tests pass
 
@@ -40,7 +40,7 @@ The Site to Catalog rename has been successfully implemented across all 6 phases
 #### Phase 3: Public API and Imports (Task Group 3)
 - [x] Task Group 3: Public API and Import Updates
   - [x] 3.1 Write 2-4 focused tests for public API
-  - [x] 3.2 Update main package `storytime/__init__.py`
+  - [x] 3.2 Update main package `storyville/__init__.py`
   - [x] 3.3 Rename `this_site()` function to `this_catalog()`
   - [x] 3.4 Update all import statements in source code
   - [x] 3.5 Update variable and parameter names throughout source
@@ -60,9 +60,9 @@ The Site to Catalog rename has been successfully implemented across all 6 phases
 #### Phase 5: Documentation Updates (Task Group 5)
 - [x] Task Group 5: Documentation, Docstrings, and Comments
   - [x] 5.1 Update README.md
-  - [x] 5.2 Update docstrings in `storytime/catalog/models.py`
-  - [x] 5.3 Update docstrings in `storytime/catalog/helpers.py`
-  - [x] 5.4 Update docstrings in `storytime/catalog/views.py`
+  - [x] 5.2 Update docstrings in `storyville/catalog/models.py`
+  - [x] 5.3 Update docstrings in `storyville/catalog/helpers.py`
+  - [x] 5.4 Update docstrings in `storyville/catalog/views.py`
   - [x] 5.5 Update inline code comments
   - [x] 5.6 Update documentation files in `docs/` directory (if exists)
   - [x] 5.7 Verify documentation consistency
@@ -80,7 +80,7 @@ The Site to Catalog rename has been successfully implemented across all 6 phases
 ### Incomplete or Issues
 
 **6.6 Manual verification testing** - Left for user to perform:
-- Start dev server: `storytime serve <package>`
+- Start dev server: `storyville serve <package>`
 - Verify catalog builds without errors
 - Check browser interface shows correct terminology
 - Verify hot reload still works
@@ -105,7 +105,7 @@ This is intentional and expected per the task breakdown.
 - ✅ All function docstrings updated (make_catalog(), find_path())
 - ✅ Inline code comments updated throughout
 - ✅ CHANGELOG.md created with comprehensive migration guide
-- ✅ Examples updated (examples/minimal/stories.py, src/storytime/stories.py)
+- ✅ Examples updated (examples/minimal/stories.py, src/storyville/stories.py)
 
 ### Missing Documentation
 None - all documentation requirements from the spec have been met.
@@ -158,8 +158,8 @@ The implementation has not introduced any test regressions. All new catalog-rela
 ## 5. Specification Requirements Verification
 
 ### Directory and Module Structure Rename ✅
-- ✅ `storytime/site` renamed to `storytime/catalog`
-- ✅ `storytime/catalog/__init__.py` exports Catalog-related symbols
+- ✅ `storyville/site` renamed to `storyville/catalog`
+- ✅ `storyville/catalog/__init__.py` exports Catalog-related symbols
 - ✅ All internal imports within catalog package updated
 - ✅ Module structure maintained (models.py, helpers.py, views.py)
 - ✅ Old site directory removed
@@ -172,13 +172,13 @@ The implementation has not introduced any test regressions. All new catalog-rela
 - ✅ All type hints updated from Site to Catalog
 
 ### Public API Updates ✅
-- ✅ `storytime/__init__.py` exports `Catalog` instead of `Site`
+- ✅ `storyville/__init__.py` exports `Catalog` instead of `Site`
 - ✅ `this_site()` → `this_catalog()` in stories.py files
 - ✅ `__all__` lists updated in affected modules
 - ✅ Function signatures maintained (only names changed)
 
 ### Import Statement Updates ✅
-- ✅ All `from storytime.site import` → `from storytime.catalog import`
+- ✅ All `from storyville.site import` → `from storyville.catalog import`
 - ✅ Section model's TYPE_CHECKING import updated
 - ✅ All cross-module references updated
 - ✅ No broken imports in src/ and tests/ directories
@@ -208,7 +208,7 @@ The implementation has not introduced any test regressions. All new catalog-rela
 - ✅ CLI output: "Building site..." → "Building catalog..."
 - ✅ Progress indicators reference catalog
 - ✅ Error messages use catalog terminology
-- ✅ CLI command names unchanged (storytime serve, storytime build)
+- ✅ CLI command names unchanged (storyville serve, storyville build)
 
 ### Test File Updates ✅
 - ✅ All test files updated to use Catalog
@@ -289,9 +289,9 @@ The following items were correctly identified as out of scope and not implemente
 
 ### No Unintentional References Found
 A verification check of key files shows no unintentional "Site" class or concept references remain:
-- ✅ `storytime/__init__.py` - exports Catalog only
-- ✅ `storytime/catalog/__init__.py` - exports Catalog, make_catalog, find_path
-- ✅ `storytime/catalog/models.py` - defines Catalog class
+- ✅ `storyville/__init__.py` - exports Catalog only
+- ✅ `storyville/catalog/__init__.py` - exports Catalog, make_catalog, find_path
+- ✅ `storyville/catalog/models.py` - defines Catalog class
 - ✅ README.md - uses "catalog" terminology throughout
 - ✅ CHANGELOG.md - documents the Site → Catalog change
 
@@ -324,7 +324,7 @@ The implementation is **APPROVED** for the automated portions. All specification
 
 **Status: ✅ PASSED with User Manual Testing Required**
 
-The Site to Catalog rename has been successfully implemented across the entire Storytime codebase. The implementation is thorough, well-tested, properly documented, and introduces no regressions. The breaking change is clearly communicated with a comprehensive migration guide. Manual verification testing is the final step to complete this specification.
+The Site to Catalog rename has been successfully implemented across the entire Storyville codebase. The implementation is thorough, well-tested, properly documented, and introduces no regressions. The breaking change is clearly communicated with a comprehensive migration guide. Manual verification testing is the final step to complete this specification.
 
 ### Next Steps for User:
 1. Perform manual verification testing (task 6.6)

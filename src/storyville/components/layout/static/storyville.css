@@ -1,0 +1,202 @@
+/* Storyville custom styles */
+
+/* CSS Grid layout for main content area */
+body {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "aside main"
+        "footer footer";
+    grid-template-columns: 11rem 1fr;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 3rem;
+    row-gap: 2rem;
+    align-items: start;
+}
+
+header {
+    grid-area: header;
+}
+
+aside {
+    grid-area: aside;
+}
+
+main {
+    grid-area: main;
+}
+
+/* Override PicoCSS body>main grid layout that constrains content width */
+body > main {
+    display: block !important;
+    grid-template-areas: none !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+}
+
+footer {
+    grid-area: footer;
+}
+
+/* Sidebar navigation styling */
+aside {
+    position: sticky;
+    top: calc(var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 3rem);
+    max-height: calc(100vh - (var(--pico-nav-element-spacing-vertical) * 2 + var(--pico-line-height) + 4rem));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: var(--pico-spacing, 1rem);
+}
+
+/* Navigation tree hierarchy */
+aside nav details {
+    margin-bottom: 0;
+    overflow-x: hidden;
+    min-width: 0;
+}
+
+aside nav details summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.125rem 0;
+    margin-bottom: 0.125rem;
+}
+
+aside nav details ul {
+    margin: 0;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    list-style: none;
+}
+
+aside nav details ul li {
+    margin: 0;
+}
+
+aside nav details ul li a {
+    display: block;
+    padding: 0.125rem 0.5rem;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+aside nav details ul li a:hover {
+    background-color: var(--pico-aside-link-current-background-color, rgba(0, 0, 0, 0.05));
+}
+
+/* Nested subject details */
+aside nav details details {
+    margin-top: 0;
+}
+
+aside nav details details summary {
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+/* Breadcrumb navigation */
+nav[aria-label="Breadcrumb"] {
+    margin-bottom: 1.5rem;
+    font-size: 0.9em;
+}
+
+nav[aria-label="Breadcrumb"] a {
+    text-decoration: none;
+}
+
+nav[aria-label="Breadcrumb"] a:hover {
+    text-decoration: underline;
+}
+
+nav[aria-label="Breadcrumb"] span {
+    color: var(--pico-muted-color);
+}
+
+/* Footer styling */
+footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+/* Story Header - Flexbox layout for title and badges */
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.story-header-left {
+    flex: 1;
+}
+
+.story-header-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Assertion Badges */
+.assertion-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assertion-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.assertion-badge-pass {
+    background-color: #4caf50;
+    color: white;
+}
+
+.assertion-badge-fail {
+    background-color: #f44336;
+    color: white;
+    cursor: help;
+}
+
+/* Iframe reload visual feedback */
+.iframe-reloading {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+/* Responsive layout for mobile */
+@media (max-width: 768px) {
+    body {
+        grid-template-areas:
+            "header"
+            "aside"
+            "main"
+            "footer";
+        grid-template-columns: 1fr;
+    }
+
+    aside {
+        position: static;
+        max-height: none;
+        margin-bottom: 2rem;
+    }
+
+    .story-header {
+        flex-direction: column;
+    }
+
+    .story-header-right {
+        margin-top: 0.75rem;
+        width: 100%;
+    }
+}

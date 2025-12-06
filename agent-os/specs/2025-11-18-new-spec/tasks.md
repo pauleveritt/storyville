@@ -148,7 +148,7 @@ badges in the browser.
         - Use inline styles if PicoCSS doesn't have built-in pill badges
         - Follow existing PicoCSS usage patterns from Layout component
     - [x] 3.5 Add custom CSS if needed for badge styling
-        - Check if storytime.css needs additional badge styles
+        - Check if storyville.css needs additional badge styles
         - Ensure badges are right-aligned in header
         - Ensure badges don't wrap awkwardly on mobile
         - Follow responsive design principles
@@ -256,7 +256,7 @@ badges in the browser.
         - Run `just fmt` (format all modified code)
         - Ensure all quality checks pass before considering task complete
     - [x] 5.6 Manual browser testing
-        - Start dev server with `python -m storytime serve`
+        - Start dev server with `python -m storyville serve`
         - Test with example story containing assertions
         - Verify badges display correctly
         - Verify mouseover tooltips work

@@ -2,7 +2,7 @@
 
 ## Initial Description
 
-Create a Starlette-based web app to serve Storytime portfolios from a built site. The app should:
+Create a Starlette-based web app to serve Storyville portfolios from a built site. The app should:
 
 1. Serve a built site from a `var` directory
 2. Comment out/remove everything related to reloading functionality (focus on static serving first)

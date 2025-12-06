@@ -1,7 +1,7 @@
 """The subject for the OverlayDrawer component."""
 
 from examples.huge.overlays.overlay_drawer.overlay_drawer import OverlayDrawer
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

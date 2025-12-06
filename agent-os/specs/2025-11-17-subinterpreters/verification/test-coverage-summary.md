@@ -12,7 +12,7 @@
 - `test_pool_creation_with_size_2` - Verifies pool creates with exactly 2 interpreters
 - `test_warmup_function_execution` - Confirms warmup function executes successfully
 - `test_pool_shutdown_cleanup` - Ensures graceful pool shutdown
-- `test_warmup_imports_modules` - Validates storytime and tdom modules are imported
+- `test_warmup_imports_modules` - Validates storyville and tdom modules are imported
 
 #### Build Execution Tests (5 tests)
 - `test_build_in_subinterpreter_executes_successfully` - Basic build execution
@@ -150,7 +150,7 @@ tests/subinterpreter/
 
 ### Core Functionality
 1. Pool creates with exactly 2 interpreters
-2. Interpreters warm up with storytime and tdom imports
+2. Interpreters warm up with storyville and tdom imports
 3. Builds execute successfully in subinterpreters
 4. Files are written correctly to disk
 5. Modules are reimported fresh on each build

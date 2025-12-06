@@ -21,7 +21,7 @@ This feature adds description field rendering to SectionView, SubjectView, and S
 
 **Status:** COMPLETE - SectionView already implements the description rendering pattern correctly. This serves as the reference implementation for SubjectView and StoryView.
 
-**Reference Code:** `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py` (lines 38-42)
+**Reference Code:** `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py` (lines 38-42)
 
 ### View Components - SubjectView
 
@@ -62,8 +62,8 @@ This feature adds description field rendering to SectionView, SubjectView, and S
 - Pattern matches SectionView implementation
 
 **Files Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject_view.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject_view.py`
 
 ### View Components - StoryView
 
@@ -120,8 +120,8 @@ This feature adds description field rendering to SectionView, SubjectView, and S
 - Pattern matches SectionView implementation
 
 **Files Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_story_view.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_story_view.py`
 
 **Implementation Notes:**
 - StoryView has 4 rendering paths total (Mode C with/without badges, Mode B with/without badges)
@@ -241,16 +241,16 @@ Then insert `{description_p}` at the appropriate location in the template.
 ### File Paths
 
 **Views Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py` (updated to check for empty string)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py` (complete)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py` (complete)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py` (updated to check for empty string)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py` (complete)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py` (complete)
 
 **Reference Implementation:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py` (lines 38-42)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py` (lines 38-42)
 
 **Test Files Created:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_subject_view.py` (4 tests)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_story_view.py` (6 tests)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_subject_view.py` (4 tests)
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_story_view.py` (6 tests)
 
 ### Dependencies
 

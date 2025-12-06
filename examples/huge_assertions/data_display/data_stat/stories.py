@@ -1,7 +1,7 @@
 """The subject for the DataStat component."""
 
 from examples.huge_assertions.data_display.data_stat.data_stat import DataStat
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

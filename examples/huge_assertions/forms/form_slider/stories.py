@@ -1,7 +1,7 @@
 """The subject for the FormSlider component."""
 
 from examples.huge_assertions.forms.form_slider.form_slider import FormSlider
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

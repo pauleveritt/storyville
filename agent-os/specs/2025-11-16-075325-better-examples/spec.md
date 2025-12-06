@@ -1,4 +1,4 @@
-# Specification: Better Examples for Storytime
+# Specification: Better Examples for Storyville
 
 ## Goal
 
@@ -7,10 +7,10 @@ with complete test coverage using aria-testing to verify both component renderin
 
 ## User Stories
 
-- As a Storytime evaluator, I want to see an example of the system and why I should be interested
-- As a Storytime user, I want to see examples of all Story variation patterns so that I understand how to use optional
+- As a Storyville evaluator, I want to see an example of the system and why I should be interested
+- As a Storyville user, I want to see examples of all Story variation patterns so that I understand how to use optional
   fields and inheritance
-- As a developer, I want comprehensive test coverage for all examples so that I can verify the Storytime library works
+- As a developer, I want comprehensive test coverage for all examples so that I can verify the Storyville library works
   correctly across different configurations
 
 ## Specific Requirements
@@ -121,7 +121,7 @@ No visual assets provided.
 
 ## Existing Code to Leverage
 
-**make_site() function from storytime.site.helpers**
+**make_site() function from storyville.site.helpers**
 
 - Use `make_site(package_location: str) -> Site` to load any example package
 - Automatically discovers all `stories.py` files via rglob and builds complete tree
@@ -150,7 +150,7 @@ No visual assets provided.
 - Return `html(t"<tag>{self.prop}</tag>")` using tdom t-strings
 - Components are callables that construct Node instances when invoked
 
-**TreeNode and tree traversal from storytime.nodes**
+**TreeNode and tree traversal from storyville.nodes**
 
 - `TreeNode` handles package location resolution and story module imports
 - `get_certain_callable(module)` finds and calls the Site/Section/Subject factory function

@@ -71,15 +71,15 @@ Total Tasks: 3 task groups with focused implementation
   - [x] 2.2 Update test_app.py to use tmp_path fixture
     - Remove current test_application function (lines 7-13)
     - Replace site = make_site() pattern with build_site() pattern
-    - Each test should call: `build_site(package_location="storytime", output_dir=tmp_path)`
+    - Each test should call: `build_site(package_location="storyville", output_dir=tmp_path)`
     - Then create app: `app = create_app(tmp_path)`
     - Use TestClient for synchronous HTTP testing
     - Follow pattern from test_build.py fixture usage
   - [x] 2.3 Add import for build_site
-    - Add: `from storytime.build import build_site`
-    - Remove: `from storytime import make_site`
+    - Add: `from storyville.build import build_site`
+    - Remove: `from storyville import make_site`
     - Keep: `from starlette.testclient import TestClient`
-    - Keep: `from storytime.app import create_app`
+    - Keep: `from storyville.app import create_app`
   - [x] 2.4 Implement test for root index serving
     - Build site to tmp_path
     - Create app with tmp_path
@@ -170,7 +170,7 @@ Recommended implementation sequence:
 
 **Test Isolation Strategy:**
 - Every test should use pytest's `tmp_path` fixture
-- Build site fresh in each test: `build_site(package_location="storytime", output_dir=tmp_path)`
+- Build site fresh in each test: `build_site(package_location="storyville", output_dir=tmp_path)`
 - Then create app: `app = create_app(tmp_path)`
 - This ensures no pollution between tests or to project workspace
 
@@ -187,6 +187,6 @@ Recommended implementation sequence:
 - Function is synchronous (no async)
 
 **Files Modified:**
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/app.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/tests/test_app.py`
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__main__.py` (bonus: updated to work with new signature)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/app.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/tests/test_app.py`
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__main__.py` (bonus: updated to work with new signature)

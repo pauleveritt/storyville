@@ -20,7 +20,7 @@ modes
         - Test protocol satisfaction with a simple test view class
         - Test return type is Node, tests verify Element with type guards
         - Skip exhaustive protocol compliance testing
-    - [x] 1.2 Create `src/storytime/models.py` with View Protocol
+    - [x] 1.2 Create `src/storyville/models.py` with View Protocol
         - Import: `from typing import Protocol`
         - Import: `from tdom import Node`
         - Define `View` Protocol with `__call__(self) -> Node` signature
@@ -46,20 +46,20 @@ modes
 
 - [x] 2.0 Complete story package restructure
     - [x] 2.1 Create story package directory
-        - Create directory: `src/storytime/story/`
-        - Create file: `src/storytime/story/__init__.py`
-        - Export Story class: `from storytime.story.models import Story`
+        - Create directory: `src/storyville/story/`
+        - Create file: `src/storyville/story/__init__.py`
+        - Export Story class: `from storyville.story.models import Story`
     - [x] 2.2 Move Story class to story package
-        - Create file: `src/storytime/story/models.py`
-        - Move Story class from `src/storytime/story.py` to new file
+        - Create file: `src/storyville/story/models.py`
+        - Move Story class from `src/storyville/story.py` to new file
         - Keep all existing functionality intact
         - Preserve imports and type checking block
     - [x] 2.3 Update imports throughout codebase
-        - Update `from storytime.story import Story` references
-        - Should continue to work: `from storytime.story import Story`
-        - Check files: tests/, src/storytime/
+        - Update `from storyville.story import Story` references
+        - Should continue to work: `from storyville.story import Story`
+        - Check files: tests/, src/storyville/
     - [x] 2.4 Remove old story.py file
-        - Delete `src/storytime/story.py`
+        - Delete `src/storyville/story.py`
         - Verify no broken imports remain
     - [x] 2.5 Ensure existing Story tests pass
         - Run tests in `tests/story/test_story.py`
@@ -69,7 +69,7 @@ modes
 **Acceptance Criteria:**
 
 - Story package created with proper `__init__.py`
-- Story class accessible via `from storytime.story import Story`
+- Story class accessible via `from storyville.story import Story`
 - All existing tests in `tests/story/test_story.py` pass
 - Old `story.py` file removed
 
@@ -87,7 +87,7 @@ modes
         - Tests use type guard assertions to verify Element
         - Skip testing non-Element components (will fail assertion)
     - [x] 3.2 Remove vdom method from Story class (if exists)
-        - Open `src/storytime/story/models.py`
+        - Open `src/storyville/story/models.py`
         - Remove `vdom` method entirely (check if it exists first)
         - All rendering should flow through StoryView instead
     - [x] 3.3 Update Story.instance property return type
@@ -124,10 +124,10 @@ modes
         - Test type safety: tests use type guards to verify Element
         - Test one edge case: empty props dict displays correctly
         - Skip exhaustive edge case testing (various prop types, nested structures)
-    - [x] 4.2 Create `src/storytime/story/views.py` file
+    - [x] 4.2 Create `src/storyville/story/views.py` file
         - Import necessary types: `from dataclasses import dataclass`
         - Import: `from tdom import html, Node`
-        - Import: `from storytime.story.models import Story`
+        - Import: `from storyville.story.models import Story`
     - [x] 4.3 Implement StoryView dataclass structure
         - Decorator: `@dataclass`
         - Field: `story: Story`
@@ -144,14 +144,14 @@ modes
         - Show props: `Props: <code>{str(self.story.props)}</code>`
         - Render component: embed `{self.story.instance}`
         - Add parent link: `<a href="..">Parent</a>`
-        - Follow pattern from `src/storytime/views/index_view.py`
+        - Follow pattern from `src/storyville/views/index_view.py`
     - [x] 4.6 NO type guard in implementation
         - Do NOT add type guards in StoryView.__call__
         - Tests will handle type guard assertions
         - Implementation simply returns Node
-    - [x] 4.7 Update `src/storytime/story/__init__.py` exports
-        - Add export: `from storytime.story.views import StoryView`
-        - Enable: `from storytime.story import Story, StoryView`
+    - [x] 4.7 Update `src/storyville/story/__init__.py` exports
+        - Add export: `from storyville.story.views import StoryView`
+        - Enable: `from storyville.story import Story, StoryView`
     - [x] 4.8 Ensure StoryView tests pass
         - Run ONLY the 4-8 tests written in 4.1
         - Verify both rendering modes work correctly
@@ -273,7 +273,7 @@ After each task group completion:
 
 ### Code Reuse
 
-- Follow pattern from `src/storytime/views/index_view.py` for StoryView structure
+- Follow pattern from `src/storyville/views/index_view.py` for StoryView structure
 - Reference `tests/story/test_story.py` for test patterns with Story class
 - Use dataclass decorator consistently
 - Use tdom templates consistently across all views

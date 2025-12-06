@@ -1,7 +1,7 @@
 """The subject for the DataCode component."""
 
 from examples.huge.data_display.data_code.data_code import DataCode
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

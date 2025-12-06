@@ -4,7 +4,7 @@
 from tdom import Node, html
 
 from examples.templates.components.alert.alert import Alert
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def custom_alert_template() -> Node:
@@ -17,7 +17,7 @@ def custom_alert_template() -> Node:
 
 
 def this_subject() -> Subject:
-    """Let's make a Storytime subject for this Alert component."""
+    """Let's make a Storyville subject for this Alert component."""
     return Subject(
         title="Alert",
         description="An alert component demonstrating template override behavior",

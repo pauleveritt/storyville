@@ -1,10 +1,10 @@
 # Architecture
 
-This document explains the key architectural decisions and design patterns in Storytime.
+This document explains the key architectural decisions and design patterns in Storyville.
 
 ## Overview
 
-Storytime is built around a tree-based component catalog system with hot reloading capabilities, powered by Python 3.14+ subinterpreters and modern async patterns.
+Storyville is built around a tree-based component catalog system with hot reloading capabilities, powered by Python 3.14+ subinterpreters and modern async patterns.
 
 ## Core Architecture Patterns
 
@@ -61,7 +61,7 @@ Components are rendered using the tdom library with automatic safety and type ha
 
 ### Subinterpreter Pool
 
-Storytime uses Python 3.14+ `InterpreterPoolExecutor` for true module reloading without process restarts.
+Storyville uses Python 3.14+ `InterpreterPoolExecutor` for true module reloading without process restarts.
 
 **Pool Design:**
 
@@ -83,7 +83,7 @@ Standby interpreters pre-import core modules to reduce latency:
 
 ```python
 def _warmup_interpreter():
-    import storytime
+    import storyville
     import tdom
 ```
 
@@ -241,10 +241,10 @@ The pytest plugin automatically discovers and generates tests from assertions.
 
 ```toml
 [project.entry-points.pytest11]
-storytime = "storytime.pytest_plugin"
+storyville = "storyville.pytest_plugin"
 ```
 
-Pytest automatically loads the plugin when storytime is installed.
+Pytest automatically loads the plugin when storyville is installed.
 
 **Collection Process:**
 
@@ -306,11 +306,11 @@ Uses relative path for portability when deploying static builds.
 
 - Visual isolation (iframe prevents style leakage)
 - Real-world context (see component in actual design system)
-- Maintains standard Storytime UI (breadcrumbs, assertions, props)
+- Maintains standard Storyville UI (breadcrumbs, assertions, props)
 
 ## Type System
 
-Storytime uses modern Python 3.14+ type features extensively.
+Storyville uses modern Python 3.14+ type features extensively.
 
 ### Type Aliases with `type` Statement
 
@@ -413,7 +413,7 @@ output/
 
 ## Testing Architecture
 
-Storytime itself is thoroughly tested using pytest.
+Storyville itself is thoroughly tested using pytest.
 
 ### Test Organization
 
@@ -487,7 +487,7 @@ Uses `aria-testing` library to verify rendered HTML structure.
 
 ## Summary
 
-Storytime's architecture emphasizes:
+Storyville's architecture emphasizes:
 
 - **Simplicity**: Tree-based hierarchy is easy to understand
 - **Safety**: Strong typing and automatic HTML escaping

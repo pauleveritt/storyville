@@ -1,7 +1,7 @@
 """The subject for the NavBreadcrumb component."""
 
 from examples.huge.navigation.nav_breadcrumb.nav_breadcrumb import NavBreadcrumb
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

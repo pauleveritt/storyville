@@ -1,7 +1,7 @@
 """The subject for the DataTimeline component."""
 
 from examples.huge_assertions.data_display.data_timeline.data_timeline import DataTimeline
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

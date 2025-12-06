@@ -1,7 +1,7 @@
 """The subject for the ControlSwitch component."""
 
 from examples.huge.controls.control_switch.control_switch import ControlSwitch
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

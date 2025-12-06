@@ -1,6 +1,6 @@
 """The Catalog for the templates example."""
 
-from storytime import Catalog
+from storyville import Catalog
 
 
 def this_catalog() -> Catalog:

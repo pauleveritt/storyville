@@ -1,7 +1,7 @@
 """The subject for the InputColor component."""
 
 from examples.huge.inputs.input_color.input_color import InputColor
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

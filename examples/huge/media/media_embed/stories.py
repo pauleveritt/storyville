@@ -1,7 +1,7 @@
 """The subject for the MediaEmbed component."""
 
 from examples.huge.media.media_embed.media_embed import MediaEmbed
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

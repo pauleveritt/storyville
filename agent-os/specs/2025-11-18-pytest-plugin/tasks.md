@@ -16,22 +16,22 @@ rendering and reporting → fixtures and examples → testing and quality checks
 
 - [x] 1.0 Complete configuration foundation
     - [x] 1.1 Write 2-8 focused tests for configuration handling
-        - Test reading `[tool.storytime.pytest]` section from pyproject.toml
+        - Test reading `[tool.storyville.pytest]` section from pyproject.toml
         - Test `story_paths` setting with custom paths
         - Test `enabled` setting (true/false)
         - Test default values: `story_paths = ["examples/"]`, `enabled = true`
         - Test path validation (paths exist and readable)
         - Limit to 2-8 highly focused tests maximum
     - [x] 1.2 Add `[project.entry-points.pytest11]` to pyproject.toml
-        - Register plugin entry point: `storytime = "storytime.pytest_plugin"`
-        - Ensure plugin activates automatically when storytime is installed
-    - [x] 1.3 Create `/src/storytime/pytest_plugin.py` module
+        - Register plugin entry point: `storyville = "storyville.pytest_plugin"`
+        - Ensure plugin activates automatically when storyville is installed
+    - [x] 1.3 Create `/src/storyville/pytest_plugin.py` module
         - Implement config reading using pytest.Config.getini() API
-        - Define config schema for `[tool.storytime.pytest]` section
+        - Define config schema for `[tool.storyville.pytest]` section
         - Implement path validation during plugin initialization
         - Use modern Python 3.14+ syntax (type statements, pattern matching)
     - [x] 1.4 Add configuration options to pyproject.toml
-        - Add `[tool.storytime.pytest]` section with example settings
+        - Add `[tool.storyville.pytest]` section with example settings
         - Document `story_paths` (list of directory paths, default: ["examples/"])
         - Document `enabled` (boolean, default: true)
     - [x] 1.5 Ensure configuration tests pass
@@ -69,7 +69,7 @@ rendering and reporting → fixtures and examples → testing and quality checks
     - [x] 2.3 Create custom pytest Collector class
         - Implement StoryFileCollector extending pytest.File
         - Override collect() method to generate test items
-        - Use `make_site()` from storytime.site.helpers to build tree
+        - Use `make_site()` from storyville.site.helpers to build tree
         - Handle tree traversal to find all Story instances
     - [x] 2.4 Implement story tree traversal logic
         - Traverse Site -> Section -> Subject -> Story hierarchy
@@ -223,17 +223,17 @@ rendering and reporting → fixtures and examples → testing and quality checks
 
 - [x] 6.0 Complete manual testing support
     - [x] 6.1 Write 2-8 focused tests for fixtures
-        - Test `storytime_site` fixture returns loaded Site instance
-        - Test `storytime_story` fixture factory accesses stories by path
+        - Test `storyville_site` fixture returns loaded Site instance
+        - Test `storyville_story` fixture factory accesses stories by path
         - Test fixture session scope for performance
         - Test fixture usage in manual tests
         - Limit to 2-8 highly focused tests maximum
-    - [x] 6.2 Implement `storytime_site` fixture
+    - [x] 6.2 Implement `storyville_site` fixture
         - Return loaded Site instance from configured paths
         - Use session scope for performance
         - Call `make_site()` with configured package location
         - Document fixture usage in docstring
-    - [x] 6.3 Implement `storytime_story` fixture factory
+    - [x] 6.3 Implement `storyville_story` fixture factory
         - Accept story path as parameter (dotted notation)
         - Use `find_path()` to traverse tree
         - Return specific Story instance
@@ -252,7 +252,7 @@ rendering and reporting → fixtures and examples → testing and quality checks
 **Acceptance Criteria:**
 
 - The 2-8 tests written in 6.1 pass
-- `storytime_site` and `storytime_story` fixtures implemented
+- `storyville_site` and `storyville_story` fixtures implemented
 - Example tests demonstrate manual testing capability
 - Fixtures well-documented with usage examples
 

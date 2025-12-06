@@ -11,10 +11,10 @@ from unittest.mock import patch
 import pytest
 from starlette.testclient import TestClient
 
-from storytime.app import create_app
-from storytime.build import build_site
-from storytime.watchers import watch_and_rebuild
-from storytime.websocket import broadcast_reload
+from storyville.app import create_app
+from storyville.build import build_site
+from storyville.watchers import watch_and_rebuild
+from storyville.websocket import broadcast_reload
 
 
 @pytest.mark.slow
@@ -57,7 +57,7 @@ async def test_end_to_end_content_change_flow(tmp_path: Path, watcher_runner) ->
     async with watcher_runner(
         watch_and_rebuild,
         content_path=content_dir,
-        storytime_path=None,
+        storyville_path=None,
         rebuild_callback=rebuild_callback,
         broadcast_callback=broadcast_callback,
         package_location="test",
@@ -116,7 +116,7 @@ async def test_multiple_rapid_file_changes_debounced(tmp_path: Path, watcher_run
     async with watcher_runner(
         watch_and_rebuild,
         content_path=content_dir,
-        storytime_path=None,
+        storyville_path=None,
         rebuild_callback=rebuild_callback,
         broadcast_callback=broadcast_callback,
         package_location="test",
@@ -165,16 +165,16 @@ def test_websocket_client_receives_reload_message(tmp_path: Path) -> None:
 @pytest.mark.slow
 @pytest.mark.anyio
 async def test_static_asset_change_triggers_rebuild(tmp_path: Path, watcher_runner) -> None:
-    """Test that static asset changes in src/storytime/ trigger rebuild.
+    """Test that static asset changes in src/storyville/ trigger rebuild.
 
     Verifies that the INPUT watcher correctly monitors and responds to
-    changes in static files (CSS, JS, etc.) in the Storytime directory.
+    changes in static files (CSS, JS, etc.) in the Storyville directory.
     """
     content_dir = tmp_path / "content"
     content_dir.mkdir()
-    storytime_dir = tmp_path / "storytime"
-    storytime_dir.mkdir()
-    static_dir = storytime_dir / "static"
+    storyville_dir = tmp_path / "storyville"
+    storyville_dir.mkdir()
+    static_dir = storyville_dir / "static"
     static_dir.mkdir()
     output_dir = tmp_path / "output"
     output_dir.mkdir()
@@ -189,11 +189,11 @@ async def test_static_asset_change_triggers_rebuild(tmp_path: Path, watcher_runn
     async def broadcast_callback() -> None:
         pass  # No-op for this test
 
-    # Start unified watcher with both content and storytime paths
+    # Start unified watcher with both content and storyville paths
     async with watcher_runner(
         watch_and_rebuild,
         content_path=content_dir,
-        storytime_path=storytime_dir,
+        storyville_path=storyville_dir,
         rebuild_callback=rebuild_callback,
         broadcast_callback=broadcast_callback,
         package_location="test_package",
@@ -236,7 +236,7 @@ def test_app_lifespan_starts_and_stops_watchers_cleanly(tmp_path: Path) -> None:
             watcher_stopped = True
             raise
 
-    with patch("storytime.app.watch_and_rebuild", side_effect=mock_unified_watcher):
+    with patch("storyville.app.watch_and_rebuild", side_effect=mock_unified_watcher):
 
         app = create_app(
             path=tmp_path,
@@ -325,7 +325,7 @@ async def test_rebuild_error_does_not_crash_watcher(tmp_path: Path, watcher_runn
     async with watcher_runner(
         watch_and_rebuild,
         content_path=content_dir,
-        storytime_path=None,
+        storyville_path=None,
         rebuild_callback=rebuild_callback,
         broadcast_callback=broadcast_callback,
         package_location="test",

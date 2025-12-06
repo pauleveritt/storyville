@@ -1,7 +1,7 @@
 """The subject for the ControlSegmented component."""
 
 from examples.huge.controls.control_segmented.control_segmented import ControlSegmented
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

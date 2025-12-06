@@ -5,7 +5,7 @@ from pathlib import Path
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from tdom.parser import parse_html
 
-from storytime.build import build_site
+from storyville.build import build_site
 
 
 def test_build_generates_both_index_and_themed_story_html(tmp_path: Path) -> None:

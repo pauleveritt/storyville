@@ -2,7 +2,7 @@
 
 ## Overview
 Total Task Groups: 5
-Feature: Add CLI command to generate example Storytime catalogs with configurable sizes (small/medium/large) for quick prototyping, learning, and testing.
+Feature: Add CLI command to generate example Storyville catalogs with configurable sizes (small/medium/large) for quick prototyping, learning, and testing.
 
 ## Task List
 
@@ -18,7 +18,7 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
     - Test command fails when output directory exists
     - Test command creates output directory structure
     - Skip exhaustive edge case testing
-  - [x] 1.2 Add `seed` command to `src/storytime/__main__.py`
+  - [x] 1.2 Add `seed` command to `src/storyville/__main__.py`
     - Add `@app.command()` decorator following `serve` and `build` patterns
     - Accept `size: str` as first argument using `typer.Argument()`
     - Accept `output_directory: str` as second argument using `typer.Argument()`
@@ -48,7 +48,7 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
 
 **Acceptance Criteria:**
 - The 2-8 tests written in 1.1 pass
-- Command syntax: `storytime seed <size> <output_directory>` works
+- Command syntax: `storyville seed <size> <output_directory>` works
 - Valid sizes (small/medium/large) are accepted
 - Invalid sizes fail with clear error message
 - Existing output directory causes immediate failure
@@ -67,11 +67,11 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
     - Test ThemedLayout component is created in dedicated subdirectory
     - Skip exhaustive content validation tests
   - [x] 2.2 Create template directory structure
-    - Create `src/storytime/templates/seed/` base directory
+    - Create `src/storyville/templates/seed/` base directory
     - Create subdirectory structure for template content
     - Ensure templates will be included in package distribution
   - [x] 2.3 Design root `stories.py` template
-    - Import `Catalog` from storytime
+    - Import `Catalog` from storyville
     - Define `this_catalog()` function returning Catalog instance
     - Include `title` parameter with descriptive catalog name
     - Import and wrap custom ThemedLayout as callable
@@ -113,7 +113,7 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
 
 **Acceptance Criteria:**
 - The 2-8 tests written in 2.1 pass
-- Template directory `src/storytime/templates/seed/` exists
+- Template directory `src/storyville/templates/seed/` exists
 - Root `stories.py` template defines Catalog with themed_layout
 - ThemedLayout component template exists in dedicated subdirectory
 - 5+ diverse component templates created (Button, Card, Form, List, Badge)
@@ -133,7 +133,7 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
     - Test component files are copied to correct locations
     - Skip exhaustive file content validation tests
   - [x] 3.2 Implement template discovery using PACKAGE_DIR
-    - Use `PACKAGE_DIR` constant from `src/storytime/__init__.py`
+    - Use `PACKAGE_DIR` constant from `src/storyville/__init__.py`
     - Construct path to templates: `PACKAGE_DIR / "templates" / "seed"`
     - Verify template directory exists at runtime
     - Fail with clear error if templates not found
@@ -184,20 +184,20 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
 
 - [x] 4.0 Complete integration testing
   - [x] 4.1 Write 2-8 focused tests for end-to-end workflows
-    - Test generated small catalog can be served with `storytime serve`
-    - Test generated medium catalog can be built with `storytime build`
+    - Test generated small catalog can be served with `storyville serve`
+    - Test generated medium catalog can be built with `storyville build`
     - Test generated catalog can be imported as Python package
     - Test ThemedLayout renders correctly in generated catalog
     - Skip exhaustive integration scenarios
-  - [x] 4.2 Validate generated catalog with storytime serve
+  - [x] 4.2 Validate generated catalog with storyville serve
     - Generate small catalog to temporary directory
-    - Run `storytime serve <generated_dir>` programmatically or manually
+    - Run `storyville serve <generated_dir>` programmatically or manually
     - Verify catalog loads without errors
     - Verify all sections/subjects/stories are accessible
     - Verify ThemedLayout renders correctly
-  - [x] 4.3 Validate generated catalog with storytime build
+  - [x] 4.3 Validate generated catalog with storyville build
     - Generate medium catalog to temporary directory
-    - Run `storytime build <generated_dir> <output_dir>`
+    - Run `storyville build <generated_dir> <output_dir>`
     - Verify build completes without errors
     - Verify all HTML files are generated
     - Verify themed_story.html files exist for stories
@@ -216,14 +216,14 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
     - Verify each size builds and serves correctly
   - [x] 4.6 Ensure integration tests pass
     - Run ONLY the 2-8 tests written in 4.1
-    - Verify generated catalogs work with existing Storytime commands
+    - Verify generated catalogs work with existing Storyville commands
     - Verify catalogs are valid Python packages
     - Do NOT run the entire test suite at this stage
 
 **Acceptance Criteria:**
 - The 2-8 tests written in 4.1 pass
-- Generated catalogs work with `storytime serve` command
-- Generated catalogs work with `storytime build` command
+- Generated catalogs work with `storyville serve` command
+- Generated catalogs work with `storyville build` command
 - Generated catalogs are importable as Python packages
 - All three sizes (small/medium/large) generate correctly
 - Story counts match size configurations
@@ -249,13 +249,13 @@ Feature: Add CLI command to generate example Storytime catalogs with configurabl
     - Focused on integration points between generation and execution
     - Kept total feature tests at 32 (well under 50)
   - [x] 5.3 Update pyproject.toml for template packaging
-    - Verified template files in `src/storytime/templates/seed/` are included in package
-    - No changes needed - uv_build backend automatically includes all files in src/storytime/
+    - Verified template files in `src/storyville/templates/seed/` are included in package
+    - No changes needed - uv_build backend automatically includes all files in src/storyville/
     - `.py` files in templates directory are included by default
     - Template packaging verified by existing tests
   - [x] 5.4 Update README.md with seed command documentation
     - Added new section: "Generate an Example Catalog (Optional)" in Quick Start
-    - Documented command syntax: `storytime seed <size> <output_directory>`
+    - Documented command syntax: `storyville seed <size> <output_directory>`
     - Described three size options (small/medium/large) with story counts
     - Provided example usage for all three sizes
     - Explained that generated catalog is a Python package
@@ -298,7 +298,7 @@ Recommended implementation sequence:
 1. **Core CLI Implementation** (Task Group 1) - Establish command structure and validation
 2. **Template Content Creation** (Task Group 2) - Create reusable template components
 3. **Template Generation Engine** (Task Group 3) - Build file generation system
-4. **Integration and Validation** (Task Group 4) - Verify generated catalogs work with Storytime
+4. **Integration and Validation** (Task Group 4) - Verify generated catalogs work with Storyville
 5. **Documentation and Packaging** (Task Group 5) - Complete packaging and user documentation
 
 ## Implementation Notes
@@ -309,14 +309,14 @@ Recommended implementation sequence:
 - Must follow existing CLI patterns from `serve` and `build` commands
 - Must use typer framework for CLI implementation
 - Templates must be packaged with distribution (not external files)
-- Generated catalogs must work with existing `storytime serve` and `storytime build` commands
+- Generated catalogs must work with existing `storyville serve` and `storyville build` commands
 
 ### Key Files to Reference
-- CLI patterns: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__main__.py`
-- Build patterns: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/build.py`
-- Catalog model: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/catalog/models.py`
-- PACKAGE_DIR constant: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/__init__.py`
-- Package configuration: `/Users/pauleveritt/projects/pauleveritt/storytime/pyproject.toml`
+- CLI patterns: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__main__.py`
+- Build patterns: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/build.py`
+- Catalog model: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/catalog/models.py`
+- PACKAGE_DIR constant: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/__init__.py`
+- Package configuration: `/Users/pauleveritt/projects/t-strings/storyville/pyproject.toml`
 
 ### Testing Strategy
 - Each task group wrote 2-8 focused tests covering critical behaviors only
@@ -327,7 +327,7 @@ Recommended implementation sequence:
 - Use aria-testing library functions for DOM queries in component tests
 
 ### Code Quality Standards
-- Follow modern Python 3.14+ patterns per `/Users/pauleveritt/projects/pauleveritt/storytime/CLAUDE.md`
+- Follow modern Python 3.14+ patterns per `/Users/pauleveritt/projects/t-strings/storyville/CLAUDE.md`
 - Use structural pattern matching for size selection
 - Use PEP 604 union syntax (`X | Y` instead of `Union[X, Y]`)
 - Use dataclasses for component props

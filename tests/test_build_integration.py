@@ -3,7 +3,7 @@
 from pathlib import Path
 
 import pytest
-from storytime.build import build_site
+from storyville.build import build_site
 
 
 @pytest.fixture
@@ -14,8 +14,8 @@ def tmp_build_dir(tmp_path: Path) -> Path:
     return build_dir
 
 
-def test_build_discovers_storytime_static_folders(tmp_build_dir: Path) -> None:
-    """Test that build discovers static folders from src/storytime."""
+def test_build_discovers_storyville_static_folders(tmp_build_dir: Path) -> None:
+    """Test that build discovers static folders from src/storyville."""
     build_site(package_location="examples.minimal", output_dir=tmp_build_dir)
 
     # Verify single static/ directory exists
@@ -35,7 +35,7 @@ def test_build_copies_static_to_correct_output_paths(tmp_build_dir: Path) -> Non
     assert static_dir.exists()
     layout_static = static_dir / "components" / "layout" / "static"
     assert (layout_static / "pico-main.css").exists()
-    assert (layout_static / "storytime.css").exists()
+    assert (layout_static / "storyville.css").exists()
     assert (layout_static / "ws.js").exists()
 
 
@@ -62,7 +62,7 @@ def test_build_without_static_dir_succeeds(tmp_build_dir: Path) -> None:
     # Verify HTML files are created
     assert (tmp_build_dir / "index.html").exists()
 
-    # Storytime static should still exist
+    # Storyville static should still exist
     assert (tmp_build_dir / "static").exists()
 
 
@@ -117,7 +117,7 @@ def test_build_reports_static_file_count(tmp_build_dir: Path, caplog) -> None:
 
 def test_build_no_site_static_dir_property(tmp_build_dir: Path) -> None:
     """Test that Site model no longer has static_dir property."""
-    from storytime.stories import make_catalog
+    from storyville.stories import make_catalog
 
     catalog = make_catalog(package_location="examples.minimal")
 
@@ -134,7 +134,7 @@ def test_layout_uses_new_static_paths(tmp_build_dir: Path) -> None:
 
     # Verify it references static assets with full nested path (no ../ prefix for root pages)
     assert "static/components/layout/static/pico-main.css" in index_html
-    assert "static/components/layout/static/storytime.css" in index_html
+    assert "static/components/layout/static/storyville.css" in index_html
     assert "static/components/layout/static/ws.js" in index_html
 
 

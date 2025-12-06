@@ -2,18 +2,18 @@
 
 from pathlib import Path
 
-from storytime.static_assets import copy_all_static_assets
+from storyville.static_assets import copy_all_static_assets
 
 
 def test_copy_all_static_assets_from_both_sources(tmp_path: Path) -> None:
     """Test copy_all_static_assets discovers and copies from both sources."""
-    # Create storytime static folders
-    storytime_base = tmp_path / "storytime"
-    st_nav_static = storytime_base / "components" / "nav" / "static"
+    # Create storyville static folders
+    storyville_base = tmp_path / "storyville"
+    st_nav_static = storyville_base / "components" / "nav" / "static"
     st_nav_static.mkdir(parents=True)
     (st_nav_static / "nav.css").write_text("nav styles")
 
-    st_button_static = storytime_base / "components" / "button" / "static"
+    st_button_static = storyville_base / "components" / "button" / "static"
     st_button_static.mkdir(parents=True)
     (st_button_static / "button.css").write_text("button styles")
 
@@ -25,7 +25,7 @@ def test_copy_all_static_assets_from_both_sources(tmp_path: Path) -> None:
 
     # Copy all static assets
     output_dir = tmp_path / "output"
-    file_count = copy_all_static_assets(storytime_base, input_dir, output_dir)
+    file_count = copy_all_static_assets(storyville_base, input_dir, output_dir)
 
     # Verify correct number of files copied
     assert file_count == 3
@@ -41,15 +41,15 @@ def test_copy_all_static_assets_from_both_sources(tmp_path: Path) -> None:
 def test_copy_all_static_assets_handles_empty_directories(tmp_path: Path) -> None:
     """Test copy_all_static_assets handles directories with no static folders."""
     # Create empty directories
-    storytime_base = tmp_path / "storytime"
-    storytime_base.mkdir()
+    storyville_base = tmp_path / "storyville"
+    storyville_base.mkdir()
 
     input_dir = tmp_path / "input"
     input_dir.mkdir()
 
     # Copy all static assets
     output_dir = tmp_path / "output"
-    file_count = copy_all_static_assets(storytime_base, input_dir, output_dir)
+    file_count = copy_all_static_assets(storyville_base, input_dir, output_dir)
 
     # Verify no files copied
     assert file_count == 0
@@ -58,8 +58,8 @@ def test_copy_all_static_assets_handles_empty_directories(tmp_path: Path) -> Non
 def test_copy_all_static_assets_returns_correct_file_count(tmp_path: Path) -> None:
     """Test copy_all_static_assets returns correct file count."""
     # Create static folders
-    storytime_base = tmp_path / "storytime"
-    st_static = storytime_base / "components" / "test" / "static"
+    storyville_base = tmp_path / "storyville"
+    st_static = storyville_base / "components" / "test" / "static"
     st_static.mkdir(parents=True)
     (st_static / "file.css").write_text("test")
 
@@ -70,7 +70,7 @@ def test_copy_all_static_assets_returns_correct_file_count(tmp_path: Path) -> No
 
     # Copy all static assets
     output_dir = tmp_path / "output"
-    file_count = copy_all_static_assets(storytime_base, input_dir, output_dir)
+    file_count = copy_all_static_assets(storyville_base, input_dir, output_dir)
 
     # Verify correct file count
     assert file_count == 2
@@ -84,8 +84,8 @@ def test_copy_all_static_assets_returns_correct_file_count(tmp_path: Path) -> No
 def test_copy_all_static_assets_preserves_subdirectories(tmp_path: Path) -> None:
     """Test copy_all_static_assets preserves subdirectory structure within static folder."""
     # Create static folder with subdirectories
-    storytime_base = tmp_path / "storytime"
-    st_static = storytime_base / "components" / "gallery" / "static"
+    storyville_base = tmp_path / "storyville"
+    st_static = storyville_base / "components" / "gallery" / "static"
     st_static.mkdir(parents=True)
 
     # Create subdirectory structure
@@ -101,7 +101,7 @@ def test_copy_all_static_assets_preserves_subdirectories(tmp_path: Path) -> None
     input_dir = tmp_path / "input"
     input_dir.mkdir()
     output_dir = tmp_path / "output"
-    file_count = copy_all_static_assets(storytime_base, input_dir, output_dir)
+    file_count = copy_all_static_assets(storyville_base, input_dir, output_dir)
 
     # Verify files copied with full path preservation including subdirectories
     assert file_count == 2
@@ -112,9 +112,9 @@ def test_copy_all_static_assets_preserves_subdirectories(tmp_path: Path) -> None
 
 def test_copy_all_static_assets_handles_nonexistent_input_dir(tmp_path: Path) -> None:
     """Test copy_all_static_assets handles nonexistent input_dir gracefully."""
-    # Create only storytime_base
-    storytime_base = tmp_path / "storytime"
-    st_static = storytime_base / "components" / "nav" / "static"
+    # Create only storyville_base
+    storyville_base = tmp_path / "storyville"
+    st_static = storyville_base / "components" / "nav" / "static"
     st_static.mkdir(parents=True)
     (st_static / "nav.css").write_text("nav styles")
 
@@ -123,9 +123,9 @@ def test_copy_all_static_assets_handles_nonexistent_input_dir(tmp_path: Path) ->
 
     # Copy all static assets
     output_dir = tmp_path / "output"
-    file_count = copy_all_static_assets(storytime_base, input_dir, output_dir)
+    file_count = copy_all_static_assets(storyville_base, input_dir, output_dir)
 
-    # Verify only storytime assets copied with path preservation
+    # Verify only storyville assets copied with path preservation
     assert file_count == 1
     st_nav_output = output_dir / "static"
     assert (st_nav_output / "components" / "nav" / "static" / "nav.css").exists()

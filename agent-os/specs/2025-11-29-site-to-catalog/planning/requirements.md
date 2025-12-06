@@ -18,17 +18,17 @@ Rename "Site" to "Catalog" and update the docs to refer to a collection of secti
 
 **Answer:** Yes, update to "Catalog → Section → Subject → Story", keeping other terms unchanged.
 
-**Q3:** For the file structure, should `storytime/site` directory be renamed to `storytime/catalog`?
+**Q3:** For the file structure, should `storyville/site` directory be renamed to `storyville/catalog`?
 
-**Answer:** Yes, rename `storytime/site` to `storytime/catalog`
+**Answer:** Yes, rename `storyville/site` to `storyville/catalog`
 
 **Q4:** For user-facing API, should `this_site()` function become `this_catalog()`, and similar for any other site-related function names?
 
 **Answer:** Yes, `this_site()` becomes `this_catalog()`
 
-**Q5:** For CLI and user-facing messages, should commands like `storytime serve` remain the same, but internal messages update to say "Building catalog..." instead of "Building site..."?
+**Q5:** For CLI and user-facing messages, should commands like `storyville serve` remain the same, but internal messages update to say "Building catalog..." instead of "Building site..."?
 
-**Answer:** Yes, CLI commands remain as `storytime serve` and `storytime build`, but internal messages update to "Building catalog..." etc.
+**Answer:** Yes, CLI commands remain as `storyville serve` and `storyville build`, but internal messages update to "Building catalog..." etc.
 
 **Q6:** Regarding backward compatibility, should we provide any deprecation warnings or aliases for the old "Site" naming, or is this acceptable as a breaking change?
 
@@ -86,7 +86,7 @@ Not applicable - this is a refactoring task.
 - Update all documentation explaining the hierarchy
 
 **File Structure Changes:**
-- Rename directory `storytime/site` to `storytime/catalog`
+- Rename directory `storyville/site` to `storyville/catalog`
 - Update all import statements throughout the codebase
 - Ensure all module paths reflect the new structure
 
@@ -96,7 +96,7 @@ Not applicable - this is a refactoring task.
 - Maintain same function signatures and behavior
 
 **CLI and Messages:**
-- Keep CLI commands unchanged: `storytime serve`, `storytime build`
+- Keep CLI commands unchanged: `storyville serve`, `storyville build`
 - Update all user-facing messages: "Building site..." becomes "Building catalog..."
 - Update progress indicators, error messages, and logs
 - Update help text and command descriptions
@@ -124,7 +124,7 @@ No similar existing features identified for reuse patterns.
 - All example code
 
 **Out of Scope:**
-- CLI command names (remain as `storytime serve`, `storytime build`)
+- CLI command names (remain as `storyville serve`, `storyville build`)
 - Backward compatibility or deprecation warnings
 - No aliases for old "Site" naming
 
@@ -136,12 +136,12 @@ No similar existing features identified for reuse patterns.
 - No backward compatibility needed
 
 **Framework Independence:**
-- Changes affect core Storytime components only
+- Changes affect core Storyville components only
 - Must maintain framework-independent architecture
 - Component rendering and story system unchanged functionally
 
 **Product Alignment:**
-- Aligns with Storytime's mission as a "component-driven development platform"
+- Aligns with Storyville's mission as a "component-driven development platform"
 - "Catalog" better describes the visual browseable collection of components
 - Improves clarity of the hierarchical organization system
 - Consistent with roadmap item #6: "Component Organization System"
@@ -154,6 +154,6 @@ No similar existing features identified for reuse patterns.
 - No change in test coverage or functionality
 
 **Import and Module Updates:**
-- Update all `from storytime.site import ...` to `from storytime.catalog import ...`
+- Update all `from storyville.site import ...` to `from storyville.catalog import ...`
 - Update any `__init__.py` files that expose site-related APIs
 - Ensure all internal cross-module references are updated

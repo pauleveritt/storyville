@@ -2,7 +2,7 @@
 
 ## Initial Description
 
-Add assertion capabilities to Storytime stories that run in the **StoryView UI** during development, displaying **pass/fail badges** in the rendered HTML page.
+Add assertion capabilities to Storyville stories that run in the **StoryView UI** during development, displaying **pass/fail badges** in the rendered HTML page.
 
 ### Key Design Decision
 
@@ -22,7 +22,7 @@ This is a significant architectural decision that affects:
 ## Product Context
 
 **Product Mission:**
-Storytime is a component-driven development (CDD) platform that helps Python developers create, visualize, and test UI components by providing a Storybook-like experience that is framework-independent and fully integrated with Python's modern testing ecosystem.
+Storyville is a component-driven development (CDD) platform that helps Python developers create, visualize, and test UI components by providing a Storybook-like experience that is framework-independent and fully integrated with Python's modern testing ecosystem.
 
 **Current State:**
 - Hot reload development server: Complete

@@ -1,7 +1,7 @@
 """The subject for the FeedbackProgress component."""
 
 from examples.huge.feedback.feedback_progress.feedback_progress import FeedbackProgress
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

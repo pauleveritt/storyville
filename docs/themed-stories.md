@@ -1,12 +1,12 @@
 # Themed Stories
 
 Themed Stories allow you to preview your components within custom-themed layouts, providing visual isolation and
-real-world context. When configured, Storytime generates an additional HTML file for each story that renders the
+real-world context. When configured, Storyville generates an additional HTML file for each story that renders the
 component within your custom theme, displayed in an iframe for visual separation.
 
 ## Overview
 
-By default, Storytime displays components in a standard layout with PicoCSS styling. With Themed Stories, you can:
+By default, Storyville displays components in a standard layout with PicoCSS styling. With Themed Stories, you can:
 
 - **Preview in Real Context**: See components rendered with your project's actual design system
 - **Visual Isolation**: Stories are rendered in iframes to prevent style conflicts
@@ -70,7 +70,7 @@ Add the themed layout to your Catalog configuration:
 
 ```python
 # my_package/__init__.py
-from storytime import Catalog
+from storyville import Catalog
 from my_package.themed_layout.themed_layout import ThemedLayout
 
 
@@ -85,9 +85,9 @@ def this_catalog() -> Catalog:
 
 ### 3. Build and View
 
-When you build your catalog or start the dev server, Storytime will now generate two HTML files per story:
+When you build your catalog or start the dev server, Storyville will now generate two HTML files per story:
 
-- `story-N/index.html` - The standard Storytime view with an iframe
+- `story-N/index.html` - The standard Storyville view with an iframe
 - `story-N/themed_story.html` - Your component rendered in the custom theme
 
 The iframe in `index.html` points to `./themed_story.html` using a relative path.
@@ -111,13 +111,13 @@ The `Catalog.themed_layout` property accepts:
 themed_layout: Callable[..., Node] | None = None
 ```
 
-If `None` (the default), Storytime uses the standard Layout component and no iframe is rendered.
+If `None` (the default), Storyville uses the standard Layout component and no iframe is rendered.
 
 ### File Generation
 
 During the build process:
 
-1. **Phase 2 (Rendering)**: Storytime renders both the standard StoryView and the ThemedStory for each story
+1. **Phase 2 (Rendering)**: Storyville renders both the standard StoryView and the ThemedStory for each story
 2. **Phase 3 (Writing)**: Two HTML files are written to disk:
     - `index.html` contains the StoryView with iframe
     - `themed_story.html` contains the full themed HTML document
@@ -227,7 +227,7 @@ def themed_layout_wrapper(story_title: str, children: Node) -> Node:
     return ThemedLayout(story_title, children)()
 ```
 
-This pattern ensures the callable signature matches Storytime's expectations while allowing you to use dataclasses for
+This pattern ensures the callable signature matches Storyville's expectations while allowing you to use dataclasses for
 your layout components.
 
 ### 4. Testing Your Theme
@@ -275,4 +275,4 @@ Future enhancements planned:
 ## See Also
 
 - [Writing Stories](writing-stories.md) - How to create component stories
-- [Component Architecture](architecture.md) - Understanding Storytime's structure
+- [Component Architecture](architecture.md) - Understanding Storyville's structure

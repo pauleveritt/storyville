@@ -7,9 +7,9 @@ use Path objects correctly as part of the pathlib migration.
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from storytime.app import create_app
-from storytime.static_assets import discover_static_folders, copy_all_static_assets
-from storytime import PACKAGE_DIR
+from storyville.app import create_app
+from storyville.static_assets import discover_static_folders, copy_all_static_assets
+from storyville import PACKAGE_DIR
 
 
 def test_create_app_accepts_path_objects() -> None:
@@ -29,10 +29,10 @@ def test_create_app_accepts_path_objects() -> None:
 
 def test_discover_static_folders_uses_path() -> None:
     """Verify discover_static_folders works with Path objects."""
-    # Use storytime's own path as test case
+    # Use storyville's own path as test case
     base_path = PACKAGE_DIR
 
-    folders = discover_static_folders(base_path, "storytime")
+    folders = discover_static_folders(base_path, "storyville")
 
     # Should return list of StaticFolder instances
     assert isinstance(folders, list)
@@ -52,7 +52,7 @@ def test_copy_all_static_assets_uses_path() -> None:
 
         # Should work with Path objects
         file_count = copy_all_static_assets(
-            storytime_base=PACKAGE_DIR,
+            storyville_base=PACKAGE_DIR,
             input_dir=input_dir,
             output_dir=output_dir,
         )

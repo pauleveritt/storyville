@@ -15,7 +15,7 @@ This spec addresses roadmap item #12:
 
 ## Project Context
 
-Storytime is a component-driven development (CDD) platform for Python that provides a Storybook-like experience. It includes:
+Storyville is a component-driven development (CDD) platform for Python that provides a Storybook-like experience. It includes:
 - A Starlette-based web server for browsing component catalogs
 - File watching with watchfiles for hot reload
 - Story collection and rendering system

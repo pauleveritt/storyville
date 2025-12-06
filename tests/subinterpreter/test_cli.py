@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from typer.testing import CliRunner
 
-from storytime.__main__ import app as cli_app
+from storyville.__main__ import app as cli_app
 
 
 @pytest.fixture
@@ -22,9 +22,9 @@ def test_serve_command_without_flag(runner: CliRunner, tmp_path: Path) -> None:
 
     # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
-        patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_catalog"),
-        patch("storytime.__main__.create_app") as mock_create_app,
+        patch("storyville.__main__.uvicorn.run"),
+        patch("storyville.__main__.build_catalog"),
+        patch("storyville.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
 
@@ -50,9 +50,9 @@ def test_serve_command_with_flag_enabled(runner: CliRunner, tmp_path: Path) -> N
 
     # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
-        patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_catalog"),
-        patch("storytime.__main__.create_app") as mock_create_app,
+        patch("storyville.__main__.uvicorn.run"),
+        patch("storyville.__main__.build_catalog"),
+        patch("storyville.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
 
@@ -78,9 +78,9 @@ def test_serve_command_with_flag_disabled(runner: CliRunner, tmp_path: Path) -> 
 
     # Mock uvicorn.run and build_catalog to avoid actually starting server
     with (
-        patch("storytime.__main__.uvicorn.run"),
-        patch("storytime.__main__.build_catalog"),
-        patch("storytime.__main__.create_app") as mock_create_app,
+        patch("storyville.__main__.uvicorn.run"),
+        patch("storyville.__main__.build_catalog"),
+        patch("storyville.__main__.create_app") as mock_create_app,
     ):
         mock_create_app.return_value = MagicMock()
 
@@ -105,7 +105,7 @@ def test_build_command_uses_direct_build(runner: CliRunner, tmp_path: Path) -> N
     output_dir.mkdir()
 
     # Mock build_catalog to avoid actual build
-    with patch("storytime.__main__.build_catalog") as mock_build:
+    with patch("storyville.__main__.build_catalog") as mock_build:
         # Run build command
         result = runner.invoke(
             cli_app,

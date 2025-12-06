@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from storytime.subinterpreter_pool import (
+from storyville.subinterpreter_pool import (
     build_in_subinterpreter,
     create_pool,
     rebuild_callback_subinterpreter,

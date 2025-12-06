@@ -1,7 +1,7 @@
 """The subject for the ControlChip component."""
 
 from examples.huge_assertions.controls.control_chip.control_chip import ControlChip
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

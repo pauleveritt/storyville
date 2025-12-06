@@ -1,10 +1,10 @@
 # Specification: Starlette App for Static Site Serving
 
 ## Goal
-Create a minimal Starlette application factory that serves pre-built Storytime portfolio sites from a configurable directory using StaticFiles with automatic index.html resolution.
+Create a minimal Starlette application factory that serves pre-built Storyville portfolio sites from a configurable directory using StaticFiles with automatic index.html resolution.
 
 ## User Stories
-- As a developer, I want to serve a built Storytime site so that I can view portfolios in a web browser
+- As a developer, I want to serve a built Storyville site so that I can view portfolios in a web browser
 - As a developer, I want to optionally specify an output directory for the serve command so that I can persist builds across sessions
 - As a developer, I want to see the output directory in logging so that I know where the site is being served from
 - As a test writer, I want tests to use isolated temporary directories so that test builds don't pollute the project workspace
@@ -40,7 +40,7 @@ Create a minimal Starlette application factory that serves pre-built Storytime p
 
 **Test Infrastructure with tmp_path**
 - Tests must use pytest's `tmp_path` fixture for isolated builds
-- Each test should call `build_site(package_location="storytime", output_dir=tmp_path)` first
+- Each test should call `build_site(package_location="storyville", output_dir=tmp_path)` first
 - Then create app with the tmp_path: `app = create_app(tmp_path)`
 - Use Starlette's TestClient for synchronous HTTP testing
 - Tests should verify serving of index.html, section pages, and static assets
@@ -76,7 +76,7 @@ No visual assets provided.
 
 ## Existing Code to Leverage
 
-**build_site function from src/storytime/build.py**
+**build_site function from src/storyville/build.py**
 - Use in tests to create realistic built site structures in tmp_path
 - The function signature: `build_site(package_location: str, output_dir: Path) -> None`
 - It clears output_dir, renders HTML files, and copies static assets

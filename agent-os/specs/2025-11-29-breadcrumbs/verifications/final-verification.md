@@ -95,12 +95,12 @@ None - all tasks completed.
 **Status:** ✅ Complete
 
 ### Implementation Documentation
-- Tasks documented in `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-29-breadcrumbs/tasks.md`
+- Tasks documented in `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-29-breadcrumbs/tasks.md`
 - All 8 task groups with 42 sub-tasks documented
 - Acceptance criteria defined for each task group
 
 ### Verification Documentation
-- Final verification report: `/Users/pauleveritt/projects/pauleveritt/storytime/agent-os/specs/2025-11-29-breadcrumbs/verifications/final-verification.md` (this document)
+- Final verification report: `/Users/pauleveritt/projects/t-strings/storyville/agent-os/specs/2025-11-29-breadcrumbs/verifications/final-verification.md` (this document)
 
 ### Missing Documentation
 None - all required documentation present.
@@ -166,19 +166,19 @@ The minor type errors in test files are acceptable for this verification as they
 ### Key Implementation Details
 
 #### Data Models
-- **BaseNode** (`src/storytime/nodes.py`):
+- **BaseNode** (`src/storyville/nodes.py`):
   - Added `resource_path: str = field(init=False, default="")`
   - Updated `post_update()` to calculate resource_path:
     - Catalog: `resource_path = ""`
     - Section: `resource_path = self.name`
     - Subject: `resource_path = f"{parent.resource_path}/{self.name}"`
 
-- **Story** (`src/storytime/story/models.py`):
+- **Story** (`src/storyville/story/models.py`):
   - Added `resource_path: str = ""`
   - Updated `post_update()` to calculate: `f"{parent.resource_path}/{self.name}"`
 
 #### Components
-- **Breadcrumbs** (`src/storytime/components/breadcrumbs/breadcrumbs.py`):
+- **Breadcrumbs** (`src/storyville/components/breadcrumbs/breadcrumbs.py`):
   - Renamed `current_path` → `resource_path`
   - Added depth calculation: `depth = len([p for p in resource_path.split("/") if p])`
   - Implemented relative path links:

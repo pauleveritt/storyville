@@ -1,7 +1,7 @@
 """The subject for the DataList component."""
 
 from examples.huge_assertions.data_display.data_list.data_list import DataList
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

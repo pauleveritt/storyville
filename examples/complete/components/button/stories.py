@@ -1,11 +1,11 @@
 """The subject for the Button component."""
 
 from examples.complete.components.button.button import Button
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:
-    """Let's make a Storytime subject for this Button component."""
+    """Let's make a Storyville subject for this Button component."""
     return Subject(
         title="Button Component",
         description="A button component demonstrating all optional Story field variations",

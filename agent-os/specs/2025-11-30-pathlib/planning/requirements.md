@@ -10,7 +10,7 @@ This spec addresses roadmap item #12:
 
 ## Product Context
 
-Storytime is a component-driven development (CDD) platform for Python that provides a Storybook-like experience. The project emphasizes modern Python standards (3.14+) including type hints, pattern matching, and clean architecture with framework independence.
+Storyville is a component-driven development (CDD) platform for Python that provides a Storybook-like experience. The project emphasizes modern Python standards (3.14+) including type hints, pattern matching, and clean architecture with framework independence.
 
 The codebase currently uses mixed approaches to path handling (string-based and pathlib). This migration will standardize on pathlib throughout the codebase for cleaner, more type-safe path operations.
 
@@ -24,7 +24,7 @@ I assume we should convert all existing string-based path handling to use `pathl
 **Answer:** All path handling, find new places to use `.exists()` for validation
 
 **Q2: Backwards Compatibility**
-I'm thinking we can make this a breaking change since it's an internal refactoring that shouldn't affect the public API significantly. Should we maintain any backwards compatibility for users who might be passing string paths to Storytime APIs?
+I'm thinking we can make this a breaking change since it's an internal refactoring that shouldn't affect the public API significantly. Should we maintain any backwards compatibility for users who might be passing string paths to Storyville APIs?
 
 **Answer:** None required
 
@@ -171,7 +171,7 @@ No existing similar features were identified for reuse. The spec-writer will dis
 
 ### Alignment with Product Standards
 
-This migration aligns with Storytime's emphasis on:
+This migration aligns with Storyville's emphasis on:
 - Modern Python standards (Python 3.14+)
 - Type safety with modern type hints
 - Clean, maintainable code architecture

@@ -1,7 +1,7 @@
 """The subject for the InputNumber component."""
 
 from examples.huge_assertions.inputs.input_number.input_number import InputNumber
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -1,7 +1,7 @@
 """The subject for the NavDropdown component."""
 
 from examples.huge_assertions.navigation.nav_dropdown.nav_dropdown import NavDropdown
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

@@ -20,9 +20,9 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
         - Test interpreter availability after warm-up
         - Skip exhaustive coverage of edge cases
     - [x] 1.2 Create warm-up function module
-        - Create `src/storytime/subinterpreters.py` for subinterpreter utilities
+        - Create `src/storyville/subinterpreters.py` for subinterpreter utilities
         - Implement `warmup_interpreter()` as module-level callable
-        - Hard-code imports: `import storytime` and `import tdom`
+        - Hard-code imports: `import storyville` and `import tdom`
         - Must be compatible with `InterpreterPoolExecutor.submit()`
         - Add logging for warm-up completion
     - [x] 1.3 Create pool initialization function
@@ -46,7 +46,7 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
 
 - The 2-8 tests written in 1.1 pass
 - Pool creates with exactly 2 interpreters
-- Warm-up function successfully imports storytime and tdom
+- Warm-up function successfully imports storyville and tdom
 - Pool shuts down gracefully
 - All logging events captured
 
@@ -128,7 +128,7 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
         - Update signature: `create_app(..., use_subinterpreters: bool = False)`
         - Default to `False` for backward compatibility
         - Pass flag to lifespan context manager
-        - Located in: `src/storytime/app.py`
+        - Located in: `src/storyville/app.py`
     - [x] 3.3 Integrate pool lifecycle with Starlette lifespan
         - In `lifespan()` context manager in `app.py`
         - Create pool on app startup (before watcher) if `use_subinterpreters=True`
@@ -141,7 +141,7 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
         - When `use_subinterpreters=False`: use direct `build_site()` call
         - Maintain existing error handling and debouncing
         - Keep existing WebSocket broadcast behavior (only after successful build)
-        - Located in: `src/storytime/watchers.py`
+        - Located in: `src/storyville/watchers.py`
     - [x] 3.5 Wire up subinterpreter callback in web app mode
         - In `app.py`, when `use_subinterpreters=True`
         - Create async-compatible callback that calls `build_in_subinterpreter()`
@@ -183,7 +183,7 @@ Estimated Complexity: Medium-High (infrastructure change with careful integratio
         - Test `build` command always uses direct build
         - Skip exhaustive CLI testing
     - [x] 4.2 Add `--use-subinterpreters` flag to serve command
-        - Update `serve()` in `src/storytime/__main__.py`
+        - Update `serve()` in `src/storyville/__main__.py`
         - Add typer option: `typer.Option(False, '--use-subinterpreters', help=...)`
         - Pass flag value to `create_app(use_subinterpreters=...)`
         - Add help text explaining flag purpose
@@ -300,7 +300,7 @@ Recommended implementation sequence:
 ## Key Design Decisions
 
 - **Pool Size:** Fixed at 2 interpreters (one active, one warming up)
-- **Warm-up Imports:** Hard-coded `storytime` and `tdom` modules
+- **Warm-up Imports:** Hard-coded `storyville` and `tdom` modules
 - **Configuration:** Boolean flag `use_subinterpreters` in `create_app()` + CLI flag
 - **Lifecycle:** Pool managed in Starlette's lifespan context manager
 - **Callback Signatures:** Dual signatures (sync for CLI, async-compatible for web app)

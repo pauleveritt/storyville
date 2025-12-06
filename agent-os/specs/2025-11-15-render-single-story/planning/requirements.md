@@ -10,7 +10,7 @@ tdom.Element before returning.
 
 ### Product Mission Alignment
 
-This spec contributes to Storytime's core mission of providing a "Storybook-like experience" for Python developers by
+This spec contributes to Storyville's core mission of providing a "Storybook-like experience" for Python developers by
 implementing the fundamental rendering mechanism for individual stories. This is a critical piece of the "Component
 Isolation" and "Story-Based Development" core features, enabling developers to visualize UI components independently of
 web frameworks.
@@ -39,9 +39,9 @@ This spec leverages:
 
 ### First Round Questions
 
-**Q1:** Should the View Protocol be defined in a new `src/storytime/models.py` file, or would you prefer a different
-location (like `src/storytime/protocols.py` or directly in the story module)?
-**Answer:** Create `src/storytime/models.py` with the View Protocol.
+**Q1:** Should the View Protocol be defined in a new `src/storyville/models.py` file, or would you prefer a different
+location (like `src/storyville/protocols.py` or directly in the story module)?
+**Answer:** Create `src/storyville/models.py` with the View Protocol.
 
 **Q2:** For the Story class changes, should we remove the `vdom` method entirely and have the `Story.instance` property
 return `tdom.Element` directly (with a type guard inside the property)?
@@ -49,8 +49,8 @@ return `tdom.Element` directly (with a type guard inside the property)?
 `tdom.Element`.
 
 **Q3:** For the StoryView implementation, I'm assuming it should be a dataclass with a `__call__()` method that returns
-`Element`. Should this be in a new file `src/storytime/story/views.py`?
-**Answer:** Yes, create `src/storytime/story/views.py` with StoryView as a dataclass.
+`Element`. Should this be in a new file `src/storyville/story/views.py`?
+**Answer:** Yes, create `src/storyville/story/views.py` with StoryView as a dataclass.
 
 **Q4:** When Story.template is None, what should StoryView display as the default layout? Should it show the story
 title, rendered content, props, and a link back to the parent?
@@ -115,7 +115,7 @@ N/A - No visual files were found in the visuals folder.
 
 **1. View Protocol Definition**
 
-- Create new file: `src/storytime/models.py`
+- Create new file: `src/storyville/models.py`
 - Define `View` Protocol with signature: `__call__(self) -> Element`
 - This provides a type contract for all view classes
 
@@ -128,8 +128,8 @@ N/A - No visual files were found in the visuals folder.
 
 **3. StoryView Implementation**
 
-- Create new package: `src/storytime/story/` with `__init__.py`
-- Create new file: `src/storytime/story/views.py`
+- Create new package: `src/storyville/story/` with `__init__.py`
+- Create new file: `src/storyville/story/views.py`
 - Implement `StoryView` as a dataclass
 - Constructor parameter: `story: Story`
 - Implement `__call__(self) -> Element` method (satisfying View Protocol)
@@ -174,10 +174,10 @@ elements), but this spec implements them as standalone template code.
 
 **In Scope:**
 
-- Creating `src/storytime/models.py` with View Protocol
-- Creating `src/storytime/story/` package with `__init__.py`
-- Creating `src/storytime/story/views.py` with StoryView class
-- Moving/modifying Story class in `src/storytime/story/models.py` to remove `vdom` and update `instance` property
+- Creating `src/storyville/models.py` with View Protocol
+- Creating `src/storyville/story/` package with `__init__.py`
+- Creating `src/storyville/story/views.py` with StoryView class
+- Moving/modifying Story class in `src/storyville/story/models.py` to remove `vdom` and update `instance` property
 - Implementing two rendering modes (with/without template)
 - Type guards for Node → Element conversion
 - Comprehensive pytest tests using aria-testing

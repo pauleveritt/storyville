@@ -3,7 +3,7 @@
 from tdom import Node
 
 from examples.minimal.themed_layout import ThemedLayout
-from storytime import Catalog
+from storyville import Catalog
 
 
 def themed_layout_wrapper(story_title: str | None = None, children: Node | None = None) -> Node:

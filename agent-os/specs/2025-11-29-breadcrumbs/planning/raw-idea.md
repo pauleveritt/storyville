@@ -6,11 +6,11 @@
 
 ## Context from Codebase Exploration
 
-- This is the Storytime project, a component-driven development system for Python 3.14+
-- There is already a Breadcrumbs component at src/storytime/components/breadcrumbs/breadcrumbs.py
+- This is the Storyville project, a component-driven development system for Python 3.14+
+- There is already a Breadcrumbs component at src/storyville/components/breadcrumbs/breadcrumbs.py
 - The component renders breadcrumb navigation showing path hierarchy (Home → Section → Subject → Story)
 - The hierarchy is: Catalog → Section → Subject → Story
-- There are comprehensive tests at src/storytime/components/breadcrumbs/breadcrumbs_test.py
+- There are comprehensive tests at src/storyville/components/breadcrumbs/breadcrumbs_test.py
 - The breadcrumbs use aria-testing library for testing accessibility
 
 ## Initial Observation

@@ -7,10 +7,10 @@ to ensure the pathlib migration is complete and consistent.
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from storytime import PACKAGE_DIR
-from storytime.nodes import get_package_path
-from storytime.build import build_catalog
-from storytime.static_assets.models import StaticFolder
+from storyville import PACKAGE_DIR
+from storyville.nodes import get_package_path
+from storyville.build import build_catalog
+from storyville.static_assets.models import StaticFolder
 
 
 def test_package_dir_type_and_operations() -> None:
@@ -40,7 +40,7 @@ def test_static_folder_model_uses_path() -> None:
     """Verify StaticFolder model uses Path for all path attributes."""
     folder = StaticFolder(
         source_path=Path("/fake/path/static"),
-        source_type="storytime",
+        source_type="storyville",
         relative_path=Path("components/nav"),
     )
 

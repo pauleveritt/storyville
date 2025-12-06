@@ -6,9 +6,9 @@ as part of the pathlib migration.
 
 from pathlib import Path
 
-from storytime.nodes import get_package_path
-from storytime import PACKAGE_DIR
-from storytime.catalog.helpers import make_catalog
+from storyville.nodes import get_package_path
+from storyville import PACKAGE_DIR
+from storyville.catalog.helpers import make_catalog
 
 
 def test_get_package_path_returns_path_object() -> None:

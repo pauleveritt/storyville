@@ -1,7 +1,7 @@
 """The subject for the OverlayTooltip component."""
 
 from examples.huge_assertions.overlays.overlay_tooltip.overlay_tooltip import OverlayTooltip
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

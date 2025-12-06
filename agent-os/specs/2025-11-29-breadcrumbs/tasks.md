@@ -19,7 +19,7 @@ Estimated Sub-tasks: 42
     - Test resource_path inheritance across Catalog/Section/Subject
     - File: `tests/nodes_test.py` (or create if needed)
   - [x] 1.2 Add resource_path field to BaseNode dataclass
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py`
     - Add after line 142: `resource_path: str = field(init=False, default="")`
     - Type as `str` (non-optional)
   - [x] 1.3 Update BaseNode.post_update() to populate resource_path
@@ -59,12 +59,12 @@ Estimated Sub-tasks: 42
     - Test resource_path flows through entire tree hierarchy
     - File: `tests/catalog/helpers_test.py` (or create if needed)
   - [x] 2.2 Verify resource_path in make_catalog function
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/catalog/helpers.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/catalog/helpers.py`
     - No code changes needed (post_update handles it from Task 1.3)
     - Verify that post_update calls at lines 46, 60, 70 will populate resource_path
   - [x] 2.3 Add Story.post_update to populate resource_path
     - Story doesn't inherit from BaseNode, needs separate implementation
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/models.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/models.py`
     - Add `resource_path: str = ""` field
     - Update Story.post_update() to calculate: `f"{parent.resource_path}/{story.name}"`
   - [x] 2.4 Ensure tree construction tests pass
@@ -96,26 +96,26 @@ Estimated Sub-tasks: 42
     - Test Breadcrumbs uses resource_path (not current_path)
     - Files: Update existing component tests
   - [x] 3.2 Rename in Layout component
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py`
     - Line 32: Change `current_path: str | None = None` to `resource_path: str = ""`
     - Update all references to current_path within Layout.__call__()
     - Pass resource_path to LayoutMain and LayoutAside
   - [x] 3.3 Rename in LayoutMain component
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/main/main.py`
     - Change parameter from current_path to resource_path
     - Update type hint to `str` (non-optional)
     - Pass resource_path to Breadcrumbs
   - [x] 3.4 Rename in LayoutAside component
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/aside/aside.py`
     - Change parameter from current_path to resource_path
     - Update type hint to `str` (non-optional)
   - [x] 3.5 Rename in Breadcrumbs component
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/breadcrumbs/breadcrumbs.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/breadcrumbs/breadcrumbs.py`
     - Line 18: Change `current_path: str | None = None` to `resource_path: str = ""`
     - Update all internal references from self.current_path to self.resource_path
     - Update condition at line 27: `if not self.resource_path:`
   - [x] 3.6 Update NavigationTree component
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/navigation_tree/navigation_tree.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/navigation_tree/navigation_tree.py`
     - Rename current_path parameter to resource_path
     - Update all references
   - [x] 3.7 Ensure component tests pass
@@ -146,25 +146,25 @@ Estimated Sub-tasks: 42
     - Test resource_path passed to Layout in each view
     - Files: Update existing view tests
   - [x] 4.2 Update SectionView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
     - Add `resource_path: str` parameter to __init__
     - Store as instance attribute: `self.resource_path = resource_path`
     - Pass to Layout when rendering: `Layout(resource_path=self.resource_path, ...)`
     - Pattern: Extract from section.resource_path
   - [x] 4.3 Update SubjectView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
     - Add `resource_path: str` parameter to __init__
     - Store as instance attribute: `self.resource_path = resource_path`
     - Pass to Layout when rendering: `Layout(resource_path=self.resource_path, ...)`
     - Pattern: Extract from subject.resource_path
   - [x] 4.4 Update StoryView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`
     - Add `resource_path: str` parameter to __init__
     - Store as instance attribute: `self.resource_path = resource_path`
     - Pass to Layout when rendering: `Layout(resource_path=self.resource_path, ...)`
     - Pattern: Extract from story.resource_path
   - [x] 4.5 Update CatalogView (verify no changes needed)
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/catalog/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/catalog/views.py`
     - Verify that CatalogView does NOT pass resource_path (no breadcrumbs on home)
     - Should pass `resource_path=""` or omit parameter
   - [x] 4.6 Ensure view tests pass
@@ -196,7 +196,7 @@ Estimated Sub-tasks: 42
     - Test resource_path format matches expected patterns
     - File: `tests/build_test.py` (or create if needed)
   - [x] 5.2 Update _render_all_views for SectionView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/build.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/build.py`
     - Line 60-62: Add resource_path parameter
     - Extract from section object: `section.resource_path`
     - Pass to SectionView: `SectionView(section=section, site=catalog, cached_navigation=cached_nav, resource_path=section.resource_path)`
@@ -239,15 +239,15 @@ Estimated Sub-tasks: 42
     - Test breadcrumbs component provides navigation instead
     - Files: Update existing view tests
   - [x] 6.2 Remove Parent link from SectionView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py`
     - Find and remove: `<a href="..">Parent</a>` (approximately line 68)
     - Breadcrumbs now provide navigation to parent
   - [x] 6.3 Remove Parent links from SubjectView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py`
     - Find and remove: `<a href="..">Parent</a>` (approximately lines 64 and 85)
     - May be in multiple locations within template
   - [x] 6.4 Remove Parent links from StoryView
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py`
     - Find and remove: `<a href="..">Parent</a>` (approximately lines 158, 170, 194, 208)
     - Check multiple locations within template
   - [x] 6.5 Ensure view tests pass after cleanup
@@ -280,7 +280,7 @@ Estimated Sub-tasks: 42
     - Test intermediate links combine upward + forward paths
     - File: `tests/components/breadcrumbs/breadcrumbs_test.py`
   - [x] 7.2 Add depth calculation helper to Breadcrumbs
-    - Location: `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/breadcrumbs/breadcrumbs.py`
+    - Location: `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/breadcrumbs/breadcrumbs.py`
     - Calculate depth from resource_path: `depth = len([p for p in resource_path.split("/") if p])`
     - Section: depth=1, Subject: depth=2, Story: depth=3
   - [x] 7.3 Update Home link to use relative path
@@ -351,7 +351,7 @@ Estimated Sub-tasks: 42
     - Expected: All feature-specific tests pass
     - Do NOT require entire application test suite to pass
   - [x] 8.5 Manual verification on built pages
-    - Run: `storytime build examples.minimal` (or test catalog)
+    - Run: `storyville build examples.minimal` (or test catalog)
     - Open built pages in browser
     - Verify breadcrumbs appear on Section/Subject/Story pages
     - Verify breadcrumbs do NOT appear on Catalog/home page
@@ -390,25 +390,25 @@ Recommended implementation sequence:
 ## Key Files to Modify
 
 ### Core Models
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/nodes.py` (BaseNode)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/models.py` (Story)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/catalog/helpers.py` (make_catalog)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/nodes.py` (BaseNode)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/models.py` (Story)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/catalog/helpers.py` (make_catalog)
 
 ### Components
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/layout/layout.py` (Layout)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/main/main.py` (LayoutMain)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/aside/aside.py` (LayoutAside)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/breadcrumbs/breadcrumbs.py` (Breadcrumbs)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/components/navigation_tree/navigation_tree.py` (NavigationTree)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/layout/layout.py` (Layout)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/main/main.py` (LayoutMain)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/aside/aside.py` (LayoutAside)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/breadcrumbs/breadcrumbs.py` (Breadcrumbs)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/components/navigation_tree/navigation_tree.py` (NavigationTree)
 
 ### Views
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/section/views.py` (SectionView)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/subject/views.py` (SubjectView)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/story/views.py` (StoryView)
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/catalog/views.py` (CatalogView - verify)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/section/views.py` (SectionView)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/subject/views.py` (SubjectView)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/story/views.py` (StoryView)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/catalog/views.py` (CatalogView - verify)
 
 ### Build System
-- `/Users/pauleveritt/projects/pauleveritt/storytime/src/storytime/build.py` (_render_all_views)
+- `/Users/pauleveritt/projects/t-strings/storyville/src/storyville/build.py` (_render_all_views)
 
 ### Tests
 - All test files that reference current_path (rename to resource_path)
@@ -434,7 +434,7 @@ just fmt       # Format code
 
 ### Manual Verification (Task Group 8)
 ```bash
-storytime build examples.minimal
+storyville build examples.minimal
 # Open built pages in browser
 # Verify breadcrumbs display and navigate correctly
 ```

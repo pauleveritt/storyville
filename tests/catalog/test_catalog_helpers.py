@@ -1,8 +1,8 @@
 """Test helper functions for Catalog construction and traversal."""
 
-from storytime.section import Section
-from storytime.catalog import Catalog, find_path, make_catalog
-from storytime.subject import Subject
+from storyville.section import Section
+from storyville.catalog import Catalog, find_path, make_catalog
+from storyville.subject import Subject
 
 
 def test_make_catalog_creates_populated_catalog() -> None:

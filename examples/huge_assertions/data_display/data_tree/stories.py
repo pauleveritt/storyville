@@ -1,7 +1,7 @@
 """The subject for the DataTree component."""
 
 from examples.huge_assertions.data_display.data_tree.data_tree import DataTree
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

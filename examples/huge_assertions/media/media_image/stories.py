@@ -1,7 +1,7 @@
 """The subject for the MediaImage component."""
 
 from examples.huge_assertions.media.media_image.media_image import MediaImage
-from storytime import Story, Subject
+from storyville import Story, Subject
 
 
 def this_subject() -> Subject:

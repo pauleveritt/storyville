@@ -46,19 +46,19 @@ The Full Static Paths feature has been **successfully implemented and verified**
 ## Key Implementation Files
 
 ### Created
-- `src/storytime/static_assets/__init__.py` - Main API
-- `src/storytime/static_assets/models.py` - Data structures
-- `src/storytime/static_assets/discovery.py` - Static folder discovery
-- `src/storytime/static_assets/paths.py` - Path calculations
-- `src/storytime/static_assets/copying.py` - Copy operations
-- `src/storytime/static_assets/validation.py` - Collision detection
-- `src/storytime/static_assets/rewriting.py` - HTML path rewriting
+- `src/storyville/static_assets/__init__.py` - Main API
+- `src/storyville/static_assets/models.py` - Data structures
+- `src/storyville/static_assets/discovery.py` - Static folder discovery
+- `src/storyville/static_assets/paths.py` - Path calculations
+- `src/storyville/static_assets/copying.py` - Copy operations
+- `src/storyville/static_assets/validation.py` - Collision detection
+- `src/storyville/static_assets/rewriting.py` - HTML path rewriting
 
 ### Modified
-- `src/storytime/build.py` - Added Phase 4: Static Assets
-- `src/storytime/site/models.py` - Removed `static_dir` property
-- `src/storytime/components/layout/layout.py` - Updated to `storytime_static/` paths
-- `src/storytime/watchers.py` - Added static folder monitoring
+- `src/storyville/build.py` - Added Phase 4: Static Assets
+- `src/storyville/site/models.py` - Removed `static_dir` property
+- `src/storyville/components/layout/layout.py` - Updated to `storyville_static/` paths
+- `src/storyville/watchers.py` - Added static folder monitoring
 
 ---
 
@@ -106,7 +106,7 @@ just fmt
 ## Architecture Highlights
 
 1. **Two-Prefix Path Structure**
-   - `storytime_static/` for core components
+   - `storyville_static/` for core components
    - `static/` for user input_dir
    - Prevents collisions
 
