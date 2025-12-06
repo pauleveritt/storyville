@@ -14,32 +14,32 @@ Implement intelligent change detection for hot reload that tracks currently-view
 #### Task Group 1: WebSocket Connection State Management
 **Dependencies:** None
 
-- [ ] 1.0 Complete WebSocket connection state tracking
-  - [ ] 1.1 Write 2-8 focused tests for connection state management
+- [x] 1.0 Complete WebSocket connection state tracking
+  - [x] 1.1 Write 2-8 focused tests for connection state management
     - Test connection state storage and cleanup on disconnect
     - Test page metadata extraction from URLs
     - Test story identifier parsing from paths
     - Skip exhaustive edge case testing
-  - [ ] 1.2 Extend `websocket.py` to store page metadata per connection
+  - [x] 1.2 Extend `websocket.py` to store page metadata per connection
     - Add connection state data structure: `{websocket: {page_url, page_type, story_id}}`
     - Create `_connection_metadata: dict[WebSocket, dict[str, str]]` module-level storage
     - Store metadata on connection establishment
-  - [ ] 1.3 Handle initial page metadata message from client
+  - [x] 1.3 Handle initial page metadata message from client
     - Update `websocket_endpoint()` to receive page metadata on connection
     - Parse incoming JSON message: `{type: "page_info", page_url, page_type, story_id}`
     - Store metadata in `_connection_metadata` dict
-  - [ ] 1.4 Implement page type classification
+  - [x] 1.4 Implement page type classification
     - Detect story pages with iframe (Mode C)
     - Detect story container pages (themed_story.html)
     - Detect non-story pages (documentation, indexes)
-  - [ ] 1.5 Implement story identifier extraction
+  - [x] 1.5 Implement story identifier extraction
     - Extract story path from URL: `/components/heading/story-0/index.html` → `components/heading/story-0`
     - Parse section, subject, and story index from path
     - Handle both standard and themed story URLs
-  - [ ] 1.6 Clean up connection state on disconnect
+  - [x] 1.6 Clean up connection state on disconnect
     - Remove metadata entry in `websocket_endpoint()` finally block
     - Ensure no memory leaks from orphaned connection state
-  - [ ] 1.7 Ensure connection state tests pass
+  - [x] 1.7 Ensure connection state tests pass
     - Run ONLY the 2-8 tests written in 1.1
     - Verify metadata storage and cleanup work correctly
     - Do NOT run entire test suite at this stage
