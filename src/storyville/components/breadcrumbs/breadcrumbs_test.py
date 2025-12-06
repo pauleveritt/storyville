@@ -6,7 +6,7 @@ from storyville.components.breadcrumbs import Breadcrumbs
 
 def test_breadcrumbs_renders_nothing_when_path_is_none() -> None:
     """Test Breadcrumbs renders nothing when resource_path is None."""
-    breadcrumbs = Breadcrumbs(resource_path=None)
+    breadcrumbs = Breadcrumbs()
     result = breadcrumbs()
 
     element = result

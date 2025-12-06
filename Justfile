@@ -62,3 +62,22 @@ clean:
 # Run all quality checks with fail-fast behavior
 ci-checks:
     just install && just lint && just typecheck && just test-parallel
+
+# Enable pre-push hook to run ci-checks before pushing
+enable-pre-push:
+    @echo "Installing pre-push hook..."
+    @echo '#!/bin/sh' > .git/hooks/pre-push
+    @echo '' >> .git/hooks/pre-push
+    @echo '# Run quality checks before push' >> .git/hooks/pre-push
+    @echo 'echo "Running quality checks before push..."' >> .git/hooks/pre-push
+    @echo 'if ! just ci-checks; then' >> .git/hooks/pre-push
+    @echo '    echo "Pre-push check failed! Push aborted."' >> .git/hooks/pre-push
+    @echo '    exit 1' >> .git/hooks/pre-push
+    @echo 'fi' >> .git/hooks/pre-push
+    @chmod +x .git/hooks/pre-push
+    @echo "Pre-push hook installed! Use 'just disable-pre-push' to disable."
+
+# Disable pre-push hook
+disable-pre-push:
+    @chmod -x .git/hooks/pre-push 2>/dev/null || true
+    @echo "Pre-push hook disabled. Use 'just enable-pre-push' to re-enable."

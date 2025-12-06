@@ -9,7 +9,6 @@ def test_layout_aside_handles_cached_navigation_html() -> None:
     cached_html = "<nav><ul><li>Cached Item</li></ul></nav>"
     aside = LayoutAside(
         sections={},
-        resource_path=None,
         cached_navigation=cached_html,
     )
     result = aside()
@@ -27,7 +26,7 @@ def test_layout_aside_handles_cached_navigation_html() -> None:
 def test_layout_aside_renders_navigation_tree_without_cached() -> None:
     """Test LayoutAside renders NavigationTree when no cached navigation provided."""
     # We'll use empty sections dict for simplicity
-    aside = LayoutAside(sections={}, resource_path=None, cached_navigation=None)
+    aside = LayoutAside(sections={}, cached_navigation=None)
     result = aside()
     element = result
 

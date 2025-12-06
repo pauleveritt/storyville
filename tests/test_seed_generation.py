@@ -1,6 +1,7 @@
 """Tests for seed catalog generation engine."""
 
 import shutil
+from collections.abc import Generator
 from pathlib import Path
 
 import pytest
@@ -9,7 +10,7 @@ from storyville.__main__ import SizeConfig
 
 
 @pytest.fixture
-def temp_output_dir(tmp_path: Path) -> Path:
+def temp_output_dir(tmp_path: Path) -> Generator[Path, None, None]:
     """Provide a temporary output directory for testing.
 
     Args:

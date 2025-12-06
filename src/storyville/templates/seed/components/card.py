@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass
 
-import tdom
-from tdom import Element, Fragment
+from tdom import Element, Fragment, Node, html
 
 
 @dataclass
@@ -20,36 +19,31 @@ class Card:
     content: str
     image_url: str | None = None
 
-    def __call__(self) -> tdom.html.div:
+    def __call__(self) -> Node:
         """Render the card using tdom.
 
         Returns:
-            tdom.html.div: The rendered card element.
+            Node: The rendered card element.
         """
         card_style = (
             "border: 1px solid #ddd; border-radius: 8px; padding: 20px; "
             "background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
         )
 
-        image_node = (
-            tdom.html.img(
-                src=self.image_url,
-                alt=self.title,
-                style="width: 100%; border-radius: 6px; margin-bottom: 16px;",
-            )
+        img_style = "width: 100%; border-radius: 6px; margin-bottom: 16px;"
+        image_html = (
+            f'<img src="{self.image_url}" alt="{self.title}" style="{img_style}">'
             if self.image_url
-            else None
+            else ""
         )
 
-        return tdom.html.div(
-            image_node,
-            tdom.html.h3(self.title, style="margin: 0 0 12px 0; color: #333;"),
-            tdom.html.p(
-                self.content, style="margin: 0; color: #666; line-height: 1.6;"
-            ),
-            class_="card",
-            style=card_style,
-        )
+        return html(t'''
+<div class="card" style="{card_style}">
+  {image_html}
+  <h3 style="margin: 0 0 12px 0; color: #333;">{self.title}</h3>
+  <p style="margin: 0; color: #666; line-height: 1.6;">{self.content}</p>
+</div>
+        ''')
 
 
 # Sample assertion functions

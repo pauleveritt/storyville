@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass, field
 
-import tdom
-from tdom import Element, Fragment
+from tdom import Element, Fragment, Node, html
 
 
 @dataclass
@@ -35,11 +34,11 @@ class Form:
     fields: list[FormField] = field(default_factory=list)
     submit_text: str = "Submit"
 
-    def __call__(self) -> tdom.html.form:
+    def __call__(self) -> Node:
         """Render the form using tdom.
 
         Returns:
-            tdom.html.form: The rendered form element.
+            Node: The rendered form element.
         """
         form_style = "max-width: 400px; padding: 24px; border: 1px solid #ddd; border-radius: 8px;"
         field_style = "margin-bottom: 16px;"
@@ -55,30 +54,22 @@ class Form:
             "border: none; border-radius: 6px; cursor: pointer; font-weight: 600;"
         )
 
-        field_nodes = [
-            tdom.html.div(
-                tdom.html.label(
-                    f"{field.label}{'*' if field.required else ''}",
-                    for_=field.name,
-                    style=label_style,
-                ),
-                tdom.html.input(
-                    type=field.type,
-                    name=field.name,
-                    id=field.name,
-                    required=field.required,
-                    style=input_style,
-                ),
-                style=field_style,
-            )
-            for field in self.fields
-        ]
-
-        return tdom.html.form(
-            *field_nodes,
-            tdom.html.button(self.submit_text, type="submit", style=button_style),
-            style=form_style,
+        fields_html = "\n".join(
+            [
+                f'''<div style="{field_style}">
+                <label for="{field.name}" style="{label_style}">{field.label}{"*" if field.required else ""}</label>
+                <input type="{field.type}" name="{field.name}" id="{field.name}" {"required" if field.required else ""} style="{input_style}">
+            </div>'''
+                for field in self.fields
+            ]
         )
+
+        return html(t'''
+<form style="{form_style}">
+  {fields_html}
+  <button type="submit" style="{button_style}">{self.submit_text}</button>
+</form>
+        ''')
 
 
 # Sample assertion functions

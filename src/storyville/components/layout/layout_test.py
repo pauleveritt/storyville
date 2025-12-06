@@ -26,16 +26,15 @@ def test_layout_accepts_resource_path_parameter() -> None:
 def test_layout_resource_path_can_be_none() -> None:
     """Test Layout resource_path can be None."""
     catalog = Catalog(title="Test Catalog")
-    # Should work with resource_path=None
+    # Should work with resource_path=""
     layout = Layout(
         view_title="Test Page",
         site=catalog,
         children=html(t"<p>Content</p>"),
-        resource_path=None,
     )
     result = layout()
     element = result
-    assert element is not None, "Layout should render with resource_path=None"
+    assert element is not None, "Layout should render with resource_path="
 
 
 # Component Composition Tests

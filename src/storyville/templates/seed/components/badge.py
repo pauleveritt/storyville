@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass
 
-import tdom
-from tdom import Element, Fragment
+from tdom import Element, Fragment, Node, html
 
 
 @dataclass
@@ -18,16 +17,15 @@ class Badge:
     text: str
     variant: str = "info"
 
-    def __call__(self) -> tdom.html.span:
+    def __call__(self) -> Node:
         """Render the badge using tdom.
 
         Returns:
-            tdom.html.span: The rendered badge element.
+            Node: The rendered badge element.
         """
-        return tdom.html.span(
-            self.text,
-            class_=f"badge badge-{self.variant}",
-            style=self._get_styles(),
+        styles = self._get_styles()
+        return html(
+            t'<span class="badge badge-{self.variant}" style="{styles}">{self.text}</span>'
         )
 
     def _get_styles(self) -> str:

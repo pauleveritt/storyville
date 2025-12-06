@@ -413,6 +413,30 @@ just install && just lint && just typecheck && just test-parallel
 
 If running manually without Just, execute these commands in sequence and stop if any fails.
 
+### Pre-Push Hook for Quality Checks
+
+Storyville provides a pre-push Git hook to automatically run `just ci-checks` before pushing code. This prevents pushing code that would fail CI checks.
+
+**Install the hook:**
+```bash
+just enable-pre-push
+```
+
+**Disable the hook:**
+```bash
+just disable-pre-push
+```
+
+When enabled, the hook runs all quality checks (install, lint, typecheck, test-parallel) before each `git push`. If any check fails, the push is aborted.
+
+**How it works:**
+- Creates `.git/hooks/pre-push` that invokes `just ci-checks`
+- The hook only runs locally (not shared via git)
+- Each developer can enable/disable independently
+- Disabling removes executable permission without deleting the hook
+
+**Tip:** Enable this hook to catch issues before they reach CI, saving time and keeping the commit history clean.
+
 ### Local Workflow Testing with `act`
 
 You can test GitHub Actions workflows locally before pushing using the [act](https://github.com/nektos/act) tool:

@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass
 
-import tdom
-from tdom import Element, Fragment
+from tdom import Element, Fragment, Node, html
 
 
 @dataclass
@@ -18,20 +17,19 @@ class ListComponent:
     items: list[str]
     ordered: bool = False
 
-    def __call__(self) -> tdom.html.ol | tdom.html.ul:
+    def __call__(self) -> Node:
         """Render the list using tdom.
 
         Returns:
-            tdom.html.ol | tdom.html.ul: The rendered list element.
+            Node: The rendered list element.
         """
         list_style = "margin: 0; padding-left: 24px; line-height: 1.8; color: #333;"
-
-        list_items = [tdom.html.li(item) for item in self.items]
+        list_items_html = "\n".join([f"<li>{item}</li>" for item in self.items])
 
         if self.ordered:
-            return tdom.html.ol(*list_items, style=list_style)
+            return html(t'<ol style="{list_style}">{list_items_html}</ol>')
         else:
-            return tdom.html.ul(*list_items, style=list_style)
+            return html(t'<ul style="{list_style}">{list_items_html}</ul>')
 
 
 # Sample assertion functions

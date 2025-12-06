@@ -29,7 +29,6 @@ def test_story_has_resource_path_for_build() -> None:
         title="Test",
         description="Test",
         props={},
-        instance=None,
         template=None,
         assertions=[],
     )
@@ -39,7 +38,7 @@ def test_story_has_resource_path_for_build() -> None:
 
 def test_catalog_has_empty_resource_path() -> None:
     """Test catalog has empty resource_path for root."""
-    catalog = Catalog(title="Test", description="Test", items={})
+    catalog = Catalog(title="Test", items={})
     catalog.resource_path = ""
     assert catalog.resource_path == ""
 
@@ -68,7 +67,6 @@ def test_resource_path_format_story() -> None:
         title="Test",
         description="Test",
         props={},
-        instance=None,
         template=None,
         assertions=[],
     )

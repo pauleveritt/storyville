@@ -9,7 +9,7 @@ from storyville.components.main.main import LayoutMain
 def test_layout_main_renders_children() -> None:
     """Test LayoutMain renders children content."""
     test_content = html(t"<p>Test Content</p>")
-    main = LayoutMain(resource_path=None, children=test_content)
+    main = LayoutMain(children=test_content)
     result = main()
     element = result
 
@@ -35,7 +35,7 @@ def test_layout_main_renders_breadcrumbs() -> None:
 
 def test_layout_main_handles_none_children() -> None:
     """Test LayoutMain handles None children gracefully."""
-    main = LayoutMain(resource_path=None, children=None)
+    main = LayoutMain(children=None)
     result = main()
     element = result
 

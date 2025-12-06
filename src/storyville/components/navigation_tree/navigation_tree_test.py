@@ -18,7 +18,7 @@ def test_renders_three_level_hierarchy():
     section.items = {"buttons": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Find the nav element (handles both Element and Fragment)
@@ -50,7 +50,7 @@ def test_details_elements_use_correct_structure():
     section.items = {"grid": subject}
     sections = {"layout": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Should have details elements (section + subject = 2)
@@ -103,7 +103,7 @@ def test_all_details_closed_when_resource_path_none():
     section.items = {"headings": subject}
     sections = {"typography": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # All details should NOT have 'open' attribute
@@ -123,7 +123,7 @@ def test_stories_render_as_simple_links():
     section.items = {"menus": subject}
     sections = {"navigation": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Should have exactly 2 details elements (1 section + 1 subject)
@@ -205,7 +205,7 @@ def test_story_urls_use_index_html_format():
     section.items = {"heading": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Get the story link
@@ -229,7 +229,7 @@ def test_multiple_stories_have_correct_url_indices():
     section.items = {"button": subject}
     sections = {"components": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Get all story links
@@ -252,7 +252,7 @@ def test_story_urls_use_section_and_subject_names():
     section.items = {"inputs": subject}
     sections = {"forms": section}
 
-    tree = NavigationTree(sections=sections, resource_path=None)
+    tree = NavigationTree(sections=sections)
     result = tree()
 
     # Get the story link

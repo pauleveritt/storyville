@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass
 
-import tdom
-from tdom import Element, Fragment
+from tdom import Element, Fragment, Node, html
 
 
 @dataclass
@@ -20,16 +19,15 @@ class Button:
     color: str = "primary"
     size: str = "medium"
 
-    def __call__(self) -> tdom.html.button:
+    def __call__(self) -> Node:
         """Render the button using tdom.
 
         Returns:
-            tdom.html.button: The rendered button element.
+            Node: The rendered button element.
         """
-        return tdom.html.button(
-            self.text,
-            class_=f"btn btn-{self.color} btn-{self.size}",
-            style=self._get_styles(),
+        styles = self._get_styles()
+        return html(
+            t'<button class="btn btn-{self.color} btn-{self.size}" style="{styles}">{self.text}</button>'
         )
 
     def _get_styles(self) -> str:

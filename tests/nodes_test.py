@@ -32,7 +32,7 @@ def test_section_resource_path_after_post_update(mock_tree_node):
     section = Section(title="Components")
     section_node = mock_tree_node(name="components", package_location=".components")
 
-    section.post_update(parent=catalog, tree_node=section_node)
+    section.post_update(parent=catalog, tree_node=section_node)  # type: ignore[arg-type]
 
     assert section.resource_path == "components"
     assert section.name == "components"
@@ -46,12 +46,12 @@ def test_subject_resource_path_after_post_update(mock_tree_node):
 
     section = Section(title="Components")
     section_node = mock_tree_node(name="components", package_location=".components")
-    section.post_update(parent=catalog, tree_node=section_node)
+    section.post_update(parent=catalog, tree_node=section_node)  # type: ignore[arg-type]
 
     subject = Subject(title="Button")
     subject_node = mock_tree_node(name="button", package_location=".components.button")
 
-    subject.post_update(parent=section, tree_node=subject_node)
+    subject.post_update(parent=section, tree_node=subject_node)  # type: ignore[arg-type]
 
     assert subject.resource_path == "components/button"
     assert subject.name == "button"
@@ -67,13 +67,13 @@ def test_nested_resource_path_format(mock_tree_node):
     section_node = mock_tree_node(
         name="ui-components", package_location=".ui-components"
     )
-    section.post_update(parent=catalog, tree_node=section_node)
+    section.post_update(parent=catalog, tree_node=section_node)  # type: ignore[arg-type]
 
     subject = Subject(title="Form Elements")
     subject_node = mock_tree_node(
         name="form-elements", package_location=".ui-components.form-elements"
     )
-    subject.post_update(parent=section, tree_node=subject_node)
+    subject.post_update(parent=section, tree_node=subject_node)  # type: ignore[arg-type]
 
     # Verify the full path
     assert catalog.resource_path == ""
@@ -91,13 +91,13 @@ def test_resource_path_inheritance_across_types(mock_tree_node):
     # Add section
     section1 = Section(title="Section 1")
     section1_node = mock_tree_node(name="section1", package_location=".section1")
-    section1.post_update(parent=catalog, tree_node=section1_node)
+    section1.post_update(parent=catalog, tree_node=section1_node)  # type: ignore[arg-type]
     catalog.items["section1"] = section1
 
     # Add another section
     section2 = Section(title="Section 2")
     section2_node = mock_tree_node(name="section2", package_location=".section2")
-    section2.post_update(parent=catalog, tree_node=section2_node)
+    section2.post_update(parent=catalog, tree_node=section2_node)  # type: ignore[arg-type]
     catalog.items["section2"] = section2
 
     # Add subjects under section1
@@ -105,14 +105,14 @@ def test_resource_path_inheritance_across_types(mock_tree_node):
     subject1_node = mock_tree_node(
         name="subject1a", package_location=".section1.subject1a"
     )
-    subject1.post_update(parent=section1, tree_node=subject1_node)
+    subject1.post_update(parent=section1, tree_node=subject1_node)  # type: ignore[arg-type]
     section1.items["subject1a"] = subject1
 
     subject2 = Subject(title="Subject 1B")
     subject2_node = mock_tree_node(
         name="subject1b", package_location=".section1.subject1b"
     )
-    subject2.post_update(parent=section1, tree_node=subject2_node)
+    subject2.post_update(parent=section1, tree_node=subject2_node)  # type: ignore[arg-type]
     section1.items["subject1b"] = subject2
 
     # Verify all paths
