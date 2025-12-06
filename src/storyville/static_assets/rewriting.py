@@ -73,16 +73,16 @@ def _walk_and_rewrite_element(
         - Only rewrites paths starting with "static/" or "storyville_static/"
     """
     # Check if this element has attributes
-    if hasattr(element, 'attrs') and isinstance(element.attrs, dict):
+    if hasattr(element, "attrs") and isinstance(element.attrs, dict):
         # Check for src and href attributes
-        for attr_name in ['src', 'href']:
+        for attr_name in ["src", "href"]:
             if attr_name in element.attrs:
                 attr_value = element.attrs[attr_name]
 
                 # Only process static paths
                 if isinstance(attr_value, str) and (
-                    attr_value.startswith('static/')
-                    or attr_value.startswith('storyville_static/')
+                    attr_value.startswith("static/")
+                    or attr_value.startswith("storyville_static/")
                 ):
                     # Resolve the asset
                     resolved = resolve_static_asset_path(attr_value, discovered_assets)
@@ -90,7 +90,8 @@ def _walk_and_rewrite_element(
                     if resolved is not None:
                         # Determine source type
                         source_type: Literal["storyville", "input_dir"] = (
-                            "storyville" if attr_value.startswith("storyville_static")
+                            "storyville"
+                            if attr_value.startswith("storyville_static")
                             else "input_dir"
                         )
 
@@ -101,7 +102,7 @@ def _walk_and_rewrite_element(
                         element.attrs[attr_name] = new_path
 
     # Recursively process children
-    if hasattr(element, 'children') and isinstance(element.children, list):
+    if hasattr(element, "children") and isinstance(element.children, list):
         for child in element.children:
             if isinstance(child, Element):
                 _walk_and_rewrite_element(child, page_depth, discovered_assets)
@@ -225,7 +226,7 @@ def rewrite_static_paths(
         _walk_and_rewrite_element(node, page_depth, discovered_assets)
     elif isinstance(node, Fragment):
         # Fragment contains a list of children - walk each one
-        if hasattr(node, 'children') and isinstance(node.children, list):
+        if hasattr(node, "children") and isinstance(node.children, list):
             for child in node.children:
                 if isinstance(child, Element):
                     _walk_and_rewrite_element(child, page_depth, discovered_assets)

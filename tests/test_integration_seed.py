@@ -79,7 +79,9 @@ def test_generated_medium_catalog_can_be_imported() -> None:
             assert len(catalog.items) == 2  # 2 sections
 
             # Count total subjects
-            total_subjects = sum(len(section.items) for section in catalog.items.values())
+            total_subjects = sum(
+                len(section.items) for section in catalog.items.values()
+            )
             assert total_subjects == 4  # 4 subjects
 
             # Count total stories
@@ -113,7 +115,9 @@ def test_generated_large_catalog_can_be_imported() -> None:
             assert len(catalog.items) == 4  # 4 sections
 
             # Count total subjects
-            total_subjects = sum(len(section.items) for section in catalog.items.values())
+            total_subjects = sum(
+                len(section.items) for section in catalog.items.values()
+            )
             assert total_subjects == 8  # 8 subjects
 
             # Count total stories
@@ -176,17 +180,29 @@ def test_generated_catalog_can_be_built() -> None:
             assert (build_output_path / "about.html").exists()
 
             # Verify sections are built
-            section_dirs = [d for d in build_output_path.iterdir() if d.is_dir() and d.name.startswith("section_")]
+            section_dirs = [
+                d
+                for d in build_output_path.iterdir()
+                if d.is_dir() and d.name.startswith("section_")
+            ]
             assert len(section_dirs) == 2  # 2 sections
 
             # Verify subjects are built within sections
             for section_dir in section_dirs:
-                subject_dirs = [d for d in section_dir.iterdir() if d.is_dir() and d.name.startswith("subject_")]
+                subject_dirs = [
+                    d
+                    for d in section_dir.iterdir()
+                    if d.is_dir() and d.name.startswith("subject_")
+                ]
                 assert len(subject_dirs) >= 1  # At least 1 subject per section
 
                 # Verify stories are built within subjects
                 for subject_dir in subject_dirs:
-                    story_dirs = [d for d in subject_dir.iterdir() if d.is_dir() and d.name.startswith("story-")]
+                    story_dirs = [
+                        d
+                        for d in subject_dir.iterdir()
+                        if d.is_dir() and d.name.startswith("story-")
+                    ]
                     assert len(story_dirs) >= 2  # At least 2 stories per subject
 
 
@@ -214,13 +230,25 @@ def test_generated_catalog_builds_with_themed_stories() -> None:
             )
 
             # Verify themed_story.html files exist for stories
-            section_dirs = [d for d in build_output_path.iterdir() if d.is_dir() and d.name.startswith("section_")]
+            section_dirs = [
+                d
+                for d in build_output_path.iterdir()
+                if d.is_dir() and d.name.startswith("section_")
+            ]
 
             themed_story_files_found = False
             for section_dir in section_dirs:
-                subject_dirs = [d for d in section_dir.iterdir() if d.is_dir() and d.name.startswith("subject_")]
+                subject_dirs = [
+                    d
+                    for d in section_dir.iterdir()
+                    if d.is_dir() and d.name.startswith("subject_")
+                ]
                 for subject_dir in subject_dirs:
-                    story_dirs = [d for d in subject_dir.iterdir() if d.is_dir() and d.name.startswith("story-")]
+                    story_dirs = [
+                        d
+                        for d in subject_dir.iterdir()
+                        if d.is_dir() and d.name.startswith("story-")
+                    ]
                     for story_dir in story_dirs:
                         themed_story_file = story_dir / "themed_story.html"
                         if themed_story_file.exists():
@@ -240,9 +268,11 @@ def test_all_size_configurations_match_expected_counts() -> None:
         "large": (SizeConfig(sections=4, subjects=8, stories_per_subject=3), (24, 32)),
     }
 
-    for idx, (size_name, (config, (min_stories, max_stories))) in enumerate(size_configs.items()):
+    for idx, (size_name, (config, (min_stories, max_stories))) in enumerate(
+        size_configs.items()
+    ):
         with TemporaryDirectory() as tmpdir:
-            catalog_name = f"test_{size_name}_catalog_00{idx+7}"
+            catalog_name = f"test_{size_name}_catalog_00{idx + 7}"
             output_path = Path(tmpdir) / catalog_name
 
             # Generate catalog
@@ -288,12 +318,20 @@ def test_generated_catalog_has_valid_python_package_structure() -> None:
         assert (output_path / "themed_layout" / "__init__.py").exists()
 
         # Verify each section has __init__.py
-        section_dirs = [d for d in output_path.iterdir() if d.is_dir() and d.name.startswith("section_")]
+        section_dirs = [
+            d
+            for d in output_path.iterdir()
+            if d.is_dir() and d.name.startswith("section_")
+        ]
         for section_dir in section_dirs:
             assert (section_dir / "__init__.py").exists()
 
             # Verify each subject has __init__.py
-            subject_dirs = [d for d in section_dir.iterdir() if d.is_dir() and d.name.startswith("subject_")]
+            subject_dirs = [
+                d
+                for d in section_dir.iterdir()
+                if d.is_dir() and d.name.startswith("subject_")
+            ]
             for subject_dir in subject_dirs:
                 assert (subject_dir / "__init__.py").exists()
 
@@ -353,7 +391,9 @@ def test_generated_catalog_assertions_are_executable() -> None:
                             stories_with_assertions.append((subject, story))
 
             # Verify we have at least some stories with assertions
-            assert len(stories_with_assertions) > 0, "No stories with assertions were generated"
+            assert len(stories_with_assertions) > 0, (
+                "No stories with assertions were generated"
+            )
 
             # Verify assertions can be executed
             for subject, story in stories_with_assertions:

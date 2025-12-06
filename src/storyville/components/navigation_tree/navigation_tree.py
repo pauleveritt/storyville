@@ -67,14 +67,12 @@ class NavigationTree:
                     story_url = f"/{sec_key}/{subj_key}/story-{idx}/index.html"
                     story_title = story.title or f"Story {idx}"
                     story_links.append(
-                        html(
-                            t'<li><a href="{story_url}">{story_title}</a></li>'
-                        )
+                        html(t'<li><a href="{story_url}">{story_title}</a></li>')
                     )
 
                 # Render subject as nested details
                 if subject_open:
-                    subject_html = html(t'''
+                    subject_html = html(t"""
                         <li>
                           <details open="open">
                             <summary>{subject.title}</summary>
@@ -83,9 +81,9 @@ class NavigationTree:
                             </ul>
                           </details>
                         </li>
-                    ''')
+                    """)
                 else:
-                    subject_html = html(t'''
+                    subject_html = html(t"""
                         <li>
                           <details>
                             <summary>{subject.title}</summary>
@@ -94,33 +92,33 @@ class NavigationTree:
                             </ul>
                           </details>
                         </li>
-                    ''')
+                    """)
                 subject_items.append(subject_html)
 
             # Render section as top-level details
             if section_open:
-                section_html = html(t'''
+                section_html = html(t"""
                     <details open="open">
                       <summary>{section.title}</summary>
                       <ul>
                         {subject_items}
                       </ul>
                     </details>
-                ''')
+                """)
             else:
-                section_html = html(t'''
+                section_html = html(t"""
                     <details>
                       <summary>{section.title}</summary>
                       <ul>
                         {subject_items}
                       </ul>
                     </details>
-                ''')
+                """)
             section_items.append(section_html)
 
         # Return navigation with all sections
-        return html(t'''
+        return html(t"""
             <nav>
               {section_items}
             </nav>
-        ''')
+        """)

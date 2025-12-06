@@ -1,6 +1,5 @@
 """Protocols for type-safe structural typing in Storyville."""
 
-
 from typing import Callable, Protocol
 
 from tdom import Node

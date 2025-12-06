@@ -16,9 +16,7 @@ def test_section_view_no_parent_link() -> None:
     """Test SectionView output does not contain 'href=".."'."""
     catalog = Catalog(title="Test Site")
     section = Section(title="Test Section")
-    view = SectionView(
-        section=section, site=catalog, resource_path="test-section"
-    )
+    view = SectionView(section=section, site=catalog, resource_path="test-section")
     result = str(view())
     assert 'href=".."' not in result
     assert ">Parent<" not in result
@@ -56,9 +54,7 @@ def test_section_view_has_breadcrumbs_instead() -> None:
     """Test section view has breadcrumbs navigation instead of Parent link."""
     catalog = Catalog(title="Test Site")
     section = Section(title="Test Section")
-    view = SectionView(
-        section=section, site=catalog, resource_path="test-section"
-    )
+    view = SectionView(section=section, site=catalog, resource_path="test-section")
     result = str(view())
     # Should have breadcrumb navigation
     assert 'aria-label="Breadcrumb"' in result

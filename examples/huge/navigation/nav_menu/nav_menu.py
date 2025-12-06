@@ -15,4 +15,6 @@ class NavMenu:
 
     def __call__(self) -> Node:
         """Render the component as HTML."""
-        return html(t"<div class={self.variant} data-state={self.state}>{self.text}</div>")
+        return html(
+            t"<div class={self.variant} data-state={self.state}>{self.text}</div>"
+        )

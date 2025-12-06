@@ -1,6 +1,5 @@
 """The Layout section for the huge example."""
 
-
 from storyville import Section
 
 

@@ -1,6 +1,5 @@
 """Catalog for the inheritance example."""
 
-
 from storyville import Catalog
 
 

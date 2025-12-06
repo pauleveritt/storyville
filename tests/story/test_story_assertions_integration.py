@@ -8,6 +8,7 @@ from storyville.story import Story
 from storyville.story.views import StoryView
 from storyville.subject import Subject
 
+
 def test_complete_workflow_story_with_assertions_to_badges() -> None:
     """Test complete flow: Story with assertions -> execution -> badge display."""
 
@@ -43,9 +44,7 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
 
     # Verify badges were rendered
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
 
     # Should have 2 badges (one pass, one fail)
     assert len(badge_spans) == 2
@@ -61,6 +60,7 @@ def test_complete_workflow_story_with_assertions_to_badges() -> None:
     assert "danger" in badge2_class or "assertion-badge-fail" in badge2_class
     badge2_title = str(badge2.attrs.get("title", ""))
     assert "Something is wrong" in badge2_title
+
 
 def test_cli_flag_with_assertions_enabled() -> None:
     """Test CLI flag integration: --with-assertions enables assertion execution."""
@@ -95,10 +95,9 @@ def test_cli_flag_with_assertions_enabled() -> None:
     # Verify badge was rendered
     element = result
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
     assert len(badge_spans) == 1
+
 
 def test_cli_flag_no_with_assertions_disabled() -> None:
     """Test CLI flag integration: --no-with-assertions disables assertion execution."""
@@ -133,10 +132,9 @@ def test_cli_flag_no_with_assertions_disabled() -> None:
     # Verify NO badges were rendered
     element = result
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
     assert len(badge_spans) == 0
+
 
 def test_error_handling_does_not_crash_rendering() -> None:
     """Test that assertion failures don't crash the rendering process."""
@@ -168,15 +166,14 @@ def test_error_handling_does_not_crash_rendering() -> None:
 
     # Verify error badge was rendered with "Critical error:" prefix
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
     assert len(badge_spans) == 1
 
     badge = badge_spans[0]
     badge_title = str(badge.attrs.get("title", ""))
     assert "Critical error:" in badge_title
     assert "Unexpected critical error" in badge_title
+
 
 def test_multiple_assertions_in_single_story() -> None:
     """Test multiple assertions execute correctly in sequence."""
@@ -217,10 +214,9 @@ def test_multiple_assertions_in_single_story() -> None:
     # Verify all badges rendered
     element = result
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
     assert len(badge_spans) == 3
+
 
 def test_mixed_pass_fail_assertions_in_single_story() -> None:
     """Test story with both passing and failing assertions."""
@@ -256,9 +252,7 @@ def test_mixed_pass_fail_assertions_in_single_story() -> None:
     # Verify all 4 badges rendered
     element = result
     all_spans = query_all_by_tag_name(element, "span")
-    badge_spans = [
-        span for span in all_spans if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
     assert len(badge_spans) == 4
 
     # Verify correct pass/fail styling

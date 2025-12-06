@@ -24,9 +24,9 @@ class LayoutMain:
         Returns:
             A tdom Node representing the main element.
         """
-        return html(t'''\
+        return html(t"""\
 <main>
   <{Breadcrumbs} resource_path={self.resource_path} />
   {self.children}
 </main>
-''')
+""")

@@ -63,4 +63,6 @@ def test_static_folder_calculate_output_path_preserves_full_structure() -> None:
 
     output_path = folder.calculate_output_path(Path("build"))
 
-    assert output_path == Path("build/storyville_static/components/navigation/tree/static")
+    assert output_path == Path(
+        "build/storyville_static/components/navigation/tree/static"
+    )

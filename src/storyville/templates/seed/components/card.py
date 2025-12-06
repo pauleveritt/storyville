@@ -44,7 +44,9 @@ class Card:
         return tdom.html.div(
             image_node,
             tdom.html.h3(self.title, style="margin: 0 0 12px 0; color: #333;"),
-            tdom.html.p(self.content, style="margin: 0; color: #666; line-height: 1.6;"),
+            tdom.html.p(
+                self.content, style="margin: 0; color: #666; line-height: 1.6;"
+            ),
             class_="card",
             style=card_style,
         )

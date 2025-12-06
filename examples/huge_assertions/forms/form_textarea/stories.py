@@ -12,7 +12,24 @@ def this_subject() -> Subject:
         target=FormTextarea,
         items=[
             Story(props=dict(text="Default", variant="primary", state="default")),
-            Story(props=dict(text="Disabled", variant="secondary", state="disabled"), assertions=[lambda el: None if len(str(el)) > 10 else (_ for _ in ()).throw(AssertionError("Element too short"))]),
-            Story(props=dict(text="Loading", variant="primary", state="loading"), assertions=[lambda el: None if (el is not None and str(el)) else (_ for _ in ()).throw(AssertionError("Invalid element")), lambda el: None if any(tag in str(el) for tag in ["div", "span", "button", "input"]) else (_ for _ in ()).throw(AssertionError("No common tags"))]),
+            Story(
+                props=dict(text="Disabled", variant="secondary", state="disabled"),
+                assertions=[
+                    lambda el: None
+                    if len(str(el)) > 10
+                    else (_ for _ in ()).throw(AssertionError("Element too short"))
+                ],
+            ),
+            Story(
+                props=dict(text="Loading", variant="primary", state="loading"),
+                assertions=[
+                    lambda el: None
+                    if (el is not None and str(el))
+                    else (_ for _ in ()).throw(AssertionError("Invalid element")),
+                    lambda el: None
+                    if any(tag in str(el) for tag in ["div", "span", "button", "input"])
+                    else (_ for _ in ()).throw(AssertionError("No common tags")),
+                ],
+            ),
         ],
     )

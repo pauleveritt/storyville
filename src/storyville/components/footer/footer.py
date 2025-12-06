@@ -22,8 +22,8 @@ class LayoutFooter:
         Returns:
             A tdom Node representing the footer element.
         """
-        return html(t'''\
+        return html(t"""\
 <footer>
   <p style="text-align: center;">{self.year} {self.text}</p>
 </footer>
-''')
+""")

@@ -81,12 +81,15 @@ def test_build_clears_old_static_directories(tmp_build_dir: Path) -> None:
 
     # New static assets should exist with preserved paths
     assert (tmp_build_dir / "static").exists()
-    assert (tmp_build_dir / "static" / "components" / "layout" / "static" / "pico-main.css").exists()
+    assert (
+        tmp_build_dir / "static" / "components" / "layout" / "static" / "pico-main.css"
+    ).exists()
 
 
 def test_build_static_phase_completes(tmp_build_dir: Path, caplog) -> None:
     """Test that static assets phase completes successfully."""
     import logging
+
     caplog.set_level(logging.INFO)
 
     build_site(package_location="examples.minimal", output_dir=tmp_build_dir)
@@ -102,6 +105,7 @@ def test_build_static_phase_completes(tmp_build_dir: Path, caplog) -> None:
 def test_build_reports_static_file_count(tmp_build_dir: Path, caplog) -> None:
     """Test that build logs the number of static files copied."""
     import logging
+
     caplog.set_level(logging.INFO)
 
     build_site(package_location="examples.minimal", output_dir=tmp_build_dir)
@@ -143,7 +147,10 @@ def test_layout_uses_new_static_paths(tmp_build_dir: Path) -> None:
     [
         ("index.html", "static/components/layout/static/"),  # Root level: 0 dirs deep
         ("components/index.html", "../static/components/layout/static/"),  # 1 dir deep
-        ("components/heading/index.html", "../../static/components/layout/static/"),  # 2 dirs deep
+        (
+            "components/heading/index.html",
+            "../../static/components/layout/static/",
+        ),  # 2 dirs deep
     ],
 )
 def test_relative_paths_correct_at_different_depths(

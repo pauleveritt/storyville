@@ -1,6 +1,8 @@
 """The subject for the ControlIconButton component."""
 
-from examples.huge.controls.control_icon_button.control_icon_button import ControlIconButton
+from examples.huge.controls.control_icon_button.control_icon_button import (
+    ControlIconButton,
+)
 from storyville import Story, Subject
 
 

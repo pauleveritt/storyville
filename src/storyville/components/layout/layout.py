@@ -46,7 +46,7 @@ class Layout:
 
         # Use paths relative to this component file
         # static/ refers to the static folder in the output, with full nested path
-        result = html(t'''\
+        result = html(t"""\
 <!DOCTYPE html>
 <html lang="EN">
 <head>
@@ -66,7 +66,7 @@ class Layout:
 <{LayoutFooter} year={2025} text={"Storyville"} />
 </body>
 </html>
-''')
+""")
 
         # Rewrite static/ paths to be relative to page location
         return rewrite_static_paths(result, depth=self.depth)

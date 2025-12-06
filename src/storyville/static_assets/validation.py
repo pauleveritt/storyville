@@ -38,7 +38,9 @@ def validate_no_collisions(static_folders: list[StaticFolder]) -> None:
     for static_folder in static_folders:
         # Use a temporary output_dir just for comparison
         # We use str() for consistent comparison
-        output_key = f"{static_folder.output_prefix}/{static_folder.relative_path}/static"
+        output_key = (
+            f"{static_folder.output_prefix}/{static_folder.relative_path}/static"
+        )
 
         # Check if this output path already exists
         if output_key in output_paths:

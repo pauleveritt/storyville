@@ -36,8 +36,7 @@ class ThemedStory:
             # Use the custom themed layout callable
             # Call it with story_title and children parameters
             return self.site.themed_layout(
-                story_title=self.story_title,
-                children=self.children
+                story_title=self.story_title, children=self.children
             )
         else:
             # Fall back to standard Layout
@@ -45,6 +44,6 @@ class ThemedStory:
                 view_title=self.story_title,
                 site=self.site,
                 children=self.children,
-                depth=0
+                depth=0,
             )
             return layout()

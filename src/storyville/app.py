@@ -178,6 +178,7 @@ def create_app(
     This is useful for development but adds slight overhead. The default (False)
     maintains backward compatibility with direct builds.
     """
+
     # Create lifespan context manager with bound parameters
     @asynccontextmanager
     async def app_lifespan(app: Starlette) -> AsyncIterator[None]:

@@ -55,7 +55,9 @@ class SectionView:
             for key, subject in self.section.items.items():
                 # Use subject title for link text and key-based URL
                 subject_url = key
-                subject_items.append(html(t"<li><a href=\"{subject_url}\">{subject.title}</a></li>"))
+                subject_items.append(
+                    html(t'<li><a href="{subject_url}">{subject.title}</a></li>')
+                )
             content = html(t"<ul>{subject_items}</ul>")
 
         # Create the main content for this view wrapped with Layout (depth=1 for section pages in subdirectories)

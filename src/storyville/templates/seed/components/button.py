@@ -48,7 +48,9 @@ class Button:
             "large": "padding: 16px 32px; font-size: 18px;",
         }
 
-        base_style = "border: none; border-radius: 6px; cursor: pointer; font-weight: 600;"
+        base_style = (
+            "border: none; border-radius: 6px; cursor: pointer; font-weight: 600;"
+        )
         return f"{base_style} {color_map.get(self.color, color_map['primary'])} {size_map.get(self.size, size_map['medium'])}"
 
 
@@ -94,5 +96,7 @@ def check_has_color_class(el: Element | Fragment) -> None:
     """
     rendered = str(el)
     assert (
-        "btn-primary" in rendered or "btn-secondary" in rendered or "btn-danger" in rendered
+        "btn-primary" in rendered
+        or "btn-secondary" in rendered
+        or "btn-danger" in rendered
     ), "Button should have a color variant class"

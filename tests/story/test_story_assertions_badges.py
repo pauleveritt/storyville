@@ -8,6 +8,7 @@ from storyville.story import Story
 from storyville.story.views import StoryView
 from storyville.subject import Subject
 
+
 def test_story_view_badges_display_passing_assertion() -> None:
     """Test that passing assertions display green badges."""
 
@@ -38,9 +39,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
 
     # Look for badge with "Assertion 1" text
     badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion 1" in get_text_content(span)
+        span for span in all_spans if "Assertion 1" in get_text_content(span)
     ]
 
     assert len(badge_spans) >= 1, "Should have at least one badge for Assertion 1"
@@ -50,6 +49,7 @@ def test_story_view_badges_display_passing_assertion() -> None:
 
     # Check that the badge has success/green styling
     assert "success" in badge_class or "assertion-badge-pass" in badge_class
+
 
 def test_story_view_badges_display_failing_assertion() -> None:
     """Test that failing assertions display red badges with error tooltip."""
@@ -81,9 +81,7 @@ def test_story_view_badges_display_failing_assertion() -> None:
 
     # Look for badge with "Assertion 1" text
     badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion 1" in get_text_content(span)
+        span for span in all_spans if "Assertion 1" in get_text_content(span)
     ]
 
     assert len(badge_spans) >= 1, "Should have at least one badge for Assertion 1"
@@ -97,6 +95,7 @@ def test_story_view_badges_display_failing_assertion() -> None:
     # Check that title attribute contains error message
     badge_title = str(badge.attrs.get("title", ""))
     assert "Expected condition not met" in badge_title
+
 
 def test_story_view_no_badges_when_assertions_empty() -> None:
     """Test that no badges are shown when story has no assertions."""
@@ -123,14 +122,13 @@ def test_story_view_no_badges_when_assertions_empty() -> None:
     all_spans = query_all_by_tag_name(element, "span")
 
     # Look for any badge spans with "Assertion" text
-    badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
 
     # Should have no assertion badges
-    assert len(badge_spans) == 0, "Should have no assertion badges when assertions empty"
+    assert len(badge_spans) == 0, (
+        "Should have no assertion badges when assertions empty"
+    )
+
 
 def test_story_view_no_badges_when_assertions_disabled() -> None:
     """Test that no badges are shown when with_assertions is False."""
@@ -161,14 +159,11 @@ def test_story_view_no_badges_when_assertions_disabled() -> None:
     all_spans = query_all_by_tag_name(element, "span")
 
     # Look for any badge spans with "Assertion" text
-    badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
 
     # Should have no assertion badges when disabled
     assert len(badge_spans) == 0, "Should have no assertion badges when disabled"
+
 
 def test_story_view_multiple_assertions_multiple_badges() -> None:
     """Test that multiple assertions result in multiple badges."""
@@ -204,11 +199,7 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     all_spans = query_all_by_tag_name(element, "span")
 
     # Look for badge spans with "Assertion" text
-    badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion" in get_text_content(span)
-    ]
+    badge_spans = [span for span in all_spans if "Assertion" in get_text_content(span)]
 
     # Should have 3 badges (one for each assertion)
     assert len(badge_spans) == 3, f"Should have 3 badges, found {len(badge_spans)}"
@@ -218,6 +209,7 @@ def test_story_view_multiple_assertions_multiple_badges() -> None:
     assert "Assertion 1" in badge_texts[0]
     assert "Assertion 2" in badge_texts[1]
     assert "Assertion 3" in badge_texts[2]
+
 
 def test_story_view_critical_error_badge() -> None:
     """Test that critical errors (non-AssertionError) display red badges."""
@@ -249,9 +241,7 @@ def test_story_view_critical_error_badge() -> None:
 
     # Look for badge with "Assertion 1" text
     badge_spans = [
-        span
-        for span in all_spans
-        if "Assertion 1" in get_text_content(span)
+        span for span in all_spans if "Assertion 1" in get_text_content(span)
     ]
 
     assert len(badge_spans) >= 1, "Should have at least one badge for critical error"
@@ -262,6 +252,7 @@ def test_story_view_critical_error_badge() -> None:
     badge_title = str(badge.attrs.get("title", ""))
     assert "Critical error:" in badge_title
     assert "Unexpected error" in badge_title
+
 
 def test_story_view_badge_container_flexbox() -> None:
     """Test that badge container uses flexbox for proper alignment."""

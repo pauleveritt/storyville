@@ -78,7 +78,9 @@ def test_themed_story_html_contains_themed_story_rendering(tmp_path: Path) -> No
     """Test themed_story.html contains ThemedStory rendering."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    themed_story_page = tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    themed_story_page = (
+        tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    )
     assert themed_story_page.exists()
 
     # Read and verify it's a full HTML document
@@ -143,7 +145,9 @@ def test_custom_themed_layout_used_in_build(tmp_path: Path) -> None:
     # Build with minimal example that has custom ThemedLayout
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    themed_story_page = tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    themed_story_page = (
+        tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    )
     assert themed_story_page.exists()
 
     # Read and parse themed story HTML
@@ -164,7 +168,9 @@ def test_custom_themed_layout_used_in_build(tmp_path: Path) -> None:
             theme_wrapper_found = True
             break
 
-    assert theme_wrapper_found, "Custom ThemedLayout theme-wrapper not found in rendered output"
+    assert theme_wrapper_found, (
+        "Custom ThemedLayout theme-wrapper not found in rendered output"
+    )
 
 
 def test_end_to_end_workflow_with_themed_layout(tmp_path: Path) -> None:
@@ -212,7 +218,9 @@ def test_themed_story_with_story_content(tmp_path: Path) -> None:
     """Test themed_story.html contains actual story component content."""
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    themed_story_page = tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    themed_story_page = (
+        tmp_path / "components" / "heading" / "story-0" / "themed_story.html"
+    )
     assert themed_story_page.exists()
 
     # Read and parse themed story HTML
@@ -225,7 +233,9 @@ def test_themed_story_with_story_content(tmp_path: Path) -> None:
 
     # The minimal heading example renders an h1 element
     headings = query_all_by_tag_name(body, "h1")
-    assert len(headings) > 0, "Story component content (h1) not found in themed_story.html"
+    assert len(headings) > 0, (
+        "Story component content (h1) not found in themed_story.html"
+    )
 
     # Verify the heading has content
     heading_text = get_text_content(headings[0])

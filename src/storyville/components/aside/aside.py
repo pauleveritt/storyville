@@ -37,8 +37,8 @@ class LayoutAside:
                 sections=self.sections, resource_path=self.resource_path
             )()
 
-        return html(t'''\
+        return html(t"""\
 <aside>
   {navigation_html}
 </aside>
-''')
+""")

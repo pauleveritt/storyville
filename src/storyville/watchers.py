@@ -20,7 +20,8 @@ DEBOUNCE_DELAY = 0.3
 async def watch_and_rebuild(
     content_path: Path,
     storyville_path: Path | None,
-    rebuild_callback: Callable[[str, Path], None] | Callable[[str, Path], Awaitable[None]],
+    rebuild_callback: Callable[[str, Path], None]
+    | Callable[[str, Path], Awaitable[None]],
     broadcast_callback: Callable[[], Awaitable[None]],
     package_location: str,
     output_dir: Path,
@@ -59,7 +60,9 @@ async def watch_and_rebuild(
 
     try:
         # Use yield_on_timeout to ensure we can signal ready even without initial changes
-        async for changes in awatch(*watch_paths, yield_on_timeout=True, rust_timeout=100):
+        async for changes in awatch(
+            *watch_paths, yield_on_timeout=True, rust_timeout=100
+        ):
             # Signal that watcher is ready on first iteration (even if no changes)
             if ready_event and not ready_event.is_set():
                 ready_event.set()
@@ -89,7 +92,10 @@ async def watch_and_rebuild(
                         path_obj.relative_to(storyville_path)
                         # Only accept static files in storyville directory
                         # This includes all files in static/ folders
-                        if path_obj.suffix.lower() in STATIC_EXTENSIONS or "static" in path_obj.parts:
+                        if (
+                            path_obj.suffix.lower() in STATIC_EXTENSIONS
+                            or "static" in path_obj.parts
+                        ):
                             relevant_changes.append((change_type, changed_path))
                     except ValueError:
                         pass
@@ -99,6 +105,7 @@ async def watch_and_rebuild(
 
             # Implement simple debouncing (use monotonic clock, independent of event loop)
             from time import monotonic as _monotonic
+
             current_time = _monotonic()
             if current_time - last_change_time < DEBOUNCE_DELAY:
                 logger.debug("Debouncing file changes (too soon after last change)")
@@ -108,7 +115,11 @@ async def watch_and_rebuild(
 
             # Log changes
             for change_type, changed_path in relevant_changes:
-                change_name = Change(change_type).name if isinstance(change_type, int) else change_type
+                change_name = (
+                    Change(change_type).name
+                    if isinstance(change_type, int)
+                    else change_type
+                )
                 logger.info("Detected %s: %s", change_name, changed_path)
 
             # Trigger rebuild

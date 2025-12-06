@@ -8,7 +8,12 @@ import re
 import pytest
 from pathlib import Path
 from tdom.parser import parse_html
-from aria_testing import get_by_role, get_by_tag_name, query_all_by_tag_name, get_text_content
+from aria_testing import (
+    get_by_role,
+    get_by_tag_name,
+    query_all_by_tag_name,
+    get_text_content,
+)
 from storyville.build import build_site
 
 
@@ -159,7 +164,9 @@ def test_story_links_in_sidebar_have_correct_structure(built_site: Path) -> None
     href = story_link.attrs.get("href")
     assert href is not None
     # Pattern: /{section}/{subject}/story-{idx}/index.html
-    assert re.match(r"^/[\w-]+/[\w-]+/story-\d+/index\.html$", href), f"Expected story link pattern, got: {href}"
+    assert re.match(r"^/[\w-]+/[\w-]+/story-\d+/index\.html$", href), (
+        f"Expected story link pattern, got: {href}"
+    )
 
 
 @pytest.mark.slow
@@ -247,15 +254,21 @@ def test_static_assets_load_correctly_at_root(built_site: Path) -> None:
             stylesheet_link = link
             break
 
-    assert stylesheet_link is not None, "Should have a stylesheet link with static in href"
+    assert stylesheet_link is not None, (
+        "Should have a stylesheet link with static in href"
+    )
 
     # Verify the href doesn't start with ../ (which would go outside output_dir)
     href = stylesheet_link.attrs.get("href")
     assert href is not None
-    assert not href.startswith("../"), f"Root page should not use ../ prefix, got: {href}"
+    assert not href.startswith("../"), (
+        f"Root page should not use ../ prefix, got: {href}"
+    )
 
     # Should start with static/ or ./static/
-    assert href.startswith("static/") or href.startswith("./static/"), f"Expected static/ or ./static/ prefix, got: {href}"
+    assert href.startswith("static/") or href.startswith("./static/"), (
+        f"Expected static/ or ./static/ prefix, got: {href}"
+    )
 
 
 @pytest.mark.slow
@@ -289,7 +302,9 @@ def test_static_assets_load_correctly_at_depth_1(built_site: Path) -> None:
     # For depth-1 page (sections at root), should use ../static/
     href = stylesheet_link.attrs.get("href")
     assert href is not None
-    assert href.startswith("../static/"), f"Section page should use ../static/ prefix, got: {href}"
+    assert href.startswith("../static/"), (
+        f"Section page should use ../static/ prefix, got: {href}"
+    )
 
 
 @pytest.mark.slow
@@ -327,4 +342,6 @@ def test_static_assets_load_correctly_at_depth_2(built_site: Path) -> None:
     # For depth-2 page, should use ../../static/
     href = stylesheet_link.attrs.get("href")
     assert href is not None
-    assert href.startswith("../../static/"), f"Subject page should use ../../static/ prefix, got: {href}"
+    assert href.startswith("../../static/"), (
+        f"Subject page should use ../../static/ prefix, got: {href}"
+    )

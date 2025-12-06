@@ -1,6 +1,5 @@
 """The Components section for the complete example."""
 
-
 from storyville import Section
 
 

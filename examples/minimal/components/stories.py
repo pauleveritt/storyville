@@ -1,6 +1,5 @@
 """Minimal examples in the Components section of stories."""
 
-
 from storyville import Section
 
 

@@ -1,6 +1,8 @@
 """The subject for the ControlCheckbox component."""
 
-from examples.huge_assertions.controls.control_checkbox.control_checkbox import ControlCheckbox
+from examples.huge_assertions.controls.control_checkbox.control_checkbox import (
+    ControlCheckbox,
+)
 from storyville import Story, Subject
 
 

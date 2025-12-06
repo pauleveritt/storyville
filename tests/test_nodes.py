@@ -68,6 +68,7 @@ def test_get_package_path_invalid_package() -> None:
 # Test get_certain_callable
 def test_get_certain_callable_with_catalog(module_factory) -> None:
     """Test get_certain_callable finds and calls Catalog function."""
+
     def make_catalog() -> Catalog:
         return Catalog(title="Test Catalog")
 
@@ -82,6 +83,7 @@ def test_get_certain_callable_with_catalog(module_factory) -> None:
 
 def test_get_certain_callable_with_section(module_factory) -> None:
     """Test get_certain_callable finds and calls Section function."""
+
     def make_section() -> Section:
         return Section(title="Test Section")
 
@@ -96,6 +98,7 @@ def test_get_certain_callable_with_section(module_factory) -> None:
 
 def test_get_certain_callable_with_subject(module_factory) -> None:
     """Test get_certain_callable finds and calls Subject function."""
+
     def make_subject() -> Subject:
         return Subject(title="Test Subject")
 
@@ -110,6 +113,7 @@ def test_get_certain_callable_with_subject(module_factory) -> None:
 
 def test_get_certain_callable_no_matching_function(module_factory) -> None:
     """Test get_certain_callable returns None when no matching function."""
+
     def make_something() -> str:
         return "something"
 
@@ -131,6 +135,7 @@ def test_get_certain_callable_empty_module(module_factory) -> None:
 
 def test_get_certain_callable_ignores_external_functions(module_factory) -> None:
     """Test get_certain_callable ignores functions from other modules."""
+
     def external_function() -> Catalog:
         return Catalog(title="External")
 

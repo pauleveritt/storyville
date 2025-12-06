@@ -1,6 +1,5 @@
 """The Catalog for the huge example package."""
 
-
 from storyville import Catalog
 
 

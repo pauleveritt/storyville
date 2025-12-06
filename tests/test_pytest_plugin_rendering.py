@@ -73,9 +73,9 @@ def test_no_cached_results_used(pytestconfig: pytest.Config):
                     # It should always call story.instance and execute assertions fresh
                     # Verify that instance property exists
                     assert hasattr(story, "instance")
-                    assert callable(getattr(type(story.instance), "instance", None)) or hasattr(
-                        story, "instance"
-                    )
+                    assert callable(
+                        getattr(type(story.instance), "instance", None)
+                    ) or hasattr(story, "instance")
                     return
 
     pytest.fail("No story with assertions found")

@@ -75,7 +75,9 @@ def make_catalog(package_location: str) -> Catalog:
     return catalog
 
 
-def find_path(catalog: Catalog, path: str) -> Catalog | Section | Subject | Story | None:
+def find_path(
+    catalog: Catalog, path: str
+) -> Catalog | Section | Subject | Story | None:
     """Given a dotted path, traverse to the object.
 
     Args:

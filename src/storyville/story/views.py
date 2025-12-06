@@ -129,9 +129,7 @@ class StoryView:
 
         # Conditionally create description paragraph
         description_p = (
-            html(t"<p>{self.story.description}</p>")
-            if self.story.description
-            else ""
+            html(t"<p>{self.story.description}</p>") if self.story.description else ""
         )
 
         # Mode C: Themed iframe rendering (when themed_layout is configured)

@@ -42,7 +42,9 @@ def test_static_css(output_dir: Path) -> None:
 
     # Static assets from storyville core should be in single static/ directory with paths preserved
     assert (output_dir / "static").exists()
-    pico_file = output_dir / "static" / "components" / "layout" / "static" / "pico-main.css"
+    pico_file = (
+        output_dir / "static" / "components" / "layout" / "static" / "pico-main.css"
+    )
     assert pico_file.exists()
     pico_text = pico_file.read_text()
     assert "pico" in pico_text
@@ -109,7 +111,9 @@ def test_stylesheet_path_at_catalog_root(output_dir: Path) -> None:
 
     # Verify hrefs are correct for depth=0 (root level) with nested path structure
     hrefs = [link.attrs.get("href") for link in links]
-    assert "static/components/layout/static/pico-main.css" in hrefs  # No ../ prefix for root pages
+    assert (
+        "static/components/layout/static/pico-main.css" in hrefs
+    )  # No ../ prefix for root pages
     assert "static/components/layout/static/storyville.css" in hrefs
 
 
@@ -185,6 +189,7 @@ def test_static_assets_phase_logs(output_dir: Path, caplog) -> None:
     """Test that static assets discovery and copying is logged."""
     # Build again to capture logs
     import logging
+
     caplog.set_level(logging.INFO)
 
     tmp_output = output_dir.parent / "test_logging"

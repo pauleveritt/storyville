@@ -67,7 +67,9 @@ def test_resource_path_flows_through_entire_tree_hierarchy():
 
             for story_idx, story in enumerate(subject.items):
                 # Verify story
-                assert story.resource_path == f"{section_name}/{subject_name}/{story_idx}"
+                assert (
+                    story.resource_path == f"{section_name}/{subject_name}/{story_idx}"
+                )
                 found_complete_path = True
                 break
 
@@ -78,7 +80,9 @@ def test_resource_path_flows_through_entire_tree_hierarchy():
             break
 
     # Ensure we actually tested a complete path
-    assert found_complete_path, "No complete Catalog->Section->Subject->Story path found in examples.minimal"
+    assert found_complete_path, (
+        "No complete Catalog->Section->Subject->Story path found in examples.minimal"
+    )
 
 
 def test_resource_path_type_is_str_not_optional():
@@ -116,7 +120,9 @@ def test_multiple_sections_have_independent_resource_paths():
     section_paths = [section.resource_path for section in catalog.items.values()]
 
     # Each section should have unique path equal to its name
-    assert len(section_paths) == len(set(section_paths)), "Section resource_paths should be unique"
+    assert len(section_paths) == len(set(section_paths)), (
+        "Section resource_paths should be unique"
+    )
 
     # Each path should equal the section name
     for section_name, section in catalog.items.items():

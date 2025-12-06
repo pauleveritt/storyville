@@ -86,8 +86,8 @@ class Breadcrumbs:
 
         # Render breadcrumbs in nav with aria-label
         # Wrap trail_items in a span to prevent flexbox spreading
-        return html(t'''
+        return html(t"""
             <nav aria-label="Breadcrumb">
               <span style="display: inline;">{trail_items}</span>
             </nav>
-        ''')
+        """)

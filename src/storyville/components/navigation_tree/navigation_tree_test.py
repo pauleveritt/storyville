@@ -6,6 +6,7 @@ from storyville.section import Section
 from storyville.story import Story
 from storyville.subject import Subject
 
+
 def test_renders_three_level_hierarchy():
     """NavigationTree renders sections, subjects, and stories."""
     # Create a simple hierarchy
@@ -38,6 +39,7 @@ def test_renders_three_level_hierarchy():
     assert len(links) >= 1
     assert get_text_content(links[0]) == "Primary Button"
 
+
 def test_details_elements_use_correct_structure():
     """Sections and subjects use details/summary elements."""
     section = Section(name="layout", title="Layout")
@@ -66,6 +68,7 @@ def test_details_elements_use_correct_structure():
     link = get_by_tag_name(result, "a")
     assert get_text_content(link) == "Basic Grid"
 
+
 def test_resource_path_controls_open_attribute():
     """Only the current path's ancestors have open attribute."""
     section = Section(name="forms", title="Forms")
@@ -89,6 +92,7 @@ def test_resource_path_controls_open_attribute():
     subject_details = details_list[1]  # Second details is the subject
     assert subject_details.attrs.get("open") == "open"
 
+
 def test_all_details_closed_when_resource_path_none():
     """When resource_path is None, all details are closed by default."""
     section = Section(name="typography", title="Typography")
@@ -106,6 +110,7 @@ def test_all_details_closed_when_resource_path_none():
     details_list = query_all_by_tag_name(result, "details")
     for details in details_list:
         assert details.attrs.get("open") is None
+
 
 def test_stories_render_as_simple_links():
     """Stories are simple li/a elements, not collapsible."""
@@ -132,6 +137,7 @@ def test_stories_render_as_simple_links():
     link_texts = [get_text_content(link) for link in links]
     assert "Dropdown Menu" in link_texts
     assert "Sidebar Menu" in link_texts
+
 
 def test_section_open_when_resource_path_starts_with_section_name():
     """Section gets open attribute if resource_path starts with section name."""
@@ -160,6 +166,7 @@ def test_section_open_when_resource_path_starts_with_section_name():
     assert details_list[2].attrs.get("open") is None  # sec2
     assert details_list[3].attrs.get("open") is None  # subj2
 
+
 def test_subject_open_when_resource_path_matches_section_subject():
     """Subject gets open attribute if resource_path matches section/subject."""
     section = Section(name="components", title="Components")
@@ -187,6 +194,7 @@ def test_subject_open_when_resource_path_matches_section_subject():
     # Second subject (inputs) should be closed
     assert details_list[2].attrs.get("open") is None
 
+
 def test_story_urls_use_index_html_format():
     """Story URLs should use /story-{idx}/index.html format, not /story-{idx}.html."""
     section = Section(name="components", title="Components")
@@ -207,6 +215,7 @@ def test_story_urls_use_index_html_format():
 
     # Verify URL format is /section/subject/story-0/index.html
     assert link.attrs.get("href") == "/components/heading/story-0/index.html"
+
 
 def test_multiple_stories_have_correct_url_indices():
     """Multiple stories should have incrementing indices in their URLs."""
@@ -231,6 +240,7 @@ def test_multiple_stories_have_correct_url_indices():
     assert links[0].attrs.get("href") == "/components/button/story-0/index.html"
     assert links[1].attrs.get("href") == "/components/button/story-1/index.html"
     assert links[2].attrs.get("href") == "/components/button/story-2/index.html"
+
 
 def test_story_urls_use_section_and_subject_names():
     """Story URLs should incorporate section and subject names."""

@@ -1,7 +1,6 @@
 """Tests for pytest plugin failure reporting."""
 
 
-
 def test_assertion_error_capture():
     """Test that AssertionError is properly captured."""
     error = AssertionError("Test error message")

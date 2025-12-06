@@ -180,10 +180,11 @@ def test_watchers_receive_correct_parameters(tmp_path: Path) -> None:
 
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
-    with patch("storyville.app.watch_and_rebuild") as mock_watcher, \
-         patch("storyville.app.build_site") as mock_build, \
-         patch("storyville.app.broadcast_reload_async") as mock_broadcast:
-
+    with (
+        patch("storyville.app.watch_and_rebuild") as mock_watcher,
+        patch("storyville.app.build_site") as mock_build,
+        patch("storyville.app.broadcast_reload_async") as mock_broadcast,
+    ):
         # Make the mock watcher run forever until cancelled
         async def mock_watcher_fn(*args, **kwargs):
             try:
@@ -235,7 +236,6 @@ def test_watchers_are_cancelled_on_shutdown(tmp_path: Path) -> None:
             raise
 
     with patch("storyville.app.watch_and_rebuild", side_effect=mock_unified_watcher):
-
         app = create_app(
             path=tmp_path,
             input_path="examples.minimal",
@@ -270,7 +270,6 @@ def test_app_handles_partial_watcher_params_gracefully(tmp_path: Path) -> None:
     build_site(package_location="examples.minimal", output_dir=tmp_path)
 
     with patch("storyville.app.watch_and_rebuild") as mock_watcher:
-
         # Only provide some params (not all required)
         app = create_app(
             path=tmp_path,

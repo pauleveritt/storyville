@@ -9,11 +9,14 @@ from storyville.catalog.models import Catalog
 
 def test_themed_story_renders_with_custom_themed_layout() -> None:
     """Test ThemedStory renders with custom ThemedLayout callable."""
+
     # Define a custom themed layout function
-    def custom_themed_layout(story_title: str | None = None, children: Node | None = None) -> Node:
+    def custom_themed_layout(
+        story_title: str | None = None, children: Node | None = None
+    ) -> Node:
         # Pre-compute the title to avoid tdom interpolation issues
         title = f"{story_title} - Custom Theme" if story_title else "Custom Theme"
-        return html(t'''\
+        return html(t"""\
 <!DOCTYPE html>
 <html lang="EN">
 <head>
@@ -23,17 +26,15 @@ def test_themed_story_renders_with_custom_themed_layout() -> None:
     <div class="custom-wrapper">{children}</div>
 </body>
 </html>
-''')
+""")
 
     # Create catalog with custom themed_layout
     catalog = Catalog(title="My Catalog", themed_layout=custom_themed_layout)
 
     # Create ThemedStory with test content
-    story_content = html(t'<p>Story content here</p>')
+    story_content = html(t"<p>Story content here</p>")
     themed_story = ThemedStory(
-        story_title="Test Story",
-        children=story_content,
-        site=catalog
+        story_title="Test Story", children=story_content, site=catalog
     )
 
     # Render and verify
@@ -58,11 +59,9 @@ def test_themed_story_falls_back_to_layout_when_themed_layout_none() -> None:
     assert catalog.themed_layout is None
 
     # Create ThemedStory with test content
-    story_content = html(t'<p>Story content here</p>')
+    story_content = html(t"<p>Story content here</p>")
     themed_story = ThemedStory(
-        story_title="Test Story",
-        children=story_content,
-        site=catalog
+        story_title="Test Story", children=story_content, site=catalog
     )
 
     # Render and verify
@@ -77,11 +76,14 @@ def test_themed_story_falls_back_to_layout_when_themed_layout_none() -> None:
 
 def test_themed_story_passes_story_title_correctly() -> None:
     """Test ThemedStory passes story_title prop correctly."""
+
     # Define a themed layout function that uses story_title
-    def title_themed_layout(story_title: str | None = None, children: Node | None = None) -> Node:
+    def title_themed_layout(
+        story_title: str | None = None, children: Node | None = None
+    ) -> Node:
         # Pre-compute the title
         title = f"Title: {story_title}" if story_title else "Title: None"
-        return html(t'''\
+        return html(t"""\
 <!DOCTYPE html>
 <html lang="EN">
 <head>
@@ -89,14 +91,12 @@ def test_themed_story_passes_story_title_correctly() -> None:
 </head>
 <body>{children}</body>
 </html>
-''')
+""")
 
     catalog = Catalog(title="My Catalog", themed_layout=title_themed_layout)
-    story_content = html(t'<div>Content</div>')
+    story_content = html(t"<div>Content</div>")
     themed_story = ThemedStory(
-        story_title="Amazing Story",
-        children=story_content,
-        site=catalog
+        story_title="Amazing Story", children=story_content, site=catalog
     )
 
     result = themed_story()
@@ -108,9 +108,12 @@ def test_themed_story_passes_story_title_correctly() -> None:
 
 def test_themed_story_passes_children_correctly() -> None:
     """Test ThemedStory passes children prop correctly."""
+
     # Define a themed layout function that wraps children
-    def wrapper_themed_layout(story_title: str | None = None, children: Node | None = None) -> Node:
-        return html(t'''\
+    def wrapper_themed_layout(
+        story_title: str | None = None, children: Node | None = None
+    ) -> Node:
+        return html(t"""\
 <!DOCTYPE html>
 <html lang="EN">
 <head>
@@ -120,15 +123,11 @@ def test_themed_story_passes_children_correctly() -> None:
     <div id="wrapper">{children}</div>
 </body>
 </html>
-''')
+""")
 
     catalog = Catalog(title="My Catalog", themed_layout=wrapper_themed_layout)
     story_content = html(t'<p id="unique-content">My unique story content</p>')
-    themed_story = ThemedStory(
-        story_title="Test",
-        children=story_content,
-        site=catalog
-    )
+    themed_story = ThemedStory(story_title="Test", children=story_content, site=catalog)
 
     result = themed_story()
     element = result
@@ -143,11 +142,9 @@ def test_themed_story_passes_children_correctly() -> None:
 def test_themed_story_returns_full_html_structure() -> None:
     """Test ThemedStory returns full HTML structure (DOCTYPE, html, head, body)."""
     catalog = Catalog(title="My Catalog")
-    story_content = html(t'<p>Content</p>')
+    story_content = html(t"<p>Content</p>")
     themed_story = ThemedStory(
-        story_title="Test Story",
-        children=story_content,
-        site=catalog
+        story_title="Test Story", children=story_content, site=catalog
     )
 
     result = themed_story()

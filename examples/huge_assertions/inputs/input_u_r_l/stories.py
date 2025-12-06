@@ -11,7 +11,14 @@ def this_subject() -> Subject:
         description="URL input",
         target=InputURL,
         items=[
-            Story(props=dict(text="Default", variant="primary", state="default"), assertions=[lambda el: None if (el is not None and str(el)) else (_ for _ in ()).throw(AssertionError("Invalid element"))]),
+            Story(
+                props=dict(text="Default", variant="primary", state="default"),
+                assertions=[
+                    lambda el: None
+                    if (el is not None and str(el))
+                    else (_ for _ in ()).throw(AssertionError("Invalid element"))
+                ],
+            ),
             Story(props=dict(text="Disabled", variant="secondary", state="disabled")),
             Story(props=dict(text="Loading", variant="primary", state="loading")),
         ],

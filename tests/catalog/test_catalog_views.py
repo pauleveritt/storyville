@@ -7,6 +7,7 @@ from storyville.catalog.models import Catalog
 from storyville.catalog.views import CatalogView
 from storyville.subject import Subject
 
+
 def test_catalog_view_renders_title_in_h1() -> None:
     """Test CatalogView renders catalog title in h1 element."""
     catalog = Catalog(title="My Catalog")
@@ -19,6 +20,7 @@ def test_catalog_view_renders_title_in_h1() -> None:
     # Verify title is in h1
     h1 = get_by_tag_name(element, "h1")
     assert get_text_content(h1) == "My Catalog"
+
 
 def test_catalog_view_renders_section_links() -> None:
     """Test CatalogView renders section links when sections exist."""
@@ -47,6 +49,7 @@ def test_catalog_view_renders_section_links() -> None:
     link_texts = {get_text_content(link) for link in all_links}
     assert link_texts == {"Components", "Utilities"}
 
+
 def test_catalog_view_shows_empty_state() -> None:
     """Test CatalogView shows empty state message when no sections."""
     catalog = Catalog(title="Empty Catalog")
@@ -63,6 +66,7 @@ def test_catalog_view_shows_empty_state() -> None:
         for p in all_p_tags
     )
     assert empty_state_found
+
 
 def test_catalog_view_does_not_include_parent_link() -> None:
     """Test CatalogView does NOT include parent link (Catalog is root)."""
@@ -81,6 +85,7 @@ def test_catalog_view_does_not_include_parent_link() -> None:
     parent_links = [link for link in all_links if link.attrs.get("href") == ".."]
     assert len(parent_links) == 0
 
+
 def test_catalog_view_satisfies_view_protocol() -> None:
     """Test CatalogView satisfies View Protocol (__call__() -> )."""
     catalog = Catalog(title="My Catalog")
@@ -94,6 +99,7 @@ def test_catalog_view_satisfies_view_protocol() -> None:
     # Verify it contains an html element (from Layout wrapper)
     html_elem = get_by_tag_name(result, "html")
     assert html_elem is not None
+
 
 def test_catalog_view_shows_section_descriptions() -> None:
     """Test CatalogView shows section descriptions when present."""
@@ -113,6 +119,7 @@ def test_catalog_view_shows_section_descriptions() -> None:
     assert "UI building blocks" in text_content
     assert "Helper functions" in text_content
 
+
 def test_catalog_view_omits_none_descriptions() -> None:
     """Test CatalogView omits descriptions when None."""
     catalog = Catalog(title="My Catalog")
@@ -130,6 +137,7 @@ def test_catalog_view_omits_none_descriptions() -> None:
     text_content = get_text_content(element)
     # Section with description shows it
     assert "Helper functions" in text_content
+
 
 def test_catalog_view_shows_subject_counts() -> None:
     """Test CatalogView shows correct subject counts for each section."""
@@ -161,6 +169,7 @@ def test_catalog_view_shows_subject_counts() -> None:
     text_content = get_text_content(element)
     assert "3 subjects" in text_content
     assert "1 subject" in text_content
+
 
 def test_catalog_view_url_pattern() -> None:
     """Test CatalogView uses /{section_name} URL pattern."""

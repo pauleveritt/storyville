@@ -1,6 +1,5 @@
 """Section for the inheritance example."""
 
-
 from storyville import Section
 
 

@@ -3,6 +3,7 @@
 from aria_testing import get_by_tag_name, get_text_content, query_all_by_tag_name
 from storyville.components.header.header import LayoutHeader
 
+
 def test_layout_header_renders_with_site_title() -> None:
     """Test LayoutHeader renders header with site_title."""
     header = LayoutHeader(site_title="My Site")
@@ -16,6 +17,7 @@ def test_layout_header_renders_with_site_title() -> None:
     # Check for site title in hgroup
     text_content = get_text_content(header_elem)
     assert "My Site" in text_content
+
 
 def test_layout_header_generates_correct_relative_paths_depth_zero() -> None:
     """Test LayoutHeader generates correct relative paths at depth=0."""
@@ -41,6 +43,7 @@ def test_layout_header_generates_correct_relative_paths_depth_zero() -> None:
     debug_link = all_links[2]
     assert debug_link.attrs.get("href") == "/debug"
     assert get_text_content(debug_link) == "Debug"
+
 
 def test_layout_header_has_container_structure() -> None:
     """Test LayoutHeader has correct container, hgroup, and nav structure."""

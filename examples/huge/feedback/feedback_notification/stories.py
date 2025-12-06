@@ -1,6 +1,8 @@
 """The subject for the FeedbackNotification component."""
 
-from examples.huge.feedback.feedback_notification.feedback_notification import FeedbackNotification
+from examples.huge.feedback.feedback_notification.feedback_notification import (
+    FeedbackNotification,
+)
 from storyville import Story, Subject
 
 

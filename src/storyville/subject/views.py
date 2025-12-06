@@ -49,7 +49,9 @@ class SubjectView:
         # Prepare target display
         target_name = "None"
         if self.subject.target is not None:
-            target_name = getattr(self.subject.target, "__name__", str(type(self.subject.target).__name__))
+            target_name = getattr(
+                self.subject.target, "__name__", str(type(self.subject.target).__name__)
+            )
 
         # Render stories or empty state
         if not self.subject.items:
@@ -69,7 +71,9 @@ class SubjectView:
             for idx, story in enumerate(self.subject.items):
                 # Use story title for link text and simple URL
                 story_url = f"story-{idx}"
-                story_items.append(html(t"<li><a href=\"{story_url}\">{story.title}</a></li>"))
+                story_items.append(
+                    html(t'<li><a href="{story_url}">{story.title}</a></li>')
+                )
 
             # Create the main content wrapped with Layout (depth=2 for subject pages)
             view_content = html(t"""\

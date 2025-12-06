@@ -27,12 +27,12 @@ async def test_end_to_end_watcher_rebuild_flow(tmp_path: Path) -> None:
         # Create a simple stories.py file
         stories_file = content_path / "stories.py"
         stories_file.write_text(
-            '''
+            """
 from storyville import Story
 
 def home() -> Story:
     return Story(title="Test")
-'''
+"""
         )
 
         output_dir = tmp_path / "output"
@@ -67,12 +67,12 @@ def home() -> Story:
 
         # Modify the stories.py file to trigger rebuild
         stories_file.write_text(
-            '''
+            """
 from storyville import Story
 
 def home() -> Story:
     return Story(title="Test Modified")
-'''
+"""
         )
 
         # Give watcher time to detect change, rebuild, and broadcast

@@ -1,6 +1,5 @@
 """Tests for BaseNode resource_path functionality."""
 
-
 from storyville.catalog import Catalog
 from storyville.section import Section
 from storyville.subject import Subject
@@ -65,11 +64,15 @@ def test_nested_resource_path_format(mock_tree_node):
     catalog.post_update(parent=None, tree_node=catalog_node)
 
     section = Section(title="UI Components")
-    section_node = mock_tree_node(name="ui-components", package_location=".ui-components")
+    section_node = mock_tree_node(
+        name="ui-components", package_location=".ui-components"
+    )
     section.post_update(parent=catalog, tree_node=section_node)
 
     subject = Subject(title="Form Elements")
-    subject_node = mock_tree_node(name="form-elements", package_location=".ui-components.form-elements")
+    subject_node = mock_tree_node(
+        name="form-elements", package_location=".ui-components.form-elements"
+    )
     subject.post_update(parent=section, tree_node=subject_node)
 
     # Verify the full path
@@ -99,12 +102,16 @@ def test_resource_path_inheritance_across_types(mock_tree_node):
 
     # Add subjects under section1
     subject1 = Subject(title="Subject 1A")
-    subject1_node = mock_tree_node(name="subject1a", package_location=".section1.subject1a")
+    subject1_node = mock_tree_node(
+        name="subject1a", package_location=".section1.subject1a"
+    )
     subject1.post_update(parent=section1, tree_node=subject1_node)
     section1.items["subject1a"] = subject1
 
     subject2 = Subject(title="Subject 1B")
-    subject2_node = mock_tree_node(name="subject1b", package_location=".section1.subject1b")
+    subject2_node = mock_tree_node(
+        name="subject1b", package_location=".section1.subject1b"
+    )
     subject2.post_update(parent=section1, tree_node=subject2_node)
     section1.items["subject1b"] = subject2
 

@@ -357,22 +357,22 @@ def this_subject() -> Subject:
         # Add assertions to first few stories
         assertions_list = ""
         if idx < stories_with_assertions and assertion_functions:
-            used_assertions = assertion_functions[:min(2, len(assertion_functions))]
+            used_assertions = assertion_functions[: min(2, len(assertion_functions))]
             assertions_list = f", assertions=[{', '.join(used_assertions)}]"
 
         # Format props appropriately for the component type
-        props_code = _format_props_for_code(story_config['props'], component_class)
+        props_code = _format_props_for_code(story_config["props"], component_class)
 
         stories_content += f'''            Story(
                 props={props_code},
-                title="{story_config['title']}",
-                description="{story_config['description']}"{assertions_list},
+                title="{story_config["title"]}",
+                description="{story_config["description"]}"{assertions_list},
             ),
 '''
 
-    stories_content += '''        ],
+    stories_content += """        ],
     )
-'''
+"""
 
     # Write stories.py file
     (subject_path / "stories.py").write_text(stories_content)
@@ -424,7 +424,10 @@ def _get_story_configs(component_class: str, num_stories: int) -> list[dict]:
                     "description": "Card displaying an image",
                 },
                 {
-                    "props": {"title": "Info", "content": "Detailed information about this feature"},
+                    "props": {
+                        "title": "Info",
+                        "content": "Detailed information about this feature",
+                    },
                     "title": "Info Card",
                     "description": "Card with longer content",
                 },

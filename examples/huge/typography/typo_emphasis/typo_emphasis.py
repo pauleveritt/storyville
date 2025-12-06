@@ -15,4 +15,6 @@ class TypoEmphasis:
 
     def __call__(self) -> Node:
         """Render the component as HTML."""
-        return html(t"<span class={self.variant} data-state={self.state}>{self.text}</span>")
+        return html(
+            t"<span class={self.variant} data-state={self.state}>{self.text}</span>"
+        )

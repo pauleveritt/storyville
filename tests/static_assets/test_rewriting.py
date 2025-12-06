@@ -105,13 +105,13 @@ class TestRewriteStaticPaths:
 
     def test_rewrite_multiple_references(self) -> None:
         """Test rewriting multiple static references."""
-        node = html(t'''
+        node = html(t"""
         <div>
             <link href="static/style.css" />
             <script src="storyville_static/app.js"></script>
             <img src="static/logo.png" />
         </div>
-        ''')
+        """)
         assets = {
             "static/style.css": Path("static/components/nav/static/style.css"),
             "storyville_static/app.js": Path(
@@ -127,7 +127,9 @@ class TestRewriteStaticPaths:
 
     def test_ignore_external_urls(self) -> None:
         """Test that external URLs are not rewritten."""
-        node = html(t'<div><script src="https://cdn.example.com/app.js"></script></div>')
+        node = html(
+            t'<div><script src="https://cdn.example.com/app.js"></script></div>'
+        )
         assets = {}
         result = rewrite_static_paths(node, page_depth=2, discovered_assets=assets)
         assert "https://cdn.example.com/app.js" in str(result)
@@ -141,7 +143,7 @@ class TestRewriteStaticPaths:
 
     def test_nested_elements(self) -> None:
         """Test rewriting in deeply nested elements."""
-        node = html(t'''
+        node = html(t"""
         <div>
             <div>
                 <div>
@@ -149,14 +151,16 @@ class TestRewriteStaticPaths:
                 </div>
             </div>
         </div>
-        ''')
+        """)
         assets = {"static/nested.css": Path("static/components/deep/static/nested.css")}
         result = rewrite_static_paths(node, page_depth=2, discovered_assets=assets)
         assert "../../../static/components/deep/static/nested.css" in str(result)
 
     def test_preserves_other_attributes(self) -> None:
         """Test that other attributes are preserved."""
-        node = html(t'<div><link rel="stylesheet" href="static/style.css" type="text/css" /></div>')
+        node = html(
+            t'<div><link rel="stylesheet" href="static/style.css" type="text/css" /></div>'
+        )
         assets = {"static/style.css": Path("static/components/nav/static/style.css")}
         result = rewrite_static_paths(node, page_depth=1, discovered_assets=assets)
         result_str = str(result)
@@ -178,9 +182,7 @@ class TestResolveStaticAssetPath:
 
     def test_resolve_direct_match(self) -> None:
         """Test resolving a direct match in discovered assets."""
-        assets = {
-            "static/nav.css": Path("output/static/components/nav/static/nav.css")
-        }
+        assets = {"static/nav.css": Path("output/static/components/nav/static/nav.css")}
         result = resolve_static_asset_path("static/nav.css", assets)
         assert result == "output/static/components/nav/static/nav.css"
 
@@ -311,7 +313,9 @@ class TestRewritingIntegration:
         assets = build_discovered_assets_map(storyville_base, input_dir, output_dir)
 
         # Create HTML referencing the asset (using tdom node)
-        node = html(t'<div><link rel="stylesheet" href="storyville_static/nav.css" /></div>')
+        node = html(
+            t'<div><link rel="stylesheet" href="storyville_static/nav.css" /></div>'
+        )
 
         # Rewrite paths
         result = rewrite_static_paths(node, 2, assets)

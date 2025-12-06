@@ -29,7 +29,7 @@ class ThemedLayout:
         """
         title_text = self.story_title if self.story_title else "Story"
 
-        return html(t'''
+        return html(t"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,4 +64,4 @@ class ThemedLayout:
     </div>
 </body>
 </html>
-''')
+""")

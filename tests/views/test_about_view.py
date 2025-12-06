@@ -1,9 +1,9 @@
 """Tests for AboutView component."""
 
-
 from aria_testing import get_by_tag_name
 from storyville.catalog.models import Catalog
 from storyville.views.about_view import AboutView
+
 
 def test_about_view_renders_with_layout():
     """AboutView should render and wrap content in Layout."""
@@ -19,6 +19,7 @@ def test_about_view_renders_with_layout():
     html_elem = get_by_tag_name(element, "html")
     assert html_elem is not None
 
+
 def test_about_view_has_correct_title():
     """AboutView should have 'About' as view_title."""
     # Arrange
@@ -31,6 +32,7 @@ def test_about_view_has_correct_title():
 
     # Assert - title should be "About - My Catalog"
     assert "<title>About - My Catalog</title>" in html_string
+
 
 def test_about_view_has_about_heading():
     """AboutView should render an h1 with 'About' heading."""
@@ -45,6 +47,7 @@ def test_about_view_has_about_heading():
     # Assert
     assert "<h1>About Storyville</h1>" in html_string
 
+
 def test_about_view_uses_depth_zero():
     """AboutView should use depth=0 for root-level view."""
     # Arrange
@@ -56,4 +59,4 @@ def test_about_view_uses_depth_zero():
     html_string = str(result)
 
     # Assert - depth=0 means static/ (no prefix) for CSS paths at root with full nested path
-    assert 'static/components/layout/static/pico-main.css' in html_string
+    assert "static/components/layout/static/pico-main.css" in html_string

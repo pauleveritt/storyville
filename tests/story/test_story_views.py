@@ -8,6 +8,7 @@ from storyville.story import Story
 from storyville.story.views import StoryView
 from storyville.subject import Subject
 
+
 def test_story_view_with_custom_template_mode() -> None:
     """Test StoryView uses a custom template when provided."""
 
@@ -25,6 +26,7 @@ def test_story_view_with_custom_template_mode() -> None:
     # Verify custom template content is present
     h1 = get_by_tag_name(result, "h1")
     assert get_text_content(h1) == "Custom Template Output"
+
 
 def test_story_view_with_default_layout_mode() -> None:
     """Test StoryView renders the default layout when no template."""
@@ -67,6 +69,7 @@ def test_story_view_with_default_layout_mode() -> None:
     assert nav is not None
     assert nav.attrs.get("aria-label") == "Breadcrumb"
 
+
 def test_story_view_default_layout_shows_props() -> None:
     """Test StoryView default layout displays props."""
 
@@ -91,6 +94,7 @@ def test_story_view_default_layout_shows_props() -> None:
     code = get_by_tag_name(element, "code")
     props_text = get_text_content(code)
     assert "Example" in props_text or "42" in props_text
+
 
 def test_story_view_default_layout_with_empty_props() -> None:
     """Test StoryView default layout handles empty props dict."""
@@ -121,6 +125,7 @@ def test_story_view_default_layout_with_empty_props() -> None:
     props_text = get_text_content(code)
     assert props_text == "{}"
 
+
 def test_story_view_returns_element_type() -> None:
     """Test StoryView.__call__ returns an  type."""
 
@@ -143,6 +148,7 @@ def test_story_view_returns_element_type() -> None:
     html_elem = get_by_tag_name(result, "html")
     assert html_elem is not None
 
+
 def test_story_view_custom_template_no_wrapping() -> None:
     """Test custom template mode has no wrapping elements."""
 
@@ -161,6 +167,7 @@ def test_story_view_custom_template_no_wrapping() -> None:
     assert article is not None
     article_text = get_text_content(article)
     assert article_text == "Pure template content"
+
 
 def test_story_view_default_layout_complete_structure() -> None:
     """Test default layout includes all required elements."""
@@ -194,7 +201,9 @@ def test_story_view_default_layout_complete_structure() -> None:
 
     # Layout adds section tags, so find the one from the component
     all_sections = query_all_by_tag_name(element, "section")
-    component_sections = [s for s in all_sections if get_text_content(s).strip() == "Complete"]
+    component_sections = [
+        s for s in all_sections if get_text_content(s).strip() == "Complete"
+    ]
     assert len(component_sections) >= 1
     assert get_text_content(component_sections[0]) == "Complete"
 

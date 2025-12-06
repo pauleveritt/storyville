@@ -3,6 +3,7 @@
 from aria_testing import get_by_tag_name, get_text_content
 from storyville.components.footer.footer import LayoutFooter
 
+
 def test_layout_footer_renders_with_year_and_text() -> None:
     """Test LayoutFooter renders with year and text props."""
     footer = LayoutFooter(year=2025, text="Storyville")
@@ -18,6 +19,7 @@ def test_layout_footer_renders_with_year_and_text() -> None:
     assert "2025" in text_content
     assert "Storyville" in text_content
 
+
 def test_layout_footer_uses_default_values() -> None:
     """Test LayoutFooter uses default year and text values."""
     footer = LayoutFooter()
@@ -27,6 +29,7 @@ def test_layout_footer_uses_default_values() -> None:
     text_content = get_text_content(element)
     assert "2025" in text_content
     assert "Storyville" in text_content
+
 
 def test_layout_footer_has_centered_paragraph() -> None:
     """Test LayoutFooter has paragraph with text-align center style."""

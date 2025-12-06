@@ -28,15 +28,24 @@ def cleanup_websocket_loop():
 
     # After test completes, clear any stale websocket globals only
     from storyville import websocket
+
     websocket._websocket_loop = None
     websocket._active_connections.clear()
 
 
-def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+def pytest_collection_modifyitems(
+    config: pytest.Config, items: list[pytest.Item]
+) -> None:
     """Run watchers tests first to avoid interference from other async plugins/tests."""
+
     def sort_key(it: pytest.Item) -> tuple[int, str]:
         nodeid = it.nodeid
-        priority = 0 if "tests/test_watchers.py::" in nodeid or nodeid.startswith("tests/test_watchers.py") else 1
+        priority = (
+            0
+            if "tests/test_watchers.py::" in nodeid
+            or nodeid.startswith("tests/test_watchers.py")
+            else 1
+        )
         return (priority, nodeid)
 
     items.sort(key=sort_key)
@@ -46,68 +55,82 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 @pytest.fixture
 def my_component():
     """A simple test component with name field."""
+
     @dataclass
     class MyComponent:
         name: str = "test"
+
     return MyComponent
 
 
 @pytest.fixture
 def parent_component():
     """A test component representing a parent with name field."""
+
     @dataclass
     class ParentComponent:
         name: str = "parent"
+
     return ParentComponent
 
 
 @pytest.fixture
 def own_component():
     """A test component representing ownership with name field."""
+
     @dataclass
     class OwnComponent:
         name: str = "own"
+
     return OwnComponent
 
 
 @pytest.fixture
 def another_component():
     """A test component with label field instead of name."""
+
     @dataclass
     class AnotherComponent:
         label: str = "default"
+
     return AnotherComponent
 
 
 @pytest.fixture
 def simple_view():
     """A simple view component for testing View protocol."""
+
     @dataclass
     class SimpleView:
         def __call__(self) -> Node:
             return html(t"<div>Hello</div>")
+
     return SimpleView
 
 
 @pytest.fixture
 def element_view():
     """An element view component for testing View protocol."""
+
     @dataclass
     class ElementView:
         def __call__(self) -> Node:
             return html(t"<p>Content</p>")
+
     return ElementView
 
 
 @pytest.fixture
 def field_view():
     """A view component with fields for testing View protocol."""
+
     @dataclass
     class FieldView:
         title: str = "Test"
 
         def __call__(self) -> Node:
             return html(t"<h1>{self.title}</h1>")
+
     return FieldView
 
 
@@ -124,11 +147,13 @@ def mock_tree_node():
             tree_node = mock_tree_node(name="components", package_location=".components")
             assert tree_node.name == "components"
     """
+
     def _create(name: str = "root", package_location: str = "."):
         tree_node = MagicMock()
         tree_node.name = name
         tree_node.this_package_location = package_location
         return tree_node
+
     return _create
 
 
@@ -145,12 +170,14 @@ def module_factory():
                 return Catalog(title="Test")
             module = module_factory("test_module", my_func)
     """
+
     def _create(module_name: str = "test_module", callable_func=None):
         module = ModuleType(module_name)
         if callable_func:
             callable_func.__module__ = module_name
             setattr(module, callable_func.__name__, callable_func)
         return module
+
     return _create
 
 
@@ -185,10 +212,10 @@ def watcher_runner():
             asyncio.Task: The running watcher task
         """
         # Create ready event if not provided
-        ready_event = kwargs.get('ready_event')
+        ready_event = kwargs.get("ready_event")
         if ready_event is None:
             ready_event = asyncio.Event()
-            kwargs['ready_event'] = ready_event
+            kwargs["ready_event"] = ready_event
 
         task = asyncio.create_task(watcher_func(**kwargs))
 

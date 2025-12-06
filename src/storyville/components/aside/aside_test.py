@@ -3,6 +3,7 @@
 from aria_testing import get_by_tag_name, get_text_content
 from storyville.components.aside.aside import LayoutAside
 
+
 def test_layout_aside_handles_cached_navigation_html() -> None:
     """Test LayoutAside handles cached_navigation HTML using Markup."""
     cached_html = "<nav><ul><li>Cached Item</li></ul></nav>"
@@ -21,6 +22,7 @@ def test_layout_aside_handles_cached_navigation_html() -> None:
     # Check that cached HTML is present
     text_content = get_text_content(aside_elem)
     assert "Cached Item" in text_content
+
 
 def test_layout_aside_renders_navigation_tree_without_cached() -> None:
     """Test LayoutAside renders NavigationTree when no cached navigation provided."""

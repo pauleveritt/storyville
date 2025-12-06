@@ -90,7 +90,9 @@ async def test_end_to_end_content_change_flow(tmp_path: Path, watcher_runner) ->
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_multiple_rapid_file_changes_debounced(tmp_path: Path, watcher_runner) -> None:
+async def test_multiple_rapid_file_changes_debounced(
+    tmp_path: Path, watcher_runner
+) -> None:
     """Test that multiple rapid file changes result in a single rebuild.
 
     Verifies server-side debouncing prevents multiple rebuilds when
@@ -164,7 +166,9 @@ def test_websocket_client_receives_reload_message(tmp_path: Path) -> None:
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_static_asset_change_triggers_rebuild(tmp_path: Path, watcher_runner) -> None:
+async def test_static_asset_change_triggers_rebuild(
+    tmp_path: Path, watcher_runner
+) -> None:
     """Test that static asset changes in src/storyville/ trigger rebuild.
 
     Verifies that the INPUT watcher correctly monitors and responds to
@@ -237,7 +241,6 @@ def test_app_lifespan_starts_and_stops_watchers_cleanly(tmp_path: Path) -> None:
             raise
 
     with patch("storyville.app.watch_and_rebuild", side_effect=mock_unified_watcher):
-
         app = create_app(
             path=tmp_path,
             input_path="examples.minimal",
@@ -288,7 +291,9 @@ def test_websocket_reconnection_after_server_restart(tmp_path: Path) -> None:
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_rebuild_error_does_not_crash_watcher(tmp_path: Path, watcher_runner) -> None:
+async def test_rebuild_error_does_not_crash_watcher(
+    tmp_path: Path, watcher_runner
+) -> None:
     """Test that rebuild errors are handled gracefully without crashing watcher.
 
     Verifies that the INPUT watcher continues watching even after a rebuild

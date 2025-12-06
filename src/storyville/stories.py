@@ -1,6 +1,5 @@
 """The ``Catalog`` for stories used for the Storyville UI itself."""
 
-
 from storyville import Catalog, make_catalog
 
 

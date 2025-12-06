@@ -73,7 +73,9 @@ def copy_all_static_assets(
     file_count = 0
     for static_folder in storyville_folders + input_folders:
         # Get the base path for this source type
-        base_path = storyville_base if static_folder.source_type == "storyville" else input_dir
+        base_path = (
+            storyville_base if static_folder.source_type == "storyville" else input_dir
+        )
 
         for file_path in static_folder.source_path.rglob("*"):
             if file_path.is_file():

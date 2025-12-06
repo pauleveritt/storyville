@@ -43,7 +43,9 @@ class Form:
         """
         form_style = "max-width: 400px; padding: 24px; border: 1px solid #ddd; border-radius: 8px;"
         field_style = "margin-bottom: 16px;"
-        label_style = "display: block; margin-bottom: 4px; font-weight: 600; color: #333;"
+        label_style = (
+            "display: block; margin-bottom: 4px; font-weight: 600; color: #333;"
+        )
         input_style = (
             "width: 100%; padding: 10px; border: 1px solid #ccc; "
             "border-radius: 4px; font-size: 14px; box-sizing: border-box;"

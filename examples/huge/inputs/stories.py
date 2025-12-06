@@ -1,6 +1,5 @@
 """The Inputs section for the huge example."""
 
-
 from storyville import Section
 
 

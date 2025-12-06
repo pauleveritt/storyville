@@ -24,10 +24,7 @@ class ListComponent:
         Returns:
             tdom.html.ol | tdom.html.ul: The rendered list element.
         """
-        list_style = (
-            "margin: 0; padding-left: 24px; "
-            "line-height: 1.8; color: #333;"
-        )
+        list_style = "margin: 0; padding-left: 24px; line-height: 1.8; color: #333;"
 
         list_items = [tdom.html.li(item) for item in self.items]
 
@@ -50,7 +47,9 @@ def check_is_list_element(el: Element | Fragment) -> None:
         AssertionError: If the element is not a list.
     """
     rendered = str(el)
-    assert "<ul" in rendered or "<ol" in rendered, "Should render as a list element (ul or ol)"
+    assert "<ul" in rendered or "<ol" in rendered, (
+        "Should render as a list element (ul or ol)"
+    )
 
 
 def check_has_list_items(el: Element | Fragment) -> None:
@@ -78,4 +77,6 @@ def check_list_type_matches_ordered_prop(el: Element | Fragment) -> None:
     rendered = str(el)
     # This is a simplified check - in real usage you'd pass the ordered prop
     # For now, just verify that it's one or the other
-    assert ("<ol" in rendered) or ("<ul" in rendered), "Should be either ordered or unordered list"
+    assert ("<ol" in rendered) or ("<ul" in rendered), (
+        "Should be either ordered or unordered list"
+    )

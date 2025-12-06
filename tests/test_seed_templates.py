@@ -1,7 +1,5 @@
 """Tests for seed command template content generation."""
 
-
-
 from storyville import PACKAGE_DIR
 
 
@@ -41,7 +39,9 @@ def test_component_templates_exist():
 
     for component_name in expected_components:
         component_file = components_dir / f"{component_name}.py"
-        assert component_file.exists(), f"Component template not found: {component_name}.py"
+        assert component_file.exists(), (
+            f"Component template not found: {component_name}.py"
+        )
 
 
 def test_root_stories_template_has_valid_python():
@@ -52,7 +52,10 @@ def test_root_stories_template_has_valid_python():
     content = template_file.read_text()
 
     # Verify it imports Catalog
-    assert "from storyville import Catalog" in content or "from storyville.catalog import Catalog" in content
+    assert (
+        "from storyville import Catalog" in content
+        or "from storyville.catalog import Catalog" in content
+    )
 
     # Verify it defines this_catalog function
     assert "def this_catalog()" in content

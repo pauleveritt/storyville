@@ -33,9 +33,15 @@ def test_copy_all_static_assets_from_both_sources(tmp_path: Path) -> None:
     # Verify all assets copied to single static/ directory with path preservation
     static_output = output_dir / "static"
     assert static_output.exists()
-    assert (static_output / "components" / "nav" / "static" / "nav.css").read_text() == "nav styles"
-    assert (static_output / "components" / "button" / "static" / "button.css").read_text() == "button styles"
-    assert (static_output / "widgets" / "calendar" / "static" / "calendar.js").read_text() == "calendar code"
+    assert (
+        static_output / "components" / "nav" / "static" / "nav.css"
+    ).read_text() == "nav styles"
+    assert (
+        static_output / "components" / "button" / "static" / "button.css"
+    ).read_text() == "button styles"
+    assert (
+        static_output / "widgets" / "calendar" / "static" / "calendar.js"
+    ).read_text() == "calendar code"
 
 
 def test_copy_all_static_assets_handles_empty_directories(tmp_path: Path) -> None:
@@ -106,8 +112,12 @@ def test_copy_all_static_assets_preserves_subdirectories(tmp_path: Path) -> None
     # Verify files copied with full path preservation including subdirectories
     assert file_count == 2
     output_static = output_dir / "static"
-    assert (output_static / "components" / "gallery" / "static" / "images" / "photo1.jpg").exists()
-    assert (output_static / "components" / "gallery" / "static" / "scripts" / "app.js").exists()
+    assert (
+        output_static / "components" / "gallery" / "static" / "images" / "photo1.jpg"
+    ).exists()
+    assert (
+        output_static / "components" / "gallery" / "static" / "scripts" / "app.js"
+    ).exists()
 
 
 def test_copy_all_static_assets_handles_nonexistent_input_dir(tmp_path: Path) -> None:

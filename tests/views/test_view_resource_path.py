@@ -16,9 +16,7 @@ def test_section_view_accepts_resource_path() -> None:
     """Test SectionView instantiation with resource_path."""
     catalog = Catalog(title="Test Site")
     section = Section(title="Test Section")
-    view = SectionView(
-        section=section, site=catalog, resource_path="test-section"
-    )
+    view = SectionView(section=section, site=catalog, resource_path="test-section")
     assert view.resource_path == "test-section"
 
 
@@ -50,9 +48,7 @@ def test_section_view_passes_resource_path_to_layout() -> None:
     """Test resource_path passed to Layout in SectionView."""
     catalog = Catalog(title="Test Site")
     section = Section(title="Test Section")
-    view = SectionView(
-        section=section, site=catalog, resource_path="test-section"
-    )
+    view = SectionView(section=section, site=catalog, resource_path="test-section")
     result = str(view())
     # The view should render without error and pass resource_path through
     assert view.resource_path == "test-section"

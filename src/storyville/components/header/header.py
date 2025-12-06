@@ -22,7 +22,7 @@ class LayoutHeader:
         Returns:
             A tdom Node representing the header element.
         """
-        return html(t'''\
+        return html(t"""\
 <header>
   <div class="container">
     <hgroup>
@@ -37,4 +37,4 @@ class LayoutHeader:
     </nav>
   </div>
 </header>
-''')
+""")

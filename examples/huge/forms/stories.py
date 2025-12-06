@@ -1,6 +1,5 @@
 """The Forms section for the huge example."""
 
-
 from storyville import Section
 
 

@@ -8,7 +8,9 @@ import pytest
 from storyville.build import build_site
 
 
-def test_build_logging_contains_phase_timings(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+def test_build_logging_contains_phase_timings(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
     """Test that build logging output contains timing for all 3 phases."""
     # Set logging level to capture INFO messages
     caplog.set_level(logging.INFO)
@@ -20,19 +22,29 @@ def test_build_logging_contains_phase_timings(tmp_path: Path, caplog: pytest.Log
     log_messages = [record.message for record in caplog.records]
 
     # Check for Phase Reading log
-    reading_logs = [msg for msg in log_messages if "Phase Reading:" in msg and "completed in" in msg]
+    reading_logs = [
+        msg for msg in log_messages if "Phase Reading:" in msg and "completed in" in msg
+    ]
     assert len(reading_logs) == 1, "Should have exactly one Phase Reading log"
 
     # Check for Phase Rendering log
-    rendering_logs = [msg for msg in log_messages if "Phase Rendering:" in msg and "completed in" in msg]
+    rendering_logs = [
+        msg
+        for msg in log_messages
+        if "Phase Rendering:" in msg and "completed in" in msg
+    ]
     assert len(rendering_logs) == 1, "Should have exactly one Phase Rendering log"
 
     # Check for Phase Writing log
-    writing_logs = [msg for msg in log_messages if "Phase Writing:" in msg and "completed in" in msg]
+    writing_logs = [
+        msg for msg in log_messages if "Phase Writing:" in msg and "completed in" in msg
+    ]
     assert len(writing_logs) == 1, "Should have exactly one Phase Writing log"
 
 
-def test_build_logging_has_all_three_phases(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+def test_build_logging_has_all_three_phases(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
     """Test that all 3 build phases are measured and logged."""
     caplog.set_level(logging.INFO)
 
@@ -46,7 +58,9 @@ def test_build_logging_has_all_three_phases(tmp_path: Path, caplog: pytest.LogCa
     assert "Phase Writing:" in log_text
 
 
-def test_build_logging_format_matches_specification(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+def test_build_logging_format_matches_specification(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
     """Test that logging format matches specification: 'Phase [name]: completed in {duration:.2f}s'."""
     caplog.set_level(logging.INFO)
 
@@ -79,7 +93,9 @@ def test_build_logging_format_matches_specification(tmp_path: Path, caplog: pyte
     assert writing_logs[0].endswith("s")
 
 
-def test_build_logging_total_time(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+def test_build_logging_total_time(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
     """Test that total build time is logged."""
     caplog.set_level(logging.INFO)
 

@@ -93,14 +93,16 @@ def _render_all_views(
                         resource_path=story.resource_path,
                     )()
                 )
-                rendered_stories.append((section_key, subject_key, story_idx, story_view))
+                rendered_stories.append(
+                    (section_key, subject_key, story_idx, story_view)
+                )
 
                 # Render themed story if catalog has themed_layout configured
                 if catalog.themed_layout is not None and story.instance is not None:
                     themed_story = ThemedStory(
                         story_title=story.title or "Untitled Story",
                         children=story.instance,
-                        site=catalog
+                        site=catalog,
                     )
                     themed_story_html = str(themed_story())
                     rendered_themed_stories.append(
@@ -173,7 +175,12 @@ def _write_all_files(
         path.write_text(story_view)
 
     # Write themed stories
-    for section_key, subject_key, story_idx, themed_story_html in rendered_themed_stories:
+    for (
+        section_key,
+        subject_key,
+        story_idx,
+        themed_story_html,
+    ) in rendered_themed_stories:
         section_dir = output_dir / section_key
         subject_dir = section_dir / subject_key
         story_dir = subject_dir / f"story-{story_idx}"
@@ -282,12 +289,13 @@ def build_catalog(
     end_static = perf_counter()
     static_duration = end_static - start_static
     logger.info(
-        f"Phase Static Assets: copied {file_count} files "
-        f"in {static_duration:.2f}s"
+        f"Phase Static Assets: copied {file_count} files in {static_duration:.2f}s"
     )
 
     # Log total build time
-    total_duration = reading_duration + rendering_duration + writing_duration + static_duration
+    total_duration = (
+        reading_duration + rendering_duration + writing_duration + static_duration
+    )
     logger.info(f"Build completed in {total_duration:.2f}s")
 
 

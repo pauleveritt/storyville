@@ -401,7 +401,9 @@ async def test_unified_watcher_triggers_rebuild_and_broadcast(tmp_path: Path) ->
 
 @pytest.mark.slow
 @pytest.mark.anyio
-async def test_unified_watcher_does_not_broadcast_on_build_failure(tmp_path: Path) -> None:
+async def test_unified_watcher_does_not_broadcast_on_build_failure(
+    tmp_path: Path,
+) -> None:
     """Test unified watcher does not broadcast when rebuild fails."""
     # Setup
     content_dir = tmp_path / "content"

@@ -16,29 +16,29 @@ database, API, or frontend components involved.
 **Dependencies:** None
 **Owner Role:** DevOps/Build Engineer
 
-- [ ] 1.0 Complete Justfile recipe reorganization
-    - [ ] 1.1 Rename `fmt` recipe to `lint`
+- [x] 1.0 Complete Justfile recipe reorganization
+    - [x] 1.1 Rename `fmt` recipe to `lint`
         - Current behavior: `uv run ruff check .`
         - Keep exact same behavior, just change recipe name
         - Update any internal references if present
-    - [ ] 1.2 Create new `fmt` recipe for formatting
+    - [x] 1.2 Create new `fmt` recipe for formatting
         - Command: `uv run ruff format .`
         - This actually formats code (not just checks)
         - Follow existing pattern with `*ARGS` support
-    - [ ] 1.3 Add `setup` recipe as alias to `install`
+    - [x] 1.3 Add `setup` recipe as alias to `install`
         - Simple alias for better discoverability
         - Pattern: `setup: install`
-    - [ ] 1.4 Create `ci-checks` recipe with fail-fast chaining
+    - [x] 1.4 Create `ci-checks` recipe with fail-fast chaining
         - Chain: `install && lint && typecheck && test-parallel`
         - Use `&&` for fail-fast behavior (not `;`)
         - This runs all quality checks in order
-    - [ ] 1.5 Update `ci` recipe to use new naming
+    - [x] 1.5 Update `ci` recipe to use new naming
         - Replace old `fmt` call with `lint`
         - Consider calling `ci-checks` or consolidating logic
-    - [ ] 1.6 Verify all recipes maintain `uv run` prefix pattern
+    - [x] 1.6 Verify all recipes maintain `uv run` prefix pattern
         - Ensure consistency across all commands
         - Keep `*ARGS` pattern for argument passing
-    - [ ] 1.7 Test locally with `just ci-checks`
+    - [x] 1.7 Test locally with `just ci-checks`
         - Verify fail-fast behavior (stop on first failure)
         - Ensure all steps execute in correct order
         - Confirm proper exit codes

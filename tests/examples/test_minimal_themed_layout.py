@@ -9,13 +9,10 @@ from examples.minimal.themed_layout import ThemedLayout
 def test_themed_layout_renders_full_html_document_structure() -> None:
     """Test ThemedLayout renders full HTML document structure."""
     # Create test content
-    story_content = html(t'<p>Test story content</p>')
+    story_content = html(t"<p>Test story content</p>")
 
     # Create ThemedLayout instance
-    themed_layout = ThemedLayout(
-        story_title="My Test Story",
-        children=story_content
-    )
+    themed_layout = ThemedLayout(story_title="My Test Story", children=story_content)
 
     # Render
     result = themed_layout()
@@ -46,10 +43,7 @@ def test_themed_layout_passes_through_children_content() -> None:
     story_content = html(t'<div id="unique-test-id">Unique test content here</div>')
 
     # Create ThemedLayout instance
-    themed_layout = ThemedLayout(
-        story_title="Test Story",
-        children=story_content
-    )
+    themed_layout = ThemedLayout(story_title="Test Story", children=story_content)
 
     # Render
     result = themed_layout()
@@ -68,13 +62,10 @@ def test_themed_layout_passes_through_children_content() -> None:
 def test_themed_layout_includes_custom_css_styling() -> None:
     """Test ThemedLayout includes custom CSS styling."""
     # Create test content
-    story_content = html(t'<p>Content</p>')
+    story_content = html(t"<p>Content</p>")
 
     # Create ThemedLayout instance
-    themed_layout = ThemedLayout(
-        story_title="Styled Story",
-        children=story_content
-    )
+    themed_layout = ThemedLayout(story_title="Styled Story", children=story_content)
 
     # Render
     result = themed_layout()

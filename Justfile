@@ -15,11 +15,14 @@ info:
 install:
     uv sync --all-groups
 
+# Alias for install (better discoverability)
+setup: install
+
 # Run tests (sequential)
 test *ARGS:
     uv run pytest {{ ARGS }}
 
-# Run tests (sequential)
+# Run tests (parallel)
 test-parallel *ARGS:
     uv run pytest -n auto {{ ARGS }}
 
@@ -27,12 +30,16 @@ test-parallel *ARGS:
 test-slow:
     uv run pytest -m slow -n auto -v
 
-# Format (no changes)
-fmt:
-    uv run ruff check .
+# Lint code (check for issues)
+lint *ARGS:
+    uv run ruff check {{ ARGS }} .
 
-# Format and auto-fix
-fmt-fix:
+# Format code (auto-format)
+fmt *ARGS:
+    uv run ruff format {{ ARGS }} .
+
+# Lint and auto-fix
+lint-fix:
     uv run ruff check --fix .
 
 # Type checking
@@ -52,9 +59,6 @@ clean:
     rm -rf .pytest_cache .ruff_cache .pyright .mypy_cache build dist
     find docs/_build -mindepth 1 -maxdepth 1 -not -name ".gitkeep" -exec rm -rf {} + || true
 
-# Run the same checks as CI
-ci:
-    just install
-    just fmt
-    just typecheck
-    just test-parallel
+# Run all quality checks with fail-fast behavior
+ci-checks:
+    just install && just lint && just typecheck && just test-parallel

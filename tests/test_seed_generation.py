@@ -48,7 +48,11 @@ def test_small_catalog_structure(temp_output_dir: Path) -> None:
     assert (temp_output_dir / "themed_layout" / "__init__.py").exists()
 
     # Check that we have 1 section directory
-    section_dirs = [d for d in temp_output_dir.iterdir() if d.is_dir() and d.name.startswith("section_")]
+    section_dirs = [
+        d
+        for d in temp_output_dir.iterdir()
+        if d.is_dir() and d.name.startswith("section_")
+    ]
     assert len(section_dirs) == 1
 
     # Check section has __init__.py
@@ -74,7 +78,11 @@ def test_section_subject_story_hierarchy(temp_output_dir: Path) -> None:
     generate_catalog(temp_output_dir, config)
 
     # Count section directories
-    section_dirs = [d for d in temp_output_dir.iterdir() if d.is_dir() and d.name.startswith("section_")]
+    section_dirs = [
+        d
+        for d in temp_output_dir.iterdir()
+        if d.is_dir() and d.name.startswith("section_")
+    ]
     assert len(section_dirs) == 2
 
     # Count total subjects across all sections
@@ -88,7 +96,11 @@ def test_section_subject_story_hierarchy(temp_output_dir: Path) -> None:
             assert (subject_dir / "__init__.py").exists()
             assert (subject_dir / "stories.py").exists()
             # Should have exactly one component python file (besides __init__.py and stories.py)
-            py_files = [f for f in subject_dir.glob("*.py") if f.name not in ("__init__.py", "stories.py")]
+            py_files = [
+                f
+                for f in subject_dir.glob("*.py")
+                if f.name not in ("__init__.py", "stories.py")
+            ]
             assert len(py_files) == 1
 
     assert total_subjects == 4
@@ -108,7 +120,11 @@ def test_all_init_files_created(temp_output_dir: Path) -> None:
     assert (temp_output_dir / "themed_layout" / "__init__.py").exists()
 
     # All section __init__.py files
-    section_dirs = [d for d in temp_output_dir.iterdir() if d.is_dir() and d.name.startswith("section_")]
+    section_dirs = [
+        d
+        for d in temp_output_dir.iterdir()
+        if d.is_dir() and d.name.startswith("section_")
+    ]
     for section in section_dirs:
         assert (section / "__init__.py").exists()
 
@@ -159,7 +175,11 @@ def test_component_files_in_subjects(temp_output_dir: Path) -> None:
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
 
-    section_dirs = [d for d in temp_output_dir.iterdir() if d.is_dir() and d.name.startswith("section_")]
+    section_dirs = [
+        d
+        for d in temp_output_dir.iterdir()
+        if d.is_dir() and d.name.startswith("section_")
+    ]
     section = section_dirs[0]
 
     subject_dirs = [d for d in section.iterdir() if d.is_dir()]
@@ -167,7 +187,8 @@ def test_component_files_in_subjects(temp_output_dir: Path) -> None:
     for subject_dir in subject_dirs:
         # Find component file (any .py file except __init__.py and stories.py)
         component_files = [
-            f for f in subject_dir.glob("*.py")
+            f
+            for f in subject_dir.glob("*.py")
             if f.name not in ("__init__.py", "stories.py")
         ]
         assert len(component_files) == 1
@@ -185,7 +206,11 @@ def test_subject_stories_file_content(temp_output_dir: Path) -> None:
     config = SizeConfig(sections=1, subjects=2, stories_per_subject=2)
     generate_catalog(temp_output_dir, config)
 
-    section_dirs = [d for d in temp_output_dir.iterdir() if d.is_dir() and d.name.startswith("section_")]
+    section_dirs = [
+        d
+        for d in temp_output_dir.iterdir()
+        if d.is_dir() and d.name.startswith("section_")
+    ]
     section = section_dirs[0]
 
     subject_dirs = [d for d in section.iterdir() if d.is_dir()]

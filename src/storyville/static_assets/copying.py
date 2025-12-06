@@ -43,9 +43,7 @@ def copy_static_folder(static_folder: StaticFolder, output_dir: Path) -> None:
     """
     # Validate source exists
     if not static_folder.source_path.exists():
-        error_msg = (
-            f"Source static folder does not exist: {static_folder.source_path}"
-        )
+        error_msg = f"Source static folder does not exist: {static_folder.source_path}"
         logger.error(error_msg)
         raise ValueError(error_msg)
 
@@ -63,8 +61,7 @@ def copy_static_folder(static_folder: StaticFolder, output_dir: Path) -> None:
             dirs_exist_ok=True,
         )
         logger.debug(
-            f"Copied static folder from {static_folder.source_path} "
-            f"to {output_path}"
+            f"Copied static folder from {static_folder.source_path} to {output_path}"
         )
     except OSError as e:
         error_msg = (

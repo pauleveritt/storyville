@@ -14,6 +14,7 @@ from storyville.story.views import StoryView
 from storyville.subject import Subject
 from storyville.subject.views import SubjectView
 
+
 def test_complete_example_structure() -> None:
     """Test the complete example Catalog/Section/Subject hierarchy."""
     catalog = make_catalog("examples.complete")
@@ -25,14 +26,20 @@ def test_complete_example_structure() -> None:
     match catalog.items.get("components"):
         case Section() as section:
             assert section.title == "Components Collection"
-            assert section.description == "A collection of component examples with all optional fields populated"
+            assert (
+                section.description
+                == "A collection of component examples with all optional fields populated"
+            )
             assert section.parent is catalog
 
             # Traverse to Subject
             match section.items.get("button"):
                 case Subject() as subject:
                     assert subject.title == "Button Component"
-                    assert subject.description == "A button component demonstrating all optional Story field variations"
+                    assert (
+                        subject.description
+                        == "A button component demonstrating all optional Story field variations"
+                    )
                     assert subject.parent is section
                     assert subject.target is not None
 
@@ -42,6 +49,7 @@ def test_complete_example_structure() -> None:
                     raise AssertionError("Expected Subject for button")
         case _:
             raise AssertionError("Expected Section for components")
+
 
 def test_complete_example_all_fields() -> None:
     """Test that all optional fields are populated on all models."""
@@ -84,6 +92,7 @@ def test_complete_example_all_fields() -> None:
     assert isinstance(story3, Story)
     assert story3.props == {"text": "Cancel", "variant": "danger"}
 
+
 def test_complete_example_story_variations() -> None:
     """Test the 3 Story patterns in complete example."""
     catalog = make_catalog("examples.complete")
@@ -122,6 +131,7 @@ def test_complete_example_story_variations() -> None:
     assert get_text_content(button3) == "Cancel"
     assert button3.attrs.get("class") == "danger"
 
+
 def test_complete_example_views() -> None:
     """Test rendering views for Section, Subject, and Story."""
     catalog = make_catalog("examples.complete")
@@ -151,6 +161,7 @@ def test_complete_example_views() -> None:
     paragraphs = query_all_by_tag_name(story_element, "p")
     assert len(paragraphs) > 0
 
+
 def test_complete_example_field_inheritance() -> None:
     """Test field inheritance patterns in complete example."""
     catalog = make_catalog("examples.complete")
@@ -173,6 +184,7 @@ def test_complete_example_field_inheritance() -> None:
     # Story 3: No explicit title, should get auto-generated
     story3 = subject.items[2]
     assert story3.title is not None  # Auto-generated from Subject
+
 
 def test_inheritance_example_target_inheritance() -> None:
     """Test Story inherits target from Subject in inheritance example."""
@@ -207,11 +219,15 @@ def test_inheritance_example_target_inheritance() -> None:
                     h2 = get_by_tag_name(rendered, "h2")
                     assert get_text_content(h2) == "First Card"
                     p = get_by_tag_name(rendered, "p")
-                    assert get_text_content(p) == "This story inherits its title from the Subject"
+                    assert (
+                        get_text_content(p)
+                        == "This story inherits its title from the Subject"
+                    )
                 case _:
                     raise AssertionError("Expected Subject for card")
         case _:
             raise AssertionError("Expected Section for components")
+
 
 def test_inheritance_example_title_generation() -> None:
     """Test auto-generated Story titles in inheritance example."""
@@ -241,6 +257,7 @@ def test_inheritance_example_title_generation() -> None:
     story3 = subject.items[3]
     assert story3.title is not None
 
+
 def test_inheritance_example_target_override() -> None:
     """Test Story can override Subject target in inheritance example."""
     catalog = make_catalog("examples.inheritance")
@@ -261,6 +278,7 @@ def test_inheritance_example_target_override() -> None:
     # Badge renders a span with count
     span = get_by_tag_name(rendered, "span")
     assert get_text_content(span) == "42"
+
 
 def test_templates_example_default_template() -> None:
     """Test Story without template uses default StoryView layout."""
@@ -291,12 +309,18 @@ def test_templates_example_default_template() -> None:
                     assert len(paragraphs) > 0
 
                     # Verify component instance is rendered with role="alert"
-                    alert_div = get_by_tag_name(story_element, "div", attrs={"role": "alert"})
-                    assert get_text_content(alert_div) == "This is an alert using default layout"
+                    alert_div = get_by_tag_name(
+                        story_element, "div", attrs={"role": "alert"}
+                    )
+                    assert (
+                        get_text_content(alert_div)
+                        == "This is an alert using default layout"
+                    )
                 case _:
                     raise AssertionError("Expected Subject for alert")
         case _:
             raise AssertionError("Expected Section for components")
+
 
 def test_templates_example_custom_template() -> None:
     """Test Story with custom template validates template override."""
@@ -324,6 +348,7 @@ def test_templates_example_custom_template() -> None:
     p = get_by_tag_name(custom_div, "p")
     assert get_text_content(p) == "Full control"
 
+
 def test_templates_example_template_override() -> None:
     """Test template completely overrides rendering with aria-testing."""
     catalog = make_catalog("examples.templates")
@@ -335,7 +360,7 @@ def test_templates_example_template_override() -> None:
     story_default = subject.items[0]
     story_view_default = StoryView(story=story_default, site=catalog)
     result_default = story_view_default()
-    _element_default = (str(result_default))
+    _element_default = str(result_default)
 
     # Story 1: Custom template
     story_custom = subject.items[1]
@@ -360,7 +385,9 @@ def test_templates_example_template_override() -> None:
     custom_links = query_all_by_tag_name(result_custom, "a")
     assert len(custom_links) == 0
 
+
 # Task Group 6: Integration tests for minimal and no_sections examples
+
 
 def test_minimal_example() -> None:
     """Test minimal example - load Site, traverse tree, test all views."""
@@ -406,6 +433,7 @@ def test_minimal_example() -> None:
         case _:
             raise AssertionError("Expected Section for components")
 
+
 def test_minimal_example_views() -> None:
     """Test rendering all views for minimal example."""
     catalog = make_catalog("examples.minimal")
@@ -437,6 +465,7 @@ def test_minimal_example_views() -> None:
     story_result = story_view()
     _story_element = parse_html(str(story_result))
 
+
 def test_no_sections_example() -> None:
     """Test no_sections example - verify Site → Subject structure, test views."""
     catalog = make_catalog("examples.no_sections")
@@ -453,6 +482,7 @@ def test_no_sections_example() -> None:
     # Let's check what's actually in the catalog structure
     assert isinstance(catalog.items, dict)
 
+
 def test_no_sections_example_structure() -> None:
     """Test no_sections example demonstrates optional Sections."""
     catalog = make_catalog("examples.no_sections")
@@ -463,6 +493,7 @@ def test_no_sections_example_structure() -> None:
 
     # This demonstrates Sections are optional
     assert catalog.title is not None
+
 
 def test_inheritance_example_views() -> None:
     """Test rendering all views for inheritance example."""
@@ -488,6 +519,7 @@ def test_inheritance_example_views() -> None:
         story_result = story_view()
         _story_element = parse_html(str(story_result))
 
+
 def test_inheritance_example_parent_references() -> None:
     """Test parent references throughout inheritance example tree."""
     catalog = make_catalog("examples.inheritance")
@@ -506,6 +538,7 @@ def test_inheritance_example_parent_references() -> None:
     for story in subject.items:
         assert isinstance(story, Story)
         assert story.parent is subject
+
 
 def test_templates_example_views() -> None:
     """Test rendering all views for templates example."""
@@ -532,6 +565,7 @@ def test_templates_example_views() -> None:
         # Note: Some stories may have custom templates (return ),
         # others use default layout (return  with Layout wrapper)
         # Both are valid results
+
 
 def test_all_examples_structural_integrity() -> None:
     """Test structural pattern matching and tree integrity across all examples."""
@@ -569,13 +603,19 @@ def test_all_examples_structural_integrity() -> None:
                                             # Verify target is set (either explicit or inherited)
                                             assert story.target is not None
                                         case _:
-                                            raise AssertionError(f"Expected Story in {example_name}")
+                                            raise AssertionError(
+                                                f"Expected Story in {example_name}"
+                                            )
                             case _:
-                                raise AssertionError(f"Expected Subject in {example_name}")
+                                raise AssertionError(
+                                    f"Expected Subject in {example_name}"
+                                )
                 case _:
                     raise AssertionError(f"Expected Section in {example_name}")
 
+
 # Task Group 1: Tests for examples.huge Site structure
+
 
 @pytest.mark.slow
 def test_huge_example_site_loads() -> None:
@@ -585,6 +625,7 @@ def test_huge_example_site_loads() -> None:
     # Verify Catalog has correct title
     assert catalog.title == "Huge Scale Example"
 
+
 @pytest.mark.slow
 def test_huge_example_has_ten_sections() -> None:
     """Test huge example has 10 sections."""
@@ -592,6 +633,7 @@ def test_huge_example_has_ten_sections() -> None:
 
     # Verify Catalog has exactly 10 sections
     assert len(catalog.items) == 10
+
 
 @pytest.mark.slow
 def test_huge_example_section_names() -> None:
@@ -644,7 +686,9 @@ def test_huge_example_section_names() -> None:
         case _:
             raise AssertionError("Expected Section for layout")
 
+
 # Task Group 2: Tests for component rendering
+
 
 @pytest.mark.slow
 def test_huge_component_renders_correctly() -> None:
@@ -671,6 +715,7 @@ def test_huge_component_renders_correctly() -> None:
 
         case _:
             raise AssertionError("Expected Section for forms")
+
 
 @pytest.mark.slow
 def test_huge_component_props_applied() -> None:
@@ -705,6 +750,7 @@ def test_huge_component_props_applied() -> None:
         assert story_loading.props.get("text") == "Loading"
         assert story_loading.props.get("state") == "loading"
 
+
 @pytest.mark.slow
 def test_huge_component_html_structure() -> None:
     """Test huge example components render basic HTML with class attributes."""
@@ -730,6 +776,7 @@ def test_huge_component_html_structure() -> None:
         # Verify has class attribute
         assert "class" in rendered.attrs
 
+
 @pytest.mark.slow
 def test_huge_all_sections_have_ten_subjects() -> None:
     """Test all sections in huge example have 10 subjects."""
@@ -739,19 +786,25 @@ def test_huge_all_sections_have_ten_subjects() -> None:
     for section_name, section_node in catalog.items.items():
         match section_node:
             case Section() as section:
-                assert len(section.items) == 10, f"Section {section_name} should have 10 subjects"
+                assert len(section.items) == 10, (
+                    f"Section {section_name} should have 10 subjects"
+                )
 
                 # Verify each subject has 3 stories
                 for subject_name, subject_node in section.items.items():
                     match subject_node:
                         case Subject() as subject:
-                            assert len(subject.items) == 3, f"Subject {subject_name} should have 3 stories"
+                            assert len(subject.items) == 3, (
+                                f"Subject {subject_name} should have 3 stories"
+                            )
                         case _:
                             raise AssertionError(f"Expected Subject for {subject_name}")
             case _:
                 raise AssertionError(f"Expected Section for {section_name}")
 
+
 # Task Group 4: Performance Testing and Integration
+
 
 @pytest.mark.slow
 def test_huge_example(tmp_path: Path) -> None:
@@ -775,6 +828,7 @@ def test_huge_example(tmp_path: Path) -> None:
                     raise AssertionError("Expected Subject in forms section")
         case _:
             raise AssertionError("Expected Section for forms")
+
 
 @pytest.mark.slow
 def test_huge_build_smoke(tmp_path: Path) -> None:
@@ -811,9 +865,14 @@ def test_huge_build_smoke(tmp_path: Path) -> None:
     assert (first_subject_dir / "index.html").exists()
 
     # Verify at least one story has index.html
-    story_dirs = [d for d in first_subject_dir.iterdir() if d.is_dir() and d.name.startswith("story-")]
+    story_dirs = [
+        d
+        for d in first_subject_dir.iterdir()
+        if d.is_dir() and d.name.startswith("story-")
+    ]
     assert len(story_dirs) > 0
     assert (story_dirs[0] / "index.html").exists()
+
 
 @pytest.mark.slow
 def test_huge_build_performance(benchmark, tmp_path: Path) -> None:

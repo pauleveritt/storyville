@@ -1,6 +1,5 @@
 """The subject for this Alert component."""
 
-
 from tdom import Node, html
 
 from examples.templates.components.alert.alert import Alert
@@ -13,7 +12,9 @@ def custom_alert_template() -> Node:
     This demonstrates how a template has full control over rendering,
     bypassing the default StoryView layout entirely.
     """
-    return html(t"<div class='custom'><h1>Custom Template</h1><p>Full control</p></div>")
+    return html(
+        t"<div class='custom'><h1>Custom Template</h1><p>Full control</p></div>"
+    )
 
 
 def this_subject() -> Subject:

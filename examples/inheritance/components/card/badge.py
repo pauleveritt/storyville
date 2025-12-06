@@ -1,6 +1,5 @@
 """Badge component."""
 
-
 from dataclasses import dataclass
 
 from tdom import Node, html

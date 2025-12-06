@@ -7,6 +7,7 @@ from storyville.section.views import SectionView
 from storyville.subject import Subject
 from storyville.catalog.models import Catalog
 
+
 def test_section_view_renders_title_in_h1() -> None:
     """Test SectionView renders section title in h1 element."""
     catalog = Catalog(title="My Catalog")
@@ -21,6 +22,7 @@ def test_section_view_renders_title_in_h1() -> None:
     h1 = get_by_tag_name(element, "h1")
     assert get_text_content(h1) == "Components"
 
+
 def test_section_view_renders_description() -> None:
     """Test SectionView renders description when present."""
     catalog = Catalog(title="My Catalog")
@@ -34,10 +36,10 @@ def test_section_view_renders_description() -> None:
     # Verify description is rendered in a p element
     all_p_tags = query_all_by_tag_name(element, "p")
     description_found = any(
-        "UI component library" in get_text_content(p)
-        for p in all_p_tags
+        "UI component library" in get_text_content(p) for p in all_p_tags
     )
     assert description_found
+
 
 def test_section_view_renders_subject_cards() -> None:
     """Test SectionView renders subject cards as list with title and link."""
@@ -68,6 +70,7 @@ def test_section_view_renders_subject_cards() -> None:
     link_texts = {get_text_content(link) for link in all_links}
     assert link_texts == {"Button", "Input"}
 
+
 def test_section_view_shows_empty_state() -> None:
     """Test SectionView shows empty state message when no subjects."""
     catalog = Catalog(title="My Catalog")
@@ -85,6 +88,7 @@ def test_section_view_shows_empty_state() -> None:
         for p in all_p_tags
     )
     assert empty_state_found
+
 
 def test_section_view_has_breadcrumbs() -> None:
     """Test SectionView includes breadcrumbs navigation (replaces parent link)."""

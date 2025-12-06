@@ -1,7 +1,5 @@
 """Test the Catalog model."""
 
-
-
 from storyville.catalog.models import Catalog
 
 

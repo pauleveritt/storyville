@@ -1,6 +1,5 @@
 """The Overlays section for the huge example."""
 
-
 from storyville import Section
 
 
