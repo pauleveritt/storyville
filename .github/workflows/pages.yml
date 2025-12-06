@@ -27,19 +27,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.14.0
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.14.0
-
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --frozen
 
       - name: Build the documentation site
-        run: |
-          PYTHONPATH=/home/runner/work/storyville/storyville uv run storyville build docs _site
+        run: PYTHONPATH=/home/runner/work/storyville/storyville uv run storyville build docs _site
         continue-on-error: false
 
       - name: Upload artifact to pages
