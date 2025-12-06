@@ -284,7 +284,142 @@ pytest my_package/
 # Auto-generates tests from story assertions!
 ```
 
----
+
+### 8. Assertion Helpers (Recommended)
+
+Storyville provides declarative assertion helpers that wrap aria-testing queries for clean, reusable component assertions:
+
+```python
+# my_package/components/button/stories.py
+from my_package.components.button.button import Button
+from storyville import Story, Subject
+from storyville.assertions import GetByTagName, GetByText, GetByRole
+
+def this_subject() -> Subject:
+    return Subject(
+        title="Button Component",
+        target=Button,
+        items=[
+            Story(
+                title="Primary Button",
+                props=dict(text="Click Me", variant="primary"),
+                assertions=[
+                    # Element exists
+                    GetByTagName(tag_name="button"),
+                    # Text content verification
+                    GetByTagName(tag_name="button").text_content("Click Me"),
+                    # Attribute checks
+                    GetByTagName(tag_name="button").with_attribute("class", "primary"),
+                ],
+            ),
+            Story(
+                title="No Login Button",
+                props=dict(text="Submit", variant="primary"),
+                assertions=[
+                    # Negative assertion - element should NOT exist
+                    GetByText(text="Login").not_(),
+                ],
+            ),
+        ],
+    )
+```
+
+**Single Element Query Helpers:**
+
+- `GetByRole(role="button")` - Find by ARIA role
+- `GetByText(text="Submit")` - Find by text content
+- `GetByLabelText(label="Email")` - Find form inputs by label
+- `GetByTestId(test_id="submit-btn")` - Find by test ID
+- `GetByClass(class_name="btn-primary")` - Find by CSS class
+- `GetById(id="main-content")` - Find by element ID
+- `GetByTagName(tag_name="button")` - Find by HTML tag
+
+**Fluent API Modifiers:**
+
+- `.not_()` - Assert element does NOT exist
+- `.text_content(expected)` - Verify element text
+- `.with_attribute(name, value)` - Check element attribute
+
+**Method Chaining:**
+
+```python
+# Chain multiple checks
+GetByTagName(tag_name="button")\
+    .text_content("Save")\
+    .with_attribute("type", "submit")
+```
+
+**List-Oriented Query Helpers (GetAllBy*):**
+
+For assertions involving multiple elements, use the `GetAllBy*` helpers:
+
+```python
+from storyville.assertions import GetAllByRole, GetAllByText, GetAllByClass
+
+Story(
+    title="Navigation Menu",
+    props=dict(items=["Home", "About", "Contact"]),
+    assertions=[
+        # Verify count of elements
+        GetAllByRole(role="listitem").count(3),
+
+        # Select specific element and verify its properties
+        GetAllByRole(role="listitem").nth(0).text_content("Home"),
+        GetAllByRole(role="listitem").nth(1).text_content("About"),
+
+        # Chain count with other operations
+        GetAllByClass(class_name="nav-item").count(3),
+
+        # Select element and check its attributes
+        GetAllByText(text="Contact").nth(0).with_attribute("href", "/contact"),
+    ],
+)
+```
+
+**Available List Query Helpers:**
+
+- `GetAllByRole(role="button")` - Find all elements with ARIA role
+- `GetAllByText(text="Item")` - Find all elements with text
+- `GetAllByLabelText(label="Option")` - Find all labeled elements
+- `GetAllByTestId(test_id="card")` - Find all elements by test ID
+- `GetAllByClass(class_name="item")` - Find all elements with CSS class
+- `GetAllByTagName(tag_name="li")` - Find all elements with HTML tag
+
+**List Query Operations:**
+
+- `.count(expected)` - Assert exact number of elements found
+- `.nth(index)` - Select nth element (0-indexed) for further checks
+- After `.nth()`, you can chain `.text_content()` and `.with_attribute()`
+
+**Example with Complete Workflow:**
+
+```python
+from storyville.assertions import GetAllByTagName, GetAllByClass
+
+Story(
+    title="Product List",
+    props=dict(products=[...]),
+    assertions=[
+        # Assert we have exactly 5 products
+        GetAllByClass(class_name="product-card").count(5),
+
+        # Verify first product details
+        GetAllByClass(class_name="product-card")\
+            .nth(0)\
+            .text_content("Product 1"),
+
+        # Verify all buttons are present
+        GetAllByTagName(tag_name="button").count(5),
+
+        # Check specific button attributes
+        GetAllByTagName(tag_name="button")\
+            .nth(2)\
+            .with_attribute("type", "button"),
+    ],
+)
+```
+
+All helpers are **frozen dataclasses** ensuring immutability and type safety. They integrate seamlessly with Story.assertions and pytest test generation.
 
 ## 📚 Documentation
 

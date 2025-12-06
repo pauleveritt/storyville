@@ -21,7 +21,7 @@ fluent API and detailed error messages.
 - Maintain immutability throughout - no state changes after instantiation
 - Type-safe parameters matching aria-testing query signatures
 
-**All aria-testing Query Types**
+**All aria-testing Query Types - Single Element**
 
 - GetByRole (role, level, name parameters)
 - GetByText (text parameter)
@@ -31,6 +31,17 @@ fluent API and detailed error messages.
 - GetById (id parameter)
 - GetByTagName (tag_name parameter)
 - Each helper class corresponds to one aria-testing get_by_* function
+
+**All aria-testing Query Types - Multiple Elements**
+
+- GetAllByRole (role, level, name parameters)
+- GetAllByText (text parameter)
+- GetAllByLabelText (label parameter)
+- GetAllByTestId (test_id parameter)
+- GetAllByClass (class_name parameter)
+- GetAllByTagName (tag_name parameter)
+- Each helper class corresponds to one aria-testing get_all_by_* function
+- Returns list of elements instead of single element
 
 **Fluent API - Negation (.not)**
 
@@ -59,6 +70,24 @@ fluent API and detailed error messages.
 - Add .exact() method for exact text matching
 - Add .hidden() method to include hidden elements
 - Options apply to the underlying aria-testing query call
+
+**Fluent API - Count Assertions (GetAllBy* only)**
+
+- Add .count(expected: int) method for list query helpers
+- Verifies the number of elements found matches expected count
+- Example: GetAllByRole(role="button").count(3) asserts exactly 3 buttons exist
+- Raises AssertionError with clear message showing expected vs actual count
+- Only available on GetAllBy* helpers, not GetBy* helpers
+
+**Fluent API - Item Selection (GetAllBy* only)**
+
+- Add .nth(index: int) method to select a specific item from the list
+- Returns a modified helper that operates on the selected element
+- Example: GetAllByRole(role="button").nth(0).text_content("Submit")
+- Enables chaining .text_content(), .with_attribute() on the selected element
+- Zero-indexed (0 = first element, 1 = second, etc.)
+- Raises AssertionError if index is out of bounds
+- Only available on GetAllBy* helpers, not GetBy* helpers
 
 **Module Organization**
 
@@ -135,11 +164,12 @@ fluent API and detailed error messages.
 
 - Adding new assertions to Story instances that don't currently have them
 - Creating migration documentation or guides (old pattern to new pattern)
-- Additional assertion patterns beyond element existence/attributes (e.g., event handlers, computed styles)
+- Additional assertion patterns beyond element existence/attributes/count (e.g., event handlers, computed styles)
 - Changes to underlying aria-testing library behavior or API
 - Modifications to Story class structure or fields
-- Support for query_by_* functions (only get_by_* which raise on failure)
+- Support for query_by_* functions (only get_by_* and get_all_by_* which raise on failure)
 - Custom error message templates or localization
 - Integration with other testing frameworks beyond pytest
 - Performance optimization of assertion execution
 - Async assertion support
+- GetById does not have a GetAllById equivalent (aria-testing limitation)
