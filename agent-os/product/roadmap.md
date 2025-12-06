@@ -52,19 +52,23 @@
     Remove more top/bottom padding in the LayoutAside `aside > nav > details > ul > li` which has 10 units of padding
     top/bottom. `M`
 
-16. [x] Assertion helpers — Make dataclass variations of aria-testing queries that can be used in `Story.assertions`. For
+16. [x] Assertion helpers — Make dataclass variations of aria-testing queries that can be used in `Story.assertions`.
+    For
     example `GetByRole` would be passed a `role`. Later, the instance would be passed a `container` and would raise
     `AssertionError` if not passing. Refactor all `Story` in `src` `examples` `tests` that have assertion functions to
     instead use these helpers, where appropriate. Update README and docs. `^M`
+
+17. [] Granular change detection — Make the change detection more granular. First, track the currently-viewed page. If
+    it is not
+    a Story, then keep as-is. If a Story, keep track of which Story and only do reloading if the change is about the
+    currently-viewed story. If the `themed_story.html` or any of its assets are in the changeset, tell the iframe to
+    reload. If it is the Story index.html, don't do a reload. Instead, send the HTML in the payload and use a local copy
+    of https://github.com/bigskysoftware/idiomorph to patch the page. Explain this in the architecture documents. `M`
 
 15. [] Responsive `M`
 
 15. [] Inspector `M`
 
-16. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
-    right. But if I change the story description, it should reload the whole page. If an assertion fails, it should
-    update the badge outside the iframe. Investigate a new approach to change detection, where the output_dir watcher
-    and watchfiles changeset can be analyzed to know what was the change and what reload signal to send. `M`
 
 17. [ ] Django Integration — Create helpers and adapters for seamlessly using Storyville components within Django
     templates and views. `M`
