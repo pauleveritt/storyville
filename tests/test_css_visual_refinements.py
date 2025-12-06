@@ -55,29 +55,6 @@ def test_main_element_exists(built_site: Path) -> None:
 
 
 @pytest.mark.slow
-def test_css_file_contains_main_background_rule(built_site: Path) -> None:
-    """CSS file should contain background-color rule for main element."""
-    # Arrange
-    css_path = (
-        built_site / "static" / "components" / "layout" / "static" / "storyville.css"
-    )
-
-    # Act
-    css_content = css_path.read_text()
-
-    # Assert - CSS should have main background-color rule with Pico CSS variable
-    assert "main {" in css_content or "main{" in css_content, (
-        "CSS should have main selector"
-    )
-    assert "background-color" in css_content, (
-        "CSS should contain background-color property"
-    )
-    assert "--pico-card-background-color" in css_content, (
-        "CSS should use --pico-card-background-color variable"
-    )
-
-
-@pytest.mark.slow
 def test_css_file_contains_navigation_padding_rule(built_site: Path) -> None:
     """CSS file should contain reduced padding for navigation list item links."""
     # Arrange

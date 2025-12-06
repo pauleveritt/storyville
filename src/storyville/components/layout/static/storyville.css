@@ -28,8 +28,6 @@ aside {
 
 main {
     grid-area: main;
-    /* Softer background using Pico CSS variable for improved visual comfort */
-    background-color: var(--pico-card-background-color);
 }
 
 /* Override PicoCSS body>main grid layout that constrains content width */

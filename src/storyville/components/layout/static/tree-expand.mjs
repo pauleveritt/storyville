@@ -34,23 +34,18 @@ function findAncestorDetails(element) {
 }
 
 /**
- * Find the navigation link that matches the current URL
+ * Find the navigation element that matches the current URL
+ * This could be a link (<a>) for Story pages, or a details element for Section/Subject pages
  * @param {string} currentPath - The current URL pathname
- * @returns {HTMLAnchorElement|null} The matching link or null
+ * @returns {HTMLElement|null} The matching element or null
  */
-function findMatchingNavLink(currentPath) {
+function findMatchingNavElement(currentPath) {
     try {
-        // Query all navigation links in the aside
-        const links = document.querySelectorAll('aside nav a');
-        if (!links || links.length === 0) {
-            console.log('[Storyville] No navigation links found');
-            return null;
-        }
-
         const normalizedCurrentPath = normalizePath(currentPath);
         console.log('[Storyville] Looking for navigation match for path:', normalizedCurrentPath);
 
-        // Try to find exact match first
+        // First, try to find exact link match (for Story pages)
+        const links = document.querySelectorAll('aside nav a');
         for (const link of links) {
             const href = link.getAttribute('href');
             if (!href) {
@@ -59,12 +54,53 @@ function findMatchingNavLink(currentPath) {
 
             const normalizedHref = normalizePath(href);
             if (normalizedHref === normalizedCurrentPath) {
-                console.log('[Storyville] Found exact match:', href);
+                console.log('[Storyville] Found exact link match:', href);
                 return link;
             }
         }
 
-        // If no exact match, try partial match (closest ancestor)
+        // If no exact link match, try to find matching details element by path structure
+        // Section pages are at /section/index.html
+        // Subject pages are at /section/subject/index.html
+        const pathParts = normalizedCurrentPath.split('/').filter(p => p.length > 0);
+
+        if (pathParts.length === 0) {
+            // Root page - nothing to expand
+            console.log('[Storyville] Root page - no expansion needed');
+            return null;
+        }
+
+        // Find all details elements in navigation
+        const allDetails = document.querySelectorAll('aside nav details');
+
+        // Look for details whose summary text matches the path segments
+        let matchedDetails = null;
+
+        for (const details of allDetails) {
+            const summary = details.querySelector('summary');
+            if (!summary) {
+                continue;
+            }
+
+            const summaryText = summary.textContent.trim().toLowerCase();
+
+            // Check if any path part matches this summary
+            for (const pathPart of pathParts) {
+                const normalizedPathPart = pathPart.toLowerCase().replace(/-/g, ' ');
+                if (summaryText === normalizedPathPart ||
+                    summaryText === pathPart.toLowerCase()) {
+                    console.log('[Storyville] Found details match:', summaryText, 'for path part:', pathPart);
+                    matchedDetails = details;
+                    break;
+                }
+            }
+        }
+
+        if (matchedDetails) {
+            return matchedDetails;
+        }
+
+        // If still no match, try partial match on links (for nested Story pages)
         let bestMatch = null;
         let bestMatchLength = 0;
 
@@ -85,25 +121,34 @@ function findMatchingNavLink(currentPath) {
         }
 
         if (bestMatch) {
-            console.log('[Storyville] Found partial match:', bestMatch.getAttribute('href'));
+            console.log('[Storyville] Found partial link match:', bestMatch.getAttribute('href'));
             return bestMatch;
         }
 
-        console.log('[Storyville] No matching navigation link found for path:', currentPath);
+        console.log('[Storyville] No matching navigation element found for path:', currentPath);
         return null;
     } catch (e) {
-        console.error('[Storyville] Error finding matching navigation link:', e);
+        console.error('[Storyville] Error finding matching navigation element:', e);
         return null;
     }
 }
 
 /**
- * Expand all ancestor details elements for a given link
- * @param {HTMLAnchorElement} link - The navigation link
+ * Expand all ancestor details elements for a given element
+ * @param {HTMLElement} element - The navigation element (link or details)
  */
-function expandAncestors(link) {
+function expandAncestors(element) {
     try {
-        const ancestors = findAncestorDetails(link);
+        // If the element itself is a details element, expand it
+        if (element.tagName === 'DETAILS') {
+            if (!element.hasAttribute('open')) {
+                element.setAttribute('open', 'open');
+                console.log('[Storyville] Expanded matched details element');
+            }
+        }
+
+        // Find and expand all ancestor details
+        const ancestors = findAncestorDetails(element);
         console.log('[Storyville] Found', ancestors.length, 'ancestor details elements');
 
         // Set open attribute on all ancestors
@@ -114,8 +159,9 @@ function expandAncestors(link) {
             }
         }
 
-        if (ancestors.length > 0) {
-            console.log('[Storyville] Successfully expanded', ancestors.length, 'navigation nodes');
+        if (ancestors.length > 0 || element.tagName === 'DETAILS') {
+            const totalExpanded = ancestors.length + (element.tagName === 'DETAILS' ? 1 : 0);
+            console.log('[Storyville] Successfully expanded', totalExpanded, 'navigation nodes');
         }
     } catch (e) {
         console.error('[Storyville] Error expanding ancestor details:', e);
@@ -130,15 +176,15 @@ function init() {
         const currentPath = window.location.pathname;
         console.log('[Storyville] Initializing tree expansion for path:', currentPath);
 
-        // Find matching navigation link
-        const matchingLink = findMatchingNavLink(currentPath);
-        if (!matchingLink) {
-            console.log('[Storyville] No matching navigation link found, skipping tree expansion');
+        // Find matching navigation element (link or details)
+        const matchingElement = findMatchingNavElement(currentPath);
+        if (!matchingElement) {
+            console.log('[Storyville] No matching navigation element found, skipping tree expansion');
             return;
         }
 
-        // Expand all ancestor details elements
-        expandAncestors(matchingLink);
+        // Expand all ancestor details elements (and the element itself if it's a details)
+        expandAncestors(matchingElement);
     } catch (e) {
         console.error('[Storyville] Error initializing tree expansion:', e);
     }
