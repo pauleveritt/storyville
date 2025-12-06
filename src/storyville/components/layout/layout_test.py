@@ -262,13 +262,13 @@ def test_layout_depth_boundary_at_depth_3() -> None:
     ws_script = None
     for script in script_tags:
         src = script.attrs.get("src")
-        if src and "ws.js" in src:
+        if src and "ws.mjs" in src:
             ws_script = script
             break
 
-    assert ws_script is not None, "Should have ws.js script tag"
-    # depth=3 means 3 directories deep = ../../../static/components/layout/static/ws.js
-    assert ws_script.attrs["src"] == "../../../static/components/layout/static/ws.js"
+    assert ws_script is not None, "Should have ws.mjs script tag"
+    # depth=3 means 3 directories deep = ../../../static/components/layout/static/ws.mjs
+    assert ws_script.attrs["src"] == "../../../static/components/layout/static/ws.mjs"
 
 
 def test_layout_cached_navigation_with_empty_sections() -> None:

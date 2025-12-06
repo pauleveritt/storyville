@@ -36,7 +36,7 @@ def test_build_copies_static_to_correct_output_paths(tmp_build_dir: Path) -> Non
     layout_static = static_dir / "components" / "layout" / "static"
     assert (layout_static / "pico-main.css").exists()
     assert (layout_static / "storyville.css").exists()
-    assert (layout_static / "ws.js").exists()
+    assert (layout_static / "ws.mjs").exists()
 
 
 def test_build_preserves_directory_structure(tmp_build_dir: Path) -> None:
@@ -139,7 +139,7 @@ def test_layout_uses_new_static_paths(tmp_build_dir: Path) -> None:
     # Verify it references static assets with full nested path (no ../ prefix for root pages)
     assert "static/components/layout/static/pico-main.css" in index_html
     assert "static/components/layout/static/storyville.css" in index_html
-    assert "static/components/layout/static/ws.js" in index_html
+    assert "static/components/layout/static/ws.mjs" in index_html
 
 
 @pytest.mark.parametrize(

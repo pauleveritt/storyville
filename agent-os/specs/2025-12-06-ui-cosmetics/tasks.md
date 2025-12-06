@@ -211,39 +211,39 @@ This feature enhances the visual aesthetics and user experience of Storyville by
 
 **Stack:** Frontend (JavaScript)
 
-- [ ] 5.0 Complete automatic tree expansion
-  - [ ] 5.1 Write 2-4 focused tests for tree expansion logic
+- [x] 5.0 Complete automatic tree expansion
+  - [x] 5.1 Write 2-4 focused tests for tree expansion logic
     - Test URL path parsing and matching
     - Test ancestor details elements expansion
     - Test handling of missing/non-matching paths
     - Skip exhaustive DOM manipulation testing
-  - [ ] 5.2 Create JavaScript file for tree expansion logic
-    - Create new file: `var/static/components/layout/static/tree-expand.js`
+  - [x] 5.2 Create JavaScript file for tree expansion logic
+    - Create new file: `src/storyville/components/layout/static/tree-expand.js`
     - Follow IIFE pattern from `ws.js` for encapsulation
     - Run logic on page load (DOMContentLoaded or immediate execution)
     - Parse `window.location.pathname` to get current URL path
-  - [ ] 5.3 Implement navigation item matching logic
+  - [x] 5.3 Implement navigation item matching logic
     - Query all navigation links in aside: `document.querySelectorAll('aside nav a')`
     - Compare each link's `href` attribute to current pathname
     - Find exact or closest matching navigation item
     - Handle URL variations (with/without trailing slashes, index.html)
-  - [ ] 5.4 Implement ancestor details expansion
+  - [x] 5.4 Implement ancestor details expansion
     - For matching navigation link, find all ancestor `<details>` elements
     - Use `element.closest()` or traverse parent nodes
     - Set `open` attribute on each ancestor details element
     - Ensure expansion works for deeply nested navigation structures
     - Handle cases where no matching item found (fail silently)
-  - [ ] 5.5 Add error handling and logging
+  - [x] 5.5 Add error handling and logging
     - Wrap logic in try-catch block
     - Log errors to console for debugging
     - Fail gracefully if DOM elements not found
     - Add console logs for successful expansion (development only)
-  - [ ] 5.6 Link tree-expand.js in Layout component
+  - [x] 5.6 Link tree-expand.js in Layout component
     - Edit `src/storyville/components/layout/layout.py`
     - Add script tag: `<script src="static/components/layout/static/tree-expand.js"></script>`
     - Place after `sidebar.js` script tag
     - Ensure depth-based path rewriting applies
-  - [ ] 5.7 Ensure tree expansion tests pass
+  - [x] 5.7 Ensure tree expansion tests pass
     - Run tests: `just test`
     - Verify URL matching logic works
     - Verify ancestor expansion works

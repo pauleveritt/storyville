@@ -71,23 +71,26 @@ def load_js(built_site: Path, filename: str) -> str:
 
 @pytest.mark.slow
 def test_sidebar_js_file_exists(built_site: Path) -> None:
-    """sidebar.js file should exist in the built output."""
+    """sidebar.mjs file should exist in the built output."""
     # Arrange
-    js_path = built_site / "static" / "components" / "layout" / "static" / "sidebar.js"
+    js_path = built_site / "static" / "components" / "layout" / "static" / "sidebar.mjs"
 
     # Assert
-    assert js_path.exists(), "sidebar.js should be copied to output directory"
+    assert js_path.exists(), "sidebar.mjs should be copied to output directory"
 
 
 @pytest.mark.slow
 def test_sidebar_js_linked_in_html(built_site: Path) -> None:
-    """sidebar.js should be linked in the HTML head/body."""
+    """sidebar.mjs should be linked in the HTML head/body as a module."""
     # Arrange & Act
     html_content = load_html(built_site)
 
-    # Assert - check for script tag referencing sidebar.js
-    assert 'src="static/components/layout/static/sidebar.js"' in html_content, (
-        "HTML should include script tag for sidebar.js"
+    # Assert - check for script tag referencing sidebar.mjs with type="module"
+    assert 'src="static/components/layout/static/sidebar.mjs"' in html_content, (
+        "HTML should include script tag for sidebar.mjs"
+    )
+    assert 'type="module"' in html_content, (
+        "Script tag should have type='module' attribute"
     )
 
 
@@ -126,25 +129,24 @@ def test_css_has_responsive_mobile_behavior(built_site: Path) -> None:
 
 
 @pytest.mark.slow
-def test_sidebar_js_uses_iife_pattern(built_site: Path) -> None:
-    """sidebar.js should use IIFE pattern for encapsulation."""
+def test_sidebar_js_uses_modern_syntax(built_site: Path) -> None:
+    """sidebar.mjs should use modern ES module syntax."""
     # Arrange & Act
-    js_content = load_js(built_site, "sidebar.js")
+    js_content = load_js(built_site, "sidebar.mjs")
 
-    # Assert - check for IIFE pattern
-    assert "(function" in js_content or "(() =>" in js_content, (
-        "JavaScript should use IIFE pattern for encapsulation"
+    # Assert - check for modern JavaScript (const/let instead of var)
+    assert "const " in js_content or "let " in js_content, (
+        "JavaScript should use const or let (not var)"
     )
-    assert "'use strict'" in js_content or '"use strict"' in js_content, (
-        "JavaScript should use strict mode"
-    )
+    # ES modules don't need IIFE or 'use strict' (strict mode is automatic)
+    assert "(function" not in js_content, "ES modules should not use IIFE pattern"
 
 
 @pytest.mark.slow
 def test_sidebar_js_queries_toggle_button(built_site: Path) -> None:
-    """sidebar.js should query the toggle button by ID."""
+    """sidebar.mjs should query the toggle button by ID."""
     # Arrange & Act
-    js_content = load_js(built_site, "sidebar.js")
+    js_content = load_js(built_site, "sidebar.mjs")
 
     # Assert - check for querySelector with sidebar-toggle ID
     assert "querySelector" in js_content, (
@@ -157,9 +159,9 @@ def test_sidebar_js_queries_toggle_button(built_site: Path) -> None:
 
 @pytest.mark.slow
 def test_sidebar_js_handles_localstorage(built_site: Path) -> None:
-    """sidebar.js should implement localStorage for state persistence."""
+    """sidebar.mjs should implement localStorage for state persistence."""
     # Arrange & Act
-    js_content = load_js(built_site, "sidebar.js")
+    js_content = load_js(built_site, "sidebar.mjs")
 
     # Assert - check for localStorage operations
     assert "localStorage" in js_content, (
@@ -172,9 +174,9 @@ def test_sidebar_js_handles_localstorage(built_site: Path) -> None:
 
 @pytest.mark.slow
 def test_sidebar_js_toggles_body_class(built_site: Path) -> None:
-    """sidebar.js should toggle .sidebar-collapsed class on body."""
+    """sidebar.mjs should toggle .sidebar-collapsed class on body."""
     # Arrange & Act
-    js_content = load_js(built_site, "sidebar.js")
+    js_content = load_js(built_site, "sidebar.mjs")
 
     # Assert - check for classList operations
     assert "classList" in js_content, (
@@ -187,9 +189,9 @@ def test_sidebar_js_toggles_body_class(built_site: Path) -> None:
 
 @pytest.mark.slow
 def test_sidebar_js_updates_aria_expanded(built_site: Path) -> None:
-    """sidebar.js should update aria-expanded attribute on toggle."""
+    """sidebar.mjs should update aria-expanded attribute on toggle."""
     # Arrange & Act
-    js_content = load_js(built_site, "sidebar.js")
+    js_content = load_js(built_site, "sidebar.mjs")
 
     # Assert - check for aria-expanded attribute updates
     assert "aria-expanded" in js_content, (

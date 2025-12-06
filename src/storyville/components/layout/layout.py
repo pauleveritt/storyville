@@ -32,6 +32,10 @@ class Layout:
     Sidebar Toggle:
     - sidebar.js provides collapse/expand functionality with localStorage persistence
     - Loaded after ws.js to ensure proper initialization order
+
+    Tree Expansion:
+    - tree-expand.js automatically expands navigation tree based on current URL
+    - Loaded after sidebar.js to ensure proper initialization order
     """
 
     view_title: str | None
@@ -67,8 +71,9 @@ class Layout:
     <link rel="stylesheet" href="static/components/layout/static/pico-docs.css" />
     <link rel="stylesheet" href="static/components/layout/static/storyville.css" />
     <link rel="stylesheet" href="static/vendor/fontawesome/static/all.min.css" />
-    <script src="static/components/layout/static/ws.js"></script>
-    <script src="static/components/layout/static/sidebar.js"></script>
+    <script type="module" src="static/components/layout/static/ws.mjs"></script>
+    <script type="module" src="static/components/layout/static/sidebar.mjs"></script>
+    <script type="module" src="static/components/layout/static/tree-expand.mjs"></script>
 </head>
 <body>
 <{LayoutHeader} site_title={self.site.title} depth={self.depth} />
