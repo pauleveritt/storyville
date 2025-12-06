@@ -59,33 +59,33 @@ database, API, or frontend components involved.
 **Dependencies:** None (can run parallel with Task Group 1)
 **Owner Role:** DevOps/CI Engineer
 
-- [ ] 2.0 Complete composite action caching enhancement
-    - [ ] 2.1 Add cache step for `.venv` directory
+- [x] 2.0 Complete composite action caching enhancement
+    - [x] 2.1 Add cache step for `.venv` directory
         - Use `actions/cache@v4` (before uv setup)
         - Action: restore cache if available
         - Path: `.venv` directory
-    - [ ] 2.2 Generate cache key from `uv.lock` hash
+    - [x] 2.2 Generate cache key from `uv.lock` hash
         - Key format: `venv-${{ runner.os }}-${{ hashFiles('uv.lock') }}`
         - Ensures cache invalidates when dependencies change
         - Restore keys for fallback behavior
-    - [ ] 2.3 Keep existing setup-uv@v7 with enable-cache
+    - [x] 2.3 Keep existing setup-uv@v7 with enable-cache
         - This caches uv's own package cache
         - Don't remove existing cache configuration
         - Two-layer caching: .venv + uv cache
-    - [ ] 2.4 Add cache save step (post-install)
+    - [x] 2.4 Add cache save step (post-install)
         - Runs after successful dependency installation
         - Saves `.venv` directory for next run
         - Should only save on cache miss
-    - [ ] 2.5 Verify composite action structure
+    - [x] 2.5 Verify composite action structure
         - File: `.github/actions/setup-python-uv/action.yml`
         - Maintain existing step order where possible
         - Ensure shell: bash for all run steps
-    - [ ] 2.6 Test caching behavior locally with `act`
+    - [x] 2.6 Test caching behavior locally with `act`
         - Install act: `brew install act` (if not installed)
         - Run: `act -j ci_tests --rm`
         - Verify cache restore/save steps execute
         - Note: act caching may have limitations
-    - [ ] 2.7 Verify workflows still reference composite action correctly
+    - [x] 2.7 Verify workflows still reference composite action correctly
         - Check: `.github/workflows/ci.yml`
         - Check: `.github/workflows/pages.yml`
         - Check: `.github/workflows/pypi.yml`

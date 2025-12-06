@@ -46,7 +46,9 @@
     invoke `just` recipes instead of calling `uv` directly. Make sure `agent-os` specs and standards prefer invoking
     tools via `just`.  `M`
 
-15. [] Responsive `M`
+15. [] Prek. Install Prek as a pre-commit alternative. Set it up to run `just ci-checks`  `M`
+
+16. [] Responsive `M`
 
 15. [] Inspector `M`
 
