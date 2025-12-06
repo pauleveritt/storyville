@@ -1,0 +1,1 @@
+"""Seed catalog template package."""

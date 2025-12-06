@@ -27,24 +27,13 @@ wheels = [
 [[package]]
 name = "aria-testing"
 version = "0.1.0"
-source = { directory = "../../t-strings/aria-testing" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tdom" },
 ]
-
-[package.metadata]
-requires-dist = [{ name = "tdom" }]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage", specifier = ">=7.11.2" },
-    { name = "furo", specifier = ">=2024.8.6" },
-    { name = "myst-parser", specifier = ">=4.0.0" },
-    { name = "pytest", specifier = ">=8.4.2" },
-    { name = "ruff", specifier = ">=0.13.2" },
-    { name = "sphinx", specifier = ">=8.0.0" },
-    { name = "sphinx-autobuild", specifier = ">=2024.9.3" },
-    { name = "ty", specifier = ">=0.0.1a25" },
+sdist = { url = "https://files.pythonhosted.org/packages/92/07/0a303f1528762b937a84789ccda537b1a0f48511a0f88df59cd999627b70/aria_testing-0.1.0.tar.gz", hash = "sha256:c8ccd9f88bccef7d234fc74dc9012bb51eb492fe8f6f0dd0db0d623fd787e571", size = 10634, upload-time = "2025-12-01T00:14:33.992Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/17/04/94b95b44988b45ae57d403ea64dcb3d97e6f0d346b9077ad3b866bf6b65d/aria_testing-0.1.0-py3-none-any.whl", hash = "sha256:f2a62ae3e426e508d7f00e3dd8651e66dd5b1365c33048a8cb579158b365fe37", size = 12591, upload-time = "2025-12-01T00:14:32.996Z" },
 ]
 
 [[package]]
@@ -153,6 +142,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ae/ed/aefcc8cd0ba62a0560c3c18c33925362d46c6075480bfa4df87b28e169a9/docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f", size = 2204444, upload-time = "2024-04-23T18:57:18.24Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8f/d7/9322c609343d929e75e7e5e6255e614fcc67572cfd083959cdef3b7aad79/docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2", size = 587408, upload-time = "2024-04-23T18:57:14.835Z" },
+]
+
+[[package]]
+name = "execnet"
+version = "2.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/89/780e11f9588d9e7128a3f87788354c7946a9cbb1401ad38a48c4db9a4f07/execnet-2.1.2.tar.gz", hash = "sha256:63d83bfdd9a23e35b9c6a3261412324f964c2ec8dcd8d3c6916ee9373e0befcd", size = 166622, upload-time = "2025-11-12T09:56:37.75Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/84/02fc1827e8cdded4aa65baef11296a9bbe595c474f0d6d758af082d849fd/execnet-2.1.2-py3-none-any.whl", hash = "sha256:67fba928dd5a544b783f6056f449e5e3931a5c378b128bc18501f7ea79e296ec", size = 40708, upload-time = "2025-11-12T09:56:36.333Z" },
 ]
 
 [[package]]
@@ -468,6 +466,19 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-xdist"
+version = "3.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "execnet" },
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/78/b4/439b179d1ff526791eb921115fca8e44e596a13efeda518b9d845a619450/pytest_xdist-3.8.0.tar.gz", hash = "sha256:7e578125ec9bc6050861aa93f2d59f1d8d085595d6551c2c90b6f4fad8d3a9f1", size = 88069, upload-time = "2025-07-01T13:30:59.346Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ca/31/d4e37e9e550c2b92a9cbc2e4d0b7420a27224968580b5a447f420847c975/pytest_xdist-3.8.0-py3-none-any.whl", hash = "sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88", size = 46396, upload-time = "2025-07-01T13:30:56.632Z" },
+]
+
+[[package]]
 name = "python-dotenv"
 version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -746,6 +757,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-benchmark" },
     { name = "pytest-playwright" },
+    { name = "pytest-xdist" },
     { name = "ruff" },
     { name = "sphinx" },
     { name = "sphinx-rtd-theme" },
@@ -756,14 +768,14 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "starlette", specifier = ">=0.50.0" },
-    { name = "tdom", directory = "../../t-strings/tdom" },
+    { name = "tdom" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.38.0" },
     { name = "watchfiles", specifier = ">=1.1.1" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "aria-testing", directory = "../../t-strings/aria-testing" },
+    { name = "aria-testing" },
     { name = "click", specifier = ">=8.3.0" },
     { name = "coverage", specifier = ">=7.11.2" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -772,6 +784,7 @@ dev = [
     { name = "pytest", specifier = ">=9.0.0" },
     { name = "pytest-benchmark", specifier = ">=4.0.0" },
     { name = "pytest-playwright", specifier = ">=0.3.0" },
+    { name = "pytest-xdist", specifier = ">=3.8.0" },
     { name = "ruff", specifier = ">=0.14.4" },
     { name = "sphinx", specifier = ">=7.0.0" },
     { name = "sphinx-rtd-theme", specifier = ">=2.0.0" },
@@ -782,27 +795,13 @@ dev = [
 [[package]]
 name = "tdom"
 version = "0.1.9"
-source = { directory = "../../t-strings/tdom" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markupsafe" },
 ]
-
-[package.metadata]
-requires-dist = [{ name = "markupsafe", specifier = ">=3.0.2" }]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "furo", specifier = ">=2025.7.19" },
-    { name = "genbadge", extras = ["coverage", "tests"], specifier = ">=1.1.2" },
-    { name = "myst-parser", specifier = ">=4.0.1" },
-    { name = "pyright", specifier = ">=1.1.404" },
-    { name = "pytest", specifier = ">=8.4.1" },
-    { name = "pytest-cov", specifier = ">=6.3.0" },
-    { name = "pytest-html", specifier = ">=4.1.1" },
-    { name = "pytest-watcher", specifier = ">=0.4.3" },
-    { name = "ruff", specifier = ">=0.12.11" },
-    { name = "sphinx", specifier = ">=8.2.3" },
-    { name = "sybil", extras = ["pytest"], specifier = ">=9.2.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/7f/6f/0b611a64ccb2b492926031b2835966904c2d11cfb4a5322a8974ae11db1d/tdom-0.1.9.tar.gz", hash = "sha256:40f340a25a6884485bb571c99740776ac8cb5887ba5c9b6c0f12e1007ee0de2d", size = 16102, upload-time = "2025-10-03T19:53:39.394Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a4/27/8dc805a0465bd62ac6c675a5acdfed2e94067c6793b21ff5fcd03ec01928/tdom-0.1.9-py3-none-any.whl", hash = "sha256:b8e5eac4a7767cc69837f094da0d89f84d9ef3f481e8cd4911748d6b83818167", size = 18423, upload-time = "2025-10-03T19:53:37.736Z" },
 ]
 
 [[package]]

@@ -38,18 +38,19 @@
 
 12. [x] Path objects - Convert the path handling and file handling to use `pathlib` to the maximum.  `M`
 
-13. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
+13. [x] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require
+    moving `examples/minimal` into `src/storytime` so that it is shipped in the package. `M`
+
+14. [] Responsive `M`
+
+15. [] Inspector `M`
+
+16. [] Story Reloader — If I change a story in a way that alters the component rendering, the <iframe> reloader is
     right. But if I change the story description, it should reload the whole page. If an assertion fails, it should
     update the badge outside the iframe. Investigate a new approach to change detection, where the output_dir watcher
     and watchfiles changeset can be analyzed to know what was the change and what reload signal to send. `M`
 
-14. [] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. `M`
-
-15. [] Responsive `M`
-
-16. [] Inspector `M`
-
-15. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
+17. [ ] Django Integration — Create helpers and adapters for seamlessly using Storytime components within Django
     templates and views. `M`
 
 16. [ ] FastAPI Integration — Build integration layer for using Storytime components with FastAPI's templating and

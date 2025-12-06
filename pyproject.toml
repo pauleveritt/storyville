@@ -36,10 +36,6 @@ enabled = true
 [tool.anyio]
 backends = ["asyncio"]
 
-[tool.uv.sources]
-aria-testing = { path = "/Users/pauleveritt/projects/t-strings/aria-testing" }
-tdom = { path = "/Users/pauleveritt/projects/t-strings/tdom" }
-
 [build-system]
 requires = ["uv_build>=0.8.17,<0.9.0"]
 build-backend = "uv_build"
@@ -55,6 +51,7 @@ dev = [
     "pytest>=9.0.0",
     "pytest-benchmark>=4.0.0",
     "pytest-playwright>=0.3.0",
+    "pytest-xdist>=3.8.0",
     "ruff>=0.14.4",
     "sphinx>=7.0.0",
     "sphinx-rtd-theme>=2.0.0",

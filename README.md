@@ -158,7 +158,31 @@ def this_subject() -> Subject:
     )
 ```
 
-### 3. Start the Dev Server
+### 3. Generate an Example Catalog (Optional)
+
+New to Storytime? Generate a complete example catalog to learn from:
+
+```bash
+# Generate a small example catalog
+storytime seed small my_catalog
+
+# Or try medium or large catalogs
+storytime seed medium my_catalog
+storytime seed large my_catalog
+```
+
+**Catalog Sizes:**
+- **small**: 1 section, 2-3 subjects, 2 stories per subject (4-6 total stories)
+- **medium**: 2-3 sections, 4-6 subjects, 2-3 stories per subject (12-18 total stories)
+- **large**: 4-5 sections, 8-12 subjects, 3-4 stories per subject (30-40 total stories)
+
+The generated catalog is a complete Python package with:
+- Diverse component examples (Button, Card, Form, Badge, etc.)
+- Story assertions demonstrating testing patterns
+- Custom ThemedLayout showing layout customization
+- Ready to serve and build immediately
+
+### 4. Start the Dev Server
 
 ```bash
 storytime serve my_package
@@ -166,7 +190,21 @@ storytime serve my_package
 # Hot reload enabled by default!
 ```
 
-### 4. Add Custom Theming (Optional)
+For generated catalogs:
+
+```bash
+storytime serve my_catalog
+# Browse the example components and stories
+```
+
+### 5. Build Static Catalog
+
+```bash
+storytime build my_catalog dist/
+# Generates static HTML in dist/ directory
+```
+
+### 6. Add Custom Theming (Optional)
 
 ```python
 # my_package/themed_layout/themed_layout.py
@@ -231,7 +269,7 @@ def this_catalog() -> Catalog:
     return Catalog(themed_layout=themed_layout_wrapper)
 ```
 
-### 5. Run Tests
+### 7. Run Tests
 
 ```bash
 # Configure pytest in pyproject.toml
@@ -255,6 +293,7 @@ pytest my_package/
 - **[Themed Stories](docs/themed-stories.md)** - Custom layouts and design system integration
 - **[pytest Plugin](docs/pytest-plugin.md)** - Automatic test generation
 - **[Hot Reload](docs/hot-reload.md)** - Subinterpreter architecture
+- **[CLI Reference](docs/cli-reference.md)** - Command-line interface documentation
 - **[API Reference](docs/api-reference.md)** - Complete API documentation
 
 ---
