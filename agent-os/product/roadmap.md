@@ -59,11 +59,11 @@
     instead use these helpers, where appropriate. Update README and docs. `^M`
 
 17. [] Granular change detection — Make the change detection more granular. First, track the currently-viewed page. If
-    it is not
-    a Story, then keep as-is. If a Story, keep track of which Story and only do reloading if the change is about the
-    currently-viewed story. If the `themed_story.html` or any of its assets are in the changeset, tell the iframe to
-    reload. If it is the Story index.html, don't do a reload. Instead, send the HTML in the payload and use a local copy
-    of https://github.com/bigskysoftware/idiomorph to patch the page. Explain this in the architecture documents. `M`
+    it is not a Story, then keep as-is. If a Story, keep track of which Story and only do reloading if the change is
+    about the currently-viewed story. If the `themed_story.html` or any of its assets are in the changeset, tell the
+    iframe to reload. If it is the Story index.html, don't do a reload. Instead, send the HTML in the payload and use a
+    local copy of https://github.com/bigskysoftware/idiomorph to patch the page. Explain this in the architecture
+    documents. `M`
 
 15. [] Responsive `M`
 
