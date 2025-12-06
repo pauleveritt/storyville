@@ -12,6 +12,8 @@ body {
     column-gap: 3rem;
     row-gap: 2rem;
     align-items: start;
+    /* Smooth transition for grid layout changes (sidebar collapse) */
+    transition: grid-template-columns 300ms ease;
 }
 
 header {
@@ -20,6 +22,8 @@ header {
 
 aside {
     grid-area: aside;
+    /* Smooth transition for sidebar visibility */
+    transition: opacity 300ms ease, visibility 300ms ease;
 }
 
 main {
@@ -38,6 +42,16 @@ body > main {
 
 footer {
     grid-area: footer;
+}
+
+/* Sidebar collapsed state */
+body.sidebar-collapsed {
+    grid-template-columns: 0 1fr;
+}
+
+body.sidebar-collapsed aside {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Sidebar navigation styling */
@@ -188,7 +202,19 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    aside {
+    /* Auto-collapse sidebar on mobile */
+    body aside {
+        opacity: 0;
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
+    }
+
+    /* Allow manual expansion on mobile if toggle is used */
+    body:not(.sidebar-collapsed) aside {
+        opacity: 1;
+        visibility: visible;
+        height: auto;
         position: static;
         max-height: none;
         margin-bottom: 2rem;

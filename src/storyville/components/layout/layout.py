@@ -28,6 +28,10 @@ class Layout:
     - FontAwesome Free v6.7.1 is vendored directly in src/storyville/vendor/fontawesome/static/
     - The static asset system automatically copies these files to the output directory
     - FontAwesome CSS is loaded after Pico CSS to ensure proper icon rendering
+
+    Sidebar Toggle:
+    - sidebar.js provides collapse/expand functionality with localStorage persistence
+    - Loaded after ws.js to ensure proper initialization order
     """
 
     view_title: str | None
@@ -64,6 +68,7 @@ class Layout:
     <link rel="stylesheet" href="static/components/layout/static/storyville.css" />
     <link rel="stylesheet" href="static/vendor/fontawesome/static/all.min.css" />
     <script src="static/components/layout/static/ws.js"></script>
+    <script src="static/components/layout/static/sidebar.js"></script>
 </head>
 <body>
 <{LayoutHeader} site_title={self.site.title} depth={self.depth} />

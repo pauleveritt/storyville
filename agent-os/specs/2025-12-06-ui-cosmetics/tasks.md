@@ -145,15 +145,15 @@ This feature enhances the visual aesthetics and user experience of Storyville by
 
 **Stack:** Frontend (JavaScript, CSS)
 
-- [ ] 4.0 Complete sidebar collapse functionality
-  - [ ] 4.1 Write 2-6 focused tests for sidebar behavior
+- [x] 4.0 Complete sidebar collapse functionality
+  - [x] 4.1 Write 2-6 focused tests for sidebar behavior
     - Test CSS class toggle on body element
     - Test localStorage read/write operations
     - Test grid layout changes when collapsed
     - Test responsive auto-collapse on mobile breakpoint
     - Skip exhaustive integration testing
     - Use Python tests for component structure, consider browser tests if needed
-  - [ ] 4.2 Implement CSS for sidebar collapse state
+  - [x] 4.2 Implement CSS for sidebar collapse state
     - Edit `var/static/components/layout/static/storyville.css`
     - Add `.sidebar-collapsed` class styles targeting body
     - When collapsed: hide `aside` element (`display: none` or `visibility: hidden`)
@@ -161,32 +161,32 @@ This feature enhances the visual aesthetics and user experience of Storyville by
     - Add CSS transition to `grid-template-columns` (300ms duration, ease timing)
     - Add transition to `aside` visibility for smooth animation
     - Ensure main area expands to full width when collapsed
-  - [ ] 4.3 Add responsive auto-collapse for mobile
+  - [x] 4.3 Add responsive auto-collapse for mobile
     - Edit `var/static/components/layout/static/storyville.css`
     - Add media query for `max-width: 768px` (Pico CSS mobile breakpoint)
     - Automatically apply `.sidebar-collapsed` styles below breakpoint
     - Ensure toggle button remains functional on mobile
     - Handle transition between breakpoints gracefully
-  - [ ] 4.4 Create JavaScript file for sidebar toggle logic
-    - Create new file: `var/static/components/layout/static/sidebar.js`
+  - [x] 4.4 Create JavaScript file for sidebar toggle logic
+    - Create new file: `src/storyville/components/layout/static/sidebar.js`
     - Follow IIFE pattern from `ws.js` for encapsulation
     - Query toggle button: `document.querySelector('#sidebar-toggle')`
     - Add click event listener to toggle button
     - Toggle `.sidebar-collapsed` class on `body` element
     - Update button ARIA attribute `aria-expanded` on toggle
-  - [ ] 4.5 Implement localStorage state persistence
+  - [x] 4.5 Implement localStorage state persistence
     - In `sidebar.js`, read localStorage key `storyville.sidebar.collapsed` on page load
     - Parse value as boolean (handle string "true"/"false")
     - Apply `.sidebar-collapsed` class to body if value is `true`
     - Save state to localStorage when toggle button clicked
     - Handle missing localStorage gracefully (default to expanded state)
     - Use try-catch for localStorage access (may be disabled in some browsers)
-  - [ ] 4.6 Link sidebar.js in Layout component
+  - [x] 4.6 Link sidebar.js in Layout component
     - Edit `src/storyville/components/layout/layout.py`
     - Add script tag: `<script src="static/components/layout/static/sidebar.js"></script>`
     - Place after `ws.js` script tag
     - Ensure depth-based path rewriting applies
-  - [ ] 4.7 Ensure sidebar behavior tests pass
+  - [x] 4.7 Ensure sidebar behavior tests pass
     - Run tests: `just test`
     - Verify CSS transitions work smoothly
     - Verify localStorage persistence works
