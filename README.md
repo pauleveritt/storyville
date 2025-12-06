@@ -383,6 +383,64 @@ cd docs && make html
 
 ---
 
+## 🛠️ Development Commands
+
+This project uses [Just](https://just.systems/) as the preferred task runner for development workflows. Just recipes provide a convenient, consistent interface for common development tasks.
+
+**For contributors without Just installed**, direct command alternatives are provided below.
+
+### Command Reference
+
+| Just Recipe (Preferred)      | Direct Command (Alternative)        | Description                          |
+|------------------------------|-------------------------------------|--------------------------------------|
+| `just install`               | `uv sync --all-groups`              | Install all dependencies             |
+| `just setup`                 | `uv sync --all-groups`              | Alias for install                    |
+| `just lint`                  | `uv run ruff check .`               | Check code for issues                |
+| `just fmt`                   | `uv run ruff format .`              | Format code automatically            |
+| `just lint-fix`              | `uv run ruff check --fix .`         | Lint and auto-fix issues             |
+| `just typecheck`             | `uv run ty check`                   | Run type checker                     |
+| `just test`                  | `uv run pytest`                     | Run tests (sequential)               |
+| `just test-parallel`         | `uv run pytest -n auto`             | Run tests (parallel)                 |
+| `just ci-checks`             | (see note below)                    | Run all quality checks               |
+| `just docs`                  | `uv run sphinx-build -b html docs docs/_build/html` | Build documentation |
+| `just build`                 | `uv build`                          | Build package distribution           |
+| `just clean`                 | (manual cleanup)                    | Clean build artifacts                |
+
+**Note on `just ci-checks`:** This recipe chains multiple commands with fail-fast behavior:
+```bash
+just install && just lint && just typecheck && just test-parallel
+```
+
+If running manually without Just, execute these commands in sequence and stop if any fails.
+
+### Local Workflow Testing with `act`
+
+You can test GitHub Actions workflows locally before pushing using the [act](https://github.com/nektos/act) tool:
+
+**Installation (macOS):**
+```bash
+brew install act
+```
+
+**Basic Usage:**
+```bash
+# Run the CI tests workflow locally
+act -j ci_tests --rm
+
+# Run all workflows
+act --rm
+```
+
+**Known Limitations:**
+- Caching behavior may differ from GitHub Actions
+- Some GitHub-specific features may not work identically
+- Secret handling requires additional configuration
+- Docker must be running on your system
+
+For more information, see the [act documentation](https://github.com/nektos/act).
+
+---
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.

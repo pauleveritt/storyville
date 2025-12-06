@@ -107,26 +107,26 @@ database, API, or frontend components involved.
 **Dependencies:** Task Groups 1, 2 (reference new recipes and workflows)
 **Owner Role:** Technical Writer/Documentation Engineer
 
-- [ ] 3.0 Complete documentation updates
-    - [ ] 3.1 Add "Development" section to README.md
+- [x] 3.0 Complete documentation updates
+    - [x] 3.1 Add "Development" section to README.md
         - Location: After "Contributing" section (around line 384)
         - Follow existing README formatting style
         - Include section header with emoji (e.g., "### 🛠️ Development Commands")
-    - [ ] 3.2 Create command mapping table in README
+    - [x] 3.2 Create command mapping table in README
         - Column 1: Just Recipe (preferred approach)
         - Column 2: Direct Command (alternative)
         - Include: install/setup, lint, fmt, typecheck, test, test-parallel, ci-checks
         - Example: `just install` → `uv sync --all-groups`
-    - [ ] 3.3 Document act tool for local workflow testing
+    - [x] 3.3 Document act tool for local workflow testing
         - Installation: `brew install act` (macOS)
         - Basic usage: `act -j ci_tests --rm`
         - Note limitations: caching behavior, secrets handling
         - Link to act documentation: https://github.com/nektos/act
-    - [ ] 3.4 Add note about Just recipes as preferred method
+    - [x] 3.4 Add note about Just recipes as preferred method
         - Clearly state Just is the recommended approach
         - Explain alternatives are for contributors without Just
         - Maintain consistency with existing Contributing section
-    - [ ] 3.5 Update tech-stack.md with actual project stack
+    - [x] 3.5 Update tech-stack.md with actual project stack
         - File: `agent-os/standards/global/tech-stack.md`
         - Replace placeholder content with real tools
         - Section: Framework & Runtime
@@ -142,7 +142,7 @@ database, API, or frontend components involved.
             - Composite action pattern for reusability
         - Add version requirements/ranges for each tool
         - Document Just as preferred with uv alternatives
-    - [ ] 3.6 Update conventions.md with development workflows
+    - [x] 3.6 Update conventions.md with development workflows
         - File: `agent-os/standards/global/conventions.md`
         - Add section: "Quality Check Sequence"
             - Order: lint → format → type check → test
