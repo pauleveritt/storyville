@@ -46,7 +46,7 @@
     invoke `just` recipes instead of calling `uv` directly. Make sure `agent-os` specs and standards prefer invoking
     tools via `just`.  `M`
 
-15. [] UI Cosmetics — Make the `<main>` area a slightly-less black background color. Bring in a local copy of
+15. [x] UI Cosmetics — Make the `<main>` area a slightly-less black background color. Bring in a local copy of
     FontAwesome icons. Add a button in the far left of the Header to toggle the LayoutAside and give more room to Main.
     Use a FontAwesome icon for that. Add some JavaScript that looks at the URL and correctly expands the current node.
     Remove more top/bottom padding in the LayoutAside `aside > nav > details > ul > li` which has 10 units of padding
@@ -55,7 +55,7 @@
 16. [] Assertion helpers — Make dataclass variations of aria-testing queries that can be used in `Story.assertions`. For
     example `GetByRole` would be passed a `role`. Later, the instance would be passed a `container` and would raise
     `AssertionError` if not passing. Refactor all `Story` in `src` `examples` `tests` that have assertion functions to
-    instead use these helpers, where appropriate. `^M`
+    instead use these helpers, where appropriate. Update README and docs. `^M`
 
 15. [] Responsive `M`
 
