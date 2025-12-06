@@ -24,6 +24,8 @@ aside {
 
 main {
     grid-area: main;
+    /* Softer background using Pico CSS variable for improved visual comfort */
+    background-color: var(--pico-card-background-color);
 }
 
 /* Override PicoCSS body>main grid layout that constrains content width */
@@ -76,7 +78,8 @@ aside nav details ul li {
 
 aside nav details ul li a {
     display: block;
-    padding: 0.125rem 0.5rem;
+    /* Reduced padding for denser navigation (top/bottom: 4 units = 0.25rem) */
+    padding: 0.25rem 0.5rem;
     text-decoration: none;
     border-radius: 0.25rem;
     transition: background-color 0.2s ease;

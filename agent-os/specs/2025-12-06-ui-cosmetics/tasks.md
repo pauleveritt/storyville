@@ -102,27 +102,27 @@ This feature enhances the visual aesthetics and user experience of Storyville by
 
 **Stack:** Frontend (Python/tdom components)
 
-- [ ] 3.0 Complete sidebar toggle button
-  - [ ] 3.1 Write 2-4 focused tests for toggle button
+- [x] 3.0 Complete sidebar toggle button
+  - [x] 3.1 Write 2-4 focused tests for toggle button
     - Test button renders in header with correct icon class
     - Test button has proper ARIA attributes for accessibility
     - Test button positioned before site title
     - Skip testing JavaScript click behavior (covered in Task Group 4)
-  - [ ] 3.2 Add toggle button to LayoutHeader component
+  - [x] 3.2 Add toggle button to LayoutHeader component
     - Edit `src/storyville/components/header/header.py`
     - Insert button element before `<hgroup>` in container
     - Use FontAwesome `fa-bars` icon: `<i class="fas fa-bars"></i>`
     - Apply Pico CSS button styles for consistency
     - Add ARIA attributes: `aria-label="Toggle sidebar"`, `aria-expanded="true"`
     - Add ID for JavaScript: `id="sidebar-toggle"`
-  - [ ] 3.3 Style toggle button positioning
+  - [x] 3.3 Style toggle button positioning
     - Edit `var/static/components/layout/static/storyville.css`
     - Add CSS to position button in far left of header
     - Ensure button remains visible when sidebar collapsed
     - Use flexbox on header container if needed
     - Apply consistent spacing with site title
     - Ensure button is visible and functional on mobile
-  - [ ] 3.4 Ensure component tests pass
+  - [x] 3.4 Ensure component tests pass
     - Run tests: `just test`
     - Verify button renders with correct structure
     - Verify ARIA attributes present

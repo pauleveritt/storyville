@@ -9,8 +9,12 @@ from tdom import Node, html
 class LayoutHeader:
     """Header component with site branding and main navigation.
 
-    Renders header element with container, site title in hgroup,
-    and navigation links (Home, About, Debug).
+    Renders header element with container, sidebar toggle button,
+    site title in hgroup, and navigation links (Home, About, Debug).
+
+    The toggle button is positioned first in the container (before hgroup)
+    to appear in the far left of the header, uses FontAwesome fa-bars icon,
+    and includes proper ARIA attributes for accessibility.
     """
 
     site_title: str
@@ -25,6 +29,9 @@ class LayoutHeader:
         return html(t"""\
 <header>
   <div class="container">
+    <button id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true">
+      <i class="fas fa-bars"></i>
+    </button>
     <hgroup>
       <p><strong>{self.site_title}</strong></p>
     </hgroup>
