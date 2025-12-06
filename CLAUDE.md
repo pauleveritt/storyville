@@ -11,6 +11,15 @@ Use modern Python standards (Python 3.14+) including:
 - **PEP 695 syntax**: Use `def func[T](x: T) -> T:` for generic functions
 - **Exception groups**: Use `except*` for handling exception groups when appropriate
 
+## Using Context7 for Documentation
+
+Always use context7 when generating code, providing setup/configuration steps, or needing library/API documentation. This means:
+
+- Automatically use the Context7 MCP tools (`mcp__context7__resolve-library-id` and `mcp__context7__get-library-docs`) without waiting for explicit requests
+- Use context7 when working with any third-party libraries or frameworks
+- Consult up-to-date documentation before suggesting code patterns or API usage
+- Verify current best practices and API signatures from official documentation
+
 ## Quality Checks
 
 After each prompt, run these commands to ensure code quality:

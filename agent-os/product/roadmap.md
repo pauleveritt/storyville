@@ -41,7 +41,12 @@
 13. [x] Seed CLI — Add a CLI argument that will make an example catalog sized small/medium/large. This might require
     moving `examples/minimal` into `src/storyville` so that it is shipped in the package. `M`
 
-14. [] Responsive `M`
+14. [] Improve repo. Switch to more use of Just and Justfiles. Make sure documentation prefers setup via Just. Add Just
+    recipes for project setup that calls `uv` commands and document these. Add `setup-just` to GitHub workflows to
+    invoke `just` recipes instead of calling `uv` directly. Make sure `agent-os` specs and standards prefer invoking
+    tools via `just`.  `M`
+
+15. [] Responsive `M`
 
 15. [] Inspector `M`
 
