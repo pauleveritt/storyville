@@ -14,18 +14,9 @@ jobs:
       - name: Setup Python and uv
         uses: ./.github/actions/setup-python-uv
 
-      - name: Lint
-        run: uv run ruff check
-        continue-on-error: false
+      - name: Install just
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
 
-      - name: Check formatting
-        run: uv run ruff format --check
-        continue-on-error: false
-
-      - name: Type check
-        run: uv run ty check
-        continue-on-error: false
-
-      - name: Run tests
-        run: uv run pytest -v
-        continue-on-error: false
+      - name: Run CI checks
+        run: just ci-checks

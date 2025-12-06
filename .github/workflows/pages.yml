@@ -30,8 +30,11 @@ jobs:
       - name: Setup Python and uv
         uses: ./.github/actions/setup-python-uv
 
+      - name: Install just
+        uses: extractions/setup-just@v2
+
       - name: Build the documentation site
-        run: PYTHONPATH=/home/runner/work/storyville/storyville uv run storyville build docs _site
+        run: just docs
         continue-on-error: false
 
       - name: Upload artifact to pages

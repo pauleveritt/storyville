@@ -38,6 +38,10 @@ lint *ARGS:
 fmt *ARGS:
     uv run ruff format {{ ARGS }} .
 
+# Check formatting without modifying files (for CI)
+fmt-check *ARGS:
+    uv run ruff format --check {{ ARGS }} .
+
 # Lint and auto-fix
 lint-fix:
     uv run ruff check --fix .
@@ -46,7 +50,7 @@ lint-fix:
 typecheck *ARGS:
     uv run ty check {{ ARGS }}
 
-# Build docs
+# Build the Storyville documentation site
 docs:
     uv run sphinx-build -b html docs docs/_build/html
 
@@ -61,7 +65,7 @@ clean:
 
 # Run all quality checks with fail-fast behavior
 ci-checks:
-    just install && just lint && just typecheck && just test-parallel
+    just install && just lint && just fmt-check && just typecheck && just test-parallel
 
 # Enable pre-push hook to run ci-checks before pushing
 enable-pre-push:
