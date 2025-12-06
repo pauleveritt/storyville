@@ -17,11 +17,13 @@
 
 ## Quality Checks
 
-After each step, run these commands to ensure code quality:
+Run quality checks frequently during development:
 
-- Tests: `just test`
-- Type checking: `just typecheck`
-- Formatting: `just fmt`
+- Individual checks: `just lint`, `just fmt`, `just typecheck`, `just test`
+- Full CI suite: `just ci-checks` (runs all checks with fail-fast)
+- Parallel tests: `just test-parallel` (faster feedback)
+
+**Before marking any task complete, run `just ci-checks` and ensure it passes.**
 
 ## Import Best Practices
 

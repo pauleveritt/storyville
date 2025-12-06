@@ -24,11 +24,21 @@ Always use context7 when generating code, providing setup/configuration steps, o
 
 After each prompt, run these commands to ensure code quality:
 
-- Tests: `just test`
-- Type checking: `just typecheck`
-- Formatting: `just fmt`
+- Quick checks: `just lint` and `just typecheck` (fast feedback)
+- Full CI suite: `just ci-checks` (runs all checks: lint, format check, typecheck, tests)
+- Auto-format: `just fmt` (fix formatting issues)
+- Auto-fix linting: `just lint-fix` (fix auto-fixable lint issues)
 
-All checks must pass before considering the task complete.
+All checks must pass before considering the task complete. Run `just ci-checks` to verify.
+
+## Using Just Recipes
+
+Always check for just recipes before running raw commands:
+
+- Run `just` to see all available recipes
+- Prefer `just <recipe>` over raw `uv run` commands
+- The justfile is the single source of truth for development workflows
+- Common recipes: `lint`, `fmt`, `typecheck`, `test`, `ci-checks`, `install`
 
 ## Testing Guidelines
 

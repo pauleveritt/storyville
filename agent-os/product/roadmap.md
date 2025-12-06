@@ -46,9 +46,13 @@
     invoke `just` recipes instead of calling `uv` directly. Make sure `agent-os` specs and standards prefer invoking
     tools via `just`.  `M`
 
-15. [] Prek. Install Prek as a pre-commit alternative. Set it up to run `just ci-checks`  `M`
+15. [] UI Cosmetics — Make the `<main>` area a slightly-less black background color. Bring in a local copy of
+    FontAwesome icons. Add a button in the far left of the Header to toggle the LayoutAside and give more room to Main.
+    Use a FontAwesome icon for that. Add some JavaScript that looks at the URL and correctly expands the current node.
+    Remove more top/bottom padding in the LayoutAside `aside > nav > details > ul > li` which has 10 units of padding
+    top/bottom. `M`
 
-16. [] Responsive `M`
+15. [] Responsive `M`
 
 15. [] Inspector `M`
 
