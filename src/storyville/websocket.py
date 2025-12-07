@@ -3,7 +3,7 @@
 import asyncio
 import json
 import logging
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from enum import Enum
 from pathlib import PurePath
 
@@ -33,6 +33,33 @@ class PageMetadata:
     page_url: str
     page_type: PageType
     story_id: str | None = None
+
+
+@dataclass
+class ReloadMessage:
+    """WebSocket reload message format for granular change detection.
+
+    Attributes:
+        type: Message type (always "reload")
+        change_type: Type of reload to perform (iframe_reload, morph_html, full_reload)
+        story_id: Story identifier if applicable (for story-specific changes)
+        html: HTML content for morphing (only for morph_html change_type)
+    """
+
+    type: str  # Always "reload"
+    change_type: str  # "iframe_reload", "morph_html", or "full_reload"
+    story_id: str | None = None
+    html: str | None = None
+
+    def to_json(self) -> str:
+        """Serialize message to JSON string.
+
+        Returns:
+            JSON string representation of the message
+        """
+        data = asdict(self)
+        # Remove None values to keep messages clean
+        return json.dumps({k: v for k, v in data.items() if v is not None})
 
 
 # Module-level set to track active WebSocket connections
@@ -179,12 +206,295 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
         )
 
 
+async def broadcast_story_reload_async(story_id: str, html: str) -> None:
+    """Broadcast story-specific HTML reload with DOM morphing.
+
+    Sends morph_html message only to connections viewing the specified story.
+    Uses targeted filtering to avoid disrupting other story viewers.
+
+    Args:
+        story_id: Story identifier to target (e.g., "components/heading/story-0")
+        html: HTML content to morph into the story content area
+    """
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    # Filter connections to only those viewing this specific story
+    target_connections = [
+        conn
+        for conn in _active_connections
+        if conn in _connection_metadata
+        and _connection_metadata[conn].page_type == PageType.STORY
+        and _connection_metadata[conn].story_id == story_id
+    ]
+
+    if not target_connections:
+        logger.debug(
+            "No clients viewing story %s, skipping story reload broadcast", story_id
+        )
+        return
+
+    # Create targeted message
+    message = ReloadMessage(
+        type="reload", change_type="morph_html", story_id=story_id, html=html
+    )
+    message_text = message.to_json()
+
+    logger.info(
+        "Broadcasting story reload: story_id=%s, targets=%d, change_type=morph_html",
+        story_id,
+        len(target_connections),
+    )
+
+    # Send to target connections
+    disconnected: list[WebSocket] = []
+    for connection in target_connections:
+        try:
+            await connection.send_text(message_text)
+        except Exception as e:
+            logger.warning("Failed to send to WebSocket client: %s", e)
+            disconnected.append(connection)
+
+    # Clean up disconnected clients
+    for connection in disconnected:
+        _active_connections.discard(connection)
+        _connection_metadata.pop(connection, None)
+
+    logger.debug(
+        "Story reload broadcast complete: sent to %d clients",
+        len(target_connections) - len(disconnected),
+    )
+
+
+async def broadcast_global_reload_async() -> None:
+    """Broadcast global asset reload to all story viewers.
+
+    Sends iframe_reload message to all connections viewing story pages.
+    This is triggered when global assets like themed_story.html or CSS/JS bundles change.
+    """
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    # Filter connections to only story pages (not non-story pages)
+    target_connections = [
+        conn
+        for conn in _active_connections
+        if conn in _connection_metadata
+        and _connection_metadata[conn].page_type == PageType.STORY
+    ]
+
+    if not target_connections:
+        logger.debug("No clients viewing stories, skipping global reload broadcast")
+        return
+
+    # Create global reload message
+    message = ReloadMessage(type="reload", change_type="iframe_reload")
+    message_text = message.to_json()
+
+    logger.info(
+        "Broadcasting global reload: targets=%d, change_type=iframe_reload",
+        len(target_connections),
+    )
+
+    # Send to target connections
+    disconnected: list[WebSocket] = []
+    for connection in target_connections:
+        try:
+            await connection.send_text(message_text)
+        except Exception as e:
+            logger.warning("Failed to send to WebSocket client: %s", e)
+            disconnected.append(connection)
+
+    # Clean up disconnected clients
+    for connection in disconnected:
+        _active_connections.discard(connection)
+        _connection_metadata.pop(connection, None)
+
+    logger.debug(
+        "Global reload broadcast complete: sent to %d clients",
+        len(target_connections) - len(disconnected),
+    )
+
+
+async def broadcast_full_reload_async() -> None:
+    """Broadcast full page reload to non-story viewers.
+
+    Sends full_reload message to all connections viewing non-story pages
+    (documentation, section indexes, catalog index, etc.).
+    """
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    # Filter connections to only non-story pages
+    target_connections = [
+        conn
+        for conn in _active_connections
+        if conn in _connection_metadata
+        and _connection_metadata[conn].page_type == PageType.NON_STORY
+    ]
+
+    if not target_connections:
+        logger.debug(
+            "No clients viewing non-story pages, skipping full reload broadcast"
+        )
+        return
+
+    # Create full reload message
+    message = ReloadMessage(type="reload", change_type="full_reload")
+    message_text = message.to_json()
+
+    logger.info(
+        "Broadcasting full reload: targets=%d, change_type=full_reload",
+        len(target_connections),
+    )
+
+    # Send to target connections
+    disconnected: list[WebSocket] = []
+    for connection in target_connections:
+        try:
+            await connection.send_text(message_text)
+        except Exception as e:
+            logger.warning("Failed to send to WebSocket client: %s", e)
+            disconnected.append(connection)
+
+    # Clean up disconnected clients
+    for connection in disconnected:
+        _active_connections.discard(connection)
+        _connection_metadata.pop(connection, None)
+
+    logger.debug(
+        "Full reload broadcast complete: sent to %d clients",
+        len(target_connections) - len(disconnected),
+    )
+
+
+def broadcast_story_reload(story_id: str, html: str) -> None:
+    """Synchronous wrapper for broadcast_story_reload_async.
+
+    Broadcasts story-specific reload with DOM morphing to clients viewing the specified story.
+
+    Args:
+        story_id: Story identifier to target
+        html: HTML content to morph
+    """
+    import concurrent.futures
+
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    if _websocket_loop is None:
+        logger.debug("No websocket loop available; skipping broadcast")
+        return
+
+    if _websocket_loop.is_closed():
+        logger.warning("Stored websocket loop is closed, clearing reference")
+        _clear_websocket_loop()
+        return
+
+    logger.debug("Scheduling story reload broadcast in websocket event loop")
+    try:
+        future = asyncio.run_coroutine_threadsafe(
+            broadcast_story_reload_async(story_id, html), _websocket_loop
+        )
+        future.result(timeout=5.0)
+    except concurrent.futures.TimeoutError as e:
+        msg = "Story reload broadcast timed out after 5 seconds"
+        raise TimeoutError(msg) from e
+    except RuntimeError as e:
+        if _is_loop_closed_error(e):
+            logger.warning("Loop closed during story reload broadcast: %s", e)
+            _clear_websocket_loop()
+        else:
+            raise
+
+
+def broadcast_global_reload() -> None:
+    """Synchronous wrapper for broadcast_global_reload_async.
+
+    Broadcasts global asset reload (iframe reload) to all story viewers.
+    """
+    import concurrent.futures
+
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    if _websocket_loop is None:
+        logger.debug("No websocket loop available; skipping broadcast")
+        return
+
+    if _websocket_loop.is_closed():
+        logger.warning("Stored websocket loop is closed, clearing reference")
+        _clear_websocket_loop()
+        return
+
+    logger.debug("Scheduling global reload broadcast in websocket event loop")
+    try:
+        future = asyncio.run_coroutine_threadsafe(
+            broadcast_global_reload_async(), _websocket_loop
+        )
+        future.result(timeout=5.0)
+    except concurrent.futures.TimeoutError as e:
+        msg = "Global reload broadcast timed out after 5 seconds"
+        raise TimeoutError(msg) from e
+    except RuntimeError as e:
+        if _is_loop_closed_error(e):
+            logger.warning("Loop closed during global reload broadcast: %s", e)
+            _clear_websocket_loop()
+        else:
+            raise
+
+
+def broadcast_full_reload() -> None:
+    """Synchronous wrapper for broadcast_full_reload_async.
+
+    Broadcasts full page reload to non-story viewers.
+    """
+    import concurrent.futures
+
+    if not _active_connections:
+        logger.debug("No WebSocket clients to broadcast to")
+        return
+
+    if _websocket_loop is None:
+        logger.debug("No websocket loop available; skipping broadcast")
+        return
+
+    if _websocket_loop.is_closed():
+        logger.warning("Stored websocket loop is closed, clearing reference")
+        _clear_websocket_loop()
+        return
+
+    logger.debug("Scheduling full reload broadcast in websocket event loop")
+    try:
+        future = asyncio.run_coroutine_threadsafe(
+            broadcast_full_reload_async(), _websocket_loop
+        )
+        future.result(timeout=5.0)
+    except concurrent.futures.TimeoutError as e:
+        msg = "Full reload broadcast timed out after 5 seconds"
+        raise TimeoutError(msg) from e
+    except RuntimeError as e:
+        if _is_loop_closed_error(e):
+            logger.warning("Loop closed during full reload broadcast: %s", e)
+            _clear_websocket_loop()
+        else:
+            raise
+
+
 async def broadcast_reload_async() -> None:
     """Async version of broadcast_reload.
 
     Broadcast reload message to all connected WebSocket clients.
     Sends JSON message {"type": "reload"} to all active connections.
     Handles disconnections gracefully by removing failed connections.
+
+    DEPRECATED: Use broadcast_story_reload_async, broadcast_global_reload_async,
+    or broadcast_full_reload_async for targeted broadcasting.
     """
     if not _active_connections:
         logger.debug("No WebSocket clients to broadcast to")
@@ -228,6 +538,9 @@ def broadcast_reload() -> None:
     In TestClient context, this is called from the main thread while the ASGI app
     runs in a background thread with its own event loop. We use run_coroutine_threadsafe
     to safely schedule the broadcast across threads.
+
+    DEPRECATED: Use broadcast_story_reload, broadcast_global_reload,
+    or broadcast_full_reload for targeted broadcasting.
     """
     import concurrent.futures
 

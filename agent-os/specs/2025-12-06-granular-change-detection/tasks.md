@@ -100,37 +100,37 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
 
 **Dependencies:** Task Groups 1, 2
 
-- [ ] 3.0 Complete targeted broadcast implementation
-    - [ ] 3.1 Write 2-8 focused tests for targeted broadcasting
+- [x] 3.0 Complete targeted broadcast implementation
+    - [x] 3.1 Write 2-8 focused tests for targeted broadcasting
         - Test story-specific broadcast filtering
         - Test global broadcast to all story viewers
         - Test non-story broadcast filtering
         - Skip exhaustive connection filtering scenarios
-    - [ ] 3.2 Create new message format for broadcasts
+    - [x] 3.2 Create new message format for broadcasts
         - Define message structure:
           `{type: "reload", change_type: "iframe_reload" | "morph_html" | "full_reload", story_id: str | None, html: str | None}`
         - Replace old `{type: "reload"}` format with new granular format
-    - [ ] 3.3 Implement `broadcast_targeted_reload()` function
+    - [x] 3.3 Implement `broadcast_targeted_reload()` function
         - Accept parameters: `change_type`, `affected_story_id`, `html_content`
         - Filter connections based on page type and story ID
         - Send appropriate message format to each connection
-    - [ ] 3.4 Implement story-specific filtering
+    - [x] 3.4 Implement story-specific filtering
         - For story HTML changes: only notify connections viewing that specific story
         - Compare `affected_story_id` with stored `story_id` in connection metadata
         - Send `change_type: "morph_html"` with HTML payload
-    - [ ] 3.5 Implement global story broadcast
+    - [x] 3.5 Implement global story broadcast
         - For global asset changes: notify all connections viewing any story
         - Filter for `page_type: "story"` in connection metadata
         - Send `change_type: "iframe_reload"` (no HTML payload)
-    - [ ] 3.6 Implement non-story broadcast
+    - [x] 3.6 Implement non-story broadcast
         - For non-story changes: notify all non-story viewers
         - Filter for `page_type: "non_story"` in connection metadata
         - Send `change_type: "full_reload"` (no filtering by page)
-    - [ ] 3.7 Add logging for broadcast targeting
+    - [x] 3.7 Add logging for broadcast targeting
         - Log broadcast decision: which connections receive messages
         - Log change type and affected story ID
         - Include timestamps for correlation with watcher logs
-    - [ ] 3.8 Ensure targeted broadcast tests pass
+    - [x] 3.8 Ensure targeted broadcast tests pass
         - Run ONLY the 2-8 tests written in 3.1
         - Verify correct connections receive correct messages
         - Do NOT run entire test suite at this stage

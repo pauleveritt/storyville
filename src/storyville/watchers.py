@@ -53,6 +53,7 @@ def classify_change(changed_path: Path) -> tuple[ChangeType, str | None]:
         >>> classify_change(Path("/output/docs/getting-started.html"))
         (ChangeType.NON_STORY, None)
     """
+    path_str = str(changed_path)
     parts = changed_path.parts
 
     # Check for global assets that affect all story pages
@@ -70,28 +71,28 @@ def classify_change(changed_path: Path) -> tuple[ChangeType, str | None]:
 
     # Check for story-specific changes (individual story index.html)
     # Look for pattern: .../story-N/index.html
-    if changed_path.name == "index.html":
+    if changed_path.name == "index.html" and "story-" in path_str:
+        # Extract story ID from path
         # Find the story-N segment in the path
         for i, part in enumerate(parts):
             if part.startswith("story-"):
                 # Build story ID from parts leading up to and including story-N
-                # Skip common output directory prefixes (output, build, dist, etc.)
-                output_dirs = {"output", "build", "dist", "_output", "public"}
+                # Skip leading parts that are likely directory prefixes:
+                # - Root "/" (parts[0])
+                # - Common output directory names (output, build, dist, _output, etc.)
                 start_idx = 0
-
-                # Check first 2 parts for output directories or root
-                for j in range(min(i, 2)):
+                for j in range(min(i, 2)):  # Check first 2 parts only
                     part_lower = parts[j].lower()
                     if (
                         parts[j] == "/"
-                        or part_lower in output_dirs
-                        or part_lower.startswith(".")
+                        or part_lower
+                        in {"output", "build", "dist", "_output", "public"}
+                        or part_lower.startswith(".")  # Hidden directories
                     ):
                         start_idx = j + 1
                     else:
                         break
 
-                # Extract story ID from meaningful parts
                 story_parts = parts[start_idx : i + 1]
                 story_id = "/".join(story_parts)
 
