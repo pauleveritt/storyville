@@ -18,6 +18,76 @@ function isModeC() {
     return iframe !== null;
 }
 
+/**
+ * Detect the current page type.
+ * @returns {'story' | 'non_story'} Page type classification
+ */
+function detectPageType() {
+    // Check if this is a story page (has iframe for themed story)
+    if (isModeC()) {
+        return 'story';
+    }
+
+    // Check if URL contains story-N pattern (story container page)
+    if (window.location.pathname.includes('story-') &&
+        window.location.pathname.endsWith('/index.html')) {
+        return 'story';
+    }
+
+    // Everything else is non-story (docs, indexes, etc.)
+    return 'non_story';
+}
+
+/**
+ * Extract story identifier from current URL path.
+ * Extracts story path from URLs like:
+ * - /components/heading/story-0/index.html -> components/heading/story-0
+ * - /components/heading/story-0/ -> components/heading/story-0
+ *
+ * @returns {string | null} Story identifier or null if not a story page
+ */
+function extractStoryId() {
+    const pathname = window.location.pathname;
+
+    // Find "story-N" segment in path
+    const parts = pathname.split('/').filter(part => part !== '');
+
+    for (let i = 0; i < parts.length; i++) {
+        if (parts[i].startsWith('story-')) {
+            // Return path up to and including the story-N segment
+            const storyParts = parts.slice(0, i + 1);
+            return storyParts.join('/');
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Send page metadata to server on WebSocket connection.
+ * Sends message: {type: "page_info", page_url, page_type, story_id}
+ */
+function sendPageInfo() {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+        console.log('[Storyville] Cannot send page info - WebSocket not open');
+        return;
+    }
+
+    const pageUrl = window.location.pathname;
+    const pageType = detectPageType();
+    const storyId = pageType === 'story' ? extractStoryId() : null;
+
+    const message = {
+        type: 'page_info',
+        page_url: pageUrl,
+        page_type: pageType,
+        story_id: storyId
+    };
+
+    console.log('[Storyville] Sending page info:', message);
+    ws.send(JSON.stringify(message));
+}
+
 function captureIframeScroll(iframe) {
     try {
         const scrollX = iframe.contentWindow.scrollX || 0;
@@ -86,6 +156,77 @@ function reloadIframe() {
     return true;
 }
 
+/**
+ * Handle morph_html message (stub for now - will be implemented in Task Group 5).
+ * @param {string} html - HTML content to morph
+ * @param {string | null} storyId - Story identifier
+ */
+function morphDOM(html, storyId) {
+    console.log('[Storyville] DOM morphing requested for story:', storyId);
+    console.log('[Storyville] DOM morphing not yet implemented, falling back to iframe reload');
+
+    // Fallback to iframe reload
+    if (!reloadIframe()) {
+        // If iframe reload fails, fall back to full page reload
+        console.log('[Storyville] Iframe reload failed, falling back to full page reload');
+        window.location.reload();
+    }
+}
+
+/**
+ * Handle reload message based on change_type field.
+ * Routes to appropriate reload handler:
+ * - iframe_reload: reloadIframe()
+ * - morph_html: morphDOM() (stub for now)
+ * - full_reload: scheduleReload()
+ *
+ * @param {Object} message - Parsed WebSocket message
+ */
+function handleReloadMessage(message) {
+    const changeType = message.change_type;
+    const storyId = message.story_id || null;
+
+    console.log('[Storyville] Processing reload message:', {
+        type: message.type,
+        change_type: changeType,
+        story_id: storyId
+    });
+
+    switch (changeType) {
+        case 'iframe_reload':
+            console.log('[Storyville] Iframe reload requested');
+            if (!reloadIframe()) {
+                // If iframe reload fails, fall back to full page reload
+                console.log('[Storyville] Iframe reload failed, falling back to full page reload');
+                window.location.reload();
+            }
+            break;
+
+        case 'morph_html':
+            console.log('[Storyville] DOM morph requested for story:', storyId);
+            const html = message.html;
+            if (html) {
+                morphDOM(html, storyId);
+            } else {
+                console.error('[Storyville] No HTML payload in morph_html message');
+                // Fall back to iframe reload
+                if (!reloadIframe()) {
+                    window.location.reload();
+                }
+            }
+            break;
+
+        case 'full_reload':
+            console.log('[Storyville] Full page reload requested');
+            window.location.reload();
+            break;
+
+        default:
+            console.warn('[Storyville] Unknown change_type:', changeType, '- falling back to full reload');
+            window.location.reload();
+    }
+}
+
 function scheduleReload() {
     console.log(`[Storyville] Scheduling reload in ${RELOAD_DEBOUNCE_DELAY}ms...`);
     // Clear any existing debounce timeout
@@ -119,6 +260,9 @@ function connect() {
                 clearTimeout(reconnectTimeout);
                 reconnectTimeout = null;
             }
+
+            // Send page metadata to server
+            sendPageInfo();
         };
 
         ws.onmessage = (event) => {
@@ -126,9 +270,16 @@ function connect() {
             try {
                 const message = JSON.parse(event.data);
                 console.log('[Storyville] Parsed message:', message);
+
                 if (message.type === 'reload') {
-                    console.log('[Storyville] Reload message received, scheduling reload...');
-                    scheduleReload();
+                    // Check if this is new format (has change_type) or old format
+                    if (message.change_type) {
+                        handleReloadMessage(message);
+                    } else {
+                        // Legacy fallback for old format
+                        console.log('[Storyville] Legacy reload message received, scheduling reload...');
+                        scheduleReload();
+                    }
                 }
             } catch (e) {
                 console.error('[Storyville] Failed to parse WebSocket message:', e);

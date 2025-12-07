@@ -148,36 +148,36 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
 
 **Dependencies:** None (can be developed in parallel with server tasks)
 
-- [ ] 4.0 Complete client-side page tracking and message handling
-    - [ ] 4.1 Write 2-8 focused tests for client-side functionality
+- [x] 4.0 Complete client-side page tracking and message handling
+    - [x] 4.1 Write 2-8 focused tests for client-side functionality
         - Test page type detection (story vs non-story)
         - Test story identifier extraction from URL
         - Test message parsing and routing
         - Use browser testing with Playwright if needed
         - Skip exhaustive URL parsing scenarios
-    - [ ] 4.2 Implement page identification on load in `ws.mjs`
+    - [x] 4.2 Implement page identification on load in `ws.mjs`
         - Detect page type: story page (has iframe), non-story page
         - Extract story identifier from `window.location.pathname`
         - Reuse `isModeC()` logic for story page detection
-    - [ ] 4.3 Send page metadata on WebSocket connection
+    - [x] 4.3 Send page metadata on WebSocket connection
         - Send message on `ws.onopen`: `{type: "page_info", page_url, page_type, story_id}`
         - Include full URL path, page type classification, and extracted story ID
         - Update `connect()` function to send metadata after connection opens
-    - [ ] 4.4 Implement new message handler for reload types
+    - [x] 4.4 Implement new message handler for reload types
         - Parse incoming messages with `change_type` field
         - Route to appropriate reload handler based on `change_type`
         - Handle three types: `iframe_reload`, `morph_html`, `full_reload`
-    - [ ] 4.5 Update iframe reload handler
+    - [x] 4.5 Update iframe reload handler
         - Trigger iframe reload for `change_type: "iframe_reload"`
         - Preserve existing scroll position capture/restore logic
         - Keep visual reload effect (`.iframe-reloading` class)
         - Maintain fallback to full page reload on error
-    - [ ] 4.6 Add logging for received messages
+    - [x] 4.6 Add logging for received messages
         - Log all received WebSocket messages with parsed data
         - Log reload type and story ID
         - Log which reload handler is invoked
         - Include timestamps for correlation with server logs
-    - [ ] 4.7 Ensure client-side tests pass
+    - [x] 4.7 Ensure client-side tests pass
         - Run ONLY the 2-8 tests written in 4.1
         - Verify page tracking and message handling work
         - Do NOT run entire test suite at this stage
