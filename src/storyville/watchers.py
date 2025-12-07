@@ -4,6 +4,7 @@ import asyncio
 import inspect
 import logging
 from collections.abc import Awaitable, Callable
+from enum import Enum
 from pathlib import Path
 
 from watchfiles import Change, awatch
@@ -15,6 +16,95 @@ STATIC_EXTENSIONS = {".css", ".js", ".png", ".jpg", ".jpeg", ".svg", ".ico", ".g
 
 # Debounce delay in seconds
 DEBOUNCE_DELAY = 0.3
+
+
+class ChangeType(Enum):
+    """Classification of file changes by their impact on the site.
+
+    GLOBAL_ASSET: Changes that affect all story pages (themed_story.html, CSS/JS bundles)
+    STORY_SPECIFIC: Changes to individual story index.html files
+    NON_STORY: Changes to documentation, section indexes, and other non-story content
+    """
+
+    GLOBAL_ASSET = "global_asset"
+    STORY_SPECIFIC = "story_specific"
+    NON_STORY = "non_story"
+
+
+def classify_change(changed_path: Path) -> tuple[ChangeType, str | None]:
+    """Classify a file change and extract affected story ID if applicable.
+
+    Examines the file path to determine what type of content changed and which
+    stories are affected by the change.
+
+    Args:
+        changed_path: Path to the changed file
+
+    Returns:
+        Tuple of (ChangeType, story_id), where story_id is None for non-story-specific changes
+
+    Examples:
+        >>> classify_change(Path("/output/components/heading/story-0/themed_story.html"))
+        (ChangeType.GLOBAL_ASSET, None)
+
+        >>> classify_change(Path("/output/components/heading/story-0/index.html"))
+        (ChangeType.STORY_SPECIFIC, "components/heading/story-0")
+
+        >>> classify_change(Path("/output/docs/getting-started.html"))
+        (ChangeType.NON_STORY, None)
+    """
+    parts = changed_path.parts
+
+    # Check for global assets that affect all story pages
+    # 1. themed_story.html - the template for all story pages
+    if changed_path.name == "themed_story.html":
+        logger.debug(
+            "Change classified as GLOBAL_ASSET: themed_story.html at %s", changed_path
+        )
+        return ChangeType.GLOBAL_ASSET, None
+
+    # 2. CSS/JS files in static directories - affect all pages
+    if "static" in parts and changed_path.suffix.lower() in {".css", ".js", ".mjs"}:
+        logger.debug("Change classified as GLOBAL_ASSET: static asset %s", changed_path)
+        return ChangeType.GLOBAL_ASSET, None
+
+    # Check for story-specific changes (individual story index.html)
+    # Look for pattern: .../story-N/index.html
+    if changed_path.name == "index.html":
+        # Find the story-N segment in the path
+        for i, part in enumerate(parts):
+            if part.startswith("story-"):
+                # Build story ID from parts leading up to and including story-N
+                # Skip common output directory prefixes (output, build, dist, etc.)
+                output_dirs = {"output", "build", "dist", "_output", "public"}
+                start_idx = 0
+
+                # Check first 2 parts for output directories or root
+                for j in range(min(i, 2)):
+                    part_lower = parts[j].lower()
+                    if (
+                        parts[j] == "/"
+                        or part_lower in output_dirs
+                        or part_lower.startswith(".")
+                    ):
+                        start_idx = j + 1
+                    else:
+                        break
+
+                # Extract story ID from meaningful parts
+                story_parts = parts[start_idx : i + 1]
+                story_id = "/".join(story_parts)
+
+                logger.debug(
+                    "Change classified as STORY_SPECIFIC: story %s at %s",
+                    story_id,
+                    changed_path,
+                )
+                return ChangeType.STORY_SPECIFIC, story_id
+
+    # Everything else is non-story content (docs, section indexes, catalog index)
+    logger.debug("Change classified as NON_STORY: %s", changed_path)
+    return ChangeType.NON_STORY, None
 
 
 async def watch_and_rebuild(
@@ -113,7 +203,7 @@ async def watch_and_rebuild(
 
             last_change_time = current_time
 
-            # Log changes
+            # Log changes with classification
             for change_type, changed_path in relevant_changes:
                 change_name = (
                     Change(change_type).name
@@ -121,6 +211,18 @@ async def watch_and_rebuild(
                     else change_type
                 )
                 logger.info("Detected %s: %s", change_name, changed_path)
+
+                # Classify the change to understand its impact
+                # Note: This classification happens BEFORE rebuild, so we're analyzing
+                # the source file path, not the output path. After rebuild, we'll
+                # classify the output changes to determine targeted broadcasts.
+                path_obj = Path(changed_path)
+                classification, story_id = classify_change(path_obj)
+                logger.info(
+                    "Change classification: type=%s, story_id=%s",
+                    classification.value,
+                    story_id,
+                )
 
             # Trigger rebuild
             logger.info("Triggering rebuild...")
