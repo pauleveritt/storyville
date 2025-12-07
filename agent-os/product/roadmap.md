@@ -64,6 +64,9 @@
     local copy of https://github.com/bigskysoftware/idiomorph to patch the page. Explain this in the architecture
     documents. `M`
 
+18. [] Improved docs - Change to `uvx` in README. Add a docs page about the seed and feature it more prominently in the
+    README. Link to the GitHub repo for issues, etc.
+
 15. [] Responsive `M`
 
 15. [] Inspector `M`

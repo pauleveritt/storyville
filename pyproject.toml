@@ -1,6 +1,6 @@
 [project]
 name = "storyville"
-version = "0.1.0"
+version = "0.1.1"
 description = "Story-based component development for Python."
 authors = [{ name = "Paul Everitt", email = "pauleveritt@me.com" }]
 license = "MIT"
@@ -13,6 +13,7 @@ requires-python = ">=3.14"
 dependencies = [
     "starlette>=0.50.0",
     "tdom",
+    "typer>=0.20.0",
     "uvicorn[standard]>=0.38.0",
     "watchfiles>=1.1.1",
 ]
@@ -56,7 +57,6 @@ dev = [
     "sphinx>=7.0.0",
     "furo>=2024.1.29",
     "ty>=0.0.1a25",
-    "typer>=0.20.0",
 ]
 
 [project.scripts]
