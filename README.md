@@ -5,6 +5,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Development Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/pauleveritt/storyville)
+[![Documentation](https://img.shields.io/badge/docs-online-blue.svg)](https://pauleveritt.github.io/storyville/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type checked: basedpyright](https://img.shields.io/badge/type%20checker-basedpyright-blue.svg)](https://github.com/DetachHead/basedpyright)
 [![Built with: tdom](https://img.shields.io/badge/built%20with-tdom-purple.svg)](https://github.com/pauleveritt/t-strings)

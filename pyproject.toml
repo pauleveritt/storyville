@@ -54,7 +54,7 @@ dev = [
     "pytest-xdist>=3.8.0",
     "ruff>=0.14.4",
     "sphinx>=7.0.0",
-    "sphinx-rtd-theme>=2.0.0",
+    "furo>=2024.1.29",
     "ty>=0.0.1a25",
     "typer>=0.20.0",
 ]
