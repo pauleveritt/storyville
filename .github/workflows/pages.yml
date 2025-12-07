@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact to pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_site
+          path: ./docs/_build/html
 
   # Deployment job
   deploy:

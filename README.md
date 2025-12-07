@@ -423,13 +423,13 @@ All helpers are **frozen dataclasses** ensuring immutability and type safety. Th
 
 ## 📚 Documentation
 
-- **[Getting Started](docs/getting-started.md)** - Installation and first steps
-- **[Writing Stories](docs/writing-stories.md)** - Component stories and assertions
-- **[Themed Stories](docs/themed-stories.md)** - Custom layouts and design system integration
-- **[pytest Plugin](docs/pytest-plugin.md)** - Automatic test generation
-- **[Hot Reload](docs/hot-reload.md)** - Subinterpreter architecture
-- **[CLI Reference](docs/cli-reference.md)** - Command-line interface documentation
-- **[API Reference](docs/api-reference.md)** - Complete API documentation
+- **[Getting Started](getting-started)** - Installation and first steps
+- **[Writing Stories](writing-stories)** - Component stories and assertions
+- **[Themed Stories](themed-stories)** - Custom layouts and design system integration
+- **[pytest Plugin](pytest-plugin)** - Automatic test generation
+- **[Hot Reload](hot-reload)** - Subinterpreter architecture
+- **[CLI Reference](cli-reference)** - Command-line interface documentation
+- **[API Reference](api-reference)** - Complete API documentation
 
 ---
 
