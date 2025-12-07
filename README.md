@@ -107,8 +107,7 @@ pip install storyville
 <details>
 <summary>📸 <strong>See it in action!</strong></summary>
 
-<!-- Replace with actual screenshot once available -->
-![Storyville Catalog Interface](https://via.placeholder.com/800x450.png?text=Storyville+Catalog+Browser)
+![Storyville Catalog Interface](docs/_static/storyville-screenshot.png)
 
 *Browse components, view stories, and see assertion results in real-time*
 
