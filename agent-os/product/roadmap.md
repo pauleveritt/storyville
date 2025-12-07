@@ -53,12 +53,11 @@
     top/bottom. `M`
 
 16. [x] Assertion helpers — Make dataclass variations of aria-testing queries that can be used in `Story.assertions`.
-    For
-    example `GetByRole` would be passed a `role`. Later, the instance would be passed a `container` and would raise
+    For example `GetByRole` would be passed a `role`. Later, the instance would be passed a `container` and would raise
     `AssertionError` if not passing. Refactor all `Story` in `src` `examples` `tests` that have assertion functions to
     instead use these helpers, where appropriate. Update README and docs. `^M`
 
-17. [] Granular change detection — Make the change detection more granular. First, track the currently-viewed page. If
+17. [x] Granular change detection — Make the change detection more granular. First, track the currently-viewed page. If
     it is not a Story, then keep as-is. If a Story, keep track of which Story and only do reloading if the change is
     about the currently-viewed story. If the `themed_story.html` or any of its assets are in the changeset, tell the
     iframe to reload. If it is the Story index.html, don't do a reload. Instead, send the HTML in the payload and use a

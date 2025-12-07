@@ -194,40 +194,40 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
 
 **Dependencies:** Task Group 4
 
-- [ ] 5.0 Complete DOM morphing with idiomorph
-    - [ ] 5.1 Write 2-8 focused tests for DOM morphing
+- [x] 5.0 Complete DOM morphing with idiomorph
+    - [x] 5.1 Write 2-8 focused tests for DOM morphing
         - Test morphing story content without full reload
         - Test fallback to iframe reload on morphing failure
         - Test scroll position preservation during morph
         - Use browser testing with Playwright if needed
         - Skip exhaustive morphing scenarios
-    - [ ] 5.2 Bundle idiomorph library locally
+    - [x] 5.2 Bundle idiomorph library locally
         - Download idiomorph from https://github.com/bigskysoftware/idiomorph
         - Place in `src/storyville/components/layout/static/idiomorph.min.js`
         - Do NOT use CDN - bundle locally for reliability
-    - [ ] 5.3 Load idiomorph in story pages
+    - [x] 5.3 Load idiomorph in story pages
         - Add script tag to load idiomorph in story page templates
         - Ensure idiomorph is available as global `Idiomorph` object
         - Only load on story pages (not needed for non-story pages)
-    - [ ] 5.4 Implement `morphStoryContent()` function in `ws.mjs`
+    - [x] 5.4 Implement `morphStoryContent()` function in `ws.mjs`
         - Accept HTML payload from WebSocket message
         - Target story content area for morphing (iframe content document)
         - Use idiomorph to morph only the changed content
         - Preserve scroll position during morph
-    - [ ] 5.5 Handle morph messages in WebSocket handler
+    - [x] 5.5 Handle morph messages in WebSocket handler
         - For `change_type: "morph_html"`: call `morphStoryContent(message.html)`
         - Extract HTML from message payload
         - Apply morphing to story content only
-    - [ ] 5.6 Implement fallback chain
+    - [x] 5.6 Implement fallback chain
         - If morphing fails: fall back to `reloadIframe()`
         - If iframe reload fails: fall back to `window.location.reload()`
         - Log each fallback decision
-    - [ ] 5.7 Add logging for morphing operations
+    - [x] 5.7 Add logging for morphing operations
         - Log morph attempts with story ID
         - Log morph success/failure
         - Log fallback decisions
         - Include timestamps for correlation
-    - [ ] 5.8 Ensure DOM morphing tests pass
+    - [x] 5.8 Ensure DOM morphing tests pass
         - Run ONLY the 2-8 tests written in 5.1
         - Verify morphing works without full reload
         - Verify fallback chain works correctly
@@ -248,21 +248,21 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
 
 **Dependencies:** Task Groups 1-5
 
-- [ ] 6.0 Review tests, fill critical gaps, and update documentation
-    - [ ] 6.1 Review existing tests from Task Groups 1-5
+- [x] 6.0 Review tests, fill critical gaps, and update documentation
+    - [x] 6.1 Review existing tests from Task Groups 1-5
         - Review the 2-8 tests written in 1.1 (connection state)
         - Review the 2-8 tests written in 2.1 (change classification)
         - Review the 2-8 tests written in 3.1 (targeted broadcast)
         - Review the 2-8 tests written in 4.1 (client-side tracking)
         - Review the 2-8 tests written in 5.1 (DOM morphing)
         - Total existing tests: approximately 10-40 tests
-    - [ ] 6.2 Analyze test coverage gaps for THIS feature only
+    - [x] 6.2 Analyze test coverage gaps for THIS feature only
         - Identify critical end-to-end workflows lacking coverage
         - Focus on integration between server and client
         - Prioritize story-specific reload → morph workflow
         - Prioritize global asset → iframe reload workflow
         - Do NOT assess entire application test coverage
-    - [ ] 6.3 Write up to 10 additional strategic tests maximum
+    - [x] 6.3 Write up to 10 additional strategic tests maximum
         - End-to-end test: story HTML change → morph
         - End-to-end test: global asset change → iframe reload
         - End-to-end test: non-story page change → full reload
@@ -270,7 +270,7 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
         - Integration test: change classification → targeted broadcast
         - Do NOT write comprehensive coverage for all scenarios
         - Skip edge cases unless business-critical
-    - [ ] 6.4 Update architecture documentation
+    - [x] 6.4 Update architecture documentation
         - Document granular change detection system in `docs/architecture.md`
         - Add section: "Granular Change Detection"
         - Explain page tracking mechanism
@@ -280,12 +280,12 @@ relevance, and uses either iframe reload or DOM morphing based on what changed.
         - Add flow diagram: file change → classification → targeted broadcast → client reload
         - Document DOM morphing vs iframe reload decision logic
         - Document fallback chain: morph → iframe reload → full reload
-    - [ ] 6.5 Add logging documentation
+    - [x] 6.5 Add logging documentation
         - Document server-side logging for change detection
         - Document client-side logging for reload events
         - Provide examples of log messages for debugging
         - Explain how to correlate server and client logs using timestamps
-    - [ ] 6.6 Run feature-specific tests only
+    - [x] 6.6 Run feature-specific tests only
         - Run ONLY tests related to this spec's feature (tests from 1.1, 2.1, 3.1, 4.1, 5.1, and 6.3)
         - Expected total: approximately 20-50 tests maximum
         - Do NOT run the entire application test suite

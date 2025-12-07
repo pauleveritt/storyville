@@ -158,9 +158,9 @@ def test_story_id_extraction_from_url(built_site_with_story: Path, page: Page) -
     expected_parts = relative_path.parts[:-1]  # Remove 'index.html'
     expected_story_id = "/".join(expected_parts)
 
-    assert story_id.endswith(
-        expected_story_id
-    ), f"Story ID should end with: {expected_story_id}, got: {story_id}"
+    assert story_id.endswith(expected_story_id), (
+        f"Story ID should end with: {expected_story_id}, got: {story_id}"
+    )
 
 
 def test_page_info_message_sent_on_connection(tmp_path: Path) -> None:
@@ -396,9 +396,9 @@ def test_fallback_chain_morph_to_iframe_to_full(tmp_path: Path, page: Page) -> N
 
     log_text = " ".join(logs)
     assert "DOM morphing requested" in log_text, "Should attempt morph"
-    assert (
-        "not yet implemented" in log_text or "falling back" in log_text
-    ), "Should indicate fallback"
+    assert "not yet implemented" in log_text or "falling back" in log_text, (
+        "Should indicate fallback"
+    )
 
 
 # Mark all tests as slow since they use Playwright

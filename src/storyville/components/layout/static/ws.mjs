@@ -157,19 +157,97 @@ function reloadIframe() {
 }
 
 /**
- * Handle morph_html message (stub for now - will be implemented in Task Group 5).
+ * Morph the iframe content using idiomorph.
+ * Morphs only the story content area to preserve scroll position and state.
+ *
  * @param {string} html - HTML content to morph
  * @param {string | null} storyId - Story identifier
+ * @returns {boolean} True if morphing succeeded, false otherwise
  */
 function morphDOM(html, storyId) {
     console.log('[Storyville] DOM morphing requested for story:', storyId);
-    console.log('[Storyville] DOM morphing not yet implemented, falling back to iframe reload');
 
-    // Fallback to iframe reload
-    if (!reloadIframe()) {
-        // If iframe reload fails, fall back to full page reload
-        console.log('[Storyville] Iframe reload failed, falling back to full page reload');
-        window.location.reload();
+    // Check if idiomorph is available
+    if (typeof Idiomorph === 'undefined') {
+        console.error('[Storyville] Idiomorph library not loaded, falling back to iframe reload');
+        return false;
+    }
+
+    // Get the iframe
+    const iframe = document.querySelector('iframe[src="./themed_story.html"]');
+    if (!iframe) {
+        console.log('[Storyville] No iframe found for morphing');
+        return false;
+    }
+
+    try {
+        // Access iframe content document
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframeDoc) {
+            console.error('[Storyville] Cannot access iframe document, falling back to reload');
+            return false;
+        }
+
+        // Capture scroll position before morphing
+        const scrollState = captureIframeScroll(iframe);
+
+        // Parse the new HTML into a temporary container
+        const parser = new DOMParser();
+        const newDoc = parser.parseFromString(html, 'text/html');
+
+        // Morph the iframe body with the new content
+        console.log('[Storyville] Morphing iframe body content...');
+        Idiomorph.morph(iframeDoc.body, newDoc.body, {
+            morphStyle: 'innerHTML',
+            callbacks: {
+                beforeNodeMorphed: (oldNode, newNode) => {
+                    // Log morph operations for debugging
+                    if (oldNode.nodeType === 1) { // Element nodes only
+                        console.log('[Storyville] Morphing element:', oldNode.tagName);
+                    }
+                    return true;
+                }
+            }
+        });
+
+        console.log('[Storyville] DOM morphing completed successfully');
+
+        // Restore scroll position after morphing
+        if (scrollState) {
+            // Use setTimeout to ensure DOM is fully updated
+            setTimeout(() => {
+                restoreIframeScroll(iframe, scrollState);
+            }, 10);
+        }
+
+        return true;
+    } catch (e) {
+        console.error('[Storyville] DOM morphing failed:', e);
+        return false;
+    }
+}
+
+/**
+ * Handle morph_html message by morphing the story content.
+ * Falls back to iframe reload if morphing fails.
+ *
+ * @param {string} html - HTML content to morph
+ * @param {string | null} storyId - Story identifier
+ */
+function handleMorphHtml(html, storyId) {
+    console.log('[Storyville] Attempting DOM morph for story:', storyId);
+
+    // Try to morph the content
+    const morphSuccess = morphDOM(html, storyId);
+
+    if (!morphSuccess) {
+        // Fallback to iframe reload
+        console.log('[Storyville] Morphing failed, falling back to iframe reload');
+        if (!reloadIframe()) {
+            // If iframe reload fails, fall back to full page reload
+            console.log('[Storyville] Iframe reload failed, falling back to full page reload');
+            window.location.reload();
+        }
     }
 }
 
@@ -177,8 +255,8 @@ function morphDOM(html, storyId) {
  * Handle reload message based on change_type field.
  * Routes to appropriate reload handler:
  * - iframe_reload: reloadIframe()
- * - morph_html: morphDOM() (stub for now)
- * - full_reload: scheduleReload()
+ * - morph_html: handleMorphHtml()
+ * - full_reload: window.location.reload()
  *
  * @param {Object} message - Parsed WebSocket message
  */
@@ -206,7 +284,7 @@ function handleReloadMessage(message) {
             console.log('[Storyville] DOM morph requested for story:', storyId);
             const html = message.html;
             if (html) {
-                morphDOM(html, storyId);
+                handleMorphHtml(html, storyId);
             } else {
                 console.error('[Storyville] No HTML payload in morph_html message');
                 // Fall back to iframe reload

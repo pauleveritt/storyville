@@ -36,6 +36,10 @@ class Layout:
     Tree Expansion:
     - tree-expand.js automatically expands navigation tree based on current URL
     - Loaded after sidebar.js to ensure proper initialization order
+
+    DOM Morphing:
+    - idiomorph.js provides efficient DOM morphing for hot reload
+    - Loaded before ws.mjs to ensure it's available for page updates
     """
 
     view_title: str | None
@@ -71,6 +75,7 @@ class Layout:
     <link rel="stylesheet" href="static/components/layout/static/pico-docs.css" />
     <link rel="stylesheet" href="static/components/layout/static/storyville.css" />
     <link rel="stylesheet" href="static/vendor/fontawesome/static/all.min.css" />
+    <script src="static/components/layout/static/idiomorph.js"></script>
     <script type="module" src="static/components/layout/static/ws.mjs"></script>
     <script type="module" src="static/components/layout/static/sidebar.mjs"></script>
     <script type="module" src="static/components/layout/static/tree-expand.mjs"></script>
