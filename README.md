@@ -132,12 +132,12 @@ Then open `http://localhost:8080` in your browser. Edit files in `my_catalog` an
 
 ```python
 # my_package/components/button/button.py
-from tdom import html as h
+from tdom import html
 
 
 def Button(text: str, variant: str = "primary"):
     """A simple button component."""
-    return h.button(text, class_=variant)
+    return html(t"<button class={variant}>{text}</button>")
 ```
 
 ### 2. Write Stories
@@ -146,11 +146,7 @@ def Button(text: str, variant: str = "primary"):
 # my_package/components/button/stories.py
 from my_package.components.button.button import Button
 from storyville import Story, Subject
-
-
-def check_is_button(el) -> None:
-    """Assertion: element should be a button tag."""
-    assert "button" in str(el).lower(), "Should be a button element"
+from storyville.assertions import GetByTagName
 
 
 def this_subject() -> Subject:
@@ -161,7 +157,7 @@ def this_subject() -> Subject:
             # Story with assertions
             Story(
                 props=dict(text="Click Me", variant="primary"),
-                assertions=[check_is_button],
+                assertions=[GetByTagName(tag="button")],
             ),
             # More variations...
             Story(props=dict(text="Cancel", variant="danger")),

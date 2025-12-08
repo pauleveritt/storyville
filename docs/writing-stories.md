@@ -192,15 +192,16 @@ Catalog (auto-discovered from package)
 Custom templates give you full control over story rendering:
 
 ```python
-from tdom import html as h
+from tdom import html
 
 def custom_story_template(story, catalog):
     """Custom template for story rendering."""
-    return h.div(
-        h.h1("Custom Story View"),
-        h.div(story.instance, class_="story-content"),
-        class_="custom-template",
-    )
+    return html(t"""
+        <div class="custom-template">
+            <h1>Custom Story View</h1>
+            <div class="story-content">{story.instance}</div>
+        </div>
+    """)
 
 Story(
     props=dict(text="Hello"),

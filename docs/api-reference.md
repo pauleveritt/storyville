@@ -207,8 +207,10 @@ type Target = Callable[..., Node]
 Usually a component function:
 
 ```python
+from tdom import html
+
 def Button(text: str) -> Element:
-    return h.button(text)
+    return html(t"<button>{text}</button>")
 
 # Button is a valid Target
 ```
@@ -228,12 +230,15 @@ type Template = Callable[[Story, Catalog], Node]
 **Example:**
 
 ```python
+from tdom import html
+
 def custom_template(story: Story, catalog: Catalog) -> Node:
-    return h.div(
-        h.h1(story.title),
-        story.instance,
-        class_="custom",
-    )
+    return html(t"""
+        <div class="custom">
+            <h1>{story.title}</h1>
+            {story.instance}
+        </div>
+    """)
 ```
 
 ## Helper Functions

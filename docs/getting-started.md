@@ -42,11 +42,11 @@ my_project/
 
 ```python
 # my_project/components/button/button.py
-from tdom import html as h
+from tdom import html
 
 def Button(text: str, variant: str = "primary"):
     """A simple button component."""
-    return h.button(text, class_=variant)
+    return html(t"<button class={variant}>{text}</button>")
 ```
 
 ### 3. Write Stories
