@@ -14,7 +14,8 @@
 
 ## 🎯 What is Storyville?
 
-Storyville is a **visual, component-driven development (CDD)** system for Python that helps you build, document, and test
+Storyville is a **visual, component-driven development (CDD)** system for Python that helps you build, document, and
+test
 components in isolation. Write stories to express component variations, browse them in a live catalog, and automatically
 generate tests from assertions.
 
@@ -113,7 +114,17 @@ pip install storyville
 
 </details>
 
----
+## 🎮 Try It
+
+Want to play around? Use the `seed` command to generate a fake catalog, then view it.
+
+```bash
+$ cd [some temp dir]
+$ uvx storyville seed small my_catalog
+$ PYTHONPATH=. uvx storyville serve my_catalog
+```
+
+Then open `http://localhost:8080` in your browser. Edit files in `my_catalog` and see the updates.
 
 ## 🚀 Quick Start
 
@@ -172,11 +183,13 @@ storyville seed large my_catalog
 ```
 
 **Catalog Sizes:**
+
 - **small**: 1 section, 2-3 subjects, 2 stories per subject (4-6 total stories)
 - **medium**: 2-3 sections, 4-6 subjects, 2-3 stories per subject (12-18 total stories)
 - **large**: 4-5 sections, 8-12 subjects, 3-4 stories per subject (30-40 total stories)
 
 The generated catalog is a complete Python package with:
+
 - Diverse component examples (Button, Card, Form, Badge, etc.)
 - Story assertions demonstrating testing patterns
 - Custom ThemedLayout showing layout customization
@@ -284,16 +297,17 @@ pytest my_package/
 # Auto-generates tests from story assertions!
 ```
 
-
 ### 8. Assertion Helpers (Recommended)
 
-Storyville provides declarative assertion helpers that wrap aria-testing queries for clean, reusable component assertions:
+Storyville provides declarative assertion helpers that wrap aria-testing queries for clean, reusable component
+assertions:
 
 ```python
 # my_package/components/button/stories.py
 from my_package.components.button.button import Button
 from storyville import Story, Subject
 from storyville.assertions import GetByTagName, GetByText, GetByRole
+
 
 def this_subject() -> Subject:
     return Subject(
@@ -344,8 +358,8 @@ def this_subject() -> Subject:
 
 ```python
 # Chain multiple checks
-GetByTagName(tag_name="button")\
-    .text_content("Save")\
+GetByTagName(tag_name="button")
+    .text_content("Save")
     .with_attribute("type", "submit")
 ```
 
@@ -404,22 +418,23 @@ Story(
         GetAllByClass(class_name="product-card").count(5),
 
         # Verify first product details
-        GetAllByClass(class_name="product-card")\
-            .nth(0)\
+        GetAllByClass(class_name="product-card")
+            .nth(0)
             .text_content("Product 1"),
 
         # Verify all buttons are present
         GetAllByTagName(tag_name="button").count(5),
 
         # Check specific button attributes
-        GetAllByTagName(tag_name="button")\
-            .nth(2)\
+        GetAllByTagName(tag_name="button")
+            .nth(2)
             .with_attribute("type", "button"),
     ],
 )
 ```
 
-All helpers are **frozen dataclasses** ensuring immutability and type safety. They integrate seamlessly with Story.assertions and pytest test generation.
+All helpers are **frozen dataclasses** ensuring immutability and type safety. They integrate seamlessly with
+Story.assertions and pytest test generation.
 
 ## 📚 Documentation
 
@@ -520,28 +535,30 @@ cd docs && make html
 
 ## 🛠️ Development Commands
 
-This project uses [Just](https://just.systems/) as the preferred task runner for development workflows. Just recipes provide a convenient, consistent interface for common development tasks.
+This project uses [Just](https://just.systems/) as the preferred task runner for development workflows. Just recipes
+provide a convenient, consistent interface for common development tasks.
 
 **For contributors without Just installed**, direct command alternatives are provided below.
 
 ### Command Reference
 
-| Just Recipe (Preferred)      | Direct Command (Alternative)        | Description                          |
-|------------------------------|-------------------------------------|--------------------------------------|
-| `just install`               | `uv sync --all-groups`              | Install all dependencies             |
-| `just setup`                 | `uv sync --all-groups`              | Alias for install                    |
-| `just lint`                  | `uv run ruff check .`               | Check code for issues                |
-| `just fmt`                   | `uv run ruff format .`              | Format code automatically            |
-| `just lint-fix`              | `uv run ruff check --fix .`         | Lint and auto-fix issues             |
-| `just typecheck`             | `uv run ty check`                   | Run type checker                     |
-| `just test`                  | `uv run pytest`                     | Run tests (sequential)               |
-| `just test-parallel`         | `uv run pytest -n auto`             | Run tests (parallel)                 |
-| `just ci-checks`             | (see note below)                    | Run all quality checks               |
-| `just docs`                  | `uv run sphinx-build -b html docs docs/_build/html` | Build documentation |
-| `just build`                 | `uv build`                          | Build package distribution           |
-| `just clean`                 | (manual cleanup)                    | Clean build artifacts                |
+| Just Recipe (Preferred) | Direct Command (Alternative)                        | Description                |
+|-------------------------|-----------------------------------------------------|----------------------------|
+| `just install`          | `uv sync --all-groups`                              | Install all dependencies   |
+| `just setup`            | `uv sync --all-groups`                              | Alias for install          |
+| `just lint`             | `uv run ruff check .`                               | Check code for issues      |
+| `just fmt`              | `uv run ruff format .`                              | Format code automatically  |
+| `just lint-fix`         | `uv run ruff check --fix .`                         | Lint and auto-fix issues   |
+| `just typecheck`        | `uv run ty check`                                   | Run type checker           |
+| `just test`             | `uv run pytest`                                     | Run tests (sequential)     |
+| `just test-parallel`    | `uv run pytest -n auto`                             | Run tests (parallel)       |
+| `just ci-checks`        | (see note below)                                    | Run all quality checks     |
+| `just docs`             | `uv run sphinx-build -b html docs docs/_build/html` | Build documentation        |
+| `just build`            | `uv build`                                          | Build package distribution |
+| `just clean`            | (manual cleanup)                                    | Clean build artifacts      |
 
 **Note on `just ci-checks`:** This recipe chains multiple commands with fail-fast behavior:
+
 ```bash
 just install && just lint && just typecheck && just test-parallel
 ```
@@ -550,21 +567,26 @@ If running manually without Just, execute these commands in sequence and stop if
 
 ### Pre-Push Hook for Quality Checks
 
-Storyville provides a pre-push Git hook to automatically run `just ci-checks` before pushing code. This prevents pushing code that would fail CI checks.
+Storyville provides a pre-push Git hook to automatically run `just ci-checks` before pushing code. This prevents pushing
+code that would fail CI checks.
 
 **Install the hook:**
+
 ```bash
 just enable-pre-push
 ```
 
 **Disable the hook:**
+
 ```bash
 just disable-pre-push
 ```
 
-When enabled, the hook runs all quality checks (install, lint, typecheck, test-parallel) before each `git push`. If any check fails, the push is aborted.
+When enabled, the hook runs all quality checks (install, lint, typecheck, test-parallel) before each `git push`. If any
+check fails, the push is aborted.
 
 **How it works:**
+
 - Creates `.git/hooks/pre-push` that invokes `just ci-checks`
 - The hook only runs locally (not shared via git)
 - Each developer can enable/disable independently
@@ -577,11 +599,13 @@ When enabled, the hook runs all quality checks (install, lint, typecheck, test-p
 You can test GitHub Actions workflows locally before pushing using the [act](https://github.com/nektos/act) tool:
 
 **Installation (macOS):**
+
 ```bash
 brew install act
 ```
 
 **Basic Usage:**
+
 ```bash
 # Run the CI tests workflow locally
 act -j ci_tests --rm
@@ -591,6 +615,7 @@ act --rm
 ```
 
 **Known Limitations:**
+
 - Caching behavior may differ from GitHub Actions
 - Some GitHub-specific features may not work identically
 - Secret handling requires additional configuration
@@ -608,12 +633,12 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🔗 Links
 
-| Resource            | URL                                                                                                  |
-|---------------------|------------------------------------------------------------------------------------------------------|
+| Resource            | URL                                                                                                    |
+|---------------------|--------------------------------------------------------------------------------------------------------|
 | 🏠 **Repository**   | [github.com/pauleveritt/storyville](https://github.com/pauleveritt/storyville)                         |
 | 🐛 **Issues**       | [github.com/pauleveritt/storyville/issues](https://github.com/pauleveritt/storyville/issues)           |
 | 📝 **Discussions**  | [github.com/pauleveritt/storyville/discussions](https://github.com/pauleveritt/storyville/discussions) |
-| 🎯 **tdom Project** | [github.com/pauleveritt/t-strings](https://github.com/pauleveritt/t-strings)                         |
+| 🎯 **tdom Project** | [github.com/pauleveritt/t-strings](https://github.com/pauleveritt/t-strings)                           |
 
 ---
 
